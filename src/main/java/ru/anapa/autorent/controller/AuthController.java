@@ -1,5 +1,7 @@
 package ru.anapa.autorent.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +49,27 @@ public class AuthController {
                             @RequestParam(value = "logout", required = false) String logout,
                             @RequestParam(value = "expired", required = false) String expired,
                             @RequestParam(value = "disabled", required = false) String disabled,
+                            HttpServletRequest request,
                             Model model) {
         logger.info("Login page requested");
+
+        // Инициализируем переменную по умолчанию как false
+        model.addAttribute("adminLoginRequired", false);
+
+        // Проверяем наличие атрибутов сессии для сообщения о доступе к админ-панели
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            Boolean adminLoginRequired = (Boolean) session.getAttribute("adminLoginRequired");
+            if (adminLoginRequired != null && adminLoginRequired) {
+                logger.info("Admin login required message detected in session");
+                model.addAttribute("adminLoginRequired", true);
+                model.addAttribute("adminLoginError", session.getAttribute("error"));
+
+                // Удаляем атрибуты из сессии после использования
+                session.removeAttribute("adminLoginRequired");
+                session.removeAttribute("error");
+            }
+        }
 
         if (error != null) {
             logger.warn("Login error detected");
@@ -109,7 +130,7 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             logger.info("Auto-login successful, redirecting to dashboard");
-            return "redirect:/admin/dashboard";
+            return "redirect:/";
         } catch (RuntimeException e) {
             logger.error("Error during registration: {}", e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
@@ -135,7 +156,18 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             logger.info("Authentication successful for user: {}", username);
-            return "redirect:/admin/dashboard";
+
+            // Проверяем, имеет ли пользователь роль ADMIN
+            boolean isAdmin = authentication.getAuthorities().stream()
+                    .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+            // Если пользователь пытался получить доступ к админ-панели и успешно вошел как админ
+            if (model.containsAttribute("adminLoginRequired") && isAdmin) {
+                logger.info("Admin successfully authenticated, redirecting to admin dashboard");
+                return "redirect:/admin/dashboard";
+            }
+
+            return "redirect:/";
         } catch (AuthenticationCredentialsNotFoundException e) {
             logger.error("Authentication failed: User not found - {}", e.getMessage(), e);
             model.addAttribute("loginError", "Пользователь не найден");

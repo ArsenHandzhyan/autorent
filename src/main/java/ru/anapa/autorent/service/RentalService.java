@@ -25,25 +25,21 @@ public class RentalService {
         this.carService = carService;
     }
 
-    @Transactional(readOnly = true)
+    public List<Rental> findAllRentals() {
+        return rentalRepository.findAll();
+    }
+
     public List<Rental> findRentalsByUser(User user) {
         return rentalRepository.findByUser(user);
     }
 
-    @Transactional(readOnly = true)
-    public Rental findById(Long id) {
-        return rentalRepository.findByIdWithCarAndUser(id)
-                .orElseThrow(() -> new RuntimeException("Аренда с ID " + id + " не найдена"));
-    }
-
-    @Transactional(readOnly = true)
-    public List<Rental> findAllRentals() {
-        return rentalRepository.findAllWithCarAndUser();
-    }
-
-    @Transactional(readOnly = true)
     public List<Rental> findRentalsByStatus(String status) {
-        return rentalRepository.findByStatusWithCarAndUser(status);
+        return rentalRepository.findByStatus(status);
+    }
+
+    public Rental findById(Long id) {
+        return rentalRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Аренда не найдена"));
     }
 
     @Transactional
@@ -92,18 +88,31 @@ public class RentalService {
         rental.setTotalCost(totalCost);
         rental.setCreatedAt(LocalDateTime.now());
 
+        Rental savedRental = rentalRepository.save(rental);
+
+        // Если аренда начинается сегодня, сразу обновляем статус автомобиля
+        if (startDate.toLocalDate().equals(LocalDateTime.now().toLocalDate())) {
+            carService.updateCarAvailability(car.getId(), false);
+        }
+
+        return savedRental;
+    }
+
+    @Transactional
+    public Rental updateRental(Rental rental) {
+        rental.setUpdatedAt(LocalDateTime.now());
         return rentalRepository.save(rental);
     }
 
     @Transactional
-    public void cancelRental(Long rentalId) {
+    public void approveRental(Long rentalId) {
         Rental rental = findById(rentalId);
 
-        if (rental.getStatus().equals("COMPLETED")) {
-            throw new RuntimeException("Нельзя отменить завершенную аренду");
+        if (!"PENDING".equals(rental.getStatus())) {
+            throw new RuntimeException("Невозможно подтвердить аренду: неверный статус");
         }
 
-        rental.setStatus("CANCELLED");
+        rental.setStatus("ACTIVE");
         rental.setUpdatedAt(LocalDateTime.now());
         rentalRepository.save(rental);
     }
@@ -112,56 +121,97 @@ public class RentalService {
     public void completeRental(Long rentalId) {
         Rental rental = findById(rentalId);
 
-        if (rental.getStatus().equals("CANCELLED")) {
-            throw new RuntimeException("Нельзя завершить отмененную аренду");
-        }
-
-        if (rental.getStatus().equals("COMPLETED")) {
-            throw new RuntimeException("Аренда уже завершена");
+        if (!"ACTIVE".equals(rental.getStatus())) {
+            throw new RuntimeException("Невозможно завершить аренду: неверный статус");
         }
 
         rental.setStatus("COMPLETED");
         rental.setActualReturnDate(LocalDateTime.now());
         rental.setUpdatedAt(LocalDateTime.now());
 
-        // Если автомобиль возвращен позже срока, можно добавить дополнительную плату
-        if (rental.getActualReturnDate().isAfter(rental.getEndDate())) {
-            long extraDays = ChronoUnit.DAYS.between(rental.getEndDate(), rental.getActualReturnDate());
-            if (extraDays > 0) {
-                BigDecimal extraCharge = rental.getCar().getDailyRate()
-                        .multiply(BigDecimal.valueOf(extraDays))
-                        .multiply(BigDecimal.valueOf(1.5)); // Штраф 150% от дневной ставки
-                rental.setTotalCost(rental.getTotalCost().add(extraCharge));
-            }
-        }
+        // Освобождаем автомобиль
+        Car car = rental.getCar();
+        car.setAvailable(true);
+        carService.updateCar(car);
 
         rentalRepository.save(rental);
     }
 
     @Transactional
-    public void approveRental(Long rentalId) {
+    public void cancelRental(Long rentalId) {
         Rental rental = findById(rentalId);
 
-        if (!rental.getStatus().equals("PENDING")) {
-            throw new RuntimeException("Аренду можно одобрить только в статусе 'Ожидает'");
+        // Проверяем, что аренду можно отменить
+        if ("COMPLETED".equals(rental.getStatus()) || "CANCELLED".equals(rental.getStatus())) {
+            throw new RuntimeException("Невозможно отменить аренду: неверный статус");
         }
 
-        rental.setStatus("ACTIVE");
+        rental.setStatus("CANCELLED");
         rental.setUpdatedAt(LocalDateTime.now());
 
-        // Обновляем статус автомобиля, если аренда начинается сегодня
-        if (rental.getStartDate().toLocalDate().equals(LocalDateTime.now().toLocalDate())) {
-            Car car = rental.getCar();
-            car.setAvailable(false);
-            // Предполагается, что у вас есть метод updateCar в CarService
-            carService.updateCar(car);
-        }
+        // Освобождаем автомобиль
+        Car car = rental.getCar();
+        car.setAvailable(true);
+        carService.updateCar(car);
 
         rentalRepository.save(rental);
     }
 
+    /**
+     * Запрос на отмену аренды от пользователя
+     * Изменяет статус аренды на PENDING_CANCELLATION
+     */
     @Transactional
-    public Rental updateRental(Rental rental) {
-        return rentalRepository.save(rental);
+    public void requestCancellation(Long rentalId, String reason) {
+        Rental rental = findById(rentalId);
+
+        // Проверяем, что аренду можно отменить
+        if ("COMPLETED".equals(rental.getStatus()) || "CANCELLED".equals(rental.getStatus()) ||
+                "PENDING_CANCELLATION".equals(rental.getStatus())) {
+            throw new RuntimeException("Невозможно запросить отмену аренды: неверный статус");
+        }
+
+        rental.setStatus("PENDING_CANCELLATION");
+
+        // Добавляем причину отмены в примечания
+        if (reason != null && !reason.trim().isEmpty()) {
+            String notes = rental.getNotes() != null ? rental.getNotes() + "\n\n" : "";
+            notes += "Причина запроса на отмену: " + reason;
+            rental.setNotes(notes);
+        }
+
+        rental.setUpdatedAt(LocalDateTime.now());
+        rentalRepository.save(rental);
+    }
+
+    /**
+     * Отклонение запроса на отмену аренды администратором
+     * Возвращает статус аренды в предыдущее состояние (ACTIVE или PENDING)
+     */
+    @Transactional
+    public void rejectCancellationRequest(Long rentalId, String adminNotes) {
+        Rental rental = findById(rentalId);
+
+        // Проверяем, что аренда находится в статусе ожидания отмены
+        if (!"PENDING_CANCELLATION".equals(rental.getStatus())) {
+            throw new RuntimeException("Невозможно отклонить запрос на отмену: неверный статус аренды");
+        }
+
+        // Определяем, какой статус был до запроса на отмену
+        // Для простоты предположим, что это был ACTIVE или PENDING
+        // В реальном приложении можно хранить предыдущий статус в отдельном поле
+        LocalDateTime now = LocalDateTime.now();
+        String newStatus = now.isBefore(rental.getStartDate()) ? "PENDING" : "ACTIVE";
+        rental.setStatus(newStatus);
+
+        // Добавляем примечания администратора
+        if (adminNotes != null && !adminNotes.trim().isEmpty()) {
+            String notes = rental.getNotes() != null ? rental.getNotes() + "\n\n" : "";
+            notes += "Запрос на отмену отклонен администратором: " + adminNotes;
+            rental.setNotes(notes);
+        }
+
+        rental.setUpdatedAt(LocalDateTime.now());
+        rentalRepository.save(rental);
     }
 }

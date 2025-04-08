@@ -34,4 +34,15 @@ public class CarDto {
     private String description;
 
     private boolean available = true;
+
+    // Дополнительные поля для расширенной информации об автомобиле
+    private String transmission; // Тип трансмиссии (АКПП, МКПП и т.д.)
+
+    private String fuelType; // Тип топлива (бензин, дизель, электро и т.д.)
+
+    private Integer seats; // Количество мест
+
+    private String color; // Цвет автомобиля
+
+    private String category; // Категория автомобиля (эконом, бизнес, премиум и т.д.)
 }

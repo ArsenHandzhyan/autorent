@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="ru">
 <head>
     <title>Детали аренды - Автопрокат</title>
     <meta charset="UTF-8">
@@ -18,7 +17,11 @@
             <li><a th:href="@{/cars}">Автомобили</a></li>
             <li sec:authorize="isAuthenticated()"><a th:href="@{/rentals}" class="active">Мои аренды</a></li>
             <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/auth/logout}">Выйти</a></li>
+            <li>
+                <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="nav-link-button">Выйти</button>
+                </form>
+            </li>
         </ul>
     </nav>
 </header>
@@ -27,7 +30,7 @@
     <div class="page-header">
         <h1>Детали аренды #<span th:text="${rental.id}">1</span></h1>
         <div class="page-actions">
-            <a th:href="${#authorization.expression('hasRole(''ADMIN'')')} ? @{/rentals/all} : @{/rentals}" class="btn">Назад к списку</a>
+            <a th:href="@{/rentals/all-rentals}" sec:authorize="hasRole('ADMIN')" class="btn">Назад к списку</a>
         </div>
     </div>
 
@@ -46,7 +49,7 @@
                 </span>
             </div>
             <div class="rental-actions" th:if="${rental.status == 'PENDING' || rental.status == 'ACTIVE'}">
-                <form th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+                <form sec:authorize="hasRole('ADMIN')"
                       th:action="@{/rentals/{id}/complete(id=${rental.id})}" method="post" style="display: inline;">
                     <button type="submit" class="btn btn-primary"
                             onclick="return confirm('Вы уверены, что хотите завершить аренду?')">
@@ -127,7 +130,7 @@
                 </div>
             </div>
 
-            <div class="rental-details-section" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+            <div class="rental-details-section" sec:authorize="hasRole('ADMIN')">
                 <h2>Информация о клиенте</h2>
                 <div class="details-grid">
                     <div class="details-item">
@@ -152,7 +155,7 @@
                 </div>
             </div>
 
-            <div class="rental-details-section" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+            <div class="rental-details-section" sec:authorize="hasRole('ADMIN')">
                 <h2>Добавить примечание</h2>
                 <form th:action="@{/rentals/{id}/notes(id=${rental.id})}" method="post" class="notes-form">
                     <div class="form-group">

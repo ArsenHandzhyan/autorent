@@ -75,7 +75,6 @@ public class RentalController {
                     rentalDto.getEndDate()
             );
 
-            // Если есть примечания, сохраняем их
             if (rentalDto.getNotes() != null && !rentalDto.getNotes().trim().isEmpty()) {
                 rental.setNotes(rentalDto.getNotes());
                 rentalService.updateRental(rental);
@@ -90,12 +89,12 @@ public class RentalController {
         }
     }
 
-    // Добавляем специальный обработчик для URL /rentals/all-rentals
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all-rentals")
-    public String allRentalsAlternative(Model model) {
-        // Перенаправляем на правильный URL
-        return "redirect:/rentals/all-rentals";
+    public String allRentals(Model model) {
+        List<Rental> rentals = rentalService.findAllRentals();
+        model.addAttribute("rentals", rentals);
+        return "rentals/all-rentals";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -116,36 +115,127 @@ public class RentalController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/{id}/cancel")
-    public String cancelRental(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    @GetMapping("/cancel/{id}")
+    public String showCancelRentalForm(@PathVariable Long id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
-
         Rental rental = rentalService.findById(id);
 
         // Проверяем, принадлежит ли аренда текущему пользователю или пользователь админ
-        if (rental.getUser().getId().equals(user.getId()) ||
-                authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-            rentalService.cancelRental(id);
-            redirectAttributes.addFlashAttribute("success", "Аренда успешно отменена!");
-        } else {
-            redirectAttributes.addFlashAttribute("error", "У вас нет прав для отмены этой аренды!");
-        }
-
-        // Если админ, возвращаем на страницу всех аренд, иначе на страницу аренд пользователя
-        if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-            return "redirect:/rentals/all-rentals";
-        } else {
+        if (!rental.getUser().getId().equals(user.getId()) &&
+                !authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             return "redirect:/rentals";
         }
+
+        // Проверяем, можно ли отменить аренду
+        if (rental.getStatus().equals("COMPLETED") || rental.getStatus().equals("CANCELLED")) {
+            return "redirect:/rentals";
+        }
+
+        model.addAttribute("rental", rental);
+        return "rentals/cancel";
+    }
+
+    // Новый метод для запроса отмены аренды пользователем
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/request-cancel/{id}")
+    public String requestCancelRental(@PathVariable Long id,
+                                      @RequestParam(required = false) String cancelReason,
+                                      RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+        Rental rental = rentalService.findById(id);
+
+        // Проверяем, принадлежит ли аренда текущему пользователю
+        if (!rental.getUser().getId().equals(user.getId())) {
+            return "redirect:/rentals";
+        }
+
+        try {
+            // Обновляем статус аренды на "PENDING_CANCELLATION"
+            rental.setStatus("PENDING_CANCELLATION");
+
+            // Добавляем причину отмены в примечания
+            if (cancelReason != null && !cancelReason.trim().isEmpty()) {
+                String notes = rental.getNotes() != null ? rental.getNotes() + "\n\n" : "";
+                notes += "Причина запроса на отмену: " + cancelReason;
+                rental.setNotes(notes);
+            }
+
+            rentalService.updateRental(rental);
+            redirectAttributes.addFlashAttribute("success", "Запрос на отмену аренды отправлен администратору!");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+
+        return "redirect:/rentals";
+    }
+
+    // Метод для подтверждения отмены аренды администратором
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/cancel/{id}")
+    public String confirmCancelRental(@PathVariable Long id,
+                                      @RequestParam(required = false) String notes,
+                                      RedirectAttributes redirectAttributes) {
+        try {
+            Rental rental = rentalService.findById(id);
+
+            // Добавляем примечания администратора
+            if (notes != null && !notes.trim().isEmpty()) {
+                String currentNotes = rental.getNotes() != null ? rental.getNotes() + "\n\n" : "";
+                currentNotes += "Примечания администратора при отмене: " + notes;
+                rental.setNotes(currentNotes);
+                rentalService.updateRental(rental);
+            }
+
+            // Отменяем аренду
+            rentalService.cancelRental(id);
+            redirectAttributes.addFlashAttribute("success", "Аренда успешно отменена!");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+
+        return "redirect:/rentals/all-rentals";
+    }
+
+    // Метод для отклонения запроса на отмену аренды
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/{id}/reject-cancellation")
+    public String rejectCancellationRequest(@PathVariable Long id,
+                                            @RequestParam(required = false) String notes,
+                                            RedirectAttributes redirectAttributes) {
+        try {
+            Rental rental = rentalService.findById(id);
+
+            // Проверяем, что аренда находится в статусе ожидания отмены
+            if (!"PENDING_CANCELLATION".equals(rental.getStatus())) {
+                redirectAttributes.addFlashAttribute("error", "Невозможно отклонить запрос на отмену: неверный статус аренды");
+                return "redirect:/rentals/all-rentals";
+            }
+
+            // Возвращаем статус аренды в ACTIVE или PENDING в зависимости от предыдущего состояния
+            rental.setStatus("ACTIVE"); // или PENDING, если аренда еще не началась
+
+            // Добавляем примечания администратора
+            if (notes != null && !notes.trim().isEmpty()) {
+                String currentNotes = rental.getNotes() != null ? rental.getNotes() + "\n\n" : "";
+                currentNotes += "Запрос на отмену отклонен администратором: " + notes;
+                rental.setNotes(currentNotes);
+            }
+
+            rentalService.updateRental(rental);
+            redirectAttributes.addFlashAttribute("success", "Запрос на отмену аренды отклонен!");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+
+        return "redirect:/rentals/all-rentals";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
-    public String allRentals(Model model) {
-        List<Rental> rentals = rentalService.findAllRentals();
-        model.addAttribute("rentals", rentals);
-        return "admin/all-rentals";
+    public String allRentalsAlternative(Model model) {
+        return "redirect:/rentals/all-rentals";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -185,7 +275,6 @@ public class RentalController {
         return "admin/all-rentals";
     }
 
-    // Исправляем метод для одобрения аренды
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/approve")
     public String approveRental(@PathVariable Long id, RedirectAttributes redirectAttributes) {

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ru">
+<head>
+    <title>Личный кабинет - Автопрокат</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+    <nav>
+        <div class="logo">
+            <a th:href="@{/}">АвтоПрокат</a>
+        </div>
+        <ul class="nav-links">
+            <li><a th:href="@{/}">Главная</a></li>
+            <li><a th:href="@{/cars}">Автомобили</a></li>
+
+            <!-- Показывать только неаутентифицированным пользователям -->
+            <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/login}">Войти</a></li>
+            <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/register}">Регистрация</a></li>
+
+            <!-- Показывать только аутентифицированным пользователям -->
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}" class="active">Личный кабинет</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/rentals}">Мои аренды</a></li>
+            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
+            <li sec:authorize="isAuthenticated()">
+                <form th:action="@{/auth/logout}" method="post" style="display: inline; margin: 0; padding: 0;">
+                    <button type="submit" style="background: none; border: none; color: inherit; font: inherit; cursor: pointer; padding: 0; text-decoration: none;">Выйти</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <h1>Личный кабинет</h1>
+
+    <div class="user-info">
+        <h2>Информация о пользователе</h2>
+        <p><strong>Имя:</strong> <span th:text="${#authentication.principal.firstName}">Имя</span></p>
+        <p><strong>Фамилия:</strong> <span th:text="${#authentication.principal.lastName}">Фамилия</span></p>
+        <p><strong>Email:</strong> <span th:text="${#authentication.name}">email@example.com</span></p>
+        <p><strong>Телефон:</strong> <span th:text="${#authentication.principal.phone}">Телефон</span></p>
+        <p><strong>Дата регистрации:</strong> <span th:text="${#temporals.format(#authentication.principal.registrationDate, 'dd.MM.yyyy')}">01.01.2025</span></p>
+    </div>
+
+    <div class="dashboard-actions">
+        <h2>Быстрые действия</h2>
+        <div class="action-buttons">
+            <a th:href="@{/cars/available}" class="btn">Арендовать автомобиль</a>
+            <a th:href="@{/rentals}" class="btn">Мои аренды</a>
+            <a th:href="@{/profile/edit}" class="btn">Редактировать профиль</a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 АвтоПрокат. Все права защищены.</p>
+</footer>
+</body>
+</html>

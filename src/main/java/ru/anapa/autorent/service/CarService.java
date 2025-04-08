@@ -39,11 +39,30 @@ public class CarService {
         return carRepository.save(car);
     }
 
+    @Transactional
+    public void updateCarAvailability(Long carId, boolean available) {
+        Car car = findCarById(carId);
+        car.setAvailable(available);
+        carRepository.save(car);
+        System.out.println("Статус доступности автомобиля " + carId + " обновлен на: " + available);
+    }
+
     public void deleteCar(Long id) {
         carRepository.deleteById(id);
     }
 
     public List<Car> searchCarsByBrand(String brand) {
         return carRepository.findByBrandContainingIgnoreCase(brand);
+    }
+
+    @Transactional
+    public void checkAndUpdateCarStatuses() {
+        // Этот метод можно использовать для периодической проверки и обновления статусов автомобилей
+        // Например, через планировщик задач
+        List<Car> allCars = carRepository.findAll();
+        for (Car car : allCars) {
+            // Здесь можно добавить логику проверки активных аренд
+            // и обновления статуса автомобиля
+        }
     }
 }

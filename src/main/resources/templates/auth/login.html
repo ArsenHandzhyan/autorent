@@ -19,8 +19,14 @@
                         <h4>Вход в систему</h4>
                     </div>
 
+                    <!-- Сообщение о необходимости входа как администратор -->
+                    <div th:if="${adminLoginRequired}" class="alert alert-warning">
+                        <i class="fas fa-user-shield"></i>
+                        <span th:text="${adminLoginError}">У вас недостаточно прав для доступа к админ-панели. Пожалуйста, войдите как администратор.</span>
+                    </div>
+
                     <!-- Сообщение об ошибке -->
-                    <div th:if="${param.error}" class="alert alert-danger">
+                    <div th:if="${param.error != null && (adminLoginRequired == null || !adminLoginRequired)}" class="alert alert-danger">
                         <i class="fas fa-exclamation-circle"></i>
                         <span th:text="${loginError != null ? loginError : 'Неверное имя пользователя или пароль'}">Ошибка входа</span>
                     </div>

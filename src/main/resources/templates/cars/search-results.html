@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="ru">
 <head>
     <title>Результаты поиска - Автопрокат</title>
     <meta charset="UTF-8">
@@ -17,10 +16,11 @@
             <li><a th:href="@{/}">Главная</a></li>
             <li><a th:href="@{/cars}" class="active">Автомобили</a></li>
             <li sec:authorize="isAuthenticated()"><a th:href="@{/rentals}">Мои аренды</a></li>
-            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/auth/logout}">Выйти</a></li>
-            <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/login}">Войти</a></li>
-            <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/register}">Регистрация</a></li>
+            <li>
+                <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="nav-link-button">Выйти</button>
+                </form>
+            </li>
         </ul>
     </nav>
 </header>

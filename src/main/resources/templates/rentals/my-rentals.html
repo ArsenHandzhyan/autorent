@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Мои аренды</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
+<header>
+    <nav>
+        <div class="logo">
+            <a th:href="@{/}">АвтоПрокат</a>
+        </div>
+        <ul class="nav-links">
+            <li><a th:href="@{/}">Главная</a></li>
+            <li><a th:href="@{/cars}">Автомобили</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/rentals}" class="active">Мои аренды</a></li>
+            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
+            <li>
+                <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="nav-link-button">Выйти</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+</header>
+
 <body>
 <div class="container">
     <h2>Мои аренды</h2>

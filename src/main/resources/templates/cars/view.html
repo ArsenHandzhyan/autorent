@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ru">
 <head>
     <title th:text="${car.brand + ' ' + car.model} + ' - Автопрокат'">Toyota Camry - Автопрокат</title>
     <meta charset="UTF-8">
@@ -16,11 +17,16 @@
         <ul class="nav-links">
             <li><a th:href="@{/}">Главная</a></li>
             <li><a th:href="@{/cars}" class="active">Автомобили</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/rentals}">Мои аренды</a></li>
-            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/auth/logout}">Выйти</a></li>
             <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/login}">Войти</a></li>
             <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/register}">Регистрация</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">Личный кабинет</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/rentals}">Мои аренды</a></li>
+            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
+            <li sec:authorize="isAuthenticated()">
+                <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="nav-link-button">Выйти</button>
+                </form>
+            </li>
         </ul>
     </nav>
 </header>
@@ -106,6 +112,7 @@
                        th:href="@{/rentals/new/{id}(id=${car.id})}" class="btn btn-primary">Арендовать</a>
                     <a th:href="@{/cars}" class="btn">Назад к списку</a>
 
+                    <!-- Блок действий администратора -->
                     <div sec:authorize="hasRole('ADMIN')" class="admin-actions">
                         <a th:href="@{/cars/{id}/edit(id=${car.id})}" class="btn">Редактировать</a>
                         <form th:action="@{/cars/{id}/delete(id=${car.id})}" method="post" style="display: inline;">

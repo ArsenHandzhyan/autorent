@@ -13,12 +13,10 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     @Query("SELECT r FROM Rental r JOIN FETCH r.car WHERE r.user = :user")
     List<Rental> findByUser(@Param("user") User user);
 
-    @Query("SELECT r FROM Rental r JOIN FETCH r.car JOIN FETCH r.user WHERE r.id = :id")
-    Optional<Rental> findByIdWithCarAndUser(@Param("id") Long id);
+    // Добавляем метод для поиска аренд по статусу
+    @Query("SELECT r FROM Rental r JOIN FETCH r.car JOIN FETCH r.user WHERE r.status = :status")
+    List<Rental> findByStatus(@Param("status") String status);
 
     @Query("SELECT r FROM Rental r JOIN FETCH r.car JOIN FETCH r.user")
     List<Rental> findAllWithCarAndUser();
-
-    @Query("SELECT r FROM Rental r JOIN FETCH r.car JOIN FETCH r.user WHERE r.status = :status")
-    List<Rental> findByStatusWithCarAndUser(@Param("status") String status);
 }
