@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Все автомобили - Автопрокат</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+    <nav>
+        <div class="logo">
+            <a th:href="@{/}">АвтоПрокат</a>
+        </div>
+        <ul class="nav-links">
+            <li><a th:href="@{/}">Главная</a></li>
+            <li><a th:href="@{/cars}" class="active">Автомобили</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/rentals}">Мои аренды</a></li>
+            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/auth/logout}">Выйти</a></li>
+            <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/login}">Войти</a></li>
+            <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/register}">Регистрация</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <h1>Все автомобили</h1>
+
+    <div class="search-section">
+        <form th:action="@{/cars/search}" method="get" class="search-form">
+            <input type="text" name="brand" placeholder="Поиск по марке..." required>
+            <button type="submit" class="btn">Найти</button>
+        </form>
+
+        <div class="filter-options">
+            <a th:href="@{/cars}" class="btn btn-small active">Все</a>
+            <a th:href="@{/cars/available}" class="btn btn-small">Доступные</a>
+        </div>
+
+        <div sec:authorize="hasRole('ADMIN')" class="admin-actions">
+            <a th:href="@{/cars/add}" class="btn">Добавить автомобиль</a>
+        </div>
+    </div>
+
+    <div class="cars-grid">
+        <div th:each="car : ${cars}" class="car-card">
+            <div class="car-image">
+                <img th:if="${car.imageUrl}" th:src="${car.imageUrl}" alt="Фото автомобиля">
+                <img th:unless="${car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
+                <span th:if="${car.available}" class="status available">Доступен</span>
+                <span th:unless="${car.available}" class="status unavailable">Занят</span>
+            </div>
+            <div class="car-info">
+                <h3 th:text="${car.brand + ' ' + car.model}">Toyota Camry</h3>
+                <p class="car-year" th:text="${car.year + ' г.'}">2023 г.</p>
+                <p class="car-price" th:text="${car.dailyRate + ' ₽/день'}">3000 ₽/день</p>
+                <div class="car-features">
+                    <span th:if="${car.transmission}" th:text="${car.transmission}">Автомат</span>
+                    <span th:if="${car.fuelType}" th:text="${car.fuelType}">Бензин</span>
+                    <span th:if="${car.seats}" th:text="${car.seats + ' мест'}">5 мест</span>
+                </div>
+                <div class="car-actions">
+                    <a th:href="@{/cars/{id}(id=${car.id})}" class="btn">Подробнее</a>
+                    <a th:if="${car.available}" sec:authorize="isAuthenticated()"
+                       th:href="@{/rentals/new/{id}(id=${car.id})}" class="btn">Арендовать</a>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${cars.empty}" class="no-results">
+            <p>Автомобили не найдены</p>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 АвтоПрокат. Все права защищены.</p>
+</footer>
+</body>
+</html>

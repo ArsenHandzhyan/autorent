@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Добавление автомобиля - Автопрокат</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+    <nav>
+        <div class="logo">
+            <a th:href="@{/}">АвтоПрокат</a>
+        </div>
+        <ul class="nav-links">
+            <li><a th:href="@{/}">Главная</a></li>
+            <li><a th:href="@{/cars}" class="active">Автомобили</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/rentals}">Мои аренды</a></li>
+            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/auth/logout}">Выйти</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <h1>Добавление нового автомобиля</h1>
+
+    <div class="form-container">
+        <form th:action="@{/cars/add}" th:object="${car}" method="post" class="car-form">
+            <div class="form-section">
+                <h2>Основная информация</h2>
+
+                <div class="form-group">
+                    <label for="brand">Марка*</label>
+                    <input type="text" id="brand" th:field="*{brand}" required>
+                    <span class="error" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Ошибка марки</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="model">Модель*</label>
+                    <input type="text" id="model" th:field="*{model}" required>
+                    <span class="error" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">Ошибка модели</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="year">Год выпуска*</label>
+                    <input type="number" id="year" th:field="*{year}" min="1900" th:max="${#calendars.format(#calendars.createNow(), 'yyyy')}" required>
+                    <span class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Ошибка года</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="licensePlate">Гос. номер*</label>
+                    <input type="text" id="licensePlate" th:field="*{licensePlate}" required>
+                    <span class="error" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}">Ошибка гос. номера</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="dailyRate">Стоимость аренды в день (₽)*</label>
+                    <input type="number" id="dailyRate" th:field="*{dailyRate}" min="0" step="100" required>
+                    <span class="error" th:if="${#fields.hasErrors('dailyRate')}" th:errors="*{dailyRate}">Ошибка стоимости</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="color">Цвет</label>
+                    <input type="text" id="color" th:field="*{color}">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Технические характеристики</h2>
+
+                <div class="form-group">
+                    <label for="transmission">Трансмиссия</label>
+                    <select id="transmission" th:field="*{transmission}">
+                        <option value="">Выберите тип трансмиссии</option>
+                        <option value="Механика">Механика</option>
+                        <option value="Автомат">Автомат</option>
+                        <option value="Робот">Робот</option>
+                        <option value="Вариатор">Вариатор</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="fuelType">Тип топлива</label>
+                    <select id="fuelType" th:field="*{fuelType}">
+                        <option value="">Выберите тип топлива</option>
+                        <option value="Бензин">Бензин</option>
+                        <option value="Дизель">Дизель</option>
+                        <option value="Газ">Газ</option>
+                        <option value="Электро">Электро</option>
+                        <option value="Гибрид">Гибрид</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="seats">Количество мест</label>
+                    <input type="number" id="seats" th:field="*{seats}" min="1" max="50">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Категория</label>
+                    <select id="category" th:field="*{category}">
+                        <option value="">Выберите категорию</option>
+                        <option value="Эконом">Эконом</option>
+                        <option value="Комфорт">Комфорт</option>
+                        <option value="Бизнес">Бизнес</option>
+                        <option value="Премиум">Премиум</option>
+                        <option value="Внедорожник">Внедорожник</option>
+                        <option value="Минивэн">Минивэн</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Дополнительная информация</h2>
+
+                <div class="form-group">
+                    <label for="imageUrl">URL изображения</label>
+                    <input type="url" id="imageUrl" th:field="*{imageUrl}" placeholder="https://example.com/image.jpg">
+                    <span class="error" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}">Ошибка URL</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Описание</label>
+                    <textarea id="description" th:field="*{description}" rows="5"></textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Добавить автомобиль</button>
+                <a th:href="@{/cars}" class="btn">Отмена</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 АвтоПрокат. Все права защищены.</p>
+</footer>
+</body>
+</html>

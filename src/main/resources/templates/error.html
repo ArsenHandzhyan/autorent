@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ошибка - Автопрокат</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="error-container">
+    <h1>Произошла ошибка</h1>
+    <p th:text="${errorMessage}">Произошла ошибка при обработке запроса</p>
+    <p th:text="${errorDetails}">Дополнительная информация об ошибке</p>
+    <a th:href="@{/}" class="btn">Вернуться на главную</a>
+</div>
+</body>
+</html>

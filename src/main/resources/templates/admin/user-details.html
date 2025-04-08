@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Детали пользователя - Автопрокат</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+    <nav>
+        <div class="logo">
+            <a th:href="@{/}">АвтоПрокат</a>
+        </div>
+        <ul class="nav-links">
+            <li><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
+            <li><a th:href="@{/admin/users}" class="active">Пользователи</a></li>
+            <li><a th:href="@{/cars}">Автомобили</a></li>
+            <li><a th:href="@{/rentals/all-rentals}">Все аренды</a></li>
+            <li><a th:href="@{/auth/logout}">Выйти</a></li>
+        </ul>
+    </nav>
+</header>
+<main class="container">
+    <h1>Детали пользователя</h1>
+    <div class="user-profile">
+        <div class="profile-info">
+            <h2 th:text="${user.firstName + ' ' + user.lastName}">Иван Иванов</h2>
+            <p><strong>Email:</strong> <span th:text="${user.email}">ivan@example.com</span></p>
+            <p><strong>Телефон:</strong> <span th:text="${user.phone}">+7(999)999-99-99</span></p>
+            <p><strong>Дата регистрации:</strong> <span th:text="${#temporals.format(user.registrationDate, 'dd.MM.yyyy')}">01.01.2025</span></p>
+            <p><strong>Последний вход:</strong> <span th:text="${#temporals.format(user.lastLoginDate, 'dd.MM.yyyy')}">01.01.2025</span></p>
+            <p><strong>Статус:</strong> <span th:text="${user.enabled ? 'Активен' : 'Отключен'}">Активен</span></p>
+            <p><strong>Роли:</strong>
+                <span th:each="role : ${user.roles}" th:text="${role.name}">ROLE_USER</span>
+            </p>
+        </div>
+        <div class="user-actions">
+            <form th:if="${!user.hasRole('ROLE_ADMIN')}"
+                  th:action="@{/admin/users/{id}/promote(id=${user.id})}"
+                  method="post" style="display: inline;">
+                <button type="submit" class="btn btn-small">Сделать админом</button>
+            </form>
+            <form th:if="${user.enabled}"
+                  th:action="@{/admin/users/{id}/disable(id=${user.id})}"
+                  method="post" style="display: inline;">
+                <button type="submit" class="btn btn-small btn-danger">Отключить</button>
+            </form>
+            <form th:unless="${user.enabled}"
+                  th:action="@{/admin/users/{id}/enable(id=${user.id})}"
+                  method="post" style="display: inline;">
+                <button type="submit" class="btn btn-small">Включить</button>
+            </form>
+        </div>
+    </div>
+    <div class="rentals-section">
+        <h2>История аренд</h2>
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Автомобиль</th>
+                <th>Дата начала</th>
+                <th>Дата окончания</th>
+                <th>Статус</th>
+                <th>Стоимость</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="rental : ${user.rentals}">
+                <td th:text="${rental.id}">1</td>
+                <td th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</td>
+                <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2025</td>
+                <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
+                <td th:text="${rental.status}">Активна</td>
+                <td th:text="${rental.totalCost + ' ₽'}">10000 ₽</td>
+            </tr>
+            <tr th:if="${user.rentals.empty}">
+                <td colspan="6">Нет аренд</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer>
+    <p>&copy; 2025 АвтоПрокат. Все права защищены.</p>
+</footer>
+</body>
+</html>

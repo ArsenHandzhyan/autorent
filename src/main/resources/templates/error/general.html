@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ошибка</title>
+  <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f5f5f5;
+    }
+    .error-container {
+        text-align: center;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 500px;
+        width: 90%;
+    }
+    h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+        color: #3498db;
+    }
+    .error-code {
+        font-size: 72px;
+        font-weight: bold;
+        color: #3498db;
+        margin: 20px 0;
+    }
+    p {
+        font-size: 18px;
+        margin-bottom: 30px;
+    }
+    .btn {
+        display: inline-block;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+    .btn:hover {
+        background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+<div class="error-container">
+  <h1>Произошла ошибка</h1>
+  <div class="error-code" th:text="${statusCode ?: 'Ошибка'}">Ошибка</div>
+  <p>Извините, произошла ошибка при обработке вашего запроса.</p>
+  <p>Пожалуйста, попробуйте еще раз или обратитесь в службу поддержки.</p>
+  <a href="/" class="btn">Вернуться на главную</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Личный кабинет - Автопрокат</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+    <nav>
+        <div class="logo">
+            <a th:href="@{/}">АвтоПрокат</a>
+        </div>
+        <ul class="nav-links">
+            <li><a th:href="@{/}">Главная</a></li>
+            <li><a th:href="@{/cars}">Автомобили</a></li>
+            <li><a th:href="@{/rentals}">Мои аренды</a></li>
+            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
+            <li><a th:href="@{/auth/logout}">Выйти</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <h1>Личный кабинет</h1>
+
+    <div class="user-info">
+        <h2>Информация о пользователе</h2>
+        <p><strong>Имя:</strong> <span sec:authentication="principal.firstName">Имя</span></p>
+        <p><strong>Фамилия:</strong> <span sec:authentication="principal.lastName">Фамилия</span></p>
+        <p><strong>Email:</strong> <span sec:authentication="name">email@example.com</span></p>
+    </div>
+
+    <div class="dashboard-actions">
+        <h2>Быстрые действия</h2>
+        <div class="action-buttons">
+            <a th:href="@{/cars/available}" class="btn">Арендовать автомобиль</a>
+            <a th:href="@{/rentals}" class="btn">Мои аренды</a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 АвтоПрокат. Все права защищены.</p>
+</footer>
+</body>
+</html>

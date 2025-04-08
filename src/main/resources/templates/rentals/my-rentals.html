@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои аренды</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h2>Мои аренды</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Автомобиль</th>
+            <th>Дата начала</th>
+            <th>Дата окончания</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rental : ${rentals}">
+            <td th:text="${rental.car.brand} + ' ' + ${rental.car.model}">Бренд Модель</td>
+            <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy HH:mm')}">Дата начала</td>
+            <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy HH:mm')}">Дата окончания</td>
+            <td th:text="${rental.status}">Статус</td>
+            <td>
+                <a th:href="@{/rentals/cancel/{id}(id=${rental.id})}"
+                   th:unless="${rental.status == 'COMPLETED' || rental.status == 'CANCELLED'}"
+                   class="btn-cancel">Отменить</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

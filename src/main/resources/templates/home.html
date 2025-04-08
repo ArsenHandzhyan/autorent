@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АвтоПрокат - Главная страница</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<!-- Навигационная панель -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">
+            <i class="fas fa-car"></i> АвтоПрокат
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/}">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/cars}">Автомобили</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/about}">О нас</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/contact}">Контакты</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" th:href="@{/auth/login}">Войти</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" th:href="@{/auth/register}">Регистрация</a>
+                </li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle"></i> <span sec:authentication="name">Пользователь</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" th:href="@{/dashboard}">Личный кабинет</a></li>
+                        <li><a class="dropdown-item" th:href="@{/rentals}">Мои аренды</a></li>
+                        <li sec:authorize="hasRole('ADMIN')">
+                            <a class="dropdown-item" th:href="@{/admin/dashboard}">Админ-панель</a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form th:action="@{/auth/logout}" method="post" class="dropdown-item p-0">
+                                <button type="submit" class="btn btn-link text-decoration-none text-danger w-100 text-start ps-3">
+                                    <i class="fas fa-sign-out-alt"></i> Выйти
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Главный баннер -->
+<div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://images.unsplash.com/photo-1485291571150-772bcfc10da5?auto=format&fit=crop&w=1600&h=600" class="d-block w-100" alt="Автомобили премиум класса">
+            <div class="carousel-caption">
+                <h1>Аренда автомобилей в Анапе</h1>
+                <p>Широкий выбор автомобилей по доступным ценам</p>
+                <a th:href="@{/cars}" class="btn btn-primary btn-lg">Выбрать автомобиль</a>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=1600&h=600" class="d-block w-100" alt="Комфортные автомобили">
+            <div class="carousel-caption">
+                <h1>Специальные предложения</h1>
+                <p>Скидки до 20% при аренде от 7 дней</p>
+                <a th:href="@{/promotions}" class="btn btn-primary btn-lg">Узнать больше</a>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1600&h=600" class="d-block w-100" alt="Спортивные автомобили">
+            <div class="carousel-caption">
+                <h1>Премиум автомобили</h1>
+                <p>Почувствуйте комфорт и роскошь</p>
+                <a th:href="@{/cars?category=Премиум}" class="btn btn-primary btn-lg">Выбрать премиум</a>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+        <span class="visually-hidden">Предыдущий</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+        <span class="visually-hidden">Следующий</span>
+    </button>
+</div>
+
+<!-- Категории автомобилей -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Категории автомобилей</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=500&h=300" class="card-img-top" alt="Эконом класс">
+                    <div class="card-body text-center">
+                        <h3 class="card-title">Эконом</h3>
+                        <p class="card-text">Экономичные автомобили для городских поездок</p>
+                        <a th:href="@{/cars?category=Эконом}" class="btn btn-outline-primary">Выбрать</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=500&h=300" class="card-img-top" alt="Комфорт класс">
+                    <div class="card-body text-center">
+                        <h3 class="card-title">Комфорт</h3>
+                        <p class="card-text">Комфортные автомобили для длительных поездок</p>
+                        <a th:href="@{/cars?category=Комфорт}" class="btn btn-outline-primary">Выбрать</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=500&h=300" class="card-img-top" alt="Премиум класс">
+                    <div class="card-body text-center">
+                        <h3 class="card-title">Премиум</h3>
+                        <p class="card-text">Премиальные автомобили для особых случаев</p>
+                        <a th:href="@{/cars?category=Премиум}" class="btn btn-outline-primary">Выбрать</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Популярные автомобили -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Популярные автомобили</h2>
+        <div class="row g-4">
+            <!-- Здесь будут отображаться популярные автомобили из базы данных -->
+            <div class="col-md-3" th:each="car : ${popularCars}">
+                <div class="card h-100 shadow-sm">
+                    <img th:src="${car.imageUrl != null ? car.imageUrl : 'https://via.placeholder.com/300x200?text=Нет+фото'}" class="card-img-top" th:alt="${car.brand + ' ' + car.model}">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${car.brand + ' ' + car.model}">Марка Модель</h5>
+                        <p class="card-text">
+                            <i class="fas fa-calendar-alt"></i> <span th:text="${car.year}">2023</span><br>
+                            <i class="fas fa-gas-pump"></i> <span th:text="${car.fuelType}">Бензин</span><br>
+                            <i class="fas fa-cog"></i> <span th:text="${car.transmission}">Автомат</span>
+                        </p>
+                        <p class="card-text fw-bold text-primary" th:text="${car.dailyRate + ' ₽/день'}">0 ₽/день</p>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-primary w-100">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a th:href="@{/cars}" class="btn btn-outline-primary btn-lg">Смотреть все автомобили</a>
+        </div>
+    </div>
+</section>
+
+<!-- Как это работает -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Как работает наш сервис</h2>
+        <div class="row g-4">
+            <div class="col-md-3 text-center">
+                <div class="bg-white p-4 rounded shadow-sm h-100">
+                    <i class="fas fa-search fa-3x text-primary mb-3"></i>
+                    <h4>Выберите автомобиль</h4>
+                    <p>Просмотрите наш каталог и выберите подходящий автомобиль</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="bg-white p-4 rounded shadow-sm h-100">
+                    <i class="fas fa-calendar-check fa-3x text-primary mb-3"></i>
+                    <h4>Забронируйте</h4>
+                    <p>Выберите даты и оформите бронирование онлайн</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="bg-white p-4 rounded shadow-sm h-100">
+                    <i class="fas fa-car fa-3x text-primary mb-3"></i>
+                    <h4>Получите автомобиль</h4>
+                    <p>Заберите автомобиль в нашем офисе или закажите доставку</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="bg-white p-4 rounded shadow-sm h-100">
+                    <i class="fas fa-road fa-3x text-primary mb-3"></i>
+                    <h4>Наслаждайтесь поездкой</h4>
+                    <p>Путешествуйте с комфортом и верните автомобиль по окончании аренды</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Преимущества -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Наши преимущества</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-car-side fa-2x text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h4>Новый автопарк</h4>
+                        <p>Все наши автомобили не старше 3 лет и регулярно проходят техническое обслуживание</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-money-bill-wave fa-2x text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h4>Прозрачные цены</h4>
+                        <p>Никаких скрытых платежей и дополнительных комиссий при оформлении аренды</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-headset fa-2x text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h4>Поддержка 24/7</h4>
+                        <p>Наша служба поддержки всегда готова помочь вам в любое время суток</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-4">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-shield-alt fa-2x text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h4>Полная страховка</h4>
+                        <p>Все наши автомобили застрахованы по КАСКО и ОСАГО</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-4">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-map-marked-alt fa-2x text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h4>Без ограничения пробега</h4>
+                        <p>Путешествуйте без ограничений по километражу</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-4">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-thumbs-up fa-2x text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h4>Простое бронирование</h4>
+                        <p>Забронируйте автомобиль онлайн всего за несколько минут</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Отзывы клиентов -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Отзывы наших клиентов</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <h5 class="mb-0">Иван Петров</h5>
+                                <small class="text-muted">Москва</small>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="card-text">Отличный сервис! Арендовал Toyota Camry на неделю. Автомобиль был в идеальном состоянии, процесс оформления занял всего 15 минут. Обязательно воспользуюсь услугами снова.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <h5 class="mb-0">Мария Сидорова</h5>
+                                <small class="text-muted">Санкт-Петербург</small>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                        <p class="card-text">Брала Kia Rio на выходные. Очень довольна обслуживанием и состоянием автомобиля. Персонал вежливый и профессиональный. Рекомендую всем, кто ищет надежный прокат авто в Анапе.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <h5 class="mb-0">Алексей Смирнов</h5>
+                                <small class="text-muted">Краснодар</small>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="card-text">Арендовал BMW X5 для деловой поездки. Автомобиль был в отличном состоянии, полный бак. Единственный минус - немного задержали выдачу. В целом, сервис на высоте, буду обращаться еще.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Контакты и карта -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <h2 class="mb-4">Свяжитесь с нами</h2>
+                <p>Если у вас возникли вопросы или вы хотите забронировать автомобиль по телефону, свяжитесь с нами:</p>
+                <div class="d-flex mb-3">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>Адрес</h5>
+                        <p>г. Анапа, ул. Примерная, д. 123</p>
+                    </div>
+                </div>
+                <div class="d-flex mb-3">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-phone-alt fa-2x text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>Телефон</h5>
+                        <p>+7 (800) 123-45-67</p>
+                    </div>
+                </div>
+                <div class="d-flex mb-3">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-envelope fa-2x text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>Email</h5>
+                        <p>info@autorent-anapa.ru</p>
+                    </div>
+                </div>
+                <div class="d-flex mb-3">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-clock fa-2x text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>Режим работы</h5>
+                        <p>Ежедневно с 9:00 до 21:00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2 class="mb-4">Мы на карте</h2>
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d91763.90956554486!2d37.31942949999999!3d44.8949357!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40ee0c1b0c4c3d8d%3A0xc7a5e312c1d0d0a1!2z0JDQvdCw0L_QsCwg0JrRgNCw0YHQvdC-0LTQsNGA0YHQutC40Lkg0LrRgNCw0LksINCg0L7RgdGB0LjRjw!5e0!3m2!1sru!2sru!4v1654321234567!5m2!1sru!2sru" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Подвал сайта -->
+<footer class="bg-dark text-white py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <h5 class="mb-3">О компании</h5>
+                <p>АвтоПрокат - надежный сервис аренды автомобилей в Анапе. Мы предлагаем широкий выбор автомобилей различных классов по доступным ценам.</p>
+                <div class="social-icons mt-3">
+                    <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-vk"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h5 class="mb-3">Навигация</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-white text-decoration-none">Главная</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Автомобили</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Условия</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">О нас</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Контакты</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5 class="mb-3">Категории</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-white text-decoration-none">Эконом класс</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Комфорт класс</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Бизнес класс</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Премиум класс</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Внедорожники</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5 class="mb-3">Подписка на новости</h5>
+                <p>Подпишитесь на нашу рассылку, чтобы получать информацию о специальных предложениях и акциях</p>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Ваш email" required>
+                        <button class="btn btn-primary" type="submit">Подписаться</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="mb-0">&copy; 2025 АвтоПрокат. Все права защищены.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="#" class="text-white text-decoration-none me-3">Политика конфиденциальности</a>
+                <a href="#" class="text-white text-decoration-none">Пользовательское соглашение</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
