@@ -2,18 +2,18 @@
 FROM eclipse-temurin:17-jdk-alpine AS build
 WORKDIR /workspace/app
 
-# Копируем скрипт сборки, зависимости и исходные файлы
-COPY mvnw .
-COPY .mvn .mvn
+# Устанавливаем Maven
+RUN apk add --no-cache maven
+
+# Копируем только pom.xml для кэширования зависимостей
 COPY pom.xml .
 
 # Загружаем зависимости отдельно для кэширования слоев
-RUN chmod +x ./mvnw && \
-    ./mvnw dependency:go-offline -B
+RUN mvn dependency:go-offline -B
 
 # Копируем исходный код и собираем приложение
 COPY src src
-RUN ./mvnw package -DskipTests && \
+RUN mvn package -DskipTests && \
     mkdir -p target/dependency && \
     (cd target/dependency && jar -xf ../*.jar)
 
