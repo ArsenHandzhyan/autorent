@@ -49,7 +49,7 @@
         </div>
 
         <!-- Новая карточка для запросов на отмену -->
-        <div class="stat-card pending-cancellations">
+        <div class="stat-card">
             <h3>Запросы на отмену</h3>
             <p class="stat-number" th:text="${pendingCancellations != null ? pendingCancellations.size() : 0}">0</p>
             <a th:href="@{/admin/pending-cancellations}" class="btn">Просмотр</a>
