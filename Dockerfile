@@ -38,4 +38,4 @@ ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Djava.securit
 EXPOSE 8080
 
 # Запускаем приложение
-ENTRYPOINT exec java $JAVA_OPTS -cp app:app/lib/* ru.anapa.autorent.AutorentApplication
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -cp app:app/lib/* ru.anapa.autorent.AutorentApplication"]
