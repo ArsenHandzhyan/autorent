@@ -1,41 +1,57 @@
 package ru.anapa.autorent.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@ToString
 @Entity
 @Table(name = "reviews")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Review {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Имя пользователя не может быть пустым")
+    private String userName;
+
+    @NotNull(message = "Оценка обязательна")
+    @Min(value = 1, message = "Минимальная оценка - 1")
+    @Max(value = 5, message = "Максимальная оценка - 5")
     private Integer rating;
 
-    @Column(nullable = false, length = 1000)
-    private String comment;
+    @NotBlank(message = "Текст отзыва не может быть пустым")
+    @Column(columnDefinition = "TEXT")
+    private String reviewText;
 
-    @Column(name = "created_at", nullable = false)
+    @NotNull
+    @Column(name = "rental_id")
+    private Long rentalId;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id", nullable = false)
-    private Car car;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }
