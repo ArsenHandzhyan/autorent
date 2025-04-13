@@ -9,7 +9,8 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
+
 <div class="error-container">
     <h1>Произошла ошибка</h1>
     <p th:text="${errorMessage}">Произошла ошибка при обработке запроса</p>

@@ -11,7 +11,8 @@
   <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
+
 <div class="review-form-container">
   <div class="review-form">
     <h1>Оставить отзыв о прокате</h1>
