@@ -1,39 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      lang="ru">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <title>Личный кабинет - Автопрокат</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<header>
-    <nav>
-        <div class="logo">
-            <a th:href="@{/}">АвтоПрокат</a>
-        </div>
-        <ul class="nav-links">
-            <li><a th:href="@{/}">Главная</a></li>
-            <li><a th:href="@{/cars}">Автомобили</a></li>
-
-            <!-- Показывать только неаутентифицированным пользователям -->
-            <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/login}">Войти</a></li>
-            <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/register}">Регистрация</a></li>
-
-            <!-- Показывать только аутентифицированным пользователям -->
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}" class="active">Личный кабинет</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/rentals}">Мои аренды</a></li>
-            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
-            <li sec:authorize="isAuthenticated()">
-                <form th:action="@{/auth/logout}" method="post" style="display: inline; margin: 0; padding: 0;">
-                    <button type="submit" style="background: none; border: none; color: inherit; font: inherit; cursor: pointer; padding: 0; text-decoration: none;">Выйти</button>
-                </form>
-            </li>
-        </ul>
-    </nav>
-</header>
+<div th:replace="fragments/header :: header"></div>
 
 <main class="container">
     <h1>Личный кабинет</h1>
@@ -57,8 +33,8 @@
     </div>
 </main>
 
-<footer>
-    <p>&copy; 2025 АвтоПрокат. Все права защищены.</p>
-</footer>
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

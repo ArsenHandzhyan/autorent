@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.anapa.autorent.dto.CarDto;
 import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.service.CarService;
+import ru.anapa.autorent.service.RentalService;
 
 import java.util.List;
 
@@ -19,10 +20,12 @@ import java.util.List;
 public class CarController {
 
     private final CarService carService;
+    private final RentalService rentalService;
 
     @Autowired
-    public CarController(CarService carService) {
+    public CarController(CarService carService, RentalService rentalService) {
         this.carService = carService;
+        this.rentalService = rentalService;
     }
 
     @GetMapping
@@ -79,7 +82,6 @@ public class CarController {
         car.setDescription(carDto.getDescription());
         car.setAvailable(true);
 
-        // Добавляем дополнительные поля, если они есть в DTO
         if (carDto.getTransmission() != null) {
             car.setTransmission(carDto.getTransmission());
         }
@@ -177,18 +179,6 @@ public class CarController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/check-statuses")
-    public String checkAndUpdateCarStatuses(RedirectAttributes redirectAttributes) {
-        try {
-            carService.checkAndUpdateCarStatuses();
-            redirectAttributes.addFlashAttribute("success", "Статусы автомобилей обновлены");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Ошибка при обновлении статусов: " + e.getMessage());
-        }
-        return "redirect:/cars";
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/dashboard")
     public String carsDashboard(Model model) {
         List<Car> allCars = carService.findAllCars();
@@ -252,5 +242,17 @@ public class CarController {
         modelAttribute.addAttribute("onlyAvailable", onlyAvailable);
 
         return "cars/filtered";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/check-statuses")
+    public String checkAndUpdateCarStatuses(RedirectAttributes redirectAttributes) {
+        try {
+            rentalService.synchronizeAllCarStatuses();
+            redirectAttributes.addFlashAttribute("success", "Статусы автомобилей обновлены");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ошибка при обновлении статусов: " + e.getMessage());
+        }
+        return "redirect:/cars";
     }
 }

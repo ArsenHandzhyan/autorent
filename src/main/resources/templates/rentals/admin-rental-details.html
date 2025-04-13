@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Детали аренды</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+  <h1>Детали аренды</h1>
+
+  <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+  <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+  <div class="rental-details-card">
+    <div class="rental-header">
+      <h2 th:text="${rental.car.brand + ' ' + rental.car.model}">Автомобиль</h2>
+      <span class="status" th:text="${rental.status}"
+            th:classappend="${rental.status == 'ACTIVE' ? 'status-active' :
+                                      (rental.status == 'PENDING' ? 'status-pending' :
+                                      (rental.status == 'COMPLETED' ? 'status-completed' :
+                                      (rental.status == 'CANCELLED' ? 'status-cancelled' :
+                                      'status-pending-cancellation')))}">
+                    Статус
+                </span>
+    </div>
+
+    <div class="rental-info">
+      <div class="info-section">
+        <h3>Информация о клиенте</h3>
+        <p><strong>Имя:</strong> <span th:text="${rental.user.firstName + ' ' + rental.user.lastName}">Иван Иванов</span></p>
+        <p><strong>Email:</strong> <span th:text="${rental.user.email}">email@example.com</span></p>
+        <p><strong>Телефон:</strong> <span th:text="${rental.user.phone}">+7 (999) 123-45-67</span></p>
+      </div>
+
+      <div class="info-section">
+        <h3>Информация об аренде</h3>
+        <p><strong>ID аренды:</strong> <span th:text="${rental.id}">123</span></p>
+        <p><strong>Дата создания:</strong> <span th:text="${#temporals.format(rental.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2023 12:00</span></p>
+        <p><strong>Дата начала:</strong> <span th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2023</span></p>
+        <p><strong>Дата окончания:</strong> <span th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2023</span></p>
+        <p><strong>Стоимость:</strong> <span th:text="${rental.totalCost + ' ₽'}">10000 ₽</span></p>
+      </div>
+
+      <div class="info-section">
+        <h3>Информация об автомобиле</h3>
+        <p><strong>Марка и модель:</strong> <span th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</span></p>
+        <p><strong>Год выпуска:</strong> <span th:text="${rental.car.year}">2020</span></p>
+        <p><strong>Регистрационный номер:</strong> <span th:text="${rental.car.registrationNumber}">А123БВ 123</span></p>
+        <p><strong>Цена за день:</strong> <span th:text="${rental.car.pricePerDay + ' ₽'}">1000 ₽</span></p>
+      </div>
+
+      <div class="info-section" th:if="${rental.cancelReason != null && !rental.cancelReason.isEmpty()}">
+        <h3>Причина отмены</h3>
+        <p th:text="${rental.cancelReason}">Причина отмены</p>
+      </div>
+
+      <div class="info-section">
+        <h3>Примечания</h3>
+        <div th:if="${rental.notes == null || rental.notes.isEmpty()}" class="empty-notes">
+          <p>Нет примечаний</p>
+        </div>
+        <div th:unless="${rental.notes == null || rental.notes.isEmpty()}" class="notes-content">
+          <p th:text="${rental.notes}">Примечания к аренде</p>
+        </div>
+
+        <button type="button" class="btn btn-secondary" onclick="showNotesForm()">Редактировать примечания</button>
+
+        <div id="notesForm" class="notes-form" style="display: none;">
+          <form th:action="@{/admin/rentals/{id}/update-notes(id=${rental.id})}" method="post"> <!-- Обновлено -->
+            <div class="form-group">
+              <label for="notes">Примечания:</label>
+              <textarea id="notes" name="notes" rows="4" class="form-control" th:text="${rental.notes}"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="rental-actions">
+      <a th:href="@{/admin/rentals}" class="btn btn-secondary">Назад к списку</a> <!-- Обновлено -->
+
+      <!-- Кнопки для ожидающих аренд -->
+      <div th:if="${rental.status == 'PENDING'}" class="action-buttons">
+        <form th:action="@{/admin/rentals/{id}/approve(id=${rental.id})}" method="post" style="display: inline;"> <!-- Обновлено -->
+          <button type="submit" class="btn btn-success">Подтвердить</button>
+        </form>
+
+        <button type="button" class="btn btn-danger" onclick="showCancelForm()">Отменить</button>
+
+        <div id="cancelForm" class="cancel-form" style="display: none;">
+          <form th:action="@{/admin/rentals/{id}/cancel(id=${rental.id})}" method="post"> <!-- Обновлено -->
+            <div class="form-group">
+              <label for="cancelNotes">Причина отмены:</label>
+              <textarea id="cancelNotes" name="notes" rows="3" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-danger">Подтвердить отмену</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Кнопки для активных аренд -->
+      <div th:if="${rental.status == 'ACTIVE'}" class="action-buttons">
+        <form th:action="@{/admin/rentals/{id}/complete(id=${rental.id})}" method="post" style="display: inline;"> <!-- Обновлено -->
+          <button type="submit" class="btn btn-success">Завершить</button>
+        </form>
+
+        <button type="button" class="btn btn-danger" onclick="showCancelForm()">Отменить</button>
+      </div>
+
+      <!-- Кнопки для запросов на отмену -->
+      <div th:if="${rental.status == 'PENDING_CANCELLATION'}" class="action-buttons">
+        <form th:action="@{/admin/rentals/{id}/confirm-cancellation(id=${rental.id})}" method="post" style="display: inline;"> <!-- Обновлено -->
+          <button type="submit" class="btn btn-success">Подтвердить отмену</button>
+        </form>
+
+        <button type="button" class="btn btn-danger" onclick="showRejectForm()">Отклонить</button>
+
+        <div id="rejectForm" class="reject-form" style="display: none;">
+          <form th:action="@{/admin/rentals/{id}/reject-cancellation(id=${rental.id})}" method="post"> <!-- Обновлено -->
+            <div class="form-group">
+              <label for="adminNotes">Причина отказа:</label>
+              <textarea id="adminNotes" name="adminNotes" rows="3" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-danger">Отклонить запрос</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script>
+  function showNotesForm() {
+      document.getElementById('notesForm').style.display = 'block';
+  }
+
+  function showCancelForm() {
+      document.getElementById('cancelForm').style.display = 'block';
+  }
+
+  function showRejectForm() {
+      document.getElementById('rejectForm').style.display = 'block';
+  }
+</script>
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

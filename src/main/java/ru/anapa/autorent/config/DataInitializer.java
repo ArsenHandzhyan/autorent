@@ -1,10 +1,13 @@
 package ru.anapa.autorent.config;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import ru.anapa.autorent.controller.AuthController;
 import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.model.Role;
 import ru.anapa.autorent.model.User;
@@ -27,6 +30,7 @@ public class DataInitializer implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final CarRepository carRepository;
     private final PasswordEncoder passwordEncoder;
+    private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 
     @Override
     public void run(String... args) {
@@ -50,23 +54,23 @@ public class DataInitializer implements CommandLineRunner {
             userRole.setName("ROLE_USER");
             roleRepository.save(userRole);
 
-            System.out.println("Роли созданы: ROLE_ADMIN, ROLE_USER");
+            logger.info("Роли созданы: ROLE_ADMIN, ROLE_USER");
         }
     }
 
     private void createUsersIfNotFound() {
-        System.out.println("DataInitializer: проверка наличия пользователей");
+        logger.info("DataInitializer: проверка наличия пользователей");
 
         // Проверяем наличие конкретного пользователя admin@example.com
         boolean adminExists = userRepository.findByEmail("admin@example.com").isPresent();
-        System.out.println("DataInitializer: admin@example.com существует: " + adminExists);
+        logger.info("DataInitializer: admin@example.com существует: " + adminExists);
 
         if (!adminExists) {
             Role adminRole = roleRepository.findByName("ROLE_ADMIN");
             Role userRole = roleRepository.findByName("ROLE_USER");
 
             if (adminRole == null || userRole == null) {
-                System.out.println("DataInitializer: роли не найдены, создаем заново");
+                logger.info("DataInitializer: роли не найдены, создаем заново");
                 createRolesIfNotFound();
                 adminRole = roleRepository.findByName("ROLE_ADMIN");
                 userRole = roleRepository.findByName("ROLE_USER");
@@ -86,7 +90,7 @@ public class DataInitializer implements CommandLineRunner {
             adminRoles.add(adminRole);
             admin.setRoles(adminRoles);
             userRepository.save(admin);
-            System.out.println("Создан администратор: admin@example.com / admin123, enabled: " + admin.isEnabled());
+            logger.info("Создан администратор: admin@example.com / admin123, enabled: " + admin.isEnabled());
 
             boolean userExists = userRepository.findByEmail("user@example.com").isPresent();
             if (!userExists) {
@@ -104,7 +108,7 @@ public class DataInitializer implements CommandLineRunner {
                 userRoles.add(userRole);
                 user.setRoles(userRoles);
                 userRepository.save(user);
-                System.out.println("Создан пользователь: user@example.com / user123");
+                logger.info("Создан пользователь: user@example.com / user123");
 
                 // Создаем еще одного пользователя
                 User user2 = new User();
@@ -120,7 +124,7 @@ public class DataInitializer implements CommandLineRunner {
                 user2Roles.add(userRole);
                 user2.setRoles(user2Roles);
                 userRepository.save(user2);
-                System.out.println("Создан пользователь: maria@example.com / maria123");
+                logger.info("Создан пользователь: maria@example.com / maria123");
 
                 // Создаем третьего пользователя
                 User user3 = new User();
@@ -136,7 +140,7 @@ public class DataInitializer implements CommandLineRunner {
                 user3Roles.add(userRole);
                 user3.setRoles(user3Roles);
                 userRepository.save(user3);
-                System.out.println("Создан пользователь: alex@example.com / alex123");
+                logger.info("Создан пользователь: alex@example.com / alex123");
             }
         }
     }
@@ -280,7 +284,7 @@ public class DataInitializer implements CommandLineRunner {
                     .build();
             carRepository.save(car8);
 
-            System.out.println("Создано 8 автомобилей для проката");
+            logger.info("Создано 8 автомобилей для проката");
         }
     }
 }

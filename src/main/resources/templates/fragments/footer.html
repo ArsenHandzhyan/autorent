@@ -1,0 +1,65 @@
+<!-- fragments/footer.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<footer th:fragment="footer" class="bg-dark text-white py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <h5 class="mb-3">О компании</h5>
+        <p>АвтоПрокат - надежный сервис аренды автомобилей в Анапе. Мы предлагаем широкий выбор автомобилей различных классов по доступным ценам.</p>
+        <div class="social-icons mt-3">
+          <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white me-2"><i class="fab fa-vk"></i></a>
+          <a href="#" class="text-white me-2"><i class="fab fa-telegram"></i></a>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <h5 class="mb-3">Навигация</h5>
+        <ul class="list-unstyled">
+          <li><a th:href="@{/}" class="text-white text-decoration-none">Главная</a></li>
+          <li><a th:href="@{/cars}" class="text-white text-decoration-none">Автомобили</a></li>
+          <li><a th:href="@{/terms}" class="text-white text-decoration-none">Условия</a></li>
+          <li><a th:href="@{/about}" class="text-white text-decoration-none">О нас</a></li>
+          <li><a th:href="@{/contact}" class="text-white text-decoration-none">Контакты</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h5 class="mb-3">Категории</h5>
+        <ul class="list-unstyled">
+          <li><a th:href="@{/cars?category=Эконом}" class="text-white text-decoration-none">Эконом класс</a></li>
+          <li><a th:href="@{/cars?category=Комфорт}" class="text-white text-decoration-none">Комфорт класс</a></li>
+          <li><a th:href="@{/cars?category=Бизнес}" class="text-white text-decoration-none">Бизнес класс</a></li>
+          <li><a th:href="@{/cars?category=Премиум}" class="text-white text-decoration-none">Премиум класс</a></li>
+          <li><a th:href="@{/cars?category=Внедорожник}" class="text-white text-decoration-none">Внедорожники</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h5 class="mb-3">Подписка на новости</h5>
+        <p>Подпишитесь на нашу рассылку, чтобы получать информацию о специальных предложениях и акциях</p>
+        <form th:action="@{/subscribe}" method="post">
+          <div class="input-group mb-3">
+            <input type="email" name="email" class="form-control" placeholder="Ваш email" required>
+            <button class="btn btn-primary" type="submit">Подписаться</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <hr class="my-4">
+    <div class="row">
+      <div class="col-md-6">
+        <p class="mb-0">&copy; 2025 АвтоПрокат. Все права защищены.</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <a th:href="@{/privacy}" class="text-white text-decoration-none me-3">Политика конфиденциальности</a>
+        <a th:href="@{/terms}" class="text-white text-decoration-none">Пользовательское соглашение</a>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

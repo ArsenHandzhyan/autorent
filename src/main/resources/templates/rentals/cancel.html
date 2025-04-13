@@ -1,106 +1,51 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      lang="ru">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Отмена аренды - Автопрокат</title>
+    <title>Отмена аренды</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<header>
-    <nav>
-        <div class="logo">
-            <a th:href="@{/}">АвтоПрокат</a>
-        </div>
-        <ul class="nav-links">
-            <li><a th:href="@{/}">Главная</a></li>
-            <li><a th:href="@{/cars}">Автомобили</a></li>
-            <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/login}">Войти</a></li>
-            <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/register}">Регистрация</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">Личный кабинет</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/rentals}" class="active">Мои аренды</a></li>
-            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
-            <li sec:authorize="isAuthenticated()">
-                <form th:action="@{/auth/logout}" method="post" style="display: inline;">
-                    <button type="submit" class="nav-link-button">Выйти</button>
-                </form>
-            </li>
-        </ul>
-    </nav>
-</header>
+<div th:replace="fragments/header :: header"></div>
 
-<main class="container">
+<div class="container">
     <h1>Отмена аренды</h1>
 
     <div class="rental-details">
-        <h2>Информация об аренде</h2>
-        <div class="info-grid">
-            <div class="info-item">
-                <span class="info-label">Автомобиль:</span>
-                <span class="info-value" th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Дата начала:</span>
-                <span class="info-value" th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy HH:mm')}">01.01.2025 12:00</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Дата окончания:</span>
-                <span class="info-value" th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy HH:mm')}">05.01.2025 12:00</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Статус:</span>
-                <span class="info-value" th:text="${rental.status}">ACTIVE</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Стоимость:</span>
-                <span class="info-value" th:text="${rental.totalCost + ' ₽'}">15000 ₽</span>
-            </div>
-        </div>
+        <h2 th:text="${rental.car.brand + ' ' + rental.car.model}">Автомобиль</h2>
+        <p><strong>Дата начала:</strong> <span th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2023</span></p>
+        <p><strong>Дата окончания:</strong> <span th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2023</span></p>
+        <p><strong>Стоимость:</strong> <span th:text="${rental.totalCost + ' ₽'}">10000 ₽</span></p>
     </div>
 
-    <div class="cancel-confirmation">
-        <h2>Подтверждение отмены</h2>
-
-        <!-- Для обычных пользователей - запрос на отмену -->
-        <div sec:authorize="!hasRole('ADMIN')">
-            <p>Вы уверены, что хотите запросить отмену аренды?</p>
-            <p>После отправки запроса администратор рассмотрит вашу заявку на отмену.</p>
-
-            <form th:action="@{/rentals/request-cancel/{id}(id=${rental.id})}" method="post" class="form">
-                <div class="form-group">
-                    <label for="cancelReason">Причина отмены:</label>
-                    <textarea id="cancelReason" name="cancelReason" rows="3" class="form-control"></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-danger">Запросить отмену</button>
-                    <a th:href="@{/rentals}" class="btn">Отмена</a>
-                </div>
-            </form>
-        </div>
-
-        <!-- Для администраторов - подтверждение отмены -->
-        <div sec:authorize="hasRole('ADMIN')">
-            <p>Вы уверены, что хотите отменить эту аренду?</p>
-            <p>Отмена аренды приведет к освобождению автомобиля для других клиентов.</p>
-
-            <form th:action="@{/rentals/cancel/{id}(id=${rental.id})}" method="post" class="form">
-                <div class="form-group">
-                    <label for="adminNotes">Примечания:</label>
-                    <textarea id="adminNotes" name="notes" rows="3" class="form-control"></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-danger">Подтвердить отмену</button>
-                    <a th:href="@{/rentals/all-rentals}" class="btn">Отмена</a>
-                </div>
-            </form>
-        </div>
+    <div class="cancellation-policy">
+        <h3>Политика отмены:</h3>
+        <ul>
+            <li>При отмене за 7 и более дней до начала аренды - возврат 100% стоимости</li>
+            <li>При отмене за 3-6 дней до начала аренды - возврат 50% стоимости</li>
+            <li>При отмене менее чем за 3 дня до начала аренды - возврат 0% стоимости</li>
+            <li>Для активных аренд возврат средств рассчитывается индивидуально</li>
+        </ul>
     </div>
-</main>
 
-<footer>
-    <p>&copy; 2025 АвтоПрокат. Все права защищены.</p>
-</footer>
+    <form th:action="@{/rentals/cancel/{id}(id=${rental.id})}" method="post" class="cancellation-form">
+        <div class="form-group">
+            <label for="cancelReason">Причина отмены:</label>
+            <textarea id="cancelReason" name="cancelReason" rows="4" class="form-control" required></textarea>
+        </div>
+
+        <div class="form-actions">
+            <a th:href="@{/rentals}" class="btn btn-secondary">Отмена</a>
+            <button type="submit" class="btn btn-danger">Подтвердить отмену</button>
+        </div>
+    </form>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -4,29 +4,15 @@
     <title>Админ-панель - Автопрокат</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<header>
-    <nav>
-        <div class="logo">
-            <a th:href="@{/}">АвтоПрокат</a>
-        </div>
-        <ul class="nav-links">
-            <li><a th:href="@{/}">Главная</a></li>
-            <li><a th:href="@{/admin/users}">Пользователи</a></li>
-            <li><a th:href="@{/cars}">Автомобили</a></li>
-            <li><a th:href="@{/rentals/all-rentals}">Все аренды</a></li>
-            <li>
-                <form th:action="@{/auth/logout}" method="post" style="display: inline;">
-                    <button type="submit" class="nav-link-button">Выйти</button>
-                </form>
-            </li>
-        </ul>
-    </nav>
-</header>
+<!-- Подключаем хедер -->
+<div th:replace="~{fragments/header :: header}"></div>
 
-<main class="container">
+<main class="container py-5">
     <h1>Админ-панель</h1>
 
     <div class="dashboard-stats">
@@ -39,20 +25,23 @@
         <div class="stat-card">
             <h3>Ожидающие аренды</h3>
             <p class="stat-number" th:text="${pendingRentals.size()}">0</p>
-            <a th:href="@{/rentals/all-rentals}" class="btn">Просмотр</a>
+            <a th:href="@{/admin/rentals/status/PENDING}" class="btn btn-primary">Просмотреть</a>
         </div>
 
         <div class="stat-card">
-            <h3>Аренды</h3>
+            <h3>Активные аренды</h3>
             <p class="stat-number" th:text="${activeRentals.size()}">0</p>
-            <a th:href="@{/rentals/all-rentals}" class="btn">Просмотр</a>
+            <a th:href="@{/admin/rentals/status/ACTIVE}" class="btn btn-primary">Просмотреть</a>
         </div>
 
-        <!-- Новая карточка для запросов на отмену -->
         <div class="stat-card">
             <h3>Запросы на отмену</h3>
-            <p class="stat-number" th:text="${pendingCancellations != null ? pendingCancellations.size() : 0}">0</p>
-            <a th:href="@{/admin/pending-cancellations}" class="btn">Просмотр</a>
+            <p class="stat-number" th:text="${pendingCancellations.size()}">0</p>
+            <a th:href="@{/admin/pending-cancellations}" class="btn btn-warning">Обработать</a>
+        </div>
+
+        <div class="admin-actions">
+            <a th:href="@{/admin/synchronize-car-statuses}" class="btn btn-secondary">Синхронизировать статусы автомобилей</a>
         </div>
     </div>
 
@@ -73,69 +62,31 @@
             <tbody>
             <tr th:each="rental : ${pendingRentals}">
                 <td th:text="${rental.id}">1</td>
-                <td th:text="${rental.user.firstName + ' ' + rental.user.lastName}">Иван Иванов</td>
+                <td th:text="${rental.user.fullName}">Иван Иванов</td>
                 <td th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</td>
                 <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2025</td>
                 <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
-                <td th:text="${rental.totalCost + ' ₽'}">10000 ₽</td>
+                <td th:text="${rental.totalCost + ' ₽'}">15000 ₽</td>
                 <td>
-                    <form th:action="@{/rentals/{id}/approve(id=${rental.id})}" method="post" style="display: inline;">
-                        <button type="submit" class="btn btn-small">Подтвердить</button>
-                    </form>
-                    <form th:action="@{/rentals/{id}/cancel(id=${rental.id})}" method="post" style="display: inline;">
-                        <button type="submit" class="btn btn-small btn-danger">Отменить</button>
-                    </form>
-                </td>
-            </tr>
-            <tr th:if="${pendingRentals.empty}">
-                <td colspan="7">Нет ожидающих аренд</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Новая секция для запросов на отмену -->
-    <div class="recent-section" th:if="${pendingCancellations != null && !pendingCancellations.empty}">
-        <h2>Запросы на отмену аренды</h2>
-        <table class="data-table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Пользователь</th>
-                <th>Автомобиль</th>
-                <th>Дата начала</th>
-                <th>Дата окончания</th>
-                <th>Стоимость</th>
-                <th>Действия</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="rental : ${pendingCancellations}">
-                <td th:text="${rental.id}">1</td>
-                <td th:text="${rental.user.firstName + ' ' + rental.user.lastName}">Иван Иванов</td>
-                <td th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</td>
-                <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2025</td>
-                <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
-                <td th:text="${rental.totalCost + ' ₽'}">10000 ₽</td>
-                <td>
-                    <form th:action="@{/admin/rentals/{id}/confirm-cancellation(id=${rental.id})}" method="post" style="display: inline;">
-                        <button type="submit" class="btn btn-small btn-danger">Подтвердить отмену</button>
-                    </form>
-                    <form th:action="@{/admin/rentals/{id}/reject-cancellation(id=${rental.id})}" method="post" style="display: inline;">
-                        <button type="submit" class="btn btn-small">Отклонить отмену</button>
-                    </form>
+                    <div class="btn-group">
+                        <a th:href="@{/admin/rentals/{id}(id=${rental.id})}" class="btn btn-sm btn-info">Детали</a>
+                        <form th:action="@{/admin/rentals/{id}/approve(id=${rental.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-success">Подтвердить</button>
+                        </form>
+                        <form th:action="@{/admin/rentals/{id}/reject(id=${rental.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger">Отклонить</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             </tbody>
         </table>
-        <div class="view-all">
-            <a th:href="@{/admin/pending-cancellations}" class="btn">Просмотреть все запросы на отмену</a>
-        </div>
     </div>
 </main>
 
-<footer>
-    <p>&copy; 2025 АвтоПрокат. Все права защищены.</p>
-</footer>
+<!-- Подключаем футер -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

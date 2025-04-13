@@ -1,175 +1,77 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="ru">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
-    <title>Детали аренды - Автопрокат</title>
+    <meta charset="UTF-8">
+    <title>Детали аренды</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<header>
-    <nav>
-        <div class="logo">
-            <a th:href="@{/}">АвтоПрокат</a>
-        </div>
-        <ul class="nav-links">
-            <li><a th:href="@{/}">Главная</a></li>
-            <li><a th:href="@{/cars}">Автомобили</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/rentals}" class="active">Мои аренды</a></li>
-            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}">Админ-панель</a></li>
-            <li>
-                <form th:action="@{/auth/logout}" method="post" style="display: inline;">
-                    <button type="submit" class="nav-link-button">Выйти</button>
-                </form>
-            </li>
-        </ul>
-    </nav>
-</header>
+<div th:replace="fragments/header :: header"></div>
 
-<main class="container">
-    <div class="page-header">
-        <h1>Детали аренды #<span th:text="${rental.id}">1</span></h1>
-        <div class="page-actions">
-            <a th:href="@{/rentals/all-rentals}" sec:authorize="hasRole('ADMIN')" class="btn">Назад к списку</a>
-        </div>
-    </div>
+<div class="container">
+    <h1>Детали аренды</h1>
 
-    <div class="rental-details-container">
-        <div class="rental-status-header">
-            <div class="rental-status-info">
-                <span class="status-label">Статус:</span>
-                <span class="status-badge"
-                      th:classappend="${rental.status == 'PENDING' ? 'pending' :
-                                       rental.status == 'ACTIVE' ? 'active' :
-                                       rental.status == 'COMPLETED' ? 'completed' : 'cancelled'}"
-                      th:text="${rental.status == 'PENDING' ? 'Ожидает' :
-                               rental.status == 'ACTIVE' ? 'Активна' :
-                               rental.status == 'COMPLETED' ? 'Завершена' : 'Отменена'}">
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div class="rental-details-card">
+        <div class="rental-header">
+            <h2 th:text="${rental.car.brand + ' ' + rental.car.model}">Автомобиль</h2>
+            <span class="status" th:text="${rental.status}"
+                  th:classappend="${rental.status == 'ACTIVE' ? 'status-active' :
+                                      (rental.status == 'PENDING' ? 'status-pending' :
+                                      (rental.status == 'COMPLETED' ? 'status-completed' :
+                                      (rental.status == 'CANCELLED' ? 'status-cancelled' :
+                                      'status-pending-cancellation')))}">
                     Статус
                 </span>
+        </div>
+
+        <div class="rental-info">
+            <div class="info-section">
+                <h3>Информация об аренде</h3>
+                <p><strong>ID аренды:</strong> <span th:text="${rental.id}">123</span></p>
+                <p><strong>Дата создания:</strong> <span th:text="${#temporals.format(rental.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2023 12:00</span></p>
+                <p><strong>Дата начала:</strong> <span th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2023</span></p>
+                <p><strong>Дата окончания:</strong> <span th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2023</span></p>
+                <p><strong>Стоимость:</strong> <span th:text="${rental.totalCost + ' ₽'}">10000 ₽</span></p>
             </div>
-            <div class="rental-actions" th:if="${rental.status == 'PENDING' || rental.status == 'ACTIVE'}">
-                <form sec:authorize="hasRole('ADMIN')"
-                      th:action="@{/rentals/{id}/complete(id=${rental.id})}" method="post" style="display: inline;">
-                    <button type="submit" class="btn btn-primary"
-                            onclick="return confirm('Вы уверены, что хотите завершить аренду?')">
-                        Завершить аренду
-                    </button>
-                </form>
-                <form th:action="@{/rentals/{id}/cancel(id=${rental.id})}" method="post" style="display: inline;">
-                    <button type="submit" class="btn btn-danger"
-                            onclick="return confirm('Вы уверены, что хотите отменить аренду?')">
-                        Отменить аренду
-                    </button>
-                </form>
+
+            <div class="info-section">
+                <h3>Информация об автомобиле</h3>
+                <p><strong>Марка и модель:</strong> <span th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</span></p>
+                <p><strong>Год выпуска:</strong> <span th:text="${rental.car.year}">2020</span></p>
+                <p><strong>Регистрационный номер:</strong> <span th:text="${rental.car.registrationNumber}">А123БВ 123</span></p>
+                <p><strong>Цена за день:</strong> <span th:text="${rental.car.pricePerDay + ' ₽'}">1000 ₽</span></p>
+            </div>
+
+            <div class="info-section" th:if="${rental.cancelReason != null && !rental.cancelReason.isEmpty()}">
+                <h3>Причина отмены</h3>
+                <p th:text="${rental.cancelReason}">Причина отмены</p>
+            </div>
+
+            <div class="info-section" th:if="${rental.notes != null && !rental.notes.isEmpty()}">
+                <h3>Примечания</h3>
+                <p th:text="${rental.notes}">Примечания к аренде</p>
             </div>
         </div>
 
-        <div class="rental-details-content">
-            <div class="rental-details-section">
-                <h2>Информация об аренде</h2>
-                <div class="details-grid">
-                    <div class="details-item">
-                        <span class="details-label">Дата начала:</span>
-                        <span class="details-value" th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy HH:mm')}">01.01.2025 12:00</span>
-                    </div>
-                    <div class="details-item">
-                        <span class="details-label">Дата окончания:</span>
-                        <span class="details-value" th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy HH:mm')}">05.01.2025 12:00</span>
-                    </div>
-                    <div class="details-item" th:if="${rental.actualReturnDate}">
-                        <span class="details-label">Фактический возврат:</span>
-                        <span class="details-value" th:text="${#temporals.format(rental.actualReturnDate, 'dd.MM.yyyy HH:mm')}">03.01.2025 15:30</span>
-                    </div>
-                    <div class="details-item">
-                        <span class="details-label">Стоимость:</span>
-                        <span class="details-value" th:text="${rental.totalCost + ' ₽'}">15000 ₽</span>
-                    </div>
-                </div>
-            </div>
+        <div class="rental-actions">
+            <a th:href="@{/rentals}" class="btn btn-secondary">Назад к списку</a>
 
-            <div class="rental-details-section">
-                <h2>Информация об автомобиле</h2>
-                <div class="car-details-content">
-                    <div class="car-details-image">
-                        <img th:if="${rental.car.imageUrl}" th:src="${rental.car.imageUrl}" alt="Фото автомобиля">
-                        <img th:unless="${rental.car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
-                    </div>
-                    <div class="car-details-info">
-                        <h3 th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</h3>
-                        <div class="details-grid">
-                            <div class="details-item">
-                                <span class="details-label">Год выпуска:</span>
-                                <span class="details-value" th:text="${rental.car.year}">2023</span>
-                            </div>
-                            <div class="details-item">
-                                <span class="details-label">Гос. номер:</span>
-                                <span class="details-value" th:text="${rental.car.licensePlate}">А123БВ777</span>
-                            </div>
-                            <div class="details-item">
-                                <span class="details-label">Цвет:</span>
-                                <span class="details-value" th:text="${rental.car.color ?: 'Не указан'}">Белый</span>
-                            </div>
-                            <div class="details-item">
-                                <span class="details-label">Трансмиссия:</span>
-                                <span class="details-value" th:text="${rental.car.transmission ?: 'Не указана'}">Автомат</span>
-                            </div>
-                            <div class="details-item">
-                                <span class="details-label">Тип топлива:</span>
-                                <span class="details-value" th:text="${rental.car.fuelType ?: 'Не указан'}">Бензин</span>
-                            </div>
-                            <div class="details-item">
-                                <span class="details-label">Количество мест:</span>
-                                <span class="details-value" th:text="${rental.car.seats ?: 'Не указано'}">5</span>
-                            </div>
-                        </div>
-                        <div class="car-actions">
-                            <a th:href="@{/cars/{id}(id=${rental.car.id})}" class="btn">Подробнее об автомобиле</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rental-details-section" sec:authorize="hasRole('ADMIN')">
-                <h2>Информация о клиенте</h2>
-                <div class="details-grid">
-                    <div class="details-item">
-                        <span class="details-label">ФИО:</span>
-                        <span class="details-value" th:text="${rental.user.fullName}">Иванов Иван Иванович</span>
-                    </div>
-                    <div class="details-item">
-                        <span class="details-label">Email:</span>
-                        <span class="details-value" th:text="${rental.user.email}">ivan@example.com</span>
-                    </div>
-                    <div class="details-item">
-                        <span class="details-label">Телефон:</span>
-                        <span class="details-value" th:text="${rental.user.phone}">+7 (999) 123-45-67</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rental-details-section" th:if="${rental.notes}">
-                <h2>Примечания</h2>
-                <div class="notes-content">
-                    <p th:text="${rental.notes}">Примечания к аренде</p>
-                </div>
-            </div>
-
-            <div class="rental-details-section" sec:authorize="hasRole('ADMIN')">
-                <h2>Добавить примечание</h2>
-                <form th:action="@{/rentals/{id}/notes(id=${rental.id})}" method="post" class="notes-form">
-                    <div class="form-group">
-                        <textarea name="notes" rows="4" th:text="${rental.notes}" placeholder="Введите примечание к аренде..."></textarea>
-                    </div>
-                    <button type="submit" class="btn">Сохранить примечание</button>
-                </form>
-            </div>
+            <!-- Показываем кнопку отмены только для активных или ожидающих аренд -->
+            <a th:if="${rental.status == 'ACTIVE' || rental.status == 'PENDING'}"
+               th:href="@{/rentals/cancel/{id}(id=${rental.id})}"
+               class="btn btn-danger">Отменить аренду</a>
         </div>
     </div>
-</main>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
 
-<footer>
-    <p>&copy; 2025 АвтоПрокат. Все права защищены.</p>
-</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -39,7 +39,7 @@ public class Rental {
     private BigDecimal totalCost;
 
     @Column
-    private String status = "PENDING"; // PENDING, ACTIVE, COMPLETED, CANCELLED
+    private String status = "PENDING"; // PENDING, ACTIVE, COMPLETED, CANCELLED, PENDING_CANCELLATION
 
     @Column
     private String notes;
@@ -53,4 +53,7 @@ public class Rental {
     @ManyToOne
     @JoinColumn(name = "item_id")
     private RentalItem rentalItem;
+
+    @Column(columnDefinition = "TEXT")
+    private String cancelReason;
 }

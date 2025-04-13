@@ -42,6 +42,12 @@ public class Car {
     @Column(length = 1000)
     private String description;
 
+    @Column(name = "registration_number", nullable = false, unique = true)
+    private String registrationNumber;
+
+    @Column(name = "price_per_day", nullable = false)
+    private BigDecimal pricePerDay;
+
     @Column(nullable = false)
     private boolean available = true;
 

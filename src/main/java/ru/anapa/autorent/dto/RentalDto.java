@@ -24,4 +24,6 @@ public class RentalDto {
     private LocalDateTime endDate;
 
     private String notes;
+
+    private String cancelReason;
 }

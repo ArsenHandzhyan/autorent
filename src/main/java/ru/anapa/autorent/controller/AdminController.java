@@ -105,99 +105,13 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    // Добавляем метод для отображения запросов на отмену
     @GetMapping("/pending-cancellations")
     public String pendingCancellations(Model model) {
-        List<Rental> pendingCancellations = rentalService.findRentalsByStatus("PENDING_CANCELLATION");
-        model.addAttribute("rentals", pendingCancellations);
-        model.addAttribute("currentStatus", "PENDING_CANCELLATION");
+        List<Rental> rentals = rentalService.findRentalsByStatus("PENDING_CANCELLATION");
+        model.addAttribute("rentals", rentals);
         return "admin/pending-cancellations";
     }
 
-    // Метод для подтверждения отмены аренды
-    @PostMapping("/rentals/{id}/confirm-cancellation")
-    public String confirmCancellation(@PathVariable Long id,
-                                      @RequestParam(required = false) String notes,
-                                      RedirectAttributes redirectAttributes) {
-        try {
-            Rental rental = rentalService.findById(id);
-
-            // Добавляем примечания администратора
-            if (notes != null && !notes.trim().isEmpty()) {
-                String currentNotes = rental.getNotes() != null ? rental.getNotes() + "\n\n" : "";
-                currentNotes += "Примечания администратора при отмене: " + notes;
-                rental.setNotes(currentNotes);
-                rentalService.updateRental(rental);
-            }
-
-            // Отменяем аренду
-            rentalService.cancelRental(id);
-            redirectAttributes.addFlashAttribute("success", "Аренда успешно отменена!");
-        } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-        }
-
-        return "redirect:/admin/pending-cancellations";
-    }
-
-    // Метод для отклонения запроса на отмену аренды
-    @PostMapping("/rentals/{id}/reject-cancellation")
-    public String rejectCancellation(@PathVariable Long id,
-                                     @RequestParam(required = false) String notes,
-                                     RedirectAttributes redirectAttributes) {
-        try {
-            // Используем метод из сервиса для отклонения запроса на отмену
-            rentalService.rejectCancellationRequest(id, notes);
-            redirectAttributes.addFlashAttribute("success", "Запрос на отмену аренды отклонен!");
-        } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-        }
-
-        return "redirect:/admin/pending-cancellations";
-    }
-
-    // Метод для просмотра всех аренд
-    @GetMapping("/rentals")
-    public String allRentals(Model model) {
-        List<Rental> rentals = rentalService.findAllRentals();
-        model.addAttribute("rentals", rentals);
-        return "admin/all-rentals";
-    }
-
-    // Метод для просмотра аренд по статусу
-    @GetMapping("/rentals/status/{status}")
-    public String rentalsByStatus(@PathVariable String status, Model model) {
-        List<Rental> rentals = rentalService.findRentalsByStatus(status.toUpperCase());
-        model.addAttribute("rentals", rentals);
-        model.addAttribute("currentStatus", status.toUpperCase());
-        return "admin/all-rentals";
-    }
-
-    // Метод для просмотра деталей аренды
-    @GetMapping("/rentals/{id}")
-    public String rentalDetails(@PathVariable Long id, Model model) {
-        Rental rental = rentalService.findById(id);
-        model.addAttribute("rental", rental);
-        return "admin/rental-details";
-    }
-
-    // Метод для обновления примечаний к аренде
-    @PostMapping("/rentals/{id}/update-notes")
-    public String updateRentalNotes(@PathVariable Long id,
-                                    @RequestParam String notes,
-                                    RedirectAttributes redirectAttributes) {
-        try {
-            Rental rental = rentalService.findById(id);
-            rental.setNotes(notes);
-            rentalService.updateRental(rental);
-            redirectAttributes.addFlashAttribute("success", "Примечания успешно обновлены!");
-        } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-        }
-        return "redirect:/admin/rentals/" + id;
-    }
-
-    // Метод для отображения статистики
     @GetMapping("/statistics")
     public String statistics(Model model) {
         // Получаем количество аренд по статусам
@@ -214,5 +128,17 @@ public class AdminController {
         model.addAttribute("pendingCancellationCount", pendingCancellationCount);
 
         return "admin/statistics";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/synchronize-car-statuses")
+    public String synchronizeCarStatuses(RedirectAttributes redirectAttributes) {
+        try {
+            rentalService.synchronizeAllCarStatuses();
+            redirectAttributes.addFlashAttribute("success", "Статусы автомобилей успешно синхронизированы");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ошибка при синхронизации статусов: " + e.getMessage());
+        }
+        return "redirect:/admin/dashboard";
     }
 }

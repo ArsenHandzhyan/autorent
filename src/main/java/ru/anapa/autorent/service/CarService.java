@@ -1,8 +1,11 @@
 package ru.anapa.autorent.service;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.anapa.autorent.config.DataInitializer;
 import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.repository.CarRepository;
 
@@ -11,6 +14,8 @@ import java.util.List;
 @Service
 public class CarService {
     private final CarRepository carRepository;
+    private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
+
 
     @Autowired
     public CarService(CarRepository carRepository) {
@@ -44,7 +49,7 @@ public class CarService {
         Car car = findCarById(carId);
         car.setAvailable(available);
         carRepository.save(car);
-        System.out.println("Статус доступности автомобиля " + carId + " обновлен на: " + available);
+        logger.info("Статус доступности автомобиля " + carId + " обновлен на: " + available);
     }
 
     public void deleteCar(Long id) {

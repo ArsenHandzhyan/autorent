@@ -1,67 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>АвтоПрокат - Главная страница</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<!-- Навигационная панель -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="container">
-        <a class="navbar-brand" th:href="@{/}">
-            <i class="fas fa-car"></i> АвтоПрокат
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/cars}">Автомобили</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/about}">О нас</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/contact}">Контакты</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link" th:href="@{/auth/login}">Войти</a>
-                </li>
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link" th:href="@{/auth/register}">Регистрация</a>
-                </li>
-                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle"></i> <span sec:authentication="name">Пользователь</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" th:href="@{/dashboard}">Личный кабинет</a></li>
-                        <li><a class="dropdown-item" th:href="@{/rentals}">Мои аренды</a></li>
-                        <li sec:authorize="hasRole('ADMIN')">
-                            <a class="dropdown-item" th:href="@{/admin/dashboard}">Админ-панель</a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <form th:action="@{/auth/logout}" method="post" class="dropdown-item p-0">
-                                <button type="submit" class="btn btn-link text-decoration-none text-danger w-100 text-start ps-3">
-                                    <i class="fas fa-sign-out-alt"></i> Выйти
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
+<div th:replace="fragments/header :: header"></div>
 <!-- Главный баннер -->
 <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
@@ -409,65 +358,8 @@
     </div>
 </section>
 
-<!-- Подвал сайта -->
-<footer class="bg-dark text-white py-5">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-md-4">
-                <h5 class="mb-3">О компании</h5>
-                <p>АвтоПрокат - надежный сервис аренды автомобилей в Анапе. Мы предлагаем широкий выбор автомобилей различных классов по доступным ценам.</p>
-                <div class="social-icons mt-3">
-                    <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-white me-2"><i class="fab fa-vk"></i></a>
-                    <a href="#" class="text-white me-2"><i class="fab fa-telegram"></i></a>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <h5 class="mb-3">Навигация</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#" class="text-white text-decoration-none">Главная</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Автомобили</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Условия</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">О нас</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Контакты</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3">
-                <h5 class="mb-3">Категории</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#" class="text-white text-decoration-none">Эконом класс</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Комфорт класс</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Бизнес класс</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Премиум класс</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Внедорожники</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3">
-                <h5 class="mb-3">Подписка на новости</h5>
-                <p>Подпишитесь на нашу рассылку, чтобы получать информацию о специальных предложениях и акциях</p>
-                <form>
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Ваш email" required>
-                        <button class="btn btn-primary" type="submit">Подписаться</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <hr class="my-4">
-        <div class="row">
-            <div class="col-md-6">
-                <p class="mb-0">&copy; 2025 АвтоПрокат. Все права защищены.</p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <a href="#" class="text-white text-decoration-none me-3">Политика конфиденциальности</a>
-                <a href="#" class="text-white text-decoration-none">Пользовательское соглашение</a>
-            </div>
-        </div>
-    </div>
-</footer>
+<div th:replace="fragments/footer :: footer"></div>
 
-<!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
