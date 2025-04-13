@@ -1,155 +1,530 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
-    <title>Регистрация</title>
+    <title>Регистрация | АвтоРент</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS Bootstrap и иконки Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <style>
-        /* Специальные стили для страницы регистрации */
+        /* Стили для контейнера формы регистрации */
         .auth-container {
-            max-width: 450px;
+            max-width: 500px;
             margin: 50px auto;
-            padding: 30px;
+            padding: 35px;
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-
         .auth-container h2 {
             text-align: center;
-            margin-bottom: 25px;
-            color: #333;
+            margin-bottom: 30px;
+            color: #2c3e50;
             font-weight: 600;
         }
-
         .auth-form .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
+            position: relative;
         }
-
         .auth-form label {
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            color: #333;
+            color: #2c3e50;
         }
-
         .auth-form input {
             width: 100%;
-            padding: 12px;
+            padding: 12px 15px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
-
         .auth-form input:focus {
             border-color: #3498db;
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
             outline: none;
         }
-
+        /* Стили для красочной валидации */
+        .is-valid { border-color: #2ecc71 !important; }
+        .is-invalid { border-color: #e74c3c !important; }
+        .validation-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .valid-icon { color: #2ecc71; }
+        .invalid-icon { color: #e74c3c; }
+        /* Прочие стили */
         .auth-btn {
             display: block;
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background-color: #3498db;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
             font-weight: 500;
-            transition: background-color 0.3s;
-            margin-top: 10px;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-
-        .auth-btn:hover {
-            background-color: #2980b9;
+        .auth-btn:hover { background-color: #2980b9; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .error-message { color: #e74c3c; font-size: 14px; margin-top: 5px; display: block; }
+        .field-info { color: #7f8c8d; font-size: 13px; margin-top: 5px; display: block; }
+        .links { text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; }
+        .links a { color: #3498db; text-decoration: none; font-weight: 500; }
+        .links a:hover { color: #2980b9; text-decoration: underline; }
+        /* Стили для индикатора силы пароля */
+        .password-strength {
+            height: 5px; margin-top: 8px; border-radius: 3px; transition: all 0.3s; background-color: #ecf0f1;
         }
-
-        .error-message {
-            color: #e74c3c;
-            font-size: 14px;
-            margin-top: 5px;
-            display: block;
+        .strength-weak { width: 33%; background-color: #e74c3c; }
+        .strength-medium { width: 66%; background-color: #f39c12; }
+        .strength-strong { width: 100%; background-color: #2ecc71; }
+        /* Анимация для ошибок */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
-
-        .links {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .links a {
-            color: #3498db;
-            text-decoration: none;
-        }
-
-        .links a:hover {
-            text-decoration: underline;
-        }
-
-        /* Исправление для футера */
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        main {
-            flex: 1;
-        }
+        .error-shake { animation: shake 0.6s; }
+        /* Для адаптивного футера */
+        body { display: flex; flex-direction: column; min-height: 100vh; background-color: #f9f9f9; }
+        main { flex: 1; }
     </style>
 </head>
 <body>
 <main>
     <div class="auth-container">
         <h2>Регистрация</h2>
-
-        <div th:if="${error}" class="error-message">
-            <p th:text="${error}">Ошибка</p>
+        <div th:if="${error}" class="alert alert-danger error-shake">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span th:text="${error}">Ошибка</span>
         </div>
-
-        <form class="auth-form" th:action="@{/auth/register}" th:object="${user}" method="post">
+        <form class="auth-form" th:action="@{/auth/register}" th:object="${user}" method="post"
+              id="registrationForm" novalidate>
+            <!-- Поле email -->
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" th:field="*{email}" required>
+                <div class="input-with-icon">
+                    <input type="email" id="email" th:field="*{email}" required
+                           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
+                    <span class="validation-icon" id="emailValidationIcon"></span>
+                </div>
                 <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></span>
+                <small class="field-info">Будет использоваться для входа в систему</small>
             </div>
+            <!-- Поля имени и фамилии -->
             <div class="form-group">
                 <label for="firstName">Имя:</label>
-                <input type="text" id="firstName" th:field="*{firstName}" required>
+                <input type="text" id="firstName" th:field="*{firstName}" required minlength="2">
                 <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error-message"></span>
             </div>
             <div class="form-group">
                 <label for="lastName">Фамилия:</label>
-                <input type="text" id="lastName" th:field="*{lastName}" required>
+                <input type="text" id="lastName" th:field="*{lastName}" required minlength="2">
                 <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error-message"></span>
             </div>
+            <!-- Поле телефона с неизменяемым префиксом +7 -->
             <div class="form-group">
                 <label for="phone">Телефон:</label>
-                <input type="text" id="phone" th:field="*{phone}" required placeholder="+7(XXX)XXX-XX-XX">
-                <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message"></span>
+                <div class="input-group">
+                    <span class="input-group-text">+7</span>
+                    <!-- Пользователь вводит только оставшиеся 10 цифр -->
+                    <input type="tel" id="phone" name="phone" required placeholder="(XXX)XXX-XX-XX"
+                           aria-label="Номер телефона без кода">
+                </div>
+                <span id="phoneError" class="error-message" style="display:none;"></span>
+                <small class="field-info">Формат: +7(XXX)XXX-XX-XX. Код +7 добавляется автоматически.</small>
             </div>
+            <!-- Поле для проверки СМС кода -->
+            <div class="form-group" id="smsVerificationBlock" style="display:none;">
+                <label for="smsCode">Код из SMS:</label>
+                <div class="input-group">
+                    <input type="text" id="smsCode" placeholder="Введите код из SMS" aria-label="SMS код">
+                    <button type="button" class="btn btn-outline-primary" id="verifySmsButton">Проверить</button>
+                </div>
+                <span id="smsVerificationStatus" class="error-message" style="display:none;"></span>
+            </div>
+            <!-- Кнопка "Отправить SMS" для получения кода -->
+            <div class="form-group">
+                <button type="button" class="btn btn-secondary" id="sendSmsCodeButton">Отправить SMS с кодом</button>
+            </div>
+            <!-- Поля пароля и подтверждения пароля -->
             <div class="form-group">
                 <label for="password">Пароль:</label>
-                <input type="password" id="password" th:field="*{password}" required minlength="6">
+                <div class="input-with-icon">
+                    <input type="password" id="password" th:field="*{password}" required minlength="6">
+                    <i class="fas fa-eye-slash input-icon password-toggle" id="passwordToggle"></i>
+                </div>
+                <div class="password-strength" id="passwordStrength"></div>
                 <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></span>
+                <small class="field-info">Минимум 6 символов, рекомендуется использовать буквы, цифры и специальные символы</small>
             </div>
-            <button type="submit" class="auth-btn">Зарегистрироваться</button>
+            <div class="form-group">
+                <label for="confirmPassword">Подтверждение пароля:</label>
+                <div class="input-with-icon">
+                    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required minlength="6">
+                    <i class="fas fa-eye-slash input-icon password-toggle" id="confirmPasswordToggle"></i>
+                </div>
+                <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="error-message"></span>
+                <small class="field-info">Повторите пароль для подтверждения</small>
+            </div>
+            <!-- Чекбокс для согласия с условиями -->
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="termsAgreement" required>
+                    <label class="form-check-label" for="termsAgreement">
+                        Я согласен с <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">условиями использования</a> и
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">политикой конфиденциальности</a>
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="auth-btn" id="registerButton" disabled>Зарегистрироваться</button>
         </form>
-
         <div class="links">
             <p>Уже есть аккаунт? <a th:href="@{/auth/login}">Войти</a></p>
-            <p><a th:href="@{/}">Вернуться на главную</a></p>
+            <p><a th:href="@{/}"><i class="fas fa-home me-1"></i>Вернуться на главную</a></p>
         </div>
     </div>
 </main>
 
-<div th:replace="fragments/footer :: footer"></div>
+<!-- Toast уведомление (Bootstrap 5) для успешной регистрации -->
+<div aria-live="polite" aria-atomic="true" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="registrationToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Успех</strong>
+            <small>только что</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+        </div>
+        <div class="toast-body">
+            Регистрация прошла успешно! Пожалуйста, войдите в систему.
+        </div>
+    </div>
+</div>
 
+<!-- Модальные окна для условий использования и политики конфиденциальности -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Условия использования</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <p>Настоящие Условия использования определяют правила и условия использования сервиса АвтоРент.</p>
+                <p>Регистрируясь на сайте, вы соглашаетесь с данными условиями.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Понятно</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="privacyModalLabel">Политика конфиденциальности</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <p>Настоящая Политика конфиденциальности определяет, как АвтоРент собирает, использует и защищает информацию, которую вы предоставляете при использовании нашего сервиса.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Понятно</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Скрипты Bootstrap и наш JS-код -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Элементы формы и валидации
+        const form = document.getElementById('registrationForm');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const passwordToggle = document.getElementById('passwordToggle');
+        const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
+        const passwordStrength = document.getElementById('passwordStrength');
+        const termsCheckbox = document.getElementById('termsAgreement');
+        const registerButton = document.getElementById('registerButton');
+        const emailValidationIcon = document.getElementById('emailValidationIcon');
+        const phoneValidationIcon = document.getElementById('phoneValidationIcon');
+        const phoneError = document.getElementById('phoneError');
+
+        // Элементы СМС проверки
+        const sendSmsButton = document.getElementById('sendSmsCodeButton');
+        const smsVerificationBlock = document.getElementById('smsVerificationBlock');
+        const verifySmsButton = document.getElementById('verifySmsButton');
+        const smsCodeInput = document.getElementById('smsCode');
+        const smsVerificationStatus = document.getElementById('smsVerificationStatus');
+
+        // Обработка ввода номера телефона:
+        phoneInput.addEventListener('input', function(e) {
+            let digits = e.target.value.replace(/\D/g, '');
+            // Если пользователь ввёл ведущую 7, удаляем её, так как префикс +7 добавляется автоматически.
+            if(digits.startsWith('7')) {
+                digits = digits.substring(1);
+            }
+            if(digits.length > 10) {
+                digits = digits.substring(0,10);
+            }
+            let formatted = '';
+            if(digits.length > 0) {
+                formatted = '(' + digits.substring(0, Math.min(3, digits.length));
+            }
+            if(digits.length >= 4) {
+                formatted += ')' + digits.substring(3, Math.min(6, digits.length));
+            }
+            if(digits.length >= 7) {
+                formatted += '-' + digits.substring(6, Math.min(8, digits.length));
+            }
+            if(digits.length >= 9) {
+                formatted += '-' + digits.substring(8, Math.min(10, digits.length));
+            }
+            e.target.value = '+7' + formatted;
+            validatePhone();
+        });
+
+        function validatePhone() {
+            const phonePattern = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
+            const isValid = phonePattern.test(phoneInput.value);
+            if(phoneInput.value.length > 0) {
+                if(isValid) {
+                    phoneInput.classList.add('is-valid');
+                    phoneInput.classList.remove('is-invalid');
+                    phoneValidationIcon.innerHTML = '<i class="fas fa-check valid-icon"></i>';
+                    phoneError.style.display = 'none';
+                } else {
+                    phoneInput.classList.add('is-invalid');
+                    phoneInput.classList.remove('is-valid');
+                    phoneValidationIcon.innerHTML = '<i class="fas fa-times invalid-icon"></i>';
+                    phoneError.style.display = 'block';
+                    phoneError.textContent = 'Некорректный формат номера';
+                }
+            } else {
+                phoneInput.classList.remove('is-valid');
+                phoneInput.classList.remove('is-invalid');
+                phoneValidationIcon.innerHTML = '';
+                phoneError.style.display = 'none';
+            }
+            updateSubmitButton();
+        }
+
+        emailInput.addEventListener('input', function() {
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            const isValid = emailPattern.test(emailInput.value);
+            if(emailInput.value.length > 0) {
+                if(isValid) {
+                    emailInput.classList.add('is-valid');
+                    emailInput.classList.remove('is-invalid');
+                    emailValidationIcon.innerHTML = '<i class="fas fa-check valid-icon"></i>';
+                } else {
+                    emailInput.classList.add('is-invalid');
+                    emailInput.classList.remove('is-valid');
+                    emailValidationIcon.innerHTML = '<i class="fas fa-times invalid-icon"></i>';
+                }
+            } else {
+                emailInput.classList.remove('is-valid');
+                emailInput.classList.remove('is-invalid');
+                emailValidationIcon.innerHTML = '';
+            }
+            updateSubmitButton();
+        });
+
+        passwordInput.addEventListener('input', function() {
+            const pwd = passwordInput.value;
+            let strength = 0;
+            if(pwd.length >= 6) strength++;
+            if(pwd.length >= 8) strength++;
+            if(/[A-Z]/.test(pwd)) strength++;
+            if(/[0-9]/.test(pwd)) strength++;
+            if(/[^A-Za-z0-9]/.test(pwd)) strength++;
+            passwordStrength.className = 'password-strength';
+            if(pwd.length > 0) {
+                if(strength <= 2) {
+                    passwordStrength.classList.add('strength-weak');
+                } else if(strength <= 4) {
+                    passwordStrength.classList.add('strength-medium');
+                } else {
+                    passwordStrength.classList.add('strength-strong');
+                }
+            }
+            validatePasswordMatch();
+            updateSubmitButton();
+        });
+
+        confirmPasswordInput.addEventListener('input', validatePasswordMatch);
+        function validatePasswordMatch() {
+            if(confirmPasswordInput.value.length > 0) {
+                if(confirmPasswordInput.value === passwordInput.value) {
+                    confirmPasswordInput.classList.add('is-valid');
+                    confirmPasswordInput.classList.remove('is-invalid');
+                } else {
+                    confirmPasswordInput.classList.add('is-invalid');
+                    confirmPasswordInput.classList.remove('is-valid');
+                }
+            } else {
+                confirmPasswordInput.classList.remove('is-valid');
+                confirmPasswordInput.classList.remove('is-invalid');
+            }
+            updateSubmitButton();
+        }
+
+        passwordToggle.addEventListener('click', function() {
+            if(passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.classList.remove('fa-eye-slash');
+                passwordToggle.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                passwordToggle.classList.remove('fa-eye');
+                passwordToggle.classList.add('fa-eye-slash');
+            }
+        });
+
+        confirmPasswordToggle.addEventListener('click', function() {
+            if(confirmPasswordInput.type === 'password') {
+                confirmPasswordInput.type = 'text';
+                confirmPasswordToggle.classList.remove('fa-eye-slash');
+                confirmPasswordToggle.classList.add('fa-eye');
+            } else {
+                confirmPasswordInput.type = 'password';
+                confirmPasswordToggle.classList.remove('fa-eye');
+                confirmPasswordToggle.classList.add('fa-eye-slash');
+            }
+        });
+
+        sendSmsButton.addEventListener('click', function() {
+            smsVerificationStatus.style.display = 'none';
+            smsVerificationStatus.textContent = '';
+            smsVerificationBlock.style.display = 'block';
+            alert("СМС с кодом отправлено (имитация). Введите код '123456' для проверки.");
+        });
+
+        verifySmsButton.addEventListener('click', function() {
+            const code = smsCodeInput.value.trim();
+            if(code === "123456") {
+                smsVerificationStatus.style.display = 'block';
+                smsVerificationStatus.style.color = '#2ecc71';
+                smsVerificationStatus.textContent = "Код подтвержден";
+                smsCodeInput.dataset.verified = "true";
+            } else {
+                smsVerificationStatus.style.display = 'block';
+                smsVerificationStatus.style.color = '#e74c3c';
+                smsVerificationStatus.textContent = "Неверный код";
+                smsCodeInput.dataset.verified = "false";
+            }
+            updateSubmitButton();
+        });
+
+        function updateSubmitButton() {
+            const isEmailValid = emailInput.value.length > 0 && emailInput.classList.contains('is-valid');
+            const isPhoneValid = phoneInput.value.length > 0 && phoneInput.classList.contains('is-valid');
+            const isPwdValid = passwordInput.value.length >= 6;
+            const isConfirmValid = (confirmPasswordInput.value === passwordInput.value) && (confirmPasswordInput.value.length > 0);
+            const isSmsVerified = smsCodeInput.dataset.verified === "true";
+            const isTermsAccepted = termsCheckbox.checked;
+            const isFirstNameValid = document.getElementById('firstName').value.length >= 2;
+            const isLastNameValid = document.getElementById('lastName').value.length >= 2;
+            if(isEmailValid && isPhoneValid && isPwdValid && isConfirmValid && isTermsAccepted &&
+               isFirstNameValid && isLastNameValid && (smsVerificationBlock.style.display === 'none' || isSmsVerified)) {
+                registerButton.disabled = false;
+            } else {
+                registerButton.disabled = true;
+            }
+        }
+
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+            if(!emailInput.classList.contains('is-valid')) {
+                isValid = false;
+                emailInput.classList.add('is-invalid', 'error-shake');
+                setTimeout(() => emailInput.classList.remove('error-shake'), 600);
+            }
+            if(!phoneInput.classList.contains('is-valid')) {
+                isValid = false;
+                phoneInput.classList.add('is-invalid', 'error-shake');
+                setTimeout(() => phoneInput.classList.remove('error-shake'), 600);
+            }
+            if(document.getElementById('firstName').value.length < 2) {
+                isValid = false;
+                const firstName = document.getElementById('firstName');
+                firstName.classList.add('is-invalid', 'error-shake');
+                setTimeout(() => firstName.classList.remove('error-shake'), 600);
+            }
+            if(document.getElementById('lastName').value.length < 2) {
+                isValid = false;
+                const lastName = document.getElementById('lastName');
+                lastName.classList.add('is-invalid', 'error-shake');
+                setTimeout(() => lastName.classList.remove('error-shake'), 600);
+            }
+            if(passwordInput.value.length < 6) {
+                isValid = false;
+                passwordInput.classList.add('is-invalid', 'error-shake');
+                setTimeout(() => passwordInput.classList.remove('error-shake'), 600);
+            }
+            if(confirmPasswordInput.value !== passwordInput.value) {
+                isValid = false;
+                confirmPasswordInput.classList.add('is-invalid', 'error-shake');
+                setTimeout(() => confirmPasswordInput.classList.remove('error-shake'), 600);
+            }
+            if(!termsCheckbox.checked) {
+                isValid = false;
+                termsCheckbox.classList.add('is-invalid');
+                const termsContainer = termsCheckbox.parentElement;
+                termsContainer.classList.add('error-shake');
+                setTimeout(() => termsContainer.classList.remove('error-shake'), 600);
+            }
+            if(smsVerificationBlock.style.display !== 'none' && smsCodeInput.dataset.verified !== "true") {
+                isValid = false;
+                smsVerificationStatus.style.display = 'block';
+                smsVerificationStatus.style.color = '#e74c3c';
+                smsVerificationStatus.textContent = "Необходимо подтвердить код из SMS";
+            }
+            if(!isValid) {
+                event.preventDefault();
+                const firstInvalid = document.querySelector('.is-invalid');
+                if(firstInvalid) {
+                    firstInvalid.scrollIntoView({behavior:'smooth', block:'center'});
+                }
+            }
+        });
+
+        // Инициализация при загрузке
+        validateEmail();
+        validatePhone();
+        validatePasswordMatch();
+        updateSubmitButton();
+
+        /* Если с сервера установлен флаг успешной регистрации (registrationSuccess == true),
+           то показываем toast уведомление и через несколько секунд перенаправляем на страницу аутентификации */
+        /* Пример: с контроллера устанавливается flash-атрибут registrationSuccess,
+           который доступен через thymeleaf переменную: */
+        let registrationSuccess = /*[[${registrationSuccess}]]*/ false;
+        if(registrationSuccess) {
+            let toastEl = document.getElementById('registrationToast');
+            let toast = new bootstrap.Toast(toastEl);
+            toast.show();
+            // Через 3 сек перенаправляем пользователя на страницу логина
+            setTimeout(function(){
+                window.location.href = "/auth/login";
+            }, 3000);
+        }
+    });
+</script>
 </body>
 </html>

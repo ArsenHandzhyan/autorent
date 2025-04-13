@@ -14,11 +14,24 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
+
     boolean existsByEmail(String email);
+
     boolean existsByPhone(String phone);
 
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r = :role")
     List<User> findByRoles(@Param("role") Role role);
 
     List<User> findByEnabledFalse();
+
+    long countByEnabledTrue();
+
+    long countByEnabledFalse();
+
+    long countByRoles(Role role);
+
+    long countByRegistrationDateAfter(LocalDateTime date);
+
+    List<User> findByFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCaseOrEmailLikeIgnoreCase(
+            String firstName, String lastName, String email);
 }

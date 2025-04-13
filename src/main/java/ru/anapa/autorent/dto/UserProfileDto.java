@@ -21,8 +21,6 @@ public class UserProfileDto {
     private String lastName;
 
     @NotBlank(message = "Телефон обязателен")
-    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Пожалуйста, введите корректный номер телефона")
+    @Pattern(regexp = "^\\+7\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}$", message = "Пожалуйста, введите корректный номер телефона в формате +7(XXX)XXX-XX-XX")
     private String phone;
-
-    // No password field - separate DTO for password changes
 }
