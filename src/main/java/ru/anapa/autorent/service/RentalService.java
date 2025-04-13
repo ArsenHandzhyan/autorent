@@ -1,5 +1,6 @@
 package ru.anapa.autorent.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -254,5 +255,10 @@ public class RentalService {
 
             rentalRepository.save(rental);
         }
+    }
+
+    public Rental getRentalById(Long id) {
+        return rentalRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Аренда с ID " + id + " не найдена"));
     }
 }

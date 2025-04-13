@@ -17,7 +17,9 @@ import ru.anapa.autorent.service.CarService;
 import ru.anapa.autorent.service.RentalService;
 import ru.anapa.autorent.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/rentals")
@@ -40,7 +42,26 @@ public class RentalController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
         List<Rental> rentals = rentalService.findRentalsByUser(user);
+
+        // Фильтруем активные аренды
+        List<Rental> activeRentals = rentals.stream()
+                .filter(rental ->
+                        "ACTIVE".equals(rental.getStatus()) ||
+                                "PENDING".equals(rental.getStatus()) ||
+                                "PENDING_CANCELLATION".equals(rental.getStatus()))
+                .collect(Collectors.toList());
+
+        // Фильтруем историю аренд
+        List<Rental> historyRentals = rentals.stream()
+                .filter(rental ->
+                        "COMPLETED".equals(rental.getStatus()) ||
+                                "CANCELLED".equals(rental.getStatus()))
+                .collect(Collectors.toList());
+
         model.addAttribute("rentals", rentals);
+        model.addAttribute("activeRentals", activeRentals);
+        model.addAttribute("historyRentals", historyRentals);
+
         return "rentals/my-rentals";
     }
 
@@ -144,20 +165,27 @@ public class RentalController {
         return "redirect:/rentals";
     }
 
-    // Удаляем или комментируем все методы, которые конфликтуют с AdminRentalController
-    // Например:
-    /*
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/all-rentals/{id}/complete")
-    public String completeRental(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        // ...
-    }
-    */
-
     // Вместо этого можно добавить методы, которые перенаправляют на административный контроллер
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin")
     public String redirectToAdminRentals() {
         return "redirect:/admin/rentals";
+    }
+
+    @GetMapping("/{id}")
+    public String getRentalDetails(@PathVariable Long id, Model model, Principal principal) {
+        // Получаем текущего пользователя
+        String email = principal.getName();
+
+        // Получаем аренду по ID
+        Rental rental = rentalService.getRentalById(id);
+
+        // Проверяем, принадлежит ли аренда текущему пользователю
+        if (!rental.getUser().getEmail().equals(email)) {
+            return "redirect:/rentals?error=Доступ запрещен";
+        }
+
+        model.addAttribute("rental", rental);
+        return "rentals/rental-details"; // Имя шаблона для отображения деталей аренды
     }
 }
