@@ -88,7 +88,7 @@ public class UserService implements UserDetailsService {
                              String lastName, String phone) {
         logger.info("Регистрация нового пользователя с email: {}", email);
 
-        // Нормализация и валидация email
+        // Нормализация email (удаляем пробелы и приводим к нижнему регистру)
         email = email.toLowerCase().trim();
         if (!EMAIL_PATTERN.matcher(email).matches()) {
             logger.warn("Попытка регистрации с некорректным email: {}", email);
@@ -101,10 +101,10 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException("Пользователь с таким email уже существует");
         }
 
-        // Валидация телефона
+        // Проверка корректности формата номера телефона
         if (!PHONE_PATTERN.matcher(phone).matches()) {
             logger.warn("Попытка регистрации с некорректным телефоном: {}", phone);
-            throw new IllegalArgumentException("Телефон должен быть в формате +7(XXX)XXX-XX-XX");
+            throw new IllegalArgumentException("Пожалуйста, введите корректный номер телефона в формате +7(XXX)XXX-XX-XX");
         }
 
         // Проверка существования пользователя с таким телефоном
@@ -113,34 +113,33 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException("Пользователь с таким телефоном уже существует");
         }
 
-        // Валидация имени и фамилии
+        // Простейшая валидация имени и фамилии
         if (firstName == null || firstName.trim().length() < 2) {
             logger.warn("Попытка регистрации с некорректным именем: {}", firstName);
             throw new IllegalArgumentException("Имя должно содержать не менее 2 символов");
         }
-
         if (lastName == null || lastName.trim().length() < 2) {
             logger.warn("Попытка регистрации с некорректной фамилией: {}", lastName);
             throw new IllegalArgumentException("Фамилия должна содержать не менее 2 символов");
         }
 
-        // Валидация пароля
+        // Простейшая проверка пароля
         if (password == null || password.length() < 6) {
             logger.warn("Попытка регистрации со слабым паролем");
             throw new IllegalArgumentException("Пароль должен содержать не менее 6 символов");
         }
 
+        // Создаём нового пользователя
         User user = new User();
         user.setEmail(email);
+        // Шифруем пароль перед сохранением в базу
         user.setPassword(passwordEncoder.encode(password));
         user.setFirstName(firstName.trim());
         user.setLastName(lastName.trim());
         user.setPhone(phone);
         user.setEnabled(true);
-
-        // Устанавливаем текущую дату и время для поля registrationDate
         user.setRegistrationDate(LocalDateTime.now());
-        user.setLastLoginDate(LocalDateTime.now()); // Устанавливаем время первого входа
+        user.setLastLoginDate(LocalDateTime.now());
 
         // Добавляем роль USER по умолчанию
         Role userRole = roleRepository.findByName("ROLE_USER");
@@ -153,7 +152,6 @@ public class UserService implements UserDetailsService {
 
         User savedUser = userRepository.save(user);
         logger.info("Пользователь успешно зарегистрирован: {}", email);
-
         return savedUser;
     }
 

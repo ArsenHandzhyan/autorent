@@ -9,6 +9,12 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body class="bg-light">
+<!-- Добавьте в начало body или в нужное место в шаблоне login.html -->
+<div th:if="${registrationSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle me-2"></i>
+    <span th:text="${welcomeMessage}">Регистрация успешно завершена!</span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+</div>
 <div class="container">
     <div class="row justify-content-center mt-5">
         <div class="col-md-6">

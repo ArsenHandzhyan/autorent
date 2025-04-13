@@ -514,7 +514,7 @@
            то показываем toast уведомление и через несколько секунд перенаправляем на страницу аутентификации */
         /* Пример: с контроллера устанавливается flash-атрибут registrationSuccess,
            который доступен через thymeleaf переменную: */
-        let registrationSuccess = /*[[${registrationSuccess}]]*/ false;
+        let registrationSuccess = [[${registrationSuccess != null && registrationSuccess ? true : false}]];
         if(registrationSuccess) {
             let toastEl = document.getElementById('registrationToast');
             let toast = new bootstrap.Toast(toastEl);

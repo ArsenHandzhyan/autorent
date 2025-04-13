@@ -94,6 +94,10 @@ public class AuthController {
             model.addAttribute("expiredMessage", "Ваша сессия истекла. Пожалуйста, войдите снова.");
         }
 
+        if (model.containsAttribute("registrationSuccess")) {
+            logger.info("Registration success message detected");
+        }
+
         return "auth/login";
     }
 
@@ -115,17 +119,17 @@ public class AuthController {
             result.addError(new FieldError("user", "confirmPassword", "Пароли не совпадают"));
         }
 
-        // Проверка, существует ли пользователь с таким email
+        // Проверка существования пользователя с таким email
         if (userService.existsByEmail(registrationDto.getEmail())) {
             result.addError(new FieldError("user", "email", "Пользователь с таким email уже зарегистрирован"));
         }
 
-        // Проверка, существует ли пользователь с таким телефоном
+        // Проверка существования пользователя с таким телефоном
         if (userService.existsByPhone(registrationDto.getPhone())) {
             result.addError(new FieldError("user", "phone", "Пользователь с таким телефоном уже зарегистрирован"));
         }
 
-        // Проверка сложности пароля
+        // Проверка сложности пароля (опционально)
         if (registrationDto.getPassword() != null && registrationDto.getPassword().length() >= 6) {
             boolean hasUpperCase = !registrationDto.getPassword().equals(registrationDto.getPassword().toLowerCase());
             boolean hasDigit = registrationDto.getPassword().matches(".*\\d.*");
@@ -144,8 +148,11 @@ public class AuthController {
         try {
             logger.info("Attempting to create new user");
 
+            // Нормализуем email перед сохранением (приводим к нижнему регистру и удаляем пробелы)
+            String normalizedEmail = registrationDto.getEmail().toLowerCase().trim();
+
             User user = userService.registerUser(
-                    registrationDto.getEmail().toLowerCase().trim(),
+                    normalizedEmail,
                     registrationDto.getPassword(),
                     registrationDto.getFirstName().trim(),
                     registrationDto.getLastName().trim(),
@@ -154,24 +161,28 @@ public class AuthController {
 
             logger.info("User created successfully with ID: {}", user.getId());
 
-            // После успешной регистрации отправляем flash-атрибуты уведомления
+            // Добавляем flash-атрибуты для отображения на странице логина
             redirectAttributes.addFlashAttribute("registrationSuccess", true);
             redirectAttributes.addFlashAttribute("welcomeMessage",
                     "Добро пожаловать, " + user.getFirstName() + "! Регистрация успешно завершена. Пожалуйста, войдите в систему.");
 
-            // Всегда перенаправляем на страницу авторизации
+            // Перенаправляем на страницу логина
             return "redirect:/auth/login";
 
         } catch (Exception e) {
             logger.error("Error during registration: {}", e.getMessage(), e);
 
             // Обработка различных типов ошибок
-            if (e.getMessage().contains("email")) {
-                model.addAttribute("error", "Пользователь с таким email уже существует");
-            } else if (e.getMessage().contains("phone")) {
-                model.addAttribute("error", "Пользователь с таким телефоном уже существует");
+            if (e.getMessage() != null) {
+                if (e.getMessage().contains("email")) {
+                    model.addAttribute("error", "Пользователь с таким email уже существует");
+                } else if (e.getMessage().contains("телефон")) {
+                    model.addAttribute("error", "Пользователь с таким телефоном уже существует");
+                } else {
+                    model.addAttribute("error", "Произошла ошибка при регистрации: " + e.getMessage());
+                }
             } else {
-                model.addAttribute("error", "Произошла ошибка при регистрации: " + e.getMessage());
+                model.addAttribute("error", "Произошла неизвестная ошибка при регистрации");
             }
 
             return "auth/register";
