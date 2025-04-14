@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -33,7 +35,7 @@ public class Car {
     @Column(nullable = false)
     private String licensePlate;
 
-    @Column(nullable = false)
+    @Column(precision = 10, scale = 2)
     private BigDecimal dailyRate;
 
     @Column
@@ -68,4 +70,7 @@ public class Car {
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rental> rentals = new ArrayList<>();
+
+    @Transient
+    private Map<String, Object> metadata = new HashMap<>();
 }

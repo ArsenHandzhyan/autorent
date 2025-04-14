@@ -2,15 +2,20 @@ package ru.anapa.autorent.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.anapa.autorent.dto.RentalDto;
+import ru.anapa.autorent.dto.RentalPeriodDto;
+import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.model.Rental;
 import ru.anapa.autorent.model.User;
 import ru.anapa.autorent.service.CarService;
@@ -18,6 +23,7 @@ import ru.anapa.autorent.service.RentalService;
 import ru.anapa.autorent.service.UserService;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,30 +71,61 @@ public class RentalController {
         return "rentals/my-rentals";
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/new/{carId}")
-    public String showRentalForm(@PathVariable Long carId, Model model) {
-        model.addAttribute("car", carService.findCarById(carId));
-        model.addAttribute("rental", new RentalDto());
+    @PreAuthorize("isAuthenticated()")
+    public String showRentalForm(@PathVariable Long carId,
+                                 @RequestParam(required = false)
+                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                 Model model) {
+        Car car = carService.findCarById(carId);
+
+        RentalDto rentalDto = new RentalDto();
+
+        // Если передана начальная дата (для бронирования занятого авто)
+        if (startDate != null) {
+            rentalDto.setStartDate(startDate);
+            // Устанавливаем конечную дату на следующий день после начальной
+            rentalDto.setEndDate(startDate.plusDays(1));
+        } else {
+            // Иначе устанавливаем текущую дату и время
+            LocalDateTime now = LocalDateTime.now();
+            rentalDto.setStartDate(now);
+            rentalDto.setEndDate(now.plusDays(1));
+        }
+
+        model.addAttribute("rental", rentalDto);
+        model.addAttribute("car", car);
+
+        // Добавляем информацию о забронированных периодах
+        List<RentalPeriodDto> bookedPeriods = carService.getBookedPeriods(carId);
+        model.addAttribute("bookedPeriods", bookedPeriods);
+
         return "rentals/new";
     }
 
-    @PreAuthorize("isAuthenticated()")
     @PostMapping("/new/{carId}")
+    @PreAuthorize("isAuthenticated()")
     public String createRental(@PathVariable Long carId,
                                @Valid @ModelAttribute("rental") RentalDto rentalDto,
                                BindingResult result,
+                               @AuthenticationPrincipal UserDetails userDetails,
                                Model model,
                                RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            model.addAttribute("car", carService.findCarById(carId));
+            Car car = carService.findCarById(carId);
+            model.addAttribute("car", car);
+
+            // Добавляем информацию о забронированных периодах
+            List<RentalPeriodDto> bookedPeriods = carService.getBookedPeriods(carId);
+            model.addAttribute("bookedPeriods", bookedPeriods);
+
             return "rentals/new";
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByEmail(authentication.getName());
-
         try {
+            User user = userService.findByEmail(userDetails.getUsername());
+
+            // Создаем аренду с указанными датами
             Rental rental = rentalService.createRental(
                     user,
                     carId,
@@ -96,17 +133,12 @@ public class RentalController {
                     rentalDto.getEndDate()
             );
 
-            if (rentalDto.getNotes() != null && !rentalDto.getNotes().trim().isEmpty()) {
-                rental.setNotes(rentalDto.getNotes());
-                rentalService.updateRental(rental);
-            }
-
-            redirectAttributes.addFlashAttribute("success", "Аренда успешно создана!");
-            return "redirect:/rentals";
-        } catch (RuntimeException e) {
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("car", carService.findCarById(carId));
-            return "rentals/new";
+            redirectAttributes.addFlashAttribute("success",
+                    "Заявка на аренду успешно создана! Ожидайте подтверждения.");
+            return "redirect:/rentals/my";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/cars/" + carId;
         }
     }
 

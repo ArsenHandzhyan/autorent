@@ -9,10 +9,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.anapa.autorent.dto.CarDto;
+import ru.anapa.autorent.dto.RentalPeriodDto;
 import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.service.CarService;
 import ru.anapa.autorent.service.RentalService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -28,13 +30,6 @@ public class CarController {
         this.rentalService = rentalService;
     }
 
-    @GetMapping
-    public String listCars(Model model) {
-        List<Car> cars = carService.findAllCars();
-        model.addAttribute("cars", cars);
-        return "cars/list";
-    }
-
     @GetMapping("/available")
     public String listAvailableCars(Model model) {
         List<Car> availableCars = carService.findAvailableCars();
@@ -46,7 +41,30 @@ public class CarController {
     public String viewCar(@PathVariable Long id, Model model) {
         Car car = carService.findCarById(id);
         model.addAttribute("car", car);
+
+        // Добавляем информацию о следующей доступной дате
+        LocalDateTime nextAvailableDate = carService.getNextAvailableDate(id);
+        model.addAttribute("nextAvailableDate", nextAvailableDate);
+
+        // Добавляем информацию о всех периодах бронирования
+        List<RentalPeriodDto> bookedPeriods = carService.getBookedPeriods(id);
+        model.addAttribute("bookedPeriods", bookedPeriods);
+
         return "cars/view";
+    }
+
+    @GetMapping
+    public String listCars(Model model) {
+        List<Car> cars = carService.findAllCars();
+
+        // Для каждого автомобиля получаем дату следующей доступности
+        cars.forEach(car -> {
+            LocalDateTime nextAvailableDate = carService.getNextAvailableDate(car.getId());
+            car.getMetadata().put("nextAvailableDate", nextAvailableDate);
+        });
+
+        model.addAttribute("cars", cars);
+        return "cars/list";
     }
 
     @GetMapping("/search")

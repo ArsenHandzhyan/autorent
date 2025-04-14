@@ -35,8 +35,16 @@
             <div class="car-image">
                 <img th:if="${car.imageUrl}" th:src="${car.imageUrl}" alt="Фото автомобиля">
                 <img th:unless="${car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
-                <span th:if="${car.available}" class="status available">Доступен</span>
-                <span th:unless="${car.available}" class="status unavailable">Занят</span>
+
+                <!-- Изменённый блок статуса -->
+                <div th:if="${car.available}" class="status available">Доступен</div>
+                <div th:unless="${car.available}" class="status unavailable">
+                    Занят
+                    <span th:with="nextDate=${@carService.getNextAvailableDate(car.id)}"
+                          th:if="${nextDate != null}">
+                        до <span th:text="${#temporals.format(nextDate, 'dd.MM.yyyy')}">01.01.2025</span>
+                    </span>
+                </div>
             </div>
             <div class="car-info">
                 <h3 th:text="${car.brand + ' ' + car.model}">Toyota Camry</h3>
@@ -49,8 +57,15 @@
                 </div>
                 <div class="car-actions">
                     <a th:href="@{/cars/{id}(id=${car.id})}" class="btn">Подробнее</a>
+
+                    <!-- Изменённый блок действий -->
                     <a th:if="${car.available}" sec:authorize="isAuthenticated()"
                        th:href="@{/rentals/new/{id}(id=${car.id})}" class="btn">Арендовать</a>
+                    <a th:unless="${car.available}" sec:authorize="isAuthenticated()"
+                       th:with="nextDate=${@carService.getNextAvailableDate(car.id)}"
+                       th:if="${nextDate != null}"
+                       th:href="@{/rentals/new/{id}(id=${car.id}, startDate=${nextDate})}"
+                       class="btn btn-outline-primary">Забронировать с <span th:text="${#temporals.format(nextDate, 'dd.MM.yyyy')}"></span></a>
                 </div>
             </div>
         </div>

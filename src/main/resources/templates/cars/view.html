@@ -60,24 +60,13 @@
                     </div>
                 </div>
 
-                <div class="car-info-section">
-                    <h2>Технические характеристики</h2>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <span class="info-label">Трансмиссия:</span>
-                            <span class="info-value" th:text="${car.transmission ?: 'Не указана'}">Автомат</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Тип топлива:</span>
-                            <span class="info-value" th:text="${car.fuelType ?: 'Не указан'}">Бензин</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Количество мест:</span>
-                            <span class="info-value" th:text="${car.seats ?: 'Не указано'}">5</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Категория:</span>
-                            <span class="info-value" th:text="${car.category ?: 'Не указана'}">Седан</span>
+                <!-- Новый блок с информацией о бронированиях -->
+                <div class="car-info-section" th:if="${!bookedPeriods.empty}">
+                    <h2>Периоды бронирования</h2>
+                    <div class="booking-periods">
+                        <div th:each="period : ${bookedPeriods}" class="booking-period">
+                            <span th:text="${#temporals.format(period.startDate, 'dd.MM.yyyy')}">01.01.2025</span> -
+                            <span th:text="${#temporals.format(period.endDate, 'dd.MM.yyyy')}">10.01.2025</span>
                         </div>
                     </div>
                 </div>
@@ -91,8 +80,15 @@
                 </div>
 
                 <div class="car-actions">
+                    <!-- Изменённый блок действий -->
                     <a th:if="${car.available}" sec:authorize="isAuthenticated()"
                        th:href="@{/rentals/new/{id}(id=${car.id})}" class="btn btn-primary">Арендовать</a>
+
+                    <a th:unless="${car.available}" sec:authorize="isAuthenticated()"
+                       th:if="${nextAvailableDate != null}"
+                       th:href="@{/rentals/new/{id}(id=${car.id}, startDate=${nextAvailableDate})}"
+                       class="btn btn-outline-primary">Забронировать с <span th:text="${#temporals.format(nextAvailableDate, 'dd.MM.yyyy')}"></span></a>
+
                     <a th:href="@{/cars}" class="btn">Назад к списку</a>
 
                     <!-- Блок действий администратора -->

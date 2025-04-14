@@ -7,7 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.model.Rental;
 import ru.anapa.autorent.model.User;
+import ru.anapa.autorent.repository.CarRepository;
 import ru.anapa.autorent.repository.RentalRepository;
+import ru.anapa.autorent.exception.ResourceNotFoundException;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,11 +24,14 @@ public class RentalService {
 
     private final RentalRepository rentalRepository;
     private final CarService carService;
+    private final CarRepository carRepository;
+
 
     @Autowired
-    public RentalService(RentalRepository rentalRepository, CarService carService) {
+    public RentalService(RentalRepository rentalRepository, CarService carService, CarRepository carRepository) {
         this.rentalRepository = rentalRepository;
         this.carService = carService;
+        this.carRepository = carRepository;
     }
 
     public List<Rental> findAllRentals() {
@@ -47,49 +53,55 @@ public class RentalService {
 
     @Transactional
     public Rental createRental(User user, Long carId, LocalDateTime startDate, LocalDateTime endDate) {
-        // Проверка доступности автомобиля
-        Car car = carService.findCarById(carId);
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new ResourceNotFoundException("Автомобиль не найден"));
 
-        if (!car.isAvailable()) {
-            throw new RuntimeException("Автомобиль недоступен для аренды");
-        }
-
-        // Проверка дат
+        // Проверяем, что дата начала аренды не раньше текущей даты
         if (startDate.isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Дата начала аренды не может быть в прошлом");
+            throw new IllegalArgumentException("Дата начала аренды не может быть в прошлом");
         }
 
+        // Проверяем, что дата окончания аренды позже даты начала
         if (endDate.isBefore(startDate)) {
-            throw new RuntimeException("Дата окончания аренды не может быть раньше даты начала");
+            throw new IllegalArgumentException("Дата окончания аренды должна быть позже даты начала");
         }
 
-        // Проверка, что автомобиль не арендован на указанные даты
-        List<Rental> overlappingRentals = rentalRepository.findOverlappingRentals(car, startDate, endDate);
-        if (!overlappingRentals.isEmpty()) {
-            throw new RuntimeException("Автомобиль уже арендован на указанные даты");
+        // Проверяем, что период аренды не пересекается с существующими арендами
+        List<Rental> existingRentals = rentalRepository.findByCarAndStatusInOrderByStartDateAsc(
+                car, List.of("ACTIVE", "PENDING"));
+
+        for (Rental existingRental : existingRentals) {
+            // Проверяем пересечение периодов
+            if (!(endDate.isBefore(existingRental.getStartDate()) ||
+                    startDate.isAfter(existingRental.getEndDate()))) {
+                throw new IllegalArgumentException(
+                        "Выбранный период пересекается с существующей арендой. " +
+                                "Пожалуйста, выберите другие даты."
+                );
+            }
         }
 
-        // Расчет стоимости
-        long hours = ChronoUnit.HOURS.between(startDate, endDate);
-        long days = hours / 24 + (hours % 24 > 0 ? 1 : 0); // округляем вверх до полных дней
+        // Рассчитываем стоимость аренды
+        long days = ChronoUnit.DAYS.between(startDate, endDate);
+        if (days < 1) days = 1; // Минимум 1 день
+
+        // Используем pricePerDay для расчета стоимости (так как это поле точно есть в модели Car)
         BigDecimal totalCost = car.getPricePerDay().multiply(BigDecimal.valueOf(days));
 
-        // Создание аренды
+        // Создаем новую аренду
         Rental rental = new Rental();
         rental.setUser(user);
         rental.setCar(car);
         rental.setStartDate(startDate);
         rental.setEndDate(endDate);
         rental.setTotalCost(totalCost);
-        rental.setStatus("PENDING");
+        rental.setStatus("PENDING"); // Статус "ожидает подтверждения"
         rental.setCreatedAt(LocalDateTime.now());
-        rental.setUpdatedAt(LocalDateTime.now());
 
-        // Если аренда начинается сегодня, автоматически подтверждаем её
-        if (startDate.toLocalDate().isEqual(LocalDate.now())) {
-            rental.setStatus("ACTIVE");
+        // Если аренда начинается сегодня, то автомобиль становится недоступным
+        if (startDate.toLocalDate().equals(LocalDateTime.now().toLocalDate())) {
             car.setAvailable(false);
-            carService.updateCar(car);
+            carRepository.save(car);
         }
 
         return rentalRepository.save(rental);

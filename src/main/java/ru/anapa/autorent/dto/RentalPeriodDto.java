@@ -8,4 +8,9 @@ import java.time.LocalDateTime;
 public class RentalPeriodDto {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+
+    public RentalPeriodDto(LocalDateTime startDate, LocalDateTime endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 }

@@ -35,7 +35,7 @@ public class Rental {
     @Column(name = "actual_return_date")
     private LocalDateTime actualReturnDate;
 
-    @Column(nullable = false)
+    @Column(precision = 10, scale = 2)
     private BigDecimal totalCost;
 
     @Column

@@ -41,4 +41,8 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findByStatusAndEndDateBefore(String status, LocalDateTime date);
 
     List<Rental> findByStatusAndStartDateBetween(String status, LocalDateTime startDate, LocalDateTime endDate);
+
+    List<Rental> findByCarAndStatusOrderByEndDateAsc(Car car, String status);
+
+    List<Rental> findByCarAndStatusInOrderByStartDateAsc(Car car, List<String> statuses);
 }
