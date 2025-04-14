@@ -46,14 +46,18 @@
         <form th:action="@{/rentals/new/{id}(id=${car.id})}" method="post" th:object="${rental}" class="rental-form">
             <div class="form-group">
                 <label for="startDate">Дата и время начала аренды:</label>
-                <input type="datetime-local" id="startDate" th:field="*{startDate}" class="form-control" required>
-                <div class="error" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
+                <input type="datetime-local" id="startDate" th:field="*{startDate}" required
+                       th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd''T''HH:mm')}"
+                       class="form-control">
+                <span class="error" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></span>
             </div>
 
             <div class="form-group">
                 <label for="endDate">Дата и время окончания аренды:</label>
-                <input type="datetime-local" id="endDate" th:field="*{endDate}" class="form-control" required>
-                <div class="error" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
+                <input type="datetime-local" id="endDate" th:field="*{endDate}" required
+                       th:min="${#temporals.format(#temporals.createNow().plusDays(1), 'yyyy-MM-dd''T''HH:mm')}"
+                       class="form-control">
+                <span class="error" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></span>
             </div>
 
             <div class="form-group">

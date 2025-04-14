@@ -13,6 +13,8 @@ import ru.anapa.autorent.repository.CarRepository;
 import ru.anapa.autorent.repository.RentalRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -86,33 +88,32 @@ public class CarService {
     public LocalDateTime getNextAvailableDate(Long carId) {
         Car car = findCarById(carId);
 
-        if (car.isAvailable()) {
-            return null; // Автомобиль уже доступен
-        }
-
-        // Находим активные аренды для этого автомобиля
+        // Проверяем активные аренды независимо от статуса car.isAvailable()
         List<Rental> activeRentals = rentalRepository.findByCarAndStatusOrderByEndDateAsc(
                 car, "ACTIVE");
 
-        if (activeRentals.isEmpty()) {
-            // Если нет активных аренд, но автомобиль помечен как недоступный,
-            // проверяем ожидающие аренды
-            List<Rental> pendingRentals = rentalRepository.findByCarAndStatusOrderByEndDateAsc(
-                    car, "PENDING");
+        List<Rental> pendingRentals = rentalRepository.findByCarAndStatusOrderByEndDateAsc(
+                car, "PENDING");
 
-            if (!pendingRentals.isEmpty()) {
-                return pendingRentals.get(pendingRentals.size() - 1).getEndDate();
+        // Объединяем активные и ожидающие аренды
+        List<Rental> allRelevantRentals = new ArrayList<>();
+        allRelevantRentals.addAll(activeRentals);
+        allRelevantRentals.addAll(pendingRentals);
+
+        // Сортируем по дате окончания
+        allRelevantRentals.sort(Comparator.comparing(Rental::getEndDate));
+
+        if (allRelevantRentals.isEmpty()) {
+            // Если нет аренд, но автомобиль помечен как недоступный, исправляем статус
+            if (!car.isAvailable()) {
+                car.setAvailable(true);
+                carRepository.save(car);
             }
-
-            // Если нет ни активных, ни ожидающих аренд, автомобиль должен быть доступен
-            // Исправляем несоответствие
-            car.setAvailable(true);
-            carRepository.save(car);
-            return null;
+            return null; // Автомобиль доступен сейчас
         }
 
         // Возвращаем дату окончания последней аренды
-        return activeRentals.get(activeRentals.size() - 1).getEndDate();
+        return allRelevantRentals.get(allRelevantRentals.size() - 1).getEndDate();
     }
 
     /**

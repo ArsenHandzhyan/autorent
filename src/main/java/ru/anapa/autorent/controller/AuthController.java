@@ -176,13 +176,18 @@ public class AuthController {
             if (e.getMessage() != null) {
                 if (e.getMessage().contains("email")) {
                     model.addAttribute("error", "Пользователь с таким email уже существует");
+                    redirectAttributes.addFlashAttribute("error", "Пользователь с таким email уже существует");
+
                 } else if (e.getMessage().contains("телефон")) {
                     model.addAttribute("error", "Пользователь с таким телефоном уже существует");
+                    redirectAttributes.addFlashAttribute("error", "Пользователь с таким телефоном уже существует");
                 } else {
                     model.addAttribute("error", "Произошла ошибка при регистрации: " + e.getMessage());
+                    redirectAttributes.addFlashAttribute("error", "Произошла ошибка при регистрации: " + e.getMessage());
                 }
             } else {
                 model.addAttribute("error", "Произошла неизвестная ошибка при регистрации");
+                redirectAttributes.addFlashAttribute("error", "Произошла неизвестная ошибка при регистрации");
             }
 
             return "auth/register";

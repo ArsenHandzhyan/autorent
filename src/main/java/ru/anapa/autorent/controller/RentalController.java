@@ -24,6 +24,7 @@ import ru.anapa.autorent.service.UserService;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -106,36 +107,41 @@ public class RentalController {
     @PostMapping("/new/{carId}")
     @PreAuthorize("isAuthenticated()")
     public String createRental(@PathVariable Long carId,
-                               @Valid @ModelAttribute("rental") RentalDto rentalDto,
-                               BindingResult result,
+                               @RequestParam("startDateStr") String startDateStr,
+                               @RequestParam("endDateStr") String endDateStr,
                                @AuthenticationPrincipal UserDetails userDetails,
                                Model model,
                                RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            Car car = carService.findCarById(carId);
-            model.addAttribute("car", car);
-
-            // Добавляем информацию о забронированных периодах
-            List<RentalPeriodDto> bookedPeriods = carService.getBookedPeriods(carId);
-            model.addAttribute("bookedPeriods", bookedPeriods);
-
-            return "rentals/new";
-        }
-
         try {
+            // Ручное преобразование строк в LocalDateTime
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime startDate = LocalDateTime.parse(startDateStr, formatter);
+            LocalDateTime endDate = LocalDateTime.parse(endDateStr, formatter);
+
+            // Валидация дат
+            if (startDate.isBefore(LocalDateTime.now())) {
+                redirectAttributes.addFlashAttribute("error", "Дата начала аренды должна быть в настоящем или будущем");
+                return "redirect:/rentals/new/" + carId;
+            }
+
+            if (endDate.isBefore(startDate)) {
+                redirectAttributes.addFlashAttribute("error", "Дата окончания аренды должна быть позже даты начала");
+                return "redirect:/rentals/new/" + carId;
+            }
+
             User user = userService.findByEmail(userDetails.getUsername());
 
             // Создаем аренду с указанными датами
             Rental rental = rentalService.createRental(
                     user,
                     carId,
-                    rentalDto.getStartDate(),
-                    rentalDto.getEndDate()
+                    startDate,
+                    endDate
             );
 
             redirectAttributes.addFlashAttribute("success",
                     "Заявка на аренду успешно создана! Ожидайте подтверждения.");
-            return "redirect:/rentals/my";
+            return "redirect:/rentals";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/cars/" + carId;

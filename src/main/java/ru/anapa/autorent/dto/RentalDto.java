@@ -15,12 +15,12 @@ public class RentalDto {
 
     @NotNull(message = "Дата начала аренды обязательна")
     @FutureOrPresent(message = "Дата начала аренды должна быть не раньше текущей даты")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime startDate;
 
     @NotNull(message = "Дата окончания аренды обязательна")
     @Future(message = "Дата окончания аренды должна быть в будущем")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endDate;
 
     private String notes;

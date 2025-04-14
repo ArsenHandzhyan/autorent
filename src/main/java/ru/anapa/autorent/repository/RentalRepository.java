@@ -45,4 +45,8 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findByCarAndStatusOrderByEndDateAsc(Car car, String status);
 
     List<Rental> findByCarAndStatusInOrderByStartDateAsc(Car car, List<String> statuses);
+
+    List<Rental> findByCarAndStatusAndIdNot(Car car, String status, Long id);
+
+    List<Rental> findByCarAndStatusIn(Car car, List<String> statuses);
 }

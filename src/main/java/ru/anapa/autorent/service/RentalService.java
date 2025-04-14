@@ -236,7 +236,7 @@ public class RentalService {
         LocalDateTime now = LocalDateTime.now();
         LocalDate today = LocalDate.now();
 
-        // Находим все активные аренды, которые должны были закончиться
+        // 1. Находим все активные аренды, которые должны были закончиться
         List<Rental> completedRentals = rentalRepository.findByStatusAndEndDateBefore("ACTIVE", now);
         for (Rental rental : completedRentals) {
             rental.setStatus("COMPLETED");
@@ -245,13 +245,20 @@ public class RentalService {
 
             // Освобождаем автомобиль
             Car car = rental.getCar();
-            car.setAvailable(true);
-            carService.updateCar(car);
+
+            // Проверяем, нет ли других активных аренд для этого автомобиля
+            List<Rental> otherActiveRentals = rentalRepository.findByCarAndStatusAndIdNot(
+                    car, "ACTIVE", rental.getId());
+
+            if (otherActiveRentals.isEmpty()) {
+                car.setAvailable(true);
+                carService.updateCar(car);
+            }
 
             rentalRepository.save(rental);
         }
 
-        // Находим все ожидающие аренды, которые должны начаться сегодня
+        // 2. Находим все ожидающие аренды, которые должны начаться сегодня
         LocalDateTime startOfDay = LocalDateTime.of(today, LocalTime.MIN);
         LocalDateTime endOfDay = LocalDateTime.of(today, LocalTime.MAX);
 
@@ -266,6 +273,21 @@ public class RentalService {
             carService.updateCar(car);
 
             rentalRepository.save(rental);
+        }
+
+        // 3. Проверяем все автомобили на наличие активных аренд
+        List<Car> allCars = carRepository.findAll();
+        for (Car car : allCars) {
+            List<Rental> activeRentals = rentalRepository.findByCarAndStatusIn(
+                    car, List.of("ACTIVE", "PENDING"));
+
+            boolean shouldBeAvailable = activeRentals.isEmpty();
+
+            // Если статус не соответствует наличию активных аренд, исправляем
+            if (car.isAvailable() != shouldBeAvailable) {
+                car.setAvailable(shouldBeAvailable);
+                carRepository.save(car);
+            }
         }
     }
 
