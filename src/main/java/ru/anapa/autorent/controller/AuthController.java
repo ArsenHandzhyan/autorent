@@ -53,9 +53,17 @@ public class AuthController {
                             @RequestParam(value = "logout", required = false) String logout,
                             @RequestParam(value = "expired", required = false) String expired,
                             @RequestParam(value = "disabled", required = false) String disabled,
+                            @RequestParam(value = "success", required = false) String success,
+                            @RequestParam(value = "name", required = false) String name,
                             HttpServletRequest request,
                             Model model) {
         logger.info("Login page requested");
+
+        if (success != null && success.equals("true")) {
+            model.addAttribute("registrationSuccess", true);
+            model.addAttribute("welcomeMessage",
+                    "Добро пожаловать, " + (name != null ? name : "") + "! Регистрация успешно завершена. Пожалуйста, войдите в систему.");
+        }
 
         // Инициализируем переменную по умолчанию как false
         model.addAttribute("adminLoginRequired", false);
@@ -110,23 +118,26 @@ public class AuthController {
 
     @PostMapping("auth/register")
     public String registerUser(@Valid @ModelAttribute("user") UserRegistrationDto registrationDto,
-                               BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+                               BindingResult result, Model model) {
         logger.info("Registration attempt with email: {}", registrationDto.getEmail());
 
         // Проверка совпадения паролей
         if (registrationDto.getPassword() != null && registrationDto.getConfirmPassword() != null &&
                 !registrationDto.getPassword().equals(registrationDto.getConfirmPassword())) {
-            result.addError(new FieldError("user", "confirmPassword", "Пароли не совпадают"));
+            result.addError(new FieldError("user", "confirmPassword", registrationDto.getConfirmPassword(),
+                    false, null, null, "Пароли не совпадают"));
         }
 
         // Проверка существования пользователя с таким email
         if (userService.existsByEmail(registrationDto.getEmail())) {
-            result.addError(new FieldError("user", "email", "Пользователь с таким email уже зарегистрирован"));
+            result.addError(new FieldError("user", "email", registrationDto.getEmail(),
+                    false, null, null, "Пользователь с таким email уже зарегистрирован"));
         }
 
         // Проверка существования пользователя с таким телефоном
         if (userService.existsByPhone(registrationDto.getPhone())) {
-            result.addError(new FieldError("user", "phone", "Пользователь с таким телефоном уже зарегистрирован"));
+            result.addError(new FieldError("user", "phone", registrationDto.getPhone(),
+                    false, null, null, "Пользователь с таким телефоном уже зарегистрирован"));
         }
 
         // Проверка сложности пароля (опционально)
@@ -161,13 +172,8 @@ public class AuthController {
 
             logger.info("User created successfully with ID: {}", user.getId());
 
-            // Добавляем flash-атрибуты для отображения на странице логина
-            redirectAttributes.addFlashAttribute("registrationSuccess", true);
-            redirectAttributes.addFlashAttribute("welcomeMessage",
-                    "Добро пожаловать, " + user.getFirstName() + "! Регистрация успешно завершена. Пожалуйста, войдите в систему.");
-
-            // Перенаправляем на страницу логина
-            return "redirect:/auth/login";
+            // Перенаправляем на страницу логина с параметрами успешной регистрации
+            return "redirect:/auth/login?success=true&name=" + user.getFirstName();
 
         } catch (Exception e) {
             logger.error("Error during registration: {}", e.getMessage(), e);
@@ -175,19 +181,16 @@ public class AuthController {
             // Обработка различных типов ошибок
             if (e.getMessage() != null) {
                 if (e.getMessage().contains("email")) {
-                    model.addAttribute("error", "Пользователь с таким email уже существует");
-                    redirectAttributes.addFlashAttribute("error", "Пользователь с таким email уже существует");
-
+                    result.addError(new FieldError("user", "email", registrationDto.getEmail(),
+                            false, null, null, "Пользователь с таким email уже существует"));
                 } else if (e.getMessage().contains("телефон")) {
-                    model.addAttribute("error", "Пользователь с таким телефоном уже существует");
-                    redirectAttributes.addFlashAttribute("error", "Пользователь с таким телефоном уже существует");
+                    result.addError(new FieldError("user", "phone", registrationDto.getPhone(),
+                            false, null, null, "Пользователь с таким телефоном уже существует"));
                 } else {
                     model.addAttribute("error", "Произошла ошибка при регистрации: " + e.getMessage());
-                    redirectAttributes.addFlashAttribute("error", "Произошла ошибка при регистрации: " + e.getMessage());
                 }
             } else {
                 model.addAttribute("error", "Произошла неизвестная ошибка при регистрации");
-                redirectAttributes.addFlashAttribute("error", "Произошла неизвестная ошибка при регистрации");
             }
 
             return "auth/register";

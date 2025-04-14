@@ -97,6 +97,20 @@
         /* Для адаптивного футера */
         body { display: flex; flex-direction: column; min-height: 100vh; background-color: #f9f9f9; }
         main { flex: 1; }
+        /* Стили для чекбокса согласия вынесены отдельно */
+        .form-check-input {
+            width: 1.2em;
+            height: 1.2em;
+            margin-top: 0.25em;
+        }
+        .form-check-label {
+            margin-left: 0.5em;
+            vertical-align: middle;
+        }
+        .form-check {
+            display: flex;
+            align-items: flex-start;
+        }
     </style>
 </head>
 <body>
@@ -107,14 +121,12 @@
             <i class="fas fa-exclamation-circle me-2"></i>
             <span th:text="${error}">Ошибка</span>
         </div>
-        <form class="auth-form" th:action="@{/auth/register}" th:object="${user}" method="post"
-              id="registrationForm" novalidate>
+        <form class="auth-form" th:action="@{/auth/register}" th:object="${user}" method="post" id="registrationForm" novalidate>
             <!-- Поле email -->
             <div class="form-group">
                 <label for="email">Email:</label>
                 <div class="input-with-icon">
-                    <input type="email" id="email" th:field="*{email}" required
-                           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
+                    <input type="email" id="email" th:field="*{email}" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
                     <span class="validation-icon" id="emailValidationIcon"></span>
                 </div>
                 <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></span>
@@ -131,17 +143,16 @@
                 <input type="text" id="lastName" th:field="*{lastName}" required minlength="2">
                 <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error-message"></span>
             </div>
-            <!-- Поле телефона с неизменяемым префиксом +7 -->
+            <!-- Поле телефона: видимый для форматирования и скрытый для данных -->
             <div class="form-group">
-                <label for="phone">Телефон:</label>
+                <label for="phoneDisplay">Телефон:</label>
                 <div class="input-group">
-                    <span class="input-group-text">+7</span>
-                    <!-- Пользователь вводит только оставшиеся 10 цифр -->
-                    <input type="tel" id="phone" name="phone" required placeholder="(XXX)XXX-XX-XX"
-                           aria-label="Номер телефона без кода">
+                    <span class="input-group-text"></span>
+                    <input type="tel" id="phoneDisplay" placeholder="+7(XXX)XXX-XX-XX" aria-label="Телефон без кода">
                 </div>
-                <span id="phoneError" class="error-message" style="display:none;"></span>
-                <small class="field-info">Формат: +7(XXX)XXX-XX-XX. Код +7 добавляется автоматически.</small>
+                <!-- Скрытое поле, привязанное к модели -->
+                <input type="hidden" th:field="*{phone}" id="phone" name="phone">
+                <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message"></span>
             </div>
             <!-- Поле для проверки СМС кода -->
             <div class="form-group" id="smsVerificationBlock" style="display:none;">
@@ -253,7 +264,10 @@
         // Элементы формы и валидации
         const form = document.getElementById('registrationForm');
         const emailInput = document.getElementById('email');
-        const phoneInput = document.getElementById('phone');
+        // Используем поле для отображения телефона
+        const phoneDisplay = document.getElementById('phoneDisplay');
+        // Скрытое поле, привязанное к модели
+        const phoneField = document.getElementById('phone');
         const passwordInput = document.getElementById('password');
         const confirmPasswordInput = document.getElementById('confirmPassword');
         const passwordToggle = document.getElementById('passwordToggle');
@@ -262,8 +276,9 @@
         const termsCheckbox = document.getElementById('termsAgreement');
         const registerButton = document.getElementById('registerButton');
         const emailValidationIcon = document.getElementById('emailValidationIcon');
-        const phoneValidationIcon = document.getElementById('phoneValidationIcon');
-        const phoneError = document.getElementById('phoneError');
+        // Если есть дополнительный элемент для иконки проверки телефона можно добавить его, либо удалить
+        // const phoneValidationIcon = document.getElementById('phoneValidationIcon');
+        // const phoneError = document.getElementById('phoneError');
 
         // Элементы СМС проверки
         const sendSmsButton = document.getElementById('sendSmsCodeButton');
@@ -272,10 +287,10 @@
         const smsCodeInput = document.getElementById('smsCode');
         const smsVerificationStatus = document.getElementById('smsVerificationStatus');
 
-        // Обработка ввода номера телефона:
-        phoneInput.addEventListener('input', function(e) {
+        // Обработка ввода номера телефона в поле phoneDisplay
+        phoneDisplay.addEventListener('input', function(e) {
             let digits = e.target.value.replace(/\D/g, '');
-            // Если пользователь ввёл ведущую 7, удаляем её, так как префикс +7 добавляется автоматически.
+            // Если пользователь ввёл ведущую 7, удаляем её
             if(digits.startsWith('7')) {
                 digits = digits.substring(1);
             }
@@ -295,31 +310,27 @@
             if(digits.length >= 9) {
                 formatted += '-' + digits.substring(8, Math.min(10, digits.length));
             }
-            e.target.value = '+7' + formatted;
+            phoneDisplay.value = formatted;
+            // Записываем в скрытое поле полный номер
+            phoneField.value = "+7" + formatted;
             validatePhone();
         });
 
         function validatePhone() {
             const phonePattern = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
-            const isValid = phonePattern.test(phoneInput.value);
-            if(phoneInput.value.length > 0) {
+            const fullNumber = phoneField.value;
+            const isValid = phonePattern.test(fullNumber);
+            if(fullNumber.length > 0) {
                 if(isValid) {
-                    phoneInput.classList.add('is-valid');
-                    phoneInput.classList.remove('is-invalid');
-                    phoneValidationIcon.innerHTML = '<i class="fas fa-check valid-icon"></i>';
-                    phoneError.style.display = 'none';
+                    phoneDisplay.classList.add('is-valid');
+                    phoneDisplay.classList.remove('is-invalid');
                 } else {
-                    phoneInput.classList.add('is-invalid');
-                    phoneInput.classList.remove('is-valid');
-                    phoneValidationIcon.innerHTML = '<i class="fas fa-times invalid-icon"></i>';
-                    phoneError.style.display = 'block';
-                    phoneError.textContent = 'Некорректный формат номера';
+                    phoneDisplay.classList.add('is-invalid');
+                    phoneDisplay.classList.remove('is-valid');
                 }
             } else {
-                phoneInput.classList.remove('is-valid');
-                phoneInput.classList.remove('is-invalid');
-                phoneValidationIcon.innerHTML = '';
-                phoneError.style.display = 'none';
+                phoneDisplay.classList.remove('is-valid');
+                phoneDisplay.classList.remove('is-invalid');
             }
             updateSubmitButton();
         }
@@ -433,7 +444,7 @@
 
         function updateSubmitButton() {
             const isEmailValid = emailInput.value.length > 0 && emailInput.classList.contains('is-valid');
-            const isPhoneValid = phoneInput.value.length > 0 && phoneInput.classList.contains('is-valid');
+            const isPhoneValid = phoneDisplay.value.length > 0 && phoneDisplay.classList.contains('is-valid');
             const isPwdValid = passwordInput.value.length >= 6;
             const isConfirmValid = (confirmPasswordInput.value === passwordInput.value) && (confirmPasswordInput.value.length > 0);
             const isSmsVerified = smsCodeInput.dataset.verified === "true";
@@ -455,10 +466,10 @@
                 emailInput.classList.add('is-invalid', 'error-shake');
                 setTimeout(() => emailInput.classList.remove('error-shake'), 600);
             }
-            if(!phoneInput.classList.contains('is-valid')) {
+            if(!phoneDisplay.classList.contains('is-valid')) {
                 isValid = false;
-                phoneInput.classList.add('is-invalid', 'error-shake');
-                setTimeout(() => phoneInput.classList.remove('error-shake'), 600);
+                phoneDisplay.classList.add('is-invalid', 'error-shake');
+                setTimeout(() => phoneDisplay.classList.remove('error-shake'), 600);
             }
             if(document.getElementById('firstName').value.length < 2) {
                 isValid = false;
@@ -505,21 +516,15 @@
         });
 
         // Инициализация при загрузке
-        validateEmail();
-        validatePhone();
-        validatePasswordMatch();
         updateSubmitButton();
 
         /* Если с сервера установлен флаг успешной регистрации (registrationSuccess == true),
            то показываем toast уведомление и через несколько секунд перенаправляем на страницу аутентификации */
-        /* Пример: с контроллера устанавливается flash-атрибут registrationSuccess,
-           который доступен через thymeleaf переменную: */
         let registrationSuccess = [[${registrationSuccess != null && registrationSuccess ? true : false}]];
         if(registrationSuccess) {
             let toastEl = document.getElementById('registrationToast');
             let toast = new bootstrap.Toast(toastEl);
             toast.show();
-            // Через 3 сек перенаправляем пользователя на страницу логина
             setTimeout(function(){
                 window.location.href = "/auth/login";
             }, 3000);
