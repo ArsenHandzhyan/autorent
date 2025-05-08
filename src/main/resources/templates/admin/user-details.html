@@ -41,6 +41,7 @@
                   method="post" style="display: inline;">
                 <button type="submit" class="btn btn-small">Включить</button>
             </form>
+            <a th:href="@{/admin/users}" class="btn">Назад к списку</a>
         </div>
     </div>
     <div class="rentals-section">
@@ -57,7 +58,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="rental : ${user.rentals}">
+            <tr th:each="rental : ${rentals}">
                 <td th:text="${rental.id}">1</td>
                 <td th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</td>
                 <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2025</td>
@@ -65,7 +66,7 @@
                 <td th:text="${rental.status}">Активна</td>
                 <td th:text="${rental.totalCost + ' ₽'}">10000 ₽</td>
             </tr>
-            <tr th:if="${user.rentals.empty}">
+            <tr th:if="${rentals.empty}">
                 <td colspan="6">Нет аренд</td>
             </tr>
             </tbody>

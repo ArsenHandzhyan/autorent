@@ -37,35 +37,30 @@
                 <img th:unless="${car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
 
                 <!-- Изменённый блок статуса -->
-                <div th:if="${car.available}" class="status available">Доступен</div>
-                <div th:unless="${car.available}" class="status unavailable">
-                    Занят
-                    <span th:with="nextDate=${@carService.getNextAvailableDate(car.id)}"
-                          th:if="${nextDate != null}">
-                        до <span th:text="${#temporals.format(nextDate, 'dd.MM.yyyy')}">01.01.2025</span>
+                <div class="status available">
+                    <span th:with="nextDate=${@carService.getNextAvailableDate(car.id)}">
+                        <span th:if="${nextDate == null}">Доступен сейчас</span>
+                        <span th:if="${nextDate != null}">
+                            Доступен с <span th:text="${#temporals.format(nextDate, 'dd.MM.yyyy')}">01.01.2025</span>
+                        </span>
                     </span>
                 </div>
             </div>
-            <div class="car-info">
-                <h3 th:text="${car.brand + ' ' + car.model}">Toyota Camry</h3>
-                <p class="car-year" th:text="${car.year + ' г.'}">2023 г.</p>
-                <p class="car-price" th:text="${car.dailyRate + ' ₽/день'}">3000 ₽/день</p>
-                <div class="car-features">
-                    <span th:if="${car.transmission}" th:text="${car.transmission}">Автомат</span>
-                    <span th:if="${car.fuelType}" th:text="${car.fuelType}">Бензин</span>
-                    <span th:if="${car.seats}" th:text="${car.seats + ' мест'}">5 мест</span>
-                </div>
                 <div class="car-actions">
                     <a th:href="@{/cars/{id}(id=${car.id})}" class="btn">Подробнее</a>
 
-                    <!-- Изменённый блок действий -->
-                    <a th:if="${car.available}" sec:authorize="isAuthenticated()"
-                       th:href="@{/rentals/new/{id}(id=${car.id})}" class="btn">Арендовать</a>
-                    <a th:unless="${car.available}" sec:authorize="isAuthenticated()"
+                    <!-- Универсальная кнопка аренды -->
+                    <a sec:authorize="isAuthenticated()"
                        th:with="nextDate=${@carService.getNextAvailableDate(car.id)}"
-                       th:if="${nextDate != null}"
-                       th:href="@{/rentals/new/{id}(id=${car.id}, startDate=${nextDate})}"
-                       class="btn btn-outline-primary">Забронировать с <span th:text="${#temporals.format(nextDate, 'dd.MM.yyyy')}"></span></a>
+                       th:href="${nextDate == null} ?
+                           @{/rentals/new/{id}(id=${car.id})} :
+                           @{/rentals/new/{id}(id=${car.id}, startDate=${nextDate})}"
+                       class="btn">
+                        <span th:if="${nextDate == null}">Арендовать</span>
+                        <span th:if="${nextDate != null}">
+                            Арендовать с <span th:text="${#temporals.format(nextDate, 'dd.MM.yyyy')}"></span>
+                        </span>
+                    </a>
                 </div>
             </div>
         </div>
