@@ -7,10 +7,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+    <!-- CSRF токены -->
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 <body>
 <!-- Подключаем хедер -->
 <div th:replace="~{fragments/header :: header}"></div>
+
+<!-- Контейнер для сообщений -->
+<div id="message-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
 
 <main class="container py-5">
     <h1>Админ-панель</h1>
@@ -24,24 +31,25 @@
 
         <div class="stat-card">
             <h3>Ожидающие аренды</h3>
-            <p class="stat-number" th:text="${pendingRentals.size()}">0</p>
+            <p class="stat-number" id="pending-count" th:text="${pendingRentals.size()}">0</p>
             <a th:href="@{/admin/rentals/status/PENDING}" class="btn btn-primary">Просмотреть</a>
         </div>
 
         <div class="stat-card">
             <h3>Активные аренды</h3>
-            <p class="stat-number" th:text="${activeRentals.size()}">0</p>
+            <p class="stat-number" id="active-count" th:text="${activeRentals.size()}">0</p>
             <a th:href="@{/admin/rentals/status/ACTIVE}" class="btn btn-primary">Просмотреть</a>
         </div>
 
         <div class="stat-card">
             <h3>Запросы на отмену</h3>
-            <p class="stat-number" th:text="${pendingCancellations.size()}">0</p>
-            <a th:href="@{/admin/pending-cancellations}" class="btn btn-warning">Обработать</a>
+            <p class="stat-number" id="cancellation-count" th:text="${pendingCancellations.size()}">0</p>
+            <a th:href="@{/admin/rentals/status/PENDING_CANCELLATION}" class="btn btn-warning">Обработать</a>
         </div>
 
         <div class="admin-actions">
-            <a th:href="@{/admin/synchronize-car-statuses}" class="btn btn-secondary">Синхронизировать статусы автомобилей</a>
+            <a th:href="@{/admin/synchronize-car-statuses}" class="btn btn-secondary">Синхронизировать статусы
+                автомобилей</a>
         </div>
     </div>
 
@@ -56,25 +64,45 @@
                 <th>Дата начала</th>
                 <th>Дата окончания</th>
                 <th>Стоимость</th>
+                <th>Статус</th>
                 <th>Действия</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="rental : ${pendingRentals}">
+            <tr th:each="rental : ${pendingRentals}" th:id="'rental-row-' + ${rental.id}"
+                th:data-rental-id="${rental.id}" th:data-rental-status="${rental.status}">
                 <td th:text="${rental.id}">1</td>
                 <td th:text="${rental.user.fullName}">Иван Иванов</td>
                 <td th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</td>
                 <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2025</td>
                 <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
                 <td th:text="${rental.totalCost + ' ₽'}">15000 ₽</td>
+                <td class="rental-status" th:data-status="${rental.status}"
+                    th:text="${rental.status == 'PENDING' ? 'Ожидает подтверждения' :
+                              (rental.status == 'ACTIVE' ? 'Активна' :
+                              (rental.status == 'COMPLETED' ? 'Завершена' :
+                              (rental.status == 'CANCELLED' ? 'Отменена' :
+                              (rental.status == 'CANCELLATION_REQUESTED' || rental.status == 'PENDING_CANCELLATION' ? 'Запрос на отмену' : rental.status))))}">
+                    Ожидает подтверждения
+                </td>
                 <td>
                     <div class="btn-group">
                         <a th:href="@{/admin/rentals/{id}(id=${rental.id})}" class="btn btn-sm btn-info">Детали</a>
-                        <form th:action="@{/admin/rentals/{id}/approve(id=${rental.id})}" method="post" class="d-inline">
+                        <form th:action="@{/admin/rentals/{id}/approve(id=${rental.id})}" method="post" style="display: inline;">
                             <button type="submit" class="btn btn-sm btn-success">Подтвердить</button>
                         </form>
-                        <form th:action="@{/admin/rentals/{id}/reject(id=${rental.id})}" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-danger">Отклонить</button>
+                        <button type="button" class="btn btn-sm btn-danger"
+                                th:onclick="'showCancelForm(' + ${rental.id} + ')'">Отклонить</button>
+                    </div>
+
+                    <div th:id="'cancelForm-' + ${rental.id}" class="cancel-form" style="display: none;">
+                        <form th:action="@{/admin/rentals/{id}/cancel(id=${rental.id})}" method="post">
+                            <div class="form-group">
+                                <label for="notes">Причина отмены:</label>
+                                <textarea id="notes" name="notes" rows="3" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Подтвердить отмену</button>
+                            <button type="button" class="btn btn-secondary" th:onclick="'hideCancelForm(' + ${rental.id} + ')'">Закрыть</button>
                         </form>
                     </div>
                 </td>
@@ -84,9 +112,187 @@
     </div>
 </main>
 
-<!-- Подключаем футер -->
 <div th:replace="~{fragments/footer :: footer}"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+    // Получаем CSRF-токен из мета-тегов
+    const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+
+    // Функции для работы с формами
+    function showCancelForm(id) {
+        document.getElementById('cancelForm-' + id).style.display = 'block';
+    }
+
+    function hideCancelForm(id) {
+        document.getElementById('cancelForm-' + id).style.display = 'none';
+    }
+
+    // Функция для отображения сообщений
+    function showMessage(type, message) {
+        const messageContainer = document.getElementById('message-container');
+        messageContainer.innerHTML = '';
+
+        const messageElement = document.createElement('div');
+        messageElement.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+        messageElement.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+
+        messageContainer.appendChild(messageElement);
+
+        // Автоматически скрываем сообщение через 5 секунд
+        setTimeout(() => {
+            messageElement.classList.remove('show');
+            setTimeout(() => {
+                messageElement.remove();
+            }, 300);
+        }, 5000);
+    }
+
+    // Функция для обновления строки аренды
+    function updateRentalRow(rentalId, newStatus) {
+        const row = document.getElementById('rental-row-' + rentalId);
+        if (!row) return;
+
+        if (newStatus === 'DELETED' || newStatus === 'CANCELLED' || newStatus === 'ACTIVE') {
+            // Добавляем класс для анимации
+            row.classList.add('fade-out');
+
+            // Удаляем строку после завершения анимации
+            setTimeout(() => {
+                row.remove();
+                updateCounters();
+            }, 500);
+        } else {
+            // Обновляем отображаемый статус
+            const statusCell = row.querySelector('.rental-status');
+            if (statusCell) {
+                statusCell.textContent = getStatusText(newStatus);
+                statusCell.dataset.status = newStatus;
+            }
+        }
+    }
+
+    // Функция для преобразования статуса в текст
+    function getStatusText(status) {
+        switch (status) {
+            case 'PENDING': return 'Ожидает подтверждения';
+            case 'ACTIVE': return 'Активна';
+            case 'COMPLETED': return 'Завершена';
+            case 'CANCELLED': return 'Отменена';
+            case 'PENDING_CANCELLATION':
+            case 'CANCELLATION_REQUESTED': return 'Запрос на отмену';
+            default: return status;
+        }
+    }
+
+    // Функция для обновления счетчиков
+    function updateCounters() {
+        // Подсчитываем оставшиеся строки в таблице
+        const pendingCount = document.querySelectorAll('tr[data-rental-status="PENDING"]').length;
+
+        // Обновляем отображаемое количество
+        const pendingCountElement = document.getElementById('pending-count');
+        if (pendingCountElement) {
+            pendingCountElement.textContent = pendingCount;
+        }
+
+        // Если таблица пуста, показываем сообщение
+        const table = document.querySelector('.data-table tbody');
+        if (table && table.children.length === 0) {
+            table.innerHTML = '<tr><td colspan="8" class="text-center">Нет ожидающих аренд</td></tr>';
+        }
+    }
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        // Добавляем стили для анимации удаления
+        const style = document.createElement('style');
+        style.textContent = `
+            .fade-out {
+                opacity: 0;
+                transition: opacity 0.5s;
+            }
+            .status-active {
+                color: green;
+                font-weight: bold;
+            }
+            .status-pending {
+                color: orange;
+                font-weight: bold;
+            }
+            .status-completed {
+                color: blue;
+                font-weight: bold;
+            }
+            .status-cancelled {
+                color: red;
+                font-weight: bold;
+            }
+            .status-pending_cancellation,
+            .status-cancellation_requested {
+                color: purple;
+                font-weight: bold;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Преобразуем все формы в AJAX-запросы
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+                const rentalRow = this.closest('tr');
+                const rentalId = rentalRow ? rentalRow.dataset.rentalId : null;
+
+                // Создаем объект заголовков
+                const headers = {
+                    'X-Requested-With': 'XMLHttpRequest'
+                };
+
+                // Добавляем CSRF-токен в заголовки
+                if (csrfHeader && csrfToken) {
+                    headers[csrfHeader] = csrfToken;
+                }
+
+                fetch(this.action, {
+                    method: this.method,
+                    body: formData,
+                    headers: headers
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Показываем сообщение об успехе
+                        showMessage('success', data.message);
+
+                        // Если есть ID аренды, обновляем строку
+                        if (rentalId && data.newStatus) {
+                            updateRentalRow(rentalId, data.newStatus);
+                        }
+
+                        // Скрываем форму отмены
+                        if (this.closest('.cancel-form')) {
+                            const cancelFormId = this.closest('.cancel-form').id;
+                            const id = cancelFormId.split('-')[1];
+                            hideCancelForm(id);
+                        }
+                    } else {
+                        // Показываем сообщение об ошибке
+                        showMessage('error', data.message || 'Произошла ошибка');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    showMessage('error', 'Произошла ошибка при отправке запроса');
+                });
+            });
+        });
+    });
+</script>
 </body>
 </html>

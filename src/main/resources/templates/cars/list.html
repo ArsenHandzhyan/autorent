@@ -36,38 +36,55 @@
                 <img th:if="${car.imageUrl}" th:src="${car.imageUrl}" alt="Фото автомобиля">
                 <img th:unless="${car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
 
-                <!-- Изменённый блок статуса -->
+                <!-- Изменённый блок статуса - теперь используем предварительно загруженные данные -->
                 <div class="status available">
-                    <span th:with="nextDate=${@carService.getNextAvailableDate(car.id)}">
-                        <span th:if="${nextDate == null}">Доступен сейчас</span>
-                        <span th:if="${nextDate != null}">
-                            Доступен с <span th:text="${#temporals.format(nextDate, 'dd.MM.yyyy')}">01.01.2025</span>
-                        </span>
+                    <span th:if="${car.nextAvailableDate == null}">Доступен сейчас</span>
+                    <span th:if="${car.nextAvailableDate != null}">
+                        Доступен с <span th:text="${#temporals.format(car.nextAvailableDate, 'dd.MM.yyyy')}">01.01.2025</span>
                     </span>
                 </div>
             </div>
-                <div class="car-actions">
-                    <a th:href="@{/cars/{id}(id=${car.id})}" class="btn">Подробнее</a>
+            <div class="car-actions">
+                <a th:href="@{/cars/{id}(id=${car.id})}" class="btn">Подробнее</a>
 
-                    <!-- Универсальная кнопка аренды -->
-                    <a sec:authorize="isAuthenticated()"
-                       th:with="nextDate=${@carService.getNextAvailableDate(car.id)}"
-                       th:href="${nextDate == null} ?
-                           @{/rentals/new/{id}(id=${car.id})} :
-                           @{/rentals/new/{id}(id=${car.id}, startDate=${nextDate})}"
-                       class="btn">
-                        <span th:if="${nextDate == null}">Арендовать</span>
-                        <span th:if="${nextDate != null}">
-                            Арендовать с <span th:text="${#temporals.format(nextDate, 'dd.MM.yyyy')}"></span>
-                        </span>
-                    </a>
-                </div>
+                <!-- Универсальная кнопка аренды - теперь использует предварительно загруженные данные -->
+                <a sec:authorize="isAuthenticated()"
+                   th:href="${car.nextAvailableDate == null} ?
+                       @{/rentals/new/{id}(id=${car.id})} :
+                       @{/rentals/new/{id}(id=${car.id}, startDate=${car.nextAvailableDate})}"
+                   class="btn">
+                    <span th:if="${car.nextAvailableDate == null}">Арендовать</span>
+                    <span th:if="${car.nextAvailableDate != null}">
+                        Арендовать с <span th:text="${#temporals.format(car.nextAvailableDate, 'dd.MM.yyyy')}"></span>
+                    </span>
+                </a>
             </div>
         </div>
+    </div>
 
-        <div th:if="${cars.empty}" class="no-results">
-            <p>Автомобили не найдены</p>
-        </div>
+    <!-- Добавляем пагинацию -->
+    <div th:if="${totalPages > 1}" class="pagination">
+        <ul class="pagination-list">
+            <li th:class="${currentPage == 0} ? 'disabled' : ''">
+                <a th:if="${currentPage > 0}" th:href="@{/cars(page=${currentPage - 1})}">&laquo; Назад</a>
+                <span th:unless="${currentPage > 0}">&laquo; Назад</span>
+            </li>
+
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:class="${currentPage == i} ? 'active' : ''">
+                <a th:if="${currentPage != i}" th:href="@{/cars(page=${i})}" th:text="${i + 1}"></a>
+                <span th:unless="${currentPage != i}" th:text="${i + 1}"></span>
+            </li>
+
+            <li th:class="${currentPage == totalPages - 1} ? 'disabled' : ''">
+                <a th:if="${currentPage < totalPages - 1}" th:href="@{/cars(page=${currentPage + 1})}">Вперед &raquo;</a>
+                <span th:unless="${currentPage < totalPages - 1}">Вперед &raquo;</span>
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${cars.empty}" class="no-results">
+        <p>Автомобили не найдены</p>
     </div>
 </main>
 

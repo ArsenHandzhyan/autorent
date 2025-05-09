@@ -19,15 +19,6 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findByStatusOrderByCreatedAtDesc(String status);
 
     @Query("SELECT r FROM Rental r WHERE r.car = :car AND r.status IN ('ACTIVE', 'PENDING') " +
-            "AND ((r.startDate BETWEEN :startDate AND :endDate) OR " +
-            "(r.endDate BETWEEN :startDate AND :endDate) OR " +
-            "(:startDate BETWEEN r.startDate AND r.endDate) OR " +
-            "(:endDate BETWEEN r.startDate AND r.endDate))")
-    List<Rental> findOverlappingRentals(@Param("car") Car car,
-                                        @Param("startDate") LocalDateTime startDate,
-                                        @Param("endDate") LocalDateTime endDate);
-
-    @Query("SELECT r FROM Rental r WHERE r.car = :car AND r.status IN ('ACTIVE', 'PENDING') " +
             "AND r.id != :rentalId " +
             "AND ((r.startDate BETWEEN :startDate AND :endDate) OR " +
             "(r.endDate BETWEEN :startDate AND :endDate) OR " +
@@ -49,4 +40,10 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findByCarAndStatusAndIdNot(Car car, String status, Long id);
 
     List<Rental> findByCarAndStatusIn(Car car, List<String> statuses);
+
+    @Query("SELECT r FROM Rental r WHERE r.car.id IN :carIds AND r.status IN :statuses ORDER BY r.endDate ASC")
+    List<Rental> findRentalsByCarIdInAndStatusIn(@Param("carIds") List<Long> carIds,
+                                                 @Param("statuses") List<String> statuses);
+
+    List<Rental> findByStatus(String status);
 }

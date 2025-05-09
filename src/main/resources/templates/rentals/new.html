@@ -16,6 +16,11 @@
 <main class="container">
     <h1>Аренда автомобиля</h1>
 
+    <!-- Показываем сообщение об ошибке, если оно есть -->
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
     <div class="rental-form-container">
         <div class="car-summary">
             <h2 th:text="${car.brand + ' ' + car.model}">Toyota Camry</h2>
@@ -44,28 +49,24 @@
         </div>
 
         <form th:action="@{/rentals/new/{id}(id=${car.id})}" method="post" th:object="${rental}" class="rental-form">
-            <div class="form-group">
-                <label for="startDate">Дата и время начала аренды:</label>
+            <div class="form-group mb-3">
+                <label for="startDate" class="form-label">Дата и время начала аренды:</label>
                 <input type="datetime-local" id="startDate" th:field="*{startDate}" required
-                       th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd''T''HH:mm')}"
                        class="form-control">
-                <span class="error" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></span>
             </div>
 
-            <div class="form-group">
-                <label for="endDate">Дата и время окончания аренды:</label>
+            <div class="form-group mb-3">
+                <label for="endDate" class="form-label">Дата и время окончания аренды:</label>
                 <input type="datetime-local" id="endDate" th:field="*{endDate}" required
-                       th:min="${#temporals.format(#temporals.createNow().plusDays(1), 'yyyy-MM-dd''T''HH:mm')}"
                        class="form-control">
-                <span class="error" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></span>
             </div>
 
-            <div class="form-group">
-                <label for="notes">Дополнительные пожелания:</label>
+            <div class="form-group mb-3">
+                <label for="notes" class="form-label">Дополнительные пожелания:</label>
                 <textarea id="notes" th:field="*{notes}" class="form-control" rows="3"></textarea>
             </div>
 
-            <div class="rental-summary">
+            <div class="rental-summary mb-3">
                 <h3>Предварительный расчет стоимости:</h3>
                 <div id="rentalCost">
                     <p>Выберите даты аренды для расчета стоимости</p>
@@ -101,39 +102,63 @@
         };
     });
 
-    // Инициализируем flatpickr для выбора даты и времени
+    // Текущая дата (добавляем 30 минут для выбора ближайшего времени)
+    const currentDate = new Date();
+    currentDate.setMinutes(currentDate.getMinutes() + 30);
+
+    // Следующий день
+    const nextDayDate = new Date(currentDate);
+    nextDayDate.setDate(nextDayDate.getDate() + 1);
+
+    // Инициализируем flatpickr для выбора даты и времени начала
     const startDatePicker = flatpickr("#startDate", {
         enableTime: true,
-        dateFormat: "Y-m-d H:i",
+        time_24hr: true,
+        dateFormat: "Y-m-d\\TH:i", // Формат для отправки формы
+        altInput: true, // Создать альтернативное поле ввода для отображения
+        altFormat: "d.m.Y H:i", // Формат отображения для пользователя
         locale: "ru",
-        minDate: "today",
+        minDate: currentDate,
+        defaultDate: currentDate,
         disable: disabledDateRanges,
         onChange: function(selectedDates, dateStr) {
-            // Обновляем минимальную дату для endDatePicker
-            endDatePicker.set('minDate', dateStr);
+            if (selectedDates.length > 0) {
+                // Обновляем минимальную дату для endDatePicker
+                const newMinDate = new Date(selectedDates[0]);
+                endDatePicker.set('minDate', newMinDate);
 
-            // Если дата окончания раньше даты начала, устанавливаем её на следующий день
-            const endDate = endDatePicker.selectedDates[0];
-            if (!endDate || endDate < selectedDates[0]) {
-                const nextDay = new Date(selectedDates[0]);
-                nextDay.setDate(nextDay.getDate() + 1);
-                endDatePicker.setDate(nextDay);
+                // Если дата окончания раньше даты начала, устанавливаем её на следующий день
+                const endDate = endDatePicker.selectedDates[0];
+                if (!endDate || endDate < selectedDates[0]) {
+                    const nextDay = new Date(selectedDates[0]);
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    endDatePicker.setDate(nextDay);
+                }
+
+                calculateRentalCost();
             }
-
-            calculateRentalCost();
         }
     });
 
+    // Инициализируем flatpickr для выбора даты и времени окончания
     const endDatePicker = flatpickr("#endDate", {
         enableTime: true,
-        dateFormat: "Y-m-d H:i",
+        time_24hr: true,
+        dateFormat: "Y-m-d\\TH:i", // Формат для отправки формы
+        altInput: true, // Создать альтернативное поле ввода для отображения
+        altFormat: "d.m.Y H:i", // Формат отображения для пользователя
         locale: "ru",
-        minDate: startDatePicker.selectedDates[0] || "today",
+        minDate: nextDayDate,
+        defaultDate: nextDayDate,
         disable: disabledDateRanges,
         onChange: function() {
             calculateRentalCost();
         }
     });
+
+    // Устанавливаем начальные значения
+    startDatePicker.setDate(currentDate);
+    endDatePicker.setDate(nextDayDate);
 
     // Функция для расчета стоимости аренды
     function calculateRentalCost() {
@@ -148,12 +173,29 @@
             // Разница в днях (округляем вверх)
             const diffDays = Math.ceil(diffHours / 24);
 
+            // Минимум 1 день
+            const days = diffDays < 1 ? 1 : diffDays;
+
+            // Форматирование отображения дат
+            const formatter = new Intl.DateTimeFormat('ru', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            const startFormatted = formatter.format(startDate);
+            const endFormatted = formatter.format(endDate);
+
             // Рассчитываем стоимость
-            const cost = diffDays * dailyRate;
+            const cost = days * dailyRate;
 
             // Обновляем информацию о стоимости
             document.getElementById('rentalCost').innerHTML = `
-                <p><strong>Период аренды:</strong> ${diffDays} дн.</p>
+                <p><strong>Начало аренды:</strong> ${startFormatted}</p>
+                <p><strong>Окончание аренды:</strong> ${endFormatted}</p>
+                <p><strong>Период аренды:</strong> ${days} дн.</p>
                 <p><strong>Стоимость:</strong> ${cost.toFixed(2)} ₽</p>
             `;
         }

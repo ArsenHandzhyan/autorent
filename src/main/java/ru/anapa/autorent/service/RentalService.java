@@ -2,6 +2,8 @@ package ru.anapa.autorent.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.anapa.autorent.model.Car;
@@ -10,7 +12,6 @@ import ru.anapa.autorent.model.User;
 import ru.anapa.autorent.repository.CarRepository;
 import ru.anapa.autorent.repository.RentalRepository;
 import ru.anapa.autorent.exception.ResourceNotFoundException;
-
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,12 +27,15 @@ public class RentalService {
     private final CarService carService;
     private final CarRepository carRepository;
 
-
     @Autowired
     public RentalService(RentalRepository rentalRepository, CarService carService, CarRepository carRepository) {
         this.rentalRepository = rentalRepository;
         this.carService = carService;
         this.carRepository = carRepository;
+    }
+
+    public Page<Rental> findAllRentals(Pageable pageable) {
+        return rentalRepository.findAll(pageable);
     }
 
     public List<Rental> findAllRentals() {
@@ -49,6 +53,11 @@ public class RentalService {
     public Rental findById(Long id) {
         return rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Аренда не найдена"));
+    }
+
+    public Rental getRentalById(Long id) {
+        return rentalRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Аренда с ID " + id + " не найдена"));
     }
 
     @Transactional
@@ -85,7 +94,7 @@ public class RentalService {
         long days = ChronoUnit.DAYS.between(startDate, endDate);
         if (days < 1) days = 1; // Минимум 1 день
 
-        // Используем pricePerDay для расчета стоимости (так как это поле точно есть в модели Car)
+        // Используем pricePerDay для расчета стоимости
         BigDecimal totalCost = car.getPricePerDay().multiply(BigDecimal.valueOf(days));
 
         // Создаем новую аренду
@@ -114,7 +123,7 @@ public class RentalService {
     }
 
     @Transactional
-    public void approveRental(Long rentalId) {
+    public Rental approveRental(Long rentalId) {
         Rental rental = findById(rentalId);
 
         if (!rental.getStatus().equals("PENDING")) {
@@ -141,11 +150,11 @@ public class RentalService {
             carService.updateCar(car);
         }
 
-        rentalRepository.save(rental);
+        return rentalRepository.save(rental);
     }
 
     @Transactional
-    public void completeRental(Long rentalId) {
+    public Rental completeRental(Long rentalId) {
         Rental rental = findById(rentalId);
 
         if (!rental.getStatus().equals("ACTIVE")) {
@@ -161,11 +170,11 @@ public class RentalService {
         car.setAvailable(true);
         carService.updateCar(car);
 
-        rentalRepository.save(rental);
+        return rentalRepository.save(rental);
     }
 
     @Transactional
-    public void cancelRental(Long rentalId) {
+    public Rental cancelRental(Long rentalId, String notes) {
         Rental rental = findById(rentalId);
 
         if (rental.getStatus().equals("COMPLETED") || rental.getStatus().equals("CANCELLED")) {
@@ -175,6 +184,11 @@ public class RentalService {
         rental.setStatus("CANCELLED");
         rental.setUpdatedAt(LocalDateTime.now());
 
+        // Добавляем причину отмены, если она указана
+        if (notes != null && !notes.isEmpty()) {
+            rental.setCancelReason(notes);
+        }
+
         // Если аренда была активной, освобождаем автомобиль
         if (rental.getStatus().equals("ACTIVE")) {
             Car car = rental.getCar();
@@ -182,11 +196,11 @@ public class RentalService {
             carService.updateCar(car);
         }
 
-        rentalRepository.save(rental);
+        return rentalRepository.save(rental);
     }
 
     @Transactional
-    public void requestCancellation(Long rentalId, String cancelReason) {
+    public Rental requestCancellation(Long rentalId, String cancelReason) {
         Rental rental = findById(rentalId);
 
         if (rental.getStatus().equals("COMPLETED") || rental.getStatus().equals("CANCELLED")) {
@@ -201,11 +215,30 @@ public class RentalService {
         rental.setCancelReason(cancelReason);
         rental.setUpdatedAt(LocalDateTime.now());
 
-        rentalRepository.save(rental);
+        return rentalRepository.save(rental);
     }
 
     @Transactional
-    public void rejectCancellationRequest(Long rentalId, String adminNotes) {
+    public Rental confirmCancellation(Long rentalId) {
+        Rental rental = findById(rentalId);
+
+        if (!rental.getStatus().equals("PENDING_CANCELLATION")) {
+            throw new RuntimeException("Можно подтвердить только запрос на отмену");
+        }
+
+        rental.setStatus("CANCELLED");
+        rental.setUpdatedAt(LocalDateTime.now());
+
+        // Освобождаем автомобиль, если он был занят
+        Car car = rental.getCar();
+        car.setAvailable(true);
+        carService.updateCar(car);
+
+        return rentalRepository.save(rental);
+    }
+
+    @Transactional
+    public Rental rejectCancellation(Long rentalId, String adminNotes) {
         Rental rental = findById(rentalId);
 
         if (!rental.getStatus().equals("PENDING_CANCELLATION")) {
@@ -228,7 +261,15 @@ public class RentalService {
         }
 
         rental.setUpdatedAt(LocalDateTime.now());
-        rentalRepository.save(rental);
+        return rentalRepository.save(rental);
+    }
+
+    @Transactional
+    public Rental updateRentalNotes(Long rentalId, String notes) {
+        Rental rental = findById(rentalId);
+        rental.setNotes(notes);
+        rental.setUpdatedAt(LocalDateTime.now());
+        return rentalRepository.save(rental);
     }
 
     @Transactional
@@ -289,10 +330,5 @@ public class RentalService {
                 carRepository.save(car);
             }
         }
-    }
-
-    public Rental getRentalById(Long id) {
-        return rentalRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Аренда с ID " + id + " не найдена"));
     }
 }

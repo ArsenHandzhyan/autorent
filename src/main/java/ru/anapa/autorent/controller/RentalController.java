@@ -107,25 +107,27 @@ public class RentalController {
     @PostMapping("/new/{carId}")
     @PreAuthorize("isAuthenticated()")
     public String createRental(@PathVariable Long carId,
-                               @RequestParam("startDateStr") String startDateStr,
-                               @RequestParam("endDateStr") String endDateStr,
+                               @ModelAttribute RentalDto rentalDto,
                                @AuthenticationPrincipal UserDetails userDetails,
-                               Model model,
-                               RedirectAttributes redirectAttributes) {
+                               RedirectAttributes redirectAttributes,
+                               Model model) {
         try {
-            // Ручное преобразование строк в LocalDateTime
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            LocalDateTime startDate = LocalDateTime.parse(startDateStr, formatter);
-            LocalDateTime endDate = LocalDateTime.parse(endDateStr, formatter);
+            LocalDateTime now = LocalDateTime.now();
 
             // Валидация дат
-            if (startDate.isBefore(LocalDateTime.now())) {
+            if (rentalDto.getStartDate() == null || rentalDto.getEndDate() == null) {
+                redirectAttributes.addFlashAttribute("error", "Даты начала и окончания аренды обязательны");
+                return "redirect:/rentals/new/" + carId;
+            }
+
+            // Проверяем, что дата начала не в прошлом (с небольшим запасом в 5 минут)
+            if (rentalDto.getStartDate().isBefore(now.minusMinutes(5))) {
                 redirectAttributes.addFlashAttribute("error", "Дата начала аренды должна быть в настоящем или будущем");
                 return "redirect:/rentals/new/" + carId;
             }
 
-            if (endDate.isBefore(startDate)) {
-                redirectAttributes.addFlashAttribute("error", "Дата окончания аренды должна быть позже даты начала");
+            if (rentalDto.getEndDate().isBefore(rentalDto.getStartDate().plusHours(1))) {
+                redirectAttributes.addFlashAttribute("error", "Дата окончания аренды должна быть как минимум на 1 час позже даты начала");
                 return "redirect:/rentals/new/" + carId;
             }
 
@@ -135,18 +137,24 @@ public class RentalController {
             Rental rental = rentalService.createRental(
                     user,
                     carId,
-                    startDate,
-                    endDate
+                    rentalDto.getStartDate(),
+                    rentalDto.getEndDate()
             );
 
             redirectAttributes.addFlashAttribute("success",
                     "Заявка на аренду успешно создана! Ожидайте подтверждения.");
             return "redirect:/rentals";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/cars/" + carId;
+            // Логирование ошибки
+            System.err.println("Ошибка при создании аренды: " + e.getMessage());
+            e.printStackTrace();
+
+            redirectAttributes.addFlashAttribute("error", "Произошла ошибка: " + e.getMessage());
+            return "redirect:/rentals/new/" + carId;
         }
     }
+
+
 
     // Этот метод перенаправляет на административный контроллер
     @PreAuthorize("hasRole('ADMIN')")
