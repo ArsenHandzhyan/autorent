@@ -51,7 +51,6 @@
                 <p><strong>Дата создания:</strong> <span id="rental-created-at" th:text="${#temporals.format(rental.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2023 12:00</span></p>
                 <p><strong>Дата начала:</strong> <span id="rental-start-date" th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2023</span></p>
                 <p><strong>Дата окончания:</strong> <span id="rental-end-date" th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2023</span></p>
-                <p><strong>Стоимость:</strong> <span id="rental-cost" th:text="${rental.totalCost + ' ₽'}">10000 ₽</span></p>
             </div>
 
             <div class="info-section" id="car-info-section">
@@ -59,7 +58,7 @@
                 <p><strong>Марка и модель:</strong> <span id="car-model" th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</span></p>
                 <p><strong>Год выпуска:</strong> <span id="car-year" th:text="${rental.car.year}">2020</span></p>
                 <p><strong>Регистрационный номер:</strong> <span id="car-registration" th:text="${rental.car.registrationNumber}">А123БВ 123</span></p>
-                <p><strong>Цена за день:</strong> <span id="car-price" th:text="${rental.car.pricePerDay + ' ₽'}">1000 ₽</span></p>
+                <p><strong>Цена за день:</strong> <span id="car-price" th:text="${rental.car.dailyRate + ' ₽'}">1000 ₽</span></p>
             </div>
         </div>
 
@@ -258,7 +257,8 @@ function updateRentalInfo(rentalData) {
   }
 
   // Обновляем информацию об аренде
-  document.getElementById('rental-id').textContent = rentalData.id;
+  document.getElementById('rental-cost').textContent = parseFloat(rentalData.totalCost).toFixed(2) + ' ₽';
+
 
   // Форматируем даты
   if (rentalData.createdAt) {
@@ -278,7 +278,7 @@ function updateRentalInfo(rentalData) {
     document.getElementById('car-model').textContent = car.brand + ' ' + car.model;
     document.getElementById('car-year').textContent = car.year;
     document.getElementById('car-registration').textContent = car.registrationNumber;
-    document.getElementById('car-price').textContent = car.pricePerDay + ' ₽';
+    document.getElementById('car-price').textContent = parseFloat(car.dailyRate).toFixed(2) + ' ₽';
   }
 
   // Обновляем статус

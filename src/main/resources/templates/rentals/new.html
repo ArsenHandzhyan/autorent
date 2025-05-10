@@ -30,7 +30,10 @@
             </div>
             <div class="car-details">
                 <p><strong>Год выпуска:</strong> <span th:text="${car.year}">2023</span></p>
-                <p><strong>Стоимость аренды:</strong> <span th:text="${car.dailyRate + ' ₽/день'}">3000 ₽/день</span></p>
+                <div class="info-item">
+                    <span class="info-label">Стоимость аренды:</span>
+                    <span class="info-value" th:text="${car.dailyRate + ' ₽/день'}">3000 ₽/день</span>
+                </div>
                 <p th:if="${car.transmission}"><strong>Трансмиссия:</strong> <span th:text="${car.transmission}">Автомат</span></p>
                 <p th:if="${car.fuelType}"><strong>Тип топлива:</strong> <span th:text="${car.fuelType}">Бензин</span></p>
             </div>

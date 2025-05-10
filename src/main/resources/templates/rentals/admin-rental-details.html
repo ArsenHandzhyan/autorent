@@ -59,7 +59,7 @@
         <p><strong>Марка и модель:</strong> <span id="car-model" th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</span></p>
         <p><strong>Год выпуска:</strong> <span id="car-year" th:text="${rental.car.year}">2020</span></p>
         <p><strong>Регистрационный номер:</strong> <span id="car-registration" th:text="${rental.car.registrationNumber}">А123БВ 123</span></p>
-        <p><strong>Цена за день:</strong> <span id="car-price" th:text="${rental.car.pricePerDay + ' ₽'}">1000 ₽</span></p>
+        <p><strong>Цена за день:</strong> <span id="car-price" th:text="${rental.car.dailyRate + ' ₽'}">1000 ₽</span></p>
       </div>
     </div>
 

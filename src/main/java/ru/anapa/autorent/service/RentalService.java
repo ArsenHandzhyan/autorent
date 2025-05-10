@@ -94,8 +94,6 @@ public class RentalService {
         long days = ChronoUnit.DAYS.between(startDate, endDate);
         if (days < 1) days = 1; // Минимум 1 день
 
-        // Используем pricePerDay для расчета стоимости
-        BigDecimal totalCost = car.getPricePerDay().multiply(BigDecimal.valueOf(days));
 
         // Создаем новую аренду
         Rental rental = new Rental();
@@ -103,7 +101,7 @@ public class RentalService {
         rental.setCar(car);
         rental.setStartDate(startDate);
         rental.setEndDate(endDate);
-        rental.setTotalCost(totalCost);
+        rental.setTotalCost(car.getDailyRate());
         rental.setStatus("PENDING"); // Статус "ожидает подтверждения"
         rental.setCreatedAt(LocalDateTime.now());
 

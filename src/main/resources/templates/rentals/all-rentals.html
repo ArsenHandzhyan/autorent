@@ -64,7 +64,7 @@
                 </p>
                 <p><strong>Дата окончания:</strong> <span th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2023</span>
                 </p>
-                <p><strong>Стоимость:</strong> <span th:text="${rental.totalCost + ' ₽'}">10000 ₽</span></p>
+
 
                 <div th:if="${rental.cancelReason != null && !rental.cancelReason.isEmpty()}" class="cancel-reason">
                     <p><strong>Причина отмены:</strong> <span th:text="${rental.cancelReason}">Причина отмены</span></p>

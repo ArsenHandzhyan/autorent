@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.model.Rental;
+import ru.anapa.autorent.service.CarService;
 import ru.anapa.autorent.service.RentalService;
 
 import java.time.format.DateTimeFormatter;
@@ -25,10 +27,12 @@ import java.util.Map;
 public class AdminRentalController {
 
     private final RentalService rentalService;
+    private final CarService carService;
 
     @Autowired
-    public AdminRentalController(RentalService rentalService) {
+    public AdminRentalController(RentalService rentalService, CarService carService) {
         this.rentalService = rentalService;
+        this.carService = carService;
     }
 
     @GetMapping
@@ -48,7 +52,7 @@ public class AdminRentalController {
         model.addAttribute("sort", sort);
         model.addAttribute("direction", direction);
 
-        return "admin/rentals";
+        return "rentals/all-rentals";
     }
 
     @GetMapping("/status/{status}")
@@ -56,14 +60,14 @@ public class AdminRentalController {
         List<Rental> rentals = rentalService.findRentalsByStatus(status);
         model.addAttribute("rentals", rentals);
         model.addAttribute("status", status);
-        return "admin/rentals-by-status";
+        return "rentals/all-rentals";
     }
 
     @GetMapping("/{id}")
     public String getRentalDetails(@PathVariable Long id, Model model) {
         Rental rental = rentalService.getRentalById(id);
         model.addAttribute("rental", rental);
-        return "admin/rental-details";
+        return "rentals/rental-details";
     }
 
     @PostMapping("/{id}/approve")
@@ -94,12 +98,13 @@ public class AdminRentalController {
             }
 
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/admin/rentals";
+            return "redirect:/rentals/all-rentals";
         }
     }
 
     @PostMapping("/{id}/cancel")
-    public Object cancelRental(@PathVariable Long id,
+    public Object cancelRental(Model model,
+                               @PathVariable Long id,
                                @RequestParam(required = false) String notes,
                                RedirectAttributes redirectAttributes,
                                @RequestHeader(name = "X-Requested-With", required = false) String requestedWith) {
@@ -126,9 +131,10 @@ public class AdminRentalController {
                 response.put("message", e.getMessage());
                 return ResponseEntity.ok(response);
             }
-
+            Car car = carService.findCarById(id);
+            model.addAttribute("car", car);
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/admin/rentals";
+            return "redirect:/rentals/all-rentals";
         }
     }
 
@@ -150,7 +156,7 @@ public class AdminRentalController {
             }
 
             redirectAttributes.addFlashAttribute("success", "Аренда успешно завершена!");
-            return "redirect:/admin/rentals";
+            return "redirect:/rentals/all-rentals";
         } catch (RuntimeException e) {
             if ("XMLHttpRequest".equals(requestedWith)) {
                 Map<String, Object> response = new HashMap<>();
@@ -160,7 +166,7 @@ public class AdminRentalController {
             }
 
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/admin/rentals";
+            return "redirect:/rentals/all-rentals";
         }
     }
 
@@ -183,7 +189,7 @@ public class AdminRentalController {
             }
 
             redirectAttributes.addFlashAttribute("success", "Запрос на отмену подтвержден!");
-            return "redirect:/admin/rentals";
+            return "redirect:/rentals/all-rentals";
         } catch (RuntimeException e) {
             if ("XMLHttpRequest".equals(requestedWith)) {
                 Map<String, Object> response = new HashMap<>();
@@ -193,7 +199,7 @@ public class AdminRentalController {
             }
 
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/admin/rentals";
+            return "redirect:/rentals/all-rentals";
         }
     }
 
@@ -217,7 +223,7 @@ public class AdminRentalController {
             }
 
             redirectAttributes.addFlashAttribute("success", "Запрос на отмену отклонен!");
-            return "redirect:/admin/rentals";
+            return "redirect:/rentals/all-rentals";
         } catch (RuntimeException e) {
             if ("XMLHttpRequest".equals(requestedWith)) {
                 Map<String, Object> response = new HashMap<>();
@@ -227,7 +233,7 @@ public class AdminRentalController {
             }
 
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/admin/rentals";
+            return "redirect:/rentals/all-rentals";
         }
     }
 
@@ -250,7 +256,7 @@ public class AdminRentalController {
             }
 
             redirectAttributes.addFlashAttribute("success", "Примечания успешно обновлены!");
-            return "redirect:/admin/rentals/" + id;
+            return "redirect:/rentals/view/" + id;
         } catch (RuntimeException e) {
             if ("XMLHttpRequest".equals(requestedWith)) {
                 Map<String, Object> response = new HashMap<>();
@@ -260,7 +266,7 @@ public class AdminRentalController {
             }
 
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/admin/rentals/" + id;
+            return "redirect:/rentals/view/" + id;
         }
     }
 
@@ -293,13 +299,16 @@ public class AdminRentalController {
         userData.put("phone", rental.getUser().getPhone());
         rentalData.put("user", userData);
 
-        // Данные автомобиля
+        // Изменить строку с totalCost
+        rentalData.put("totalCost", String.format("%.2f", rental.getTotalCost())); // форматируем число
+
+
         Map<String, Object> carData = new HashMap<>();
         carData.put("brand", rental.getCar().getBrand());
         carData.put("model", rental.getCar().getModel());
         carData.put("year", rental.getCar().getYear());
         carData.put("registrationNumber", rental.getCar().getRegistrationNumber());
-        carData.put("pricePerDay", rental.getCar().getPricePerDay());
+        carData.put("dailyRate", String.format("%.2f", rental.getCar().getDailyRate())); // форматируем число
         rentalData.put("car", carData);
 
         return rentalData;

@@ -35,8 +35,8 @@ public class Rental {
     @Column(name = "actual_return_date")
     private LocalDateTime actualReturnDate;
 
-    @Column(precision = 10, scale = 2)
-    private BigDecimal totalCost;
+    @Column(precision = 10, scale = 2, nullable = false)
+    private BigDecimal totalCost = BigDecimal.ZERO;
 
     @Column
     private String status = "PENDING"; // PENDING, ACTIVE, COMPLETED, CANCELLED, PENDING_CANCELLATION

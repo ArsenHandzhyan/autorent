@@ -230,7 +230,8 @@ public class RentalController {
         if (!rental.getUser().getEmail().equals(email)) {
             return "redirect:/rentals?error=Доступ запрещен";
         }
-
+        Car car = carService.findCarById(id);
+        model.addAttribute("car", car);
         model.addAttribute("rental", rental);
         return "rentals/rental-details"; // Имя шаблона для отображения деталей аренды
     }
