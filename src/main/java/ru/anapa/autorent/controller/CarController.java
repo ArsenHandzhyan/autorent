@@ -16,6 +16,7 @@ import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.service.CarService;
 import ru.anapa.autorent.service.RentalService;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -144,7 +145,9 @@ public class CarController {
         if (result.hasErrors()) {
             return "cars/add";
         }
-
+        if (carDto.getDailyRate() == null) {
+            carDto.setDailyRate(BigDecimal.ZERO);
+        }
         Car car = new Car();
         car.setBrand(carDto.getBrand());
         car.setModel(carDto.getModel());
@@ -153,6 +156,7 @@ public class CarController {
         car.setDailyRate(carDto.getDailyRate());
         car.setImageUrl(carDto.getImageUrl());
         car.setDescription(carDto.getDescription());
+        car.setRegistrationNumber(carDto.getLicensePlate());
         car.setAvailable(true);
 
         if (carDto.getTransmission() != null) {
@@ -208,6 +212,10 @@ public class CarController {
             return "cars/edit";
         }
 
+        if (carDto.getDailyRate() == null) {
+            carDto.setDailyRate(BigDecimal.ZERO);
+        }
+
         Car car = carService.findCarById(id);
         car.setBrand(carDto.getBrand());
         car.setModel(carDto.getModel());
@@ -221,6 +229,7 @@ public class CarController {
         car.setSeats(carDto.getSeats());
         car.setColor(carDto.getColor());
         car.setCategory(carDto.getCategory());
+        car.setRegistrationNumber(carDto.getLicensePlate());
 
         carService.updateCar(car);
         return "redirect:/cars/" + id;

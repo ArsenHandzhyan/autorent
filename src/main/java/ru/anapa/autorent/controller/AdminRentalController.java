@@ -51,6 +51,7 @@ public class AdminRentalController {
         model.addAttribute("totalPages", rentals.getTotalPages());
         model.addAttribute("sort", sort);
         model.addAttribute("direction", direction);
+        model.addAttribute("currentStatus", null);
 
         return "rentals/all-rentals";
     }
@@ -59,7 +60,7 @@ public class AdminRentalController {
     public String listRentalsByStatus(@PathVariable String status, Model model) {
         List<Rental> rentals = rentalService.findRentalsByStatus(status);
         model.addAttribute("rentals", rentals);
-        model.addAttribute("status", status);
+        model.addAttribute("currentStatus", status);
         return "rentals/all-rentals";
     }
 
@@ -67,7 +68,7 @@ public class AdminRentalController {
     public String getRentalDetails(@PathVariable Long id, Model model) {
         Rental rental = rentalService.getRentalById(id);
         model.addAttribute("rental", rental);
-        return "rentals/rental-details";
+        return "rentals/admin-rental-details"; // Исправлено
     }
 
     @PostMapping("/{id}/approve")

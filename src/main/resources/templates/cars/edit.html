@@ -33,7 +33,8 @@
 
                 <div class="form-group">
                     <label for="year">Год выпуска*</label>
-                    <input type="number" id="year" th:field="*{year}" min="1900" th:max="${#calendars.format(#calendars.createNow(), 'yyyy')}" required>
+                    <input type="number" id="year" th:field="*{year}" min="1900"
+                           th:max="${#calendars.format(#calendars.createNow(), 'yyyy')}" required>
                     <span class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Ошибка года</span>
                 </div>
 
@@ -106,9 +107,10 @@
             <div class="form-section">
                 <h2>Дополнительная информация</h2>
 
+                <!-- Изменили type="url" на type="text" -->
                 <div class="form-group">
-                    <label for="imageUrl">URL изображения</label>
-                    <input type="url" id="imageUrl" th:field="*{imageUrl}" placeholder="https://example.com/image.jpg">
+                    <label for="imageUrl">Путь к изображению</label>
+                    <input type="text" id="imageUrl" th:field="*{imageUrl}" placeholder="/images/car-placeholder.jpg">
                     <span class="error" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}">Ошибка URL</span>
                 </div>
 

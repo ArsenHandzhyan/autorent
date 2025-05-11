@@ -104,8 +104,8 @@
                 <h2>Дополнительная информация</h2>
 
                 <div class="form-group">
-                    <label for="imageUrl">URL изображения</label>
-                    <input type="url" id="imageUrl" th:field="*{imageUrl}" placeholder="https://example.com/image.jpg">
+                    <label for="imageUrl">Путь к изображению</label>
+                    <input type="text" id="imageUrl" th:field="*{imageUrl}" placeholder="https://example.com/image.jpg">
                     <span class="error" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}">Ошибка URL</span>
                 </div>
 

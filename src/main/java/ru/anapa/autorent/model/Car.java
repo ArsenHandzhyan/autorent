@@ -35,7 +35,7 @@ public class Car {
     @Column(nullable = false)
     private String licensePlate;
 
-    @Column(precision = 10, scale = 2)
+    @Column(name = "price_per_day", precision = 10, scale = 2, nullable = false)
     private BigDecimal dailyRate;
 
     @Column
