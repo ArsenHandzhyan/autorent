@@ -43,7 +43,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/auth/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/auth/**", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                         .requestMatchers("/cars", "/cars/search", "/cars/{id}").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Доступ только для администраторов
                         .anyRequest().authenticated()
@@ -99,7 +99,7 @@ public class SecurityConfig {
                     "У вас недостаточно прав для доступа к админ-панели. Пожалуйста, войдите как администратор.");
 
             // Перенаправляем на страницу входа
-            response.sendRedirect("/auth/login");
+            response.sendRedirect(request.getContextPath() + "/auth/login");
         }
     }
 }

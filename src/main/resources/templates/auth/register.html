@@ -4,7 +4,7 @@
     <title>Регистрация | АвтоРент</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- CSS Bootstrap и иконки Font Awesome -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
@@ -122,7 +122,7 @@
             <span th:text="${error}">Ошибка</span>
         </div>
         <form class="auth-form" th:action="@{/auth/register}" th:object="${user}" method="post" id="registrationForm" novalidate>
-            <!-- Поле email -->
+
             <div class="form-group">
                 <label for="email">Email:</label>
                 <div class="input-with-icon">
@@ -130,9 +130,10 @@
                     <span class="validation-icon" id="emailValidationIcon"></span>
                 </div>
                 <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></span>
+                <span id="emailServerError" class="error-message" style="display:none;"></span>
                 <small class="field-info">Будет использоваться для входа в систему</small>
             </div>
-            <!-- Поля имени и фамилии -->
+
             <div class="form-group">
                 <label for="firstName">Имя:</label>
                 <input type="text" id="firstName" th:field="*{firstName}" required minlength="2">
@@ -143,18 +144,18 @@
                 <input type="text" id="lastName" th:field="*{lastName}" required minlength="2">
                 <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error-message"></span>
             </div>
-            <!-- Поле телефона: видимый для форматирования и скрытый для данных -->
+
             <div class="form-group">
                 <label for="phoneDisplay">Телефон:</label>
                 <div class="input-group">
                     <span class="input-group-text"></span>
                     <input type="tel" id="phoneDisplay" placeholder="+7(XXX)XXX-XX-XX" aria-label="Телефон без кода">
                 </div>
-                <!-- Скрытое поле, привязанное к модели -->
+
                 <input type="hidden" th:field="*{phone}" id="phone" name="phone">
                 <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message"></span>
             </div>
-            <!-- Поле для проверки СМС кода -->
+
             <div class="form-group" id="smsVerificationBlock" style="display:none;">
                 <label for="smsCode">Код из SMS:</label>
                 <div class="input-group">
@@ -163,15 +164,15 @@
                 </div>
                 <span id="smsVerificationStatus" class="error-message" style="display:none;"></span>
             </div>
-            <!-- Кнопка "Отправить SMS" для получения кода -->
+
             <div class="form-group">
                 <button type="button" class="btn btn-secondary" id="sendSmsCodeButton">Отправить SMS с кодом</button>
             </div>
-            <!-- Поля пароля и подтверждения пароля -->
+
             <div class="form-group">
                 <label for="password">Пароль:</label>
                 <div class="input-with-icon">
-                    <input type="password" id="password" th:field="*{password}" required minlength="6">
+                    <input type="password" id="password" th:field="*{password}" required minlength="8">
                     <i class="fas fa-eye-slash input-icon password-toggle" id="passwordToggle"></i>
                 </div>
                 <div class="password-strength" id="passwordStrength"></div>
@@ -181,13 +182,13 @@
             <div class="form-group">
                 <label for="confirmPassword">Подтверждение пароля:</label>
                 <div class="input-with-icon">
-                    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required minlength="6">
+                    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required minlength="8">
                     <i class="fas fa-eye-slash input-icon password-toggle" id="confirmPasswordToggle"></i>
                 </div>
                 <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="error-message"></span>
                 <small class="field-info">Повторите пароль для подтверждения</small>
             </div>
-            <!-- Чекбокс для согласия с условиями -->
+
             <div class="form-group">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="termsAgreement" required>
@@ -206,7 +207,7 @@
     </div>
 </main>
 
-<!-- Toast уведомление (Bootstrap 5) для успешной регистрации -->
+
 <div aria-live="polite" aria-atomic="true" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
     <div id="registrationToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
@@ -220,7 +221,7 @@
     </div>
 </div>
 
-<!-- Модальные окна для условий использования и политики конфиденциальности -->
+
 <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
@@ -257,13 +258,15 @@
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 
-<!-- Скрипты Bootstrap и наш JS-код -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
         // Элементы формы и валидации
         const form = document.getElementById('registrationForm');
         const emailInput = document.getElementById('email');
+        const emailValidationIcon = document.getElementById('emailValidationIcon');
+        const emailServerError = document.getElementById('emailServerError');
         // Используем поле для отображения телефона
         const phoneDisplay = document.getElementById('phoneDisplay');
         // Скрытое поле, привязанное к модели
@@ -275,11 +278,6 @@
         const passwordStrength = document.getElementById('passwordStrength');
         const termsCheckbox = document.getElementById('termsAgreement');
         const registerButton = document.getElementById('registerButton');
-        const emailValidationIcon = document.getElementById('emailValidationIcon');
-        // Если есть дополнительный элемент для иконки проверки телефона можно добавить его, либо удалить
-        // const phoneValidationIcon = document.getElementById('phoneValidationIcon');
-        // const phoneError = document.getElementById('phoneError');
-
         // Элементы СМС проверки
         const sendSmsButton = document.getElementById('sendSmsCodeButton');
         const smsVerificationBlock = document.getElementById('smsVerificationBlock');
@@ -287,11 +285,13 @@
         const smsCodeInput = document.getElementById('smsCode');
         const smsVerificationStatus = document.getElementById('smsVerificationStatus');
 
+        let emailValidFromServer = false;
+
         // Обработка ввода номера телефона в поле phoneDisplay
         phoneDisplay.addEventListener('input', function(e) {
             let digits = e.target.value.replace(/\D/g, '');
-            // Если пользователь ввёл ведущую 7, удаляем её
-            if(digits.startsWith('7')) {
+            // Если пользователь ввёл ведущую 8, заменяем на 7
+            if(digits.startsWith('8')) {
                 digits = digits.substring(1);
             }
             if(digits.length > 10) {
@@ -317,7 +317,7 @@
         });
 
         function validatePhone() {
-            const phonePattern = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
+            const phonePattern = /^\+7$$\d{3}$$\d{3}-\d{2}-\d{2}$/;
             const fullNumber = phoneField.value;
             const isValid = phonePattern.test(fullNumber);
             if(fullNumber.length > 0) {
@@ -335,14 +335,19 @@
             updateSubmitButton();
         }
 
+        // Проверка email на клиентской стороне и сервере
         emailInput.addEventListener('input', function() {
             const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             const isValid = emailPattern.test(emailInput.value);
+            emailServerError.style.display = 'none';
+            emailValidFromServer = false;
+
             if(emailInput.value.length > 0) {
                 if(isValid) {
                     emailInput.classList.add('is-valid');
                     emailInput.classList.remove('is-invalid');
-                    emailValidationIcon.innerHTML = '<i class="fas fa-check valid-icon"></i>';
+                    emailValidationIcon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    checkEmailOnServer(emailInput.value);
                 } else {
                     emailInput.classList.add('is-invalid');
                     emailInput.classList.remove('is-valid');
@@ -355,6 +360,37 @@
             }
             updateSubmitButton();
         });
+
+        // Асинхронная проверка email на сервере
+        function checkEmailOnServer(email) {
+            fetch('/auth/check-email?email=' + encodeURIComponent(email))
+                .then(response => response.json())
+                .then(data => {
+                    if (data) { // Если email существует
+                        emailInput.classList.add('is-invalid');
+                        emailInput.classList.remove('is-valid');
+                        emailValidationIcon.innerHTML = '<i class="fas fa-times invalid-icon"></i>';
+                        emailServerError.textContent = 'Этот email уже зарегистрирован';
+                        emailServerError.style.display = 'block';
+                        emailValidFromServer = false;
+                    } else {
+                        emailInput.classList.add('is-valid');
+                        emailInput.classList.remove('is-invalid');
+                        emailValidationIcon.innerHTML = '<i class="fas fa-check valid-icon"></i>';
+                        emailServerError.style.display = 'none';
+                        emailValidFromServer = true;
+                    }
+                    updateSubmitButton();
+                })
+                .catch(error => {
+                    console.error('Ошибка при проверке email:', error);
+                    emailValidationIcon.innerHTML = '<i class="fas fa-times invalid-icon"></i>';
+                    emailServerError.textContent = 'Ошибка проверки email';
+                    emailServerError.style.display = 'block';
+                    emailValidFromServer = false;
+                    updateSubmitButton();
+                });
+        }
 
         passwordInput.addEventListener('input', function() {
             const pwd = passwordInput.value;
@@ -443,7 +479,7 @@
         });
 
         function updateSubmitButton() {
-            const isEmailValid = emailInput.value.length > 0 && emailInput.classList.contains('is-valid');
+            const isEmailValid = emailInput.value.length > 0 && emailInput.classList.contains('is-valid') && emailValidFromServer;
             const isPhoneValid = phoneDisplay.value.length > 0 && phoneDisplay.classList.contains('is-valid');
             const isPwdValid = passwordInput.value.length >= 6;
             const isConfirmValid = (confirmPasswordInput.value === passwordInput.value) && (confirmPasswordInput.value.length > 0);
@@ -461,7 +497,7 @@
 
         form.addEventListener('submit', function(event) {
             let isValid = true;
-            if(!emailInput.classList.contains('is-valid')) {
+            if(!emailInput.classList.contains('is-valid') || !emailValidFromServer) {
                 isValid = false;
                 emailInput.classList.add('is-invalid', 'error-shake');
                 setTimeout(() => emailInput.classList.remove('error-shake'), 600);
@@ -483,7 +519,7 @@
                 lastName.classList.add('is-invalid', 'error-shake');
                 setTimeout(() => lastName.classList.remove('error-shake'), 600);
             }
-            if(passwordInput.value.length < 6) {
+            if(passwordInput.value.length < 8) {
                 isValid = false;
                 passwordInput.classList.add('is-invalid', 'error-shake');
                 setTimeout(() => passwordInput.classList.remove('error-shake'), 600);

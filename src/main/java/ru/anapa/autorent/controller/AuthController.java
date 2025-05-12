@@ -22,6 +22,8 @@ import ru.anapa.autorent.model.User;
 import ru.anapa.autorent.service.UserService;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @Controller
@@ -195,6 +197,21 @@ public class AuthController {
 
             return "auth/register";
         }
+    }
+
+    @GetMapping("/api/validate/email")
+    @ResponseBody
+    public Map<String, Object> validateEmail(@RequestParam String email) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            boolean exists = userService.existsByEmail(email);
+            response.put("valid", !exists);
+            response.put("message", exists ? "Email уже используется" : "Email доступен");
+        } catch (Exception e) {
+            response.put("valid", false);
+            response.put("message", "Ошибка проверки email");
+        }
+        return response;
     }
 
     @PostMapping("auth/login")

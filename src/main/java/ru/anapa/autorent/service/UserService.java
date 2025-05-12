@@ -124,9 +124,9 @@ public class UserService implements UserDetailsService {
         }
 
         // Простейшая проверка пароля
-        if (password == null || password.length() < 6) {
-            logger.warn("Попытка регистрации со слабым паролем");
-            throw new IllegalArgumentException("Пароль должен содержать не менее 6 символов");
+        if (password == null || password.length() < 8) {
+            logger.warn("Попытка регистрации со слишком коротким паролем");
+            throw new IllegalArgumentException("Пароль должен содержать не менее 8 символов");
         }
 
         // Создаём нового пользователя
@@ -616,9 +616,9 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-         * Класс для хранения статистики по пользователям
-         */
-        public record UserStatistics(long totalUsers, long activeUsers, long disabledUsers, long adminCount,
-                                     long newUsersLast30Days) {
+     * Класс для хранения статистики по пользователям
+     */
+    public record UserStatistics(long totalUsers, long activeUsers, long disabledUsers, long adminCount,
+                                 long newUsersLast30Days) {
     }
 }
