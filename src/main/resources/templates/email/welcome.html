@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добро пожаловать в АвтоРент</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        .welcome-message {
+            font-size: 24px;
+            text-align: center;
+            margin: 25px 0;
+            color: #2c3e50;
+        }
+        .features {
+            margin: 30px 0;
+            padding: 0;
+            list-style-type: none;
+        }
+        .features li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        .features li:before {
+            content: '✓';
+            color: #2ecc71;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        .button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 12px 20px;
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            text-align: center;
+            color: #999;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .social {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .social a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #3498db;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">АвтоРент</div>
+            <p>Прокат автомобилей</p>
+        </div>
+        
+        <div class="welcome-message">
+            Здравствуйте, <span th:text="${name}">Имя</span>!
+        </div>
+        
+        <p>Благодарим вас за регистрацию в сервисе аренды автомобилей АвтоРент. Мы рады приветствовать вас в нашем сообществе!</p>
+        
+        <p>Теперь вы можете воспользоваться всеми преимуществами нашего сервиса:</p>
+        
+        <ul class="features">
+            <li>Бронирование автомобилей онлайн</li>
+            <li>Широкий выбор автомобилей различных классов</li>
+            <li>Прозрачные тарифы без скрытых платежей</li>
+            <li>Удобная система управления бронированиями</li>
+            <li>Быстрое оформление аренды</li>
+        </ul>
+        
+        <p>Чтобы начать пользоваться сервисом, просто войдите в свой аккаунт с указанными при регистрации данными.</p>
+        
+        <a th:href="${appUrl}" class="button">Перейти на сайт</a>
+        
+        <p>Если у вас возникнут вопросы или потребуется помощь, свяжитесь с нашей службой поддержки по телефону: <strong>+7 (800) 123-45-67</strong> или по электронной почте: <strong>support@autorent.ru</strong></p>
+        
+        <div class="social">
+            <p>Следите за нами в социальных сетях:</p>
+            <a href="#">ВКонтакте</a> | 
+            <a href="#">Telegram</a> | 
+            <a href="#">Instagram</a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; 2024 АвтоРент. Все права защищены.</p>
+        <p>Это автоматическое письмо, пожалуйста, не отвечайте на него.</p>
+    </div>
+</body>
+</html> 

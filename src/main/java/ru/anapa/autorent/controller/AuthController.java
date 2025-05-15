@@ -25,11 +25,15 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 @Controller
 @RequestMapping("/")
 public class AuthController {
-
+    // В классе AuthController добавляем временное хранилище кодов
+    private final ConcurrentHashMap<String, String> emailVerificationCodes = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, String> smsVerificationCodes = new ConcurrentHashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
@@ -120,7 +124,7 @@ public class AuthController {
 
     @PostMapping("auth/register")
     public String registerUser(@Valid @ModelAttribute("user") UserRegistrationDto registrationDto,
-                               BindingResult result, Model model) {
+                               BindingResult result, Model model, HttpServletRequest request) {
         logger.info("Registration attempt with email: {}", registrationDto.getEmail());
 
         // Проверка совпадения паролей
@@ -142,17 +146,6 @@ public class AuthController {
                     false, null, null, "Пользователь с таким телефоном уже зарегистрирован"));
         }
 
-        // Проверка сложности пароля (опционально)
-        if (registrationDto.getPassword() != null && registrationDto.getPassword().length() >= 6) {
-            boolean hasUpperCase = !registrationDto.getPassword().equals(registrationDto.getPassword().toLowerCase());
-            boolean hasDigit = registrationDto.getPassword().matches(".*\\d.*");
-
-            if (!(hasUpperCase && hasDigit)) {
-                // Добавляем предупреждение, но не блокируем регистрацию
-                model.addAttribute("passwordWarning", "Рекомендуется использовать заглавные буквы и цифры для повышения безопасности");
-            }
-        }
-
         if (result.hasErrors()) {
             logger.warn("Validation errors in registration form: {}", result.getAllErrors());
             return "auth/register";
@@ -161,7 +154,7 @@ public class AuthController {
         try {
             logger.info("Attempting to create new user");
 
-            // Нормализуем email перед сохранением (приводим к нижнему регистру и удаляем пробелы)
+            // Нормализуем email перед сохранением
             String normalizedEmail = registrationDto.getEmail().toLowerCase().trim();
 
             User user = userService.registerUser(
@@ -174,30 +167,15 @@ public class AuthController {
 
             logger.info("User created successfully with ID: {}", user.getId());
 
-            // Перенаправляем на страницу логина с параметрами успешной регистрации
             return "redirect:/auth/login?success=true&name=" + user.getFirstName();
 
         } catch (Exception e) {
             logger.error("Error during registration: {}", e.getMessage(), e);
-
-            // Обработка различных типов ошибок
-            if (e.getMessage() != null) {
-                if (e.getMessage().contains("email")) {
-                    result.addError(new FieldError("user", "email", registrationDto.getEmail(),
-                            false, null, null, "Пользователь с таким email уже существует"));
-                } else if (e.getMessage().contains("телефон")) {
-                    result.addError(new FieldError("user", "phone", registrationDto.getPhone(),
-                            false, null, null, "Пользователь с таким телефоном уже существует"));
-                } else {
-                    model.addAttribute("error", "Произошла ошибка при регистрации: " + e.getMessage());
-                }
-            } else {
-                model.addAttribute("error", "Произошла неизвестная ошибка при регистрации");
-            }
-
+            model.addAttribute("error", "Произошла ошибка при регистрации: " + e.getMessage());
             return "auth/register";
         }
     }
+
 
     @GetMapping("/api/validate/email")
     @ResponseBody
@@ -355,4 +333,94 @@ public class AuthController {
             return "error";
         }
     }
+
+
+    // Эндпоинт для отправки кода на email
+    @PostMapping("/auth/send-email-code")
+    @ResponseBody
+    public Map<String, Object> sendEmailCode(@RequestParam("email") String email) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // Имитация генерации кода
+            String code = "123456"; // В реальном проекте генерировать случайный код
+            emailVerificationCodes.put(email.toLowerCase().trim(), code);
+            logger.info("Generated email verification code for {}: {}", email, code);
+            // В реальном проекте здесь отправка email через сервис (например, JavaMailSender)
+            response.put("success", true);
+            response.put("message", "Код отправлен на email");
+        } catch (Exception e) {
+            logger.error("Error sending email code to {}: {}", email, e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "Ошибка при отправке кода на email");
+        }
+        return response;
+    }
+
+    // Эндпоинт для проверки кода email
+    @PostMapping("/auth/verify-email-code")
+    @ResponseBody
+    public Map<String, Object> verifyEmailCode(@RequestParam("email") String email, @RequestParam("code") String code) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            String storedCode = emailVerificationCodes.get(email.toLowerCase().trim());
+            if (storedCode != null && storedCode.equals(code)) {
+                response.put("success", true);
+                response.put("message", "Код подтвержден");
+                emailVerificationCodes.remove(email.toLowerCase().trim()); // Удаляем после успешной проверки
+            } else {
+                response.put("success", false);
+                response.put("message", "Неверный код");
+            }
+        } catch (Exception e) {
+            logger.error("Error verifying email code for {}: {}", email, e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "Ошибка при проверке кода");
+        }
+        return response;
+    }
+
+    // Эндпоинт для отправки SMS кода
+    @PostMapping("/auth/send-sms-code")
+    @ResponseBody
+    public Map<String, Object> sendSmsCode(@RequestParam("phone") String phone) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // Имитация генерации кода
+            String code = "123456"; // В реальном проекте генерировать случайный код
+            smsVerificationCodes.put(phone, code);
+            logger.info("Generated SMS verification code for {}: {}", phone, code);
+            // В реальном проекте здесь отправка SMS через API (например, Twilio)
+            response.put("success", true);
+            response.put("message", "Код отправлен на телефон");
+        } catch (Exception e) {
+            logger.error("Error sending SMS code to {}: {}", phone, e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "Ошибка при отправке кода на телефон");
+        }
+        return response;
+    }
+
+    // Эндпоинт для проверки SMS кода
+    @PostMapping("/auth/verify-sms-code")
+    @ResponseBody
+    public Map<String, Object> verifySmsCode(@RequestParam("phone") String phone, @RequestParam("code") String code) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            String storedCode = smsVerificationCodes.get(phone);
+            if (storedCode != null && storedCode.equals(code)) {
+                response.put("success", true);
+                response.put("message", "Код подтвержден");
+                smsVerificationCodes.remove(phone); // Удаляем после успешной проверки
+            } else {
+                response.put("success", false);
+                response.put("message", "Неверный код");
+            }
+        } catch (Exception e) {
+            logger.error("Error verifying SMS code for {}: {}", phone, e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "Ошибка при проверке кода");
+        }
+        return response;
+    }
+
 }

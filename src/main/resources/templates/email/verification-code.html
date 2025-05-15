@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Код подтверждения для АвтоРент</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        .verification-code {
+            font-size: 32px;
+            letter-spacing: 5px;
+            text-align: center;
+            margin: 30px 0;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            border: 1px dashed #ccc;
+            font-weight: bold;
+        }
+        .note {
+            font-size: 13px;
+            color: #777;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 12px 20px;
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            text-align: center;
+            color: #999;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">АвтоРент</div>
+            <p>Прокат автомобилей</p>
+        </div>
+        
+        <h2>Ваш код подтверждения</h2>
+        
+        <p>Для подтверждения вашего email-адреса используйте следующий код:</p>
+        
+        <div class="verification-code" th:text="${code}">123456</div>
+        
+        <p>Введите этот код на странице верификации, чтобы подтвердить ваш email и завершить регистрацию.</p>
+        
+        <p>Если вы не запрашивали этот код, просто проигнорируйте это письмо.</p>
+        
+        <a th:href="${appUrl}" class="button">Перейти на сайт</a>
+        
+        <div class="note">
+            <p>Код действителен в течение 24 часов с момента отправки этого письма.</p>
+            <p>Не передавайте этот код никому, включая сотрудников АвтоРент.</p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; 2024 АвтоРент. Все права защищены.</p>
+        <p>Это автоматическое письмо, пожалуйста, не отвечайте на него.</p>
+    </div>
+</body>
+</html> 
