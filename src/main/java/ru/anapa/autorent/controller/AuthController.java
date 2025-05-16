@@ -20,6 +20,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.anapa.autorent.dto.UserRegistrationDto;
 import ru.anapa.autorent.model.User;
 import ru.anapa.autorent.service.UserService;
+import ru.anapa.autorent.service.SmsService;
+import ru.anapa.autorent.service.VerificationTokenService;
+import ru.anapa.autorent.model.VerificationToken;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -38,6 +41,8 @@ public class AuthController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
+    private final SmsService smsService;
+    private final VerificationTokenService verificationTokenService;
 
     // Регулярное выражение для проверки телефонного номера
     private static final Pattern PHONE_PATTERN = Pattern.compile("^\\+7\\([0-9]{3}\\)[0-9]{3}-[0-9]{2}-[0-9]{2}$");
@@ -47,10 +52,14 @@ public class AuthController {
     @Autowired
     public AuthController(UserService userService,
                           AuthenticationManager authenticationManager,
-                          UserDetailsService userDetailsService) {
+                          UserDetailsService userDetailsService,
+                          SmsService smsService,
+                          VerificationTokenService verificationTokenService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
+        this.smsService = smsService;
+        this.verificationTokenService = verificationTokenService;
         logger.info("AuthController initialized");
     }
 
@@ -385,11 +394,26 @@ public class AuthController {
     public Map<String, Object> sendSmsCode(@RequestParam("phone") String phone) {
         Map<String, Object> response = new HashMap<>();
         try {
-            // Имитация генерации кода
-            String code = "123456"; // В реальном проекте генерировать случайный код
-            smsVerificationCodes.put(phone, code);
-            logger.info("Generated SMS verification code for {}: {}", phone, code);
-            // В реальном проекте здесь отправка SMS через API (например, Twilio)
+            // Проверяем формат номера телефона
+            if (!PHONE_PATTERN.matcher(phone).matches()) {
+                response.put("success", false);
+                response.put("message", "Неверный формат номера телефона");
+                return response;
+            }
+
+            // Проверяем, не превышен ли лимит попыток
+            if (verificationTokenService.hasTooManyAttempts(phone, VerificationToken.TokenType.SMS_VERIFICATION)) {
+                response.put("success", false);
+                response.put("message", "Превышен лимит попыток. Попробуйте позже");
+                return response;
+            }
+
+            // Генерируем и отправляем код
+            String code = smsService.generateAndSendOtp(phone);
+            
+            // Сохраняем код в базе данных
+            verificationTokenService.createSmsVerificationToken(phone, code);
+            
             response.put("success", true);
             response.put("message", "Код отправлен на телефон");
         } catch (Exception e) {
@@ -406,14 +430,19 @@ public class AuthController {
     public Map<String, Object> verifySmsCode(@RequestParam("phone") String phone, @RequestParam("code") String code) {
         Map<String, Object> response = new HashMap<>();
         try {
-            String storedCode = smsVerificationCodes.get(phone);
-            if (storedCode != null && storedCode.equals(code)) {
+            if (!PHONE_PATTERN.matcher(phone).matches()) {
+                response.put("success", false);
+                response.put("message", "Неверный формат номера телефона");
+                return response;
+            }
+
+            boolean isValid = verificationTokenService.verifySmsCode(phone, code);
+            if (isValid) {
                 response.put("success", true);
                 response.put("message", "Код подтвержден");
-                smsVerificationCodes.remove(phone); // Удаляем после успешной проверки
             } else {
                 response.put("success", false);
-                response.put("message", "Неверный код");
+                response.put("message", "Неверный код или срок его действия истек");
             }
         } catch (Exception e) {
             logger.error("Error verifying SMS code for {}: {}", phone, e.getMessage(), e);

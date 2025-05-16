@@ -21,6 +21,7 @@ public class VerificationTokenService {
     
     // Минимальный интервал между отправками кодов (в минутах)
     private static final int MIN_RESEND_INTERVAL_MINUTES = 2;
+    private static final int MAX_ATTEMPTS_PER_HOUR = 5;
     
     private final VerificationTokenRepository tokenRepository;
     private final EmailService emailService;
@@ -211,5 +212,22 @@ public class VerificationTokenService {
         } else {
             log.info("Просроченных токенов не найдено");
         }
+    }
+
+    /**
+     * Проверяет, не превышен ли лимит попыток отправки кода
+     *
+     * @param identifier Email или телефон
+     * @param tokenType Тип токена
+     * @return true если превышен лимит попыток
+     */
+    public boolean hasTooManyAttempts(String identifier, VerificationToken.TokenType tokenType) {
+        LocalDateTime oneHourAgo = LocalDateTime.now().minus(1, ChronoUnit.HOURS);
+        long attemptsCount = tokenRepository.countByEmailAndTokenTypeAndCreatedAtAfter(
+            identifier,
+            tokenType,
+            oneHourAgo
+        );
+        return attemptsCount >= MAX_ATTEMPTS_PER_HOUR;
     }
 } 

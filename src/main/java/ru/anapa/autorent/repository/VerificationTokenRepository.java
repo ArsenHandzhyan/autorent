@@ -39,4 +39,10 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
     boolean existsRecentToken(@Param("email") String email,
                              @Param("tokenType") VerificationToken.TokenType tokenType,
                              @Param("timeThreshold") LocalDateTime timeThreshold);
+
+    long countByEmailAndTokenTypeAndCreatedAtAfter(
+        String email,
+        VerificationToken.TokenType tokenType,
+        LocalDateTime createdAt
+    );
 } 
