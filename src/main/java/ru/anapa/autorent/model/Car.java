@@ -48,6 +48,7 @@ public class Car {
     private String registrationNumber;
 
     @Column(nullable = false)
+    @Builder.Default
     private boolean available = true;
 
     @Column
@@ -66,8 +67,10 @@ public class Car {
     private String category;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Rental> rentals = new ArrayList<>();
 
     @Transient
+    @Builder.Default
     private Map<String, Object> metadata = new HashMap<>();
 }
