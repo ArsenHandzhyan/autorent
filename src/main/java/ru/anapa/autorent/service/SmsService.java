@@ -150,8 +150,10 @@ public class SmsService {
                         .queryParam("mes", encodedMessage)
                         .queryParam("sender", smsSender)
                         .queryParam("charset", charset)
-                        .queryParam("cost", 3) // Получить стоимость
+                        .queryParam("cost", 3) // Получить стоимость и баланс
                         .queryParam("fmt", 3) // JSON формат ответа
+                        .queryParam("valid", 1) // Срок жизни сообщения 1 час
+                        .queryParam("maxsms", 1) // Максимум 1 SMS
                         .build()
                         .toUriString();
 
@@ -168,26 +170,42 @@ public class SmsService {
                 String responseBody = response.getBody();
                 log.debug("SMSC.ru response: {}", responseBody);
 
-                // Парсим JSON ответ
-                JsonNode jsonResponse = objectMapper.readTree(responseBody);
-                
-                // Проверяем наличие ошибки
-                if (jsonResponse.has("error")) {
-                    String errorCode = jsonResponse.get("error").asText();
-                    String errorMessage = getErrorMessage(errorCode);
-                    throw new RuntimeException("Ошибка SMSC.ru: " + errorMessage);
-                }
+                // Проверяем, является ли ответ JSON
+                if (responseBody.startsWith("{")) {
+                    // Парсим JSON ответ
+                    JsonNode jsonResponse = objectMapper.readTree(responseBody);
+                    
+                    // Проверяем наличие ошибки
+                    if (jsonResponse.has("error")) {
+                        String errorCode = jsonResponse.get("error").asText();
+                        String errorMessage = getErrorMessage(errorCode);
+                        throw new RuntimeException("Ошибка SMSC.ru: " + errorMessage);
+                    }
 
-                // Проверяем статус отправки
-                if (jsonResponse.has("cnt")) {
-                    int count = jsonResponse.get("cnt").asInt();
-                    if (count > 0) {
-                        log.info("SMS sent successfully to {}, cost: {}", 
-                                phoneNumber, 
-                                jsonResponse.has("cost") ? jsonResponse.get("cost").asText() : "unknown");
+                    // Проверяем статус отправки
+                    if (jsonResponse.has("cnt")) {
+                        int count = jsonResponse.get("cnt").asInt();
+                        if (count > 0) {
+                            log.info("SMS sent successfully to {}, cost: {}, balance: {}", 
+                                    phoneNumber, 
+                                    jsonResponse.has("cost") ? jsonResponse.get("cost").asText() : "unknown",
+                                    jsonResponse.has("balance") ? jsonResponse.get("balance").asText() : "unknown");
+                            return; // Успешная отправка
+                        } else {
+                            throw new RuntimeException("SMS не был отправлен");
+                        }
+                    }
+                } else {
+                    // Обработка текстового ответа
+                    if (responseBody.startsWith("ERROR")) {
+                        String errorCode = responseBody.substring(7, 8); // Получаем код ошибки
+                        String errorMessage = getErrorMessage(errorCode);
+                        throw new RuntimeException("Ошибка SMSC.ru: " + errorMessage);
+                    } else if (responseBody.startsWith("OK")) {
+                        log.info("SMS sent successfully to {}", phoneNumber);
                         return; // Успешная отправка
                     } else {
-                        throw new RuntimeException("SMS не был отправлен");
+                        throw new RuntimeException("Неизвестный формат ответа от SMSC.ru: " + responseBody);
                     }
                 }
             } catch (Exception e) {
@@ -235,7 +253,7 @@ public class SmsService {
             case "1" -> "Ошибка в параметрах";
             case "2" -> "Неверный логин или пароль";
             case "3" -> "Недостаточно средств на счете";
-            case "4" -> "IP-адрес временно заблокирован";
+            case "4", "ip is blocked" -> "IP-адрес временно заблокирован. Пожалуйста, обратитесь в службу поддержки SMSC.ru";
             case "5" -> "Неверный формат даты";
             case "6" -> "Сообщение запрещено";
             case "7" -> "Неверный формат номера телефона";
