@@ -424,6 +424,80 @@ public class AuthController {
         return response;
     }
 
+    // Эндпоинт для отправки кода верификации через звонок
+    @PostMapping("/auth/send-call-code")
+    @ResponseBody
+    public Map<String, Object> sendCallCode(@RequestParam("phone") String phone) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // Валидация номера телефона
+            if (!PHONE_PATTERN.matcher(phone).matches()) {
+                response.put("success", false);
+                response.put("message", "Неверный формат номера телефона");
+                return response;
+            }
+
+            // Проверка, не существует ли уже такой телефон
+            if (userService.existsByPhone(phone)) {
+                response.put("success", false);
+                response.put("message", "Пользователь с таким номером телефона уже зарегистрирован");
+                return response;
+            }
+
+            // Генерируем и отправляем код через звонок
+            String code = smsService.generateAndSendCallOtp(phone);
+
+            // Сохраняем код для последующей проверки
+            smsVerificationCodes.put(phone, code);
+
+            response.put("success", true);
+            response.put("message", "Код верификации отправлен через звонок на номер " + phone);
+            logger.info("Код верификации через звонок отправлен на номер: {}", phone);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Ошибка при отправке кода через звонок: " + e.getMessage());
+            logger.error("Ошибка при отправке кода через звонок на номер {}: {}", phone, e.getMessage(), e);
+        }
+
+        return response;
+    }
+
+    // Эндпоинт для проверки кода из звонка
+    @PostMapping("/auth/verify-call-code")
+    @ResponseBody
+    public Map<String, Object> verifyCallCode(@RequestParam("phone") String phone, @RequestParam("code") String code) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // Получаем сохраненный код из кэша
+            String savedCode = smsVerificationCodes.get(phone);
+
+            if (savedCode == null) {
+                response.put("success", false);
+                response.put("message", "Код верификации не был отправлен или истек срок его действия");
+                return response;
+            }
+
+            // Проверка кода
+            if (savedCode.equals(code)) {
+                response.put("success", true);
+                response.put("message", "Номер телефона успешно подтвержден");
+                logger.info("Номер телефона {} успешно подтвержден через звонок", phone);
+            } else {
+                response.put("success", false);
+                response.put("message", "Неверный код верификации");
+                logger.warn("Введен неверный код при проверке через звонок для номера {}", phone);
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Ошибка при проверке кода: " + e.getMessage());
+            logger.error("Ошибка при проверке кода из звонка для номера {}: {}", phone, e.getMessage(), e);
+        }
+
+        return response;
+    }
+
     // Эндпоинт для проверки SMS кода
     @PostMapping("/auth/verify-sms-code")
     @ResponseBody

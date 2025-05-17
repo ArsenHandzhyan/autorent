@@ -4,117 +4,106 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 
-import java.security.SecureRandom;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
+import java.net.URI;
 import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class SmsService {
 
-    @Value("${sms.api.login}")
-    private String smsLogin;
-
-    @Value("${sms.api.password}")
-    private String smsPassword;
+    @Value("${sms.api.key}")
+    private String apiKey;
 
     @Value("${sms.api.url}")
-    private String smsApiUrl;
+    private String apiUrl;
 
-    @Value("${sms.api.sender}")
-    private String smsSender;
-
-    @Value("${sms.api.charset}")
-    private String charset;
+    @Value("${sms.api.call.url:https://sms.ru/code/call}")
+    private String apiCallUrl;
 
     @Value("${sms.api.timeout:30}")
     private int timeout;
 
-    @Value("${sms.api.retry:3}")
-    private int retryCount;
+    @Value("${sms.api.test:true}")
+    private boolean testMode;
 
-    @Value("${sms.api.retry.delay:60}")
-    private int retryDelay;
+    @Value("${sms.sender.name:SMS}")
+    private String senderName;  // Добавляем стандартное имя отправителя с дефолтным значением "SMS"
 
-    @Value("${sms.api.proxy.enabled:false}")
-    private boolean proxyEnabled;
-
-    @Value("${sms.api.proxy.host:}")
-    private String proxyHost;
-
-    @Value("${sms.api.proxy.port:0}")
-    private int proxyPort;
-
-    private final RestTemplate restTemplate;
+    private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private static final int OTP_LENGTH = 6;
     private static final SecureRandom secureRandom = new SecureRandom();
-    
+
     // Кэш для хранения времени последней отправки SMS на номер
     private final ConcurrentHashMap<String, Long> lastSmsTime = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Long> lastCallTime = new ConcurrentHashMap<>();
     private static final long MIN_INTERVAL = TimeUnit.MINUTES.toMillis(1);
 
+    // Создаем конструктор без параметров
     public SmsService() {
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(timeout * 1000);
-        factory.setReadTimeout(timeout * 1000);
-        
-        // Настраиваем прокси если он включен
-        if (proxyEnabled && proxyHost != null && !proxyHost.isEmpty() && proxyPort > 0) {
-            factory.setProxy(new java.net.Proxy(
-                java.net.Proxy.Type.HTTP,
-                new java.net.InetSocketAddress(proxyHost, proxyPort)
-            ));
-            log.info("Proxy enabled: {}:{}", proxyHost, proxyPort);
-        }
-        
-        this.restTemplate = new RestTemplate(factory);
         this.objectMapper = new ObjectMapper();
+        this.httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .connectTimeout(Duration.ofSeconds(30))
+                .build();
+        log.info("SmsService инициализирован с использованием SMS.ru API");
     }
 
+    /**
+     * Генерирует и отправляет OTP-код на указанный номер телефона через SMS
+     *
+     * @param phoneNumber номер телефона
+     * @return сгенерированный OTP-код
+     */
     public String generateAndSendOtp(String phoneNumber) {
+        log.debug("Запрос на генерацию и отправку OTP для номера {}", phoneNumber);
+
+        // Проверяем, не слишком ли часто отправляем SMS
+        Long lastTime = lastSmsTime.get(phoneNumber);
+        long currentTime = System.currentTimeMillis();
+
+        if (lastTime != null && (currentTime - lastTime) < MIN_INTERVAL) {
+            long secondsToWait = (MIN_INTERVAL - (currentTime - lastTime)) / 1000;
+            log.warn("Слишком частый запрос SMS для номера {}. Нужно подождать {} секунд", phoneNumber, secondsToWait);
+            throw new RuntimeException("Пожалуйста, подождите " + secondsToWait + " секунд перед повторной отправкой SMS");
+        }
+
+        // Генерируем OTP
         String otp = generateRandomOtp();
-        
+
+        // Отправляем SMS
         try {
-            // Форматируем номер телефона для SMSC.ru (убираем все кроме цифр)
-            String formattedPhone = phoneNumber.replaceAll("[^0-9]", "");
-            if (!formattedPhone.startsWith("7")) {
-                formattedPhone = "7" + formattedPhone;
-            }
-            
-            // Проверяем, не было ли отправки SMS на этот номер в последнюю минуту
-            Long lastTime = lastSmsTime.get(formattedPhone);
-            if (lastTime != null) {
-                long timeSinceLastSms = System.currentTimeMillis() - lastTime;
-                if (timeSinceLastSms < MIN_INTERVAL) {
-                    long waitTime = MIN_INTERVAL - timeSinceLastSms;
-                    throw new RuntimeException(String.format(
-                        "Пожалуйста, подождите %d секунд перед повторной отправкой кода",
-                        TimeUnit.MILLISECONDS.toSeconds(waitTime)
-                    ));
-                }
-            }
-            
-            sendSms(formattedPhone, "Ваш код подтверждения: " + otp);
-            // Сохраняем время отправки
-            lastSmsTime.put(formattedPhone, System.currentTimeMillis());
-            log.info("OTP sent to phone number: {}", phoneNumber);
+            String message = "Ваш код подтверждения для регистрации в АвтоРент: " + otp;
+            sendSms(phoneNumber, message);
+
+            // Записываем время отправки
+            lastSmsTime.put(phoneNumber, currentTime);
+            log.info("OTP успешно отправлен на номер {}", phoneNumber);
             return otp;
         } catch (Exception e) {
-            log.error("Failed to send OTP to phone number: {}", phoneNumber, e);
-            throw new RuntimeException("Не удалось отправить код подтверждения: " + e.getMessage());
+            log.error("Ошибка при отправке OTP на номер {}: {}", phoneNumber, e.getMessage(), e);
+            throw new RuntimeException("Не удалось отправить SMS: " + e.getMessage());
         }
     }
 
+    /**
+     * Генерирует случайный OTP-код заданной длины
+     *
+     * @return сгенерированный OTP-код
+     */
     private String generateRandomOtp() {
         StringBuilder otp = new StringBuilder();
         for (int i = 0; i < OTP_LENGTH; i++) {
@@ -123,145 +112,204 @@ public class SmsService {
         return otp.toString();
     }
 
+    /**
+     * Отправляет SMS-сообщение через API SMS.ru
+     *
+     * @param phoneNumber номер телефона получателя
+     * @param message     текст сообщения
+     * @throws Exception если произошла ошибка при отправке
+     */
     private void sendSms(String phoneNumber, String message) {
-        int attempts = 0;
-        Exception lastException = null;
-
-        while (attempts < retryCount) {
-            try {
-                // Проверяем имя отправителя
-                if (smsSender == null || smsSender.trim().isEmpty()) {
-                    throw new RuntimeException("Имя отправителя не настроено");
-                }
-                
-                log.info("Using sender name: {}", smsSender);
-                
-                // Кодируем пароль в MD5
-                String md5Password = getMD5Hash(smsPassword);
-                
-                // Кодируем сообщение в URL-формат
-                String encodedMessage = URLEncoder.encode(message, StandardCharsets.UTF_8);
-                
-                // Формируем URL с параметрами для SMSC.ru
-                String url = UriComponentsBuilder.fromHttpUrl(smsApiUrl)
-                        .queryParam("login", smsLogin)
-                        .queryParam("psw", md5Password)
-                        .queryParam("phones", phoneNumber)
-                        .queryParam("mes", encodedMessage)
-                        .queryParam("sender", smsSender)
-                        .queryParam("charset", charset)
-                        .queryParam("cost", 3) // Получить стоимость и баланс
-                        .queryParam("fmt", 3) // JSON формат ответа
-                        .queryParam("valid", 1) // Срок жизни сообщения 1 час
-                        .queryParam("maxsms", 1) // Максимум 1 SMS
-                        .build()
-                        .toUriString();
-
-                log.info("Sending SMS request to SMSC.ru for phone: {}", phoneNumber);
-                log.debug("Request URL: {}", url);
-                
-                // Отправляем GET запрос
-                ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-
-                if (!response.getStatusCode().is2xxSuccessful()) {
-                    throw new RuntimeException("SMSC.ru вернул ошибку: " + response.getStatusCode());
-                }
-
-                String responseBody = response.getBody();
-                log.debug("SMSC.ru response: {}", responseBody);
-
-                // Проверяем, является ли ответ JSON
-                if (responseBody.startsWith("{")) {
-                    // Парсим JSON ответ
-                    JsonNode jsonResponse = objectMapper.readTree(responseBody);
-                    
-                    // Проверяем наличие ошибки
-                    if (jsonResponse.has("error")) {
-                        String errorCode = jsonResponse.get("error").asText();
-                        String errorMessage = getErrorMessage(errorCode);
-                        throw new RuntimeException("Ошибка SMSC.ru: " + errorMessage);
-                    }
-
-                    // Проверяем статус отправки
-                    if (jsonResponse.has("cnt")) {
-                        int count = jsonResponse.get("cnt").asInt();
-                        if (count > 0) {
-                            log.info("SMS sent successfully to {}, cost: {}, balance: {}", 
-                                    phoneNumber, 
-                                    jsonResponse.has("cost") ? jsonResponse.get("cost").asText() : "unknown",
-                                    jsonResponse.has("balance") ? jsonResponse.get("balance").asText() : "unknown");
-                            return; // Успешная отправка
-                        } else {
-                            throw new RuntimeException("SMS не был отправлен");
-                        }
-                    }
-                } else {
-                    // Обработка текстового ответа
-                    if (responseBody.startsWith("ERROR")) {
-                        String errorCode = responseBody.substring(7, 8); // Получаем код ошибки
-                        String errorMessage = getErrorMessage(errorCode);
-                        throw new RuntimeException("Ошибка SMSC.ru: " + errorMessage);
-                    } else if (responseBody.startsWith("OK")) {
-                        log.info("SMS sent successfully to {}", phoneNumber);
-                        return; // Успешная отправка
-                    } else {
-                        throw new RuntimeException("Неизвестный формат ответа от SMSC.ru: " + responseBody);
-                    }
-                }
-            } catch (Exception e) {
-                lastException = e;
-                attempts++;
-                if (attempts < retryCount) {
-                    log.warn("Attempt {} failed, retrying... Error: {}", attempts, e.getMessage());
-                    try {
-                        // Используем настраиваемую задержку между попытками
-                        Thread.sleep(retryDelay * 1000L);
-                    } catch (InterruptedException ie) {
-                        Thread.currentThread().interrupt();
-                        throw new RuntimeException("SMS sending interrupted", ie);
-                    }
-                }
-            }
-        }
-
-        // Если все попытки не удались
-        log.error("All {} attempts to send SMS failed", retryCount);
-        throw new RuntimeException("Ошибка при отправке SMS после " + retryCount + " попыток: " + 
-                (lastException != null ? lastException.getMessage() : "Unknown error"));
-    }
-
-    private String getMD5Hash(String input) {
         try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] messageDigest = md.digest(input.getBytes(StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : messageDigest) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
+            log.debug("Отправка SMS на номер {}: {}", phoneNumber, message);
+
+            // Создаем параметры запроса
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("api_id", apiKey);
+            parameters.put("to", phoneNumber);
+            parameters.put("msg", message);
+            parameters.put("json", "1");  // Получаем ответ в формате JSON
+
+            // Удаляем параметр from, чтобы использовалось имя отправителя по умолчанию
+            // parameters.put("from", senderName);
+
+            if (testMode) {
+                parameters.put("test", "1");  // Включаем тестовый режим
+                log.debug("Используется тестовый режим отправки SMS");
             }
-            return hexString.toString();
+
+            // Формируем строку запроса из параметров
+            String requestBody = parameters.entrySet()
+                    .stream()
+                    .map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8))
+                    .collect(Collectors.joining("&"));
+
+            // Создаем POST запрос
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl))
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+
+            // Отправляем запрос и получаем ответ
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            // Обрабатываем ответ
+            int statusCode = response.statusCode();
+            String responseBody = response.body();
+            log.debug("Ответ от SMS.ru API (код {}): {}", statusCode, responseBody);
+
+            if (statusCode != 200) {
+                throw new RuntimeException("Ошибка API SMS.ru: HTTP " + statusCode);
+            }
+
+            // Парсим JSON ответ
+            JsonNode rootNode = objectMapper.readTree(responseBody);
+
+            if (rootNode.has("status_code")) {
+                int apiStatusCode = rootNode.path("status_code").asInt();
+
+                if (apiStatusCode != 100) {
+                    String errorMessage = "Ошибка API SMS.ru: " + rootNode.path("status_text").asText();
+                    log.error(errorMessage);
+                    throw new RuntimeException(errorMessage);
+                }
+
+                // Проверяем статус отправки для указанного номера
+                if (rootNode.has("sms") && rootNode.path("sms").has(phoneNumber)) {
+                    JsonNode smsNode = rootNode.path("sms").path(phoneNumber);
+                    if (smsNode.has("status_code") && smsNode.path("status_code").asInt() != 100) {
+                        String errorMessage = "Ошибка отправки SMS на номер " + phoneNumber + ": " +
+                                smsNode.path("status_text").asText();
+                        log.error(errorMessage);
+                        throw new RuntimeException(errorMessage);
+                    }
+                }
+            }
+
+            log.info("SMS успешно отправлено на номер {}", phoneNumber);
+
         } catch (Exception e) {
-            throw new RuntimeException("Ошибка при создании MD5 хеша: " + e.getMessage());
+            log.error("Ошибка при отправке SMS: {}", e.getMessage(), e);
+            throw new RuntimeException("Не удалось отправить SMS: " + e.getMessage());
         }
     }
 
-    private String getErrorMessage(String errorCode) {
-        return switch (errorCode) {
-            case "1" -> "Ошибка в параметрах";
-            case "2" -> "Неверный логин или пароль";
-            case "3" -> "Недостаточно средств на счете";
-            case "4", "ip is blocked" -> "IP-адрес временно заблокирован. Пожалуйста, обратитесь в службу поддержки SMSC.ru";
-            case "5" -> "Неверный формат даты";
-            case "6" -> "Сообщение запрещено";
-            case "7" -> "Неверный формат номера телефона";
-            case "8" -> "Сообщение на указанный номер не может быть доставлено";
-            case "9" -> "Отправка более одного одинакового запроса на отправку SMS-сообщения в течение минуты";
-            case "authorise error" -> "Ошибка авторизации. Проверьте логин и пароль";
-            case "duplicate request, wait a minute" -> "Пожалуйста, подождите минуту перед повторной отправкой кода";
-            default -> "Неизвестная ошибка: " + errorCode;
-        };
+    /**
+     * Отправляет запрос на звонок с кодом через API SMS.ru
+     *
+     * @param phoneNumber номер телефона получателя
+     * @param code        код, который будет продиктован при звонке
+     * @throws Exception если произошла ошибка при отправке
+     */
+    private void sendCallOtp(String phoneNumber, String code) {
+        try {
+            log.debug("Инициация звонка с кодом {} на номер {}", code, phoneNumber);
+
+            // Создаем параметры запроса
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("api_id", apiKey);
+            parameters.put("phone", phoneNumber);
+            parameters.put("code", code);
+            parameters.put("json", "1");  // Получаем ответ в формате JSON
+
+            if (testMode) {
+                parameters.put("test", "1");  // Включаем тестовый режим
+                log.debug("Используется тестовый режим для звонка");
+            }
+
+            // Формируем строку запроса из параметров
+            String requestBody = parameters.entrySet()
+                    .stream()
+                    .map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8))
+                    .collect(Collectors.joining("&"));
+
+            // Создаем POST запрос
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiCallUrl))
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+
+            // Отправляем запрос и получаем ответ
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            // Обрабатываем ответ
+            int statusCode = response.statusCode();
+            String responseBody = response.body();
+            log.debug("Ответ от SMS.ru API для звонка (код {}): {}", statusCode, responseBody);
+
+            if (statusCode != 200) {
+                throw new RuntimeException("Ошибка API SMS.ru для звонка: HTTP " + statusCode);
+            }
+
+            // Парсим JSON ответ
+            JsonNode rootNode = objectMapper.readTree(responseBody);
+
+            if (rootNode.has("status_code")) {
+                int apiStatusCode = rootNode.path("status_code").asInt();
+
+                if (apiStatusCode != 100) {
+                    String errorMessage = "Ошибка API SMS.ru для звонка: " + rootNode.path("status_text").asText();
+                    log.error(errorMessage);
+                    throw new RuntimeException(errorMessage);
+                }
+            }
+
+            log.info("Звонок с кодом успешно инициирован на номер {}", phoneNumber);
+
+        } catch (Exception e) {
+            log.error("Ошибка при инициации звонка с кодом: {}", e.getMessage(), e);
+            throw new RuntimeException("Не удалось выполнить звонок с кодом: " + e.getMessage());
+        }
     }
-} 
+
+    /**
+     * Генерирует случайный OTP-код заданной длины для звонка (4 цифры)
+     *
+     * @return сгенерированный OTP-код для звонка
+     */
+    private String generateRandomCallOtp() {
+        StringBuilder otp = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            otp.append(secureRandom.nextInt(10));
+        }
+        return otp.toString();
+    }
+
+    /**
+     * Генерирует и отправляет OTP-код на указанный номер телефона через звонок
+     *
+     * @param phoneNumber номер телефона
+     * @return сгенерированный OTP-код
+     */
+    public String generateAndSendCallOtp(String phoneNumber) {
+        log.debug("Запрос на генерацию и отправку OTP через звонок для номера {}", phoneNumber);
+
+        // Проверяем, не слишком ли часто отправляем звонки
+        Long lastTime = lastCallTime.get(phoneNumber);
+        long currentTime = System.currentTimeMillis();
+
+        if (lastTime != null && (currentTime - lastTime) < MIN_INTERVAL) {
+            long secondsToWait = (MIN_INTERVAL - (currentTime - lastTime)) / 1000;
+            log.warn("Слишком частый запрос звонка для номера {}. Нужно подождать {} секунд", phoneNumber, secondsToWait);
+            throw new RuntimeException("Пожалуйста, подождите " + secondsToWait + " секунд перед повторным звонком");
+        }
+
+        // Генерируем OTP (4 цифры для звонка)
+        String otp = generateRandomCallOtp();
+
+        // Отправляем запрос на звонок с кодом
+        try {
+            sendCallOtp(phoneNumber, otp);
+
+            // Записываем время звонка
+            lastCallTime.put(phoneNumber, currentTime);
+            log.info("Звонок с OTP успешно инициирован на номер {}", phoneNumber);
+            return otp;
+        } catch (Exception e) {
+            log.error("Ошибка при инициации звонка с OTP на номер {}: {}", phoneNumber, e.getMessage(), e);
+            throw new RuntimeException("Не удалось выполнить звонок с кодом: " + e.getMessage());
+        }
+    }
+}
