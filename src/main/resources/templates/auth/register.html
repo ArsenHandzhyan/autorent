@@ -114,6 +114,16 @@
             display: flex;
             align-items: flex-start;
         }
+        /* Стили для кнопок верификации */
+        .phone-verification-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .phone-verification-buttons button {
+            flex: 1;
+            min-width: 200px;
+        }
     </style>
 </head>
 <body>
@@ -129,30 +139,6 @@
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
             <div class="form-group">
-                <label for="email">Email:</label>
-                <div class="input-with-icon">
-                    <input type="email" id="email" th:field="*{email}" required
-                           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
-                    <span class="validation-icon" id="emailValidationIcon"></span>
-                </div>
-                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></span>
-                <span id="emailServerError" class="error-message" style="display:none;"></span>
-                <small class="field-info">Будет использоваться для входа в систему</small>
-            </div>
-
-            <div class="form-group" id="emailVerificationBlock" style="display:none;">
-                <label for="emailCode">Код из Email:</label>
-                <div class="input-group">
-                    <input type="text" id="emailCode" placeholder="Введите код из Email" aria-label="Email код">
-                    <button type="button" class="btn btn-outline-primary" id="verifyEmailButton">Проверить</button>
-                </div>
-                <span id="emailVerificationStatus" class="error-message" style="display:none;"></span>
-            </div>
-            <div class="form-group">
-                <button type="button" class="btn btn-secondary" id="sendEmailCodeButton">Отправить код на Email</button>
-            </div>
-
-            <div class="form-group">
                 <label for="firstName">Имя:</label>
                 <input type="text" id="firstName" th:field="*{firstName}" required minlength="2">
                 <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error-message"></span>
@@ -166,9 +152,9 @@
             <div class="form-group">
                 <label for="phoneDisplay">Телефон:</label>
                 <div class="input-group">
-                    <input type="tel" id="phoneDisplay" placeholder="+7(XXX)XXX-XX-XX" aria-label="Телефон без кода">
+                    <input type="tel" id="phoneDisplay" placeholder="+7(XXX)XXX-XX-XX" aria-label="Телефон" required pattern="\\+7\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}" autocomplete="tel" title="Введите номер в формате +7(XXX)XXX-XX-XX">
                 </div>
-
+                <small class="form-text text-muted">Формат: +7(XXX)XXX-XX-XX</small>
                 <input type="hidden" th:field="*{phone}" id="phone" name="phone">
                 <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message"></span>
             </div>
@@ -183,19 +169,23 @@
                 <span id="smsVerificationStatus" class="error-message" style="display:none;"></span>
             </div>
 
-            <!-- Блок с кодом из звонка -->
-            <div class="form-group" id="callVerificationBlock" style="display:none;">
-                <label for="callCode">Код из звонка:</label>
-                <div class="input-group">
-                    <input type="text" id="callCode" placeholder="Введите код из звонка" aria-label="Код из звонка">
-                    <button type="button" class="btn btn-outline-primary" id="verifyCallButton">Проверить</button>
+            <!-- Блок статуса звонка -->
+            <div class="form-group" id="callStatusBlock" style="display:none;">
+                <div class="alert alert-info">
+                    <i class="fas fa-phone me-2"></i>
+                    <span id="callStatusMessage">Ожидаем звонок...</span>
+                    <div id="callTimer" class="mt-2"></div>
                 </div>
-                <span id="callVerificationStatus" class="error-message" style="display:none;"></span>
             </div>
 
             <div class="form-group phone-verification-buttons">
-                <button type="button" class="btn btn-secondary" id="sendCallCodeButton">Получить код через звонок</button>
-                <button type="button" class="btn btn-secondary" id="sendSmsCodeButton">Отправить SMS с кодом</button>
+                <button type="button" class="btn btn-primary" id="sendCallCodeButton">
+                    <i class="fas fa-phone me-2"></i>Подтвердить номер звонком
+                </button>
+                <button type="button" class="btn btn-secondary" id="sendSmsCodeButton">
+                    <i class="fas fa-sms me-2"></i>Отправить SMS с кодом
+                </button>
+                <span id="phoneVerificationError" class="error-message" style="display:none;">Необходимо подтвердить номер телефона</span>
             </div>
 
             <div class="form-group">
@@ -206,8 +196,7 @@
                 </div>
                 <div class="password-strength" id="passwordStrength"></div>
                 <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></span>
-                <small class="field-info">Минимум 8 символов, рекомендуется использовать буквы, цифры и специальные
-                    символы</small>
+                <small class="field-info">Минимум 8 символов, рекомендуется использовать буквы, цифры и специальные символы</small>
             </div>
             <div class="form-group">
                 <label for="confirmPassword">Подтверждение пароля:</label>
@@ -215,8 +204,7 @@
                     <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required minlength="8">
                     <i class="fas fa-eye-slash input-icon password-toggle" id="confirmPasswordToggle"></i>
                 </div>
-                <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"
-                      class="error-message"></span>
+                <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="error-message"></span>
                 <small class="field-info">Повторите пароль для подтверждения</small>
             </div>
 
@@ -238,698 +226,211 @@
     </div>
 </main>
 
-
-<div aria-live="polite" aria-atomic="true" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-    <div id="registrationToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <strong class="me-auto">Успех</strong>
-            <small>только что</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
-        </div>
-        <div class="toast-body">
-            Регистрация прошла успешно! Пожалуйста, войдите в систему.
-        </div>
-    </div>
-</div>
-
-
-<!-- Модальное окно для условий использования -->
-<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="termsModalLabel">Условия использования</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body">
-                <p>Настоящие Условия использования определяют правила и условия использования сервиса АвтоРент.</p>
-                <p>Регистрируясь на сайте, вы соглашаетесь с данными условиями.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary modal-close-btn">Понятно</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Модальное окно для политики конфиденциальности -->
-<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="privacyModalLabel">Политика конфиденциальности</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body">
-                <p>Настоящая Политика конфиденциальности определяет, как АвтоРент собирает, использует и защищает
-                    информацию, которую вы предоставляете при использовании нашего сервиса.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary modal-close-btn">Понятно</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div th:replace="~{fragments/footer :: footer}"></div>
-
-<!-- Скрипты Bootstrap и наш JS-код -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 <script th:inline="javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        // Инициализация модальных окон
-        const termsModal = new bootstrap.Modal(document.getElementById('termsModal'));
-        const privacyModal = new bootstrap.Modal(document.getElementById('privacyModal'));
+    $(document).ready(function() {
+        let callCheckInterval;
+        let callTimerInterval;
+        let timeLeft = 300; // 5 минут в секундах
 
-        // Обработчики для открытия модальных окон
-        document.querySelector('.terms-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            termsModal.show();
+        // Маска для телефона
+        $('#phoneDisplay').mask('+7(000)000-00-00');
+
+        // Обработчик изменения телефона
+        $('#phoneDisplay').on('input', function() {
+            var phone = $(this).val();
+            $('#phone').val(phone);
+            validateForm();
         });
 
-        document.querySelector('.privacy-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            privacyModal.show();
-        });
-
-        // Обработчики для закрытия модальных окон
-        document.querySelectorAll('.modal-close-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const modalElement = this.closest('.modal');
-                const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                modalInstance.hide();
-            });
-        });
-
-        document.querySelectorAll('.btn-close').forEach(button => {
-            button.addEventListener('click', function() {
-                const modalElement = this.closest('.modal');
-                const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                modalInstance.hide();
-            });
-        });
-
-        // Элементы формы и валидации
-        const form = document.getElementById('registrationForm');
-        const emailInput = document.getElementById('email');
-        const phoneDisplay = document.getElementById('phoneDisplay');
-        const phoneField = document.getElementById('phone');
-        const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('confirmPassword');
-        const passwordToggle = document.getElementById('passwordToggle');
-        const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
-        const passwordStrength = document.getElementById('passwordStrength');
-        const termsCheckbox = document.getElementById('termsAgreement');
-        const registerButton = document.getElementById('registerButton');
-        const emailValidationIcon = document.getElementById('emailValidationIcon');
-        const emailServerError = document.getElementById('emailServerError');
-
-        // Элементы для проверки email
-        const sendEmailButton = document.getElementById('sendEmailCodeButton');
-        const emailVerificationBlock = document.getElementById('emailVerificationBlock');
-        const verifyEmailButton = document.getElementById('verifyEmailButton');
-        const emailCodeInput = document.getElementById('emailCode');
-        const emailVerificationStatus = document.getElementById('emailVerificationStatus');
-
-        // Элементы СМС проверки
-        const sendSmsButton = document.getElementById('sendSmsCodeButton');
-        const smsVerificationBlock = document.getElementById('smsVerificationBlock');
-        const verifySmsButton = document.getElementById('verifySmsButton');
-        const smsCodeInput = document.getElementById('smsCode');
-        const smsVerificationStatus = document.getElementById('smsVerificationStatus');
-
-        // Элементы проверки через звонок
-        const sendCallButton = document.getElementById('sendCallCodeButton');
-        const callVerificationBlock = document.getElementById('callVerificationBlock');
-        const verifyCallButton = document.getElementById('verifyCallButton');
-        const callCodeInput = document.getElementById('callCode');
-        const callVerificationStatus = document.getElementById('callVerificationStatus');
-
-        // Извлекаем CSRF-токен и имя заголовка из мета-тегов
-        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-        let emailValidFromServer = false;
-        let emailVerified = false;
-        let phoneVerified = false;
-        let verificationMethod = null; // 'sms' или 'call'
-
-        // Обработка ввода номера телефона в поле phoneDisplay
-        phoneDisplay.addEventListener('input', function(e) {
-            let digits = e.target.value.replace(/\D/g, '');
-            if(digits.startsWith('8')) {
-                digits = digits.substring(1);
+        // Обработчики для кнопок верификации телефона
+        $('#sendCallCodeButton').click(function() {
+            var phone = $('#phone').val();
+            if (!phone) {
+                showError('phoneVerificationError', 'Введите номер телефона');
+                return;
             }
-            if(digits.length > 10) {
-                digits = digits.substring(0,10);
-            }
-            let formatted = '';
-            if(digits.length > 0) {
-                formatted = '(' + digits.substring(0, Math.min(3, digits.length));
-            }
-            if(digits.length >= 4) {
-                formatted += ')' + digits.substring(3, Math.min(6, digits.length));
-            }
-            if(digits.length >= 7) {
-                formatted += '-' + digits.substring(6, Math.min(8, digits.length));
-            }
-            if(digits.length >= 9) {
-                formatted += '-' + digits.substring(8, Math.min(10, digits.length));
-            }
-            phoneDisplay.value = formatted;
-            phoneField.value = "+7" + formatted;
-            validatePhone();
-        });
 
-        function validatePhone() {
-            const phonePattern = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
-            const fullNumber = phoneField.value;
-            const isValid = phonePattern.test(fullNumber);
-            if(fullNumber.length > 0) {
-                if(isValid) {
-                    phoneDisplay.classList.add('is-valid');
-                    phoneDisplay.classList.remove('is-invalid');
-                } else {
-                    phoneDisplay.classList.add('is-invalid');
-                    phoneDisplay.classList.remove('is-valid');
-                }
-            } else {
-                phoneDisplay.classList.remove('is-valid');
-                phoneDisplay.classList.remove('is-invalid');
-            }
-            updateSubmitButton();
-        }
+            // Сброс предыдущих таймеров
+            if (callCheckInterval) clearInterval(callCheckInterval);
+            if (callTimerInterval) clearInterval(callTimerInterval);
+            timeLeft = 300;
 
-        emailInput.addEventListener('input', function() {
-            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            const isValid = emailPattern.test(emailInput.value);
-            emailServerError.style.display = 'none';
-            emailValidFromServer = false;
-
-            if(emailInput.value.length > 0) {
-                if(isValid) {
-                    emailInput.classList.add('is-valid');
-                    emailInput.classList.remove('is-invalid');
-                    emailValidationIcon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                    checkEmailOnServer(emailInput.value);
-                } else {
-                    emailInput.classList.add('is-invalid');
-                    emailInput.classList.remove('is-valid');
-                    emailValidationIcon.innerHTML = '<i class="fas fa-times invalid-icon"></i>';
-                }
-            } else {
-                emailInput.classList.remove('is-valid');
-                emailInput.classList.remove('is-invalid');
-                emailValidationIcon.innerHTML = '';
-            }
-            updateSubmitButton();
-        });
-
-        function checkEmailOnServer(email) {
-            fetch('/auth/check-email?email=' + encodeURIComponent(email))
-                .then(response => response.json())
-                .then(data => {
-                    if (data) { // Если email существует
-                        emailInput.classList.add('is-invalid');
-                        emailInput.classList.remove('is-valid');
-                        emailValidationIcon.innerHTML = '<i class="fas fa-times invalid-icon"></i>';
-                        emailServerError.textContent = 'Этот email уже зарегистрирован';
-                        emailServerError.style.display = 'block';
-                        emailValidFromServer = false;
+            $.ajax({
+                url: '/auth/initiate-call-auth',
+                method: 'POST',
+                data: { phone: phone },
+                success: function(response) {
+                    if (response.success) {
+                        $('#callStatusBlock').show();
+                        $('#smsVerificationBlock').hide();
+                        $('#callStatusMessage').html('Пожалуйста, позвоните на номер: <strong>' + response.call_phone_pretty + '</strong>');
+                        
+                        // Запуск таймера
+                        updateCallTimer();
+                        callTimerInterval = setInterval(updateCallTimer, 1000);
+                        
+                        // Запуск проверки статуса с использованием check_id
+                        startCallStatusCheck(response.check_id);
                     } else {
-                        emailInput.classList.add('is-valid');
-                        emailInput.classList.remove('is-invalid');
-                        emailValidationIcon.innerHTML = '<i class="fas fa-check valid-icon"></i>';
-                        emailServerError.style.display = 'none';
-                        emailValidFromServer = true;
+                        showError('callStatusMessage', response.message);
                     }
-                    updateSubmitButton();
-                })
-                .catch(error => {
-                    console.error('Ошибка при проверке email:', error);
-                    emailValidationIcon.innerHTML = '<i class="fas fa-times invalid-icon"></i>';
-                    emailServerError.textContent = 'Ошибка проверки email';
-                    emailServerError.style.display = 'block';
-                    emailValidFromServer = false;
-                    updateSubmitButton();
+                },
+                error: function() {
+                    showError('callStatusMessage', 'Ошибка при инициализации звонка');
+                }
+            });
+        });
+
+        function updateCallTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            $('#callTimer').text(`Осталось времени: ${minutes}:${seconds.toString().padStart(2, '0')}`);
+            
+            if (timeLeft <= 0) {
+                clearInterval(callTimerInterval);
+                clearInterval(callCheckInterval);
+                $('#callStatusBlock').hide();
+                showError('phoneVerificationError', 'Время ожидания звонка истекло');
+            }
+            timeLeft--;
+        }
+
+        function startCallStatusCheck(checkId) {
+            callCheckInterval = setInterval(function() {
+                $.ajax({
+                    url: '/auth/check-call-status',
+                    method: 'POST',
+                    data: { check_id: checkId },
+                    success: function(response) {
+                        if (response.success) {
+                            clearInterval(callCheckInterval);
+                            clearInterval(callTimerInterval);
+                            $('#callStatusBlock').hide();
+                            showSuccess('phoneVerificationError', 'Номер телефона успешно подтвержден');
+                            validateForm();
+                        } else if (response.message === 'Время ожидания звонка истекло') {
+                            clearInterval(callCheckInterval);
+                            clearInterval(callTimerInterval);
+                            $('#callStatusBlock').hide();
+                            showError('phoneVerificationError', 'Время ожидания звонка истекло');
+                        }
+                    }
                 });
+            }, 5000); // Проверка каждые 5 секунд
         }
 
-        // Обработчик отправки кода на email
-        sendEmailButton.addEventListener('click', function() {
-            if (!emailInput.classList.contains('is-valid') || !emailValidFromServer) {
-                emailInput.classList.add('is-invalid', 'error-shake');
-                setTimeout(() => emailInput.classList.remove('error-shake'), 600);
-                return;
-            }
-            emailVerificationStatus.style.display = 'none';
-            emailVerificationStatus.textContent = '';
-            emailVerificationBlock.style.display = 'block';
-            fetch('/auth/send-email-code', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    [csrfHeader]: csrfToken
-                },
-                body: 'email=' + encodeURIComponent(emailInput.value)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Код подтверждения отправлен на ваш email (имитация). Введите код '123456' для проверки.");
-                } else {
-                    emailVerificationStatus.style.display = 'block';
-                    emailVerificationStatus.style.color = '#e74c3c';
-                    emailVerificationStatus.textContent = data.message || "Ошибка отправки кода";
-                }
-            })
-            .catch(error => {
-                emailVerificationStatus.style.display = 'block';
-                emailVerificationStatus.style.color = '#e74c3c';
-                emailVerificationStatus.textContent = "Ошибка отправки кода";
-                console.error('Ошибка отправки кода на email:', error);
-            });
-        });
-
-        // Обработчик проверки кода email
-        verifyEmailButton.addEventListener('click', function() {
-            const code = emailCodeInput.value.trim();
-            fetch('/auth/verify-email-code', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    [csrfHeader]: csrfToken
-                },
-                body: 'email=' + encodeURIComponent(emailInput.value) + '&code=' + encodeURIComponent(code)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    emailVerificationStatus.style.display = 'block';
-                    emailVerificationStatus.style.color = '#2ecc71';
-                    emailVerificationStatus.textContent = "Код подтвержден";
-                    emailCodeInput.dataset.verified = "true";
-                    emailVerified = true;
-                } else {
-                    emailVerificationStatus.style.display = 'block';
-                    emailVerificationStatus.style.color = '#e74c3c';
-                    emailVerificationStatus.textContent = data.message || "Неверный код";
-                    emailCodeInput.dataset.verified = "false";
-                    emailVerified = false;
-                }
-                updateSubmitButton();
-            })
-            .catch(error => {
-                emailVerificationStatus.style.display = 'block';
-                emailVerificationStatus.style.color = '#e74c3c';
-                emailVerificationStatus.textContent = "Ошибка проверки кода";
-                emailCodeInput.dataset.verified = "false";
-                emailVerified = false;
-                updateSubmitButton();
-                console.error('Ошибка проверки кода email:', error);
-            });
-        });
-
-        // Функция для сброса верификации телефона
-        function resetPhoneVerification() {
-            phoneVerified = false;
-            smsVerificationBlock.style.display = 'none';
-            callVerificationBlock.style.display = 'none';
-            smsVerificationStatus.style.display = 'none';
-            callVerificationStatus.style.display = 'none';
-            smsCodeInput.value = '';
-            callCodeInput.value = '';
-            updateSubmitButton();
-        }
-
-        // Обработчик отправки SMS-кода
-        sendSmsButton.addEventListener('click', function() {
-            if (!phoneDisplay.classList.contains('is-valid')) {
-                phoneDisplay.classList.add('is-invalid', 'error-shake');
-                setTimeout(() => phoneDisplay.classList.remove('error-shake'), 600);
+        $('#sendSmsCodeButton').click(function() {
+            var phone = $('#phone').val();
+            if (!phone) {
+                showError('phoneVerificationError', 'Введите номер телефона');
                 return;
             }
 
-            // Сбрасываем предыдущую верификацию и скрываем все блоки
-            resetPhoneVerification();
-            verificationMethod = 'sms';
-
-            // Показываем только блок SMS
-            smsVerificationBlock.style.display = 'block';
-
-            fetch('/auth/send-sms-code', {
+            $.ajax({
+                url: '/auth/send-sms-code',
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    [csrfHeader]: csrfToken
+                data: { phone: phone },
+                success: function(response) {
+                    if (response.success) {
+                        $('#smsVerificationBlock').show();
+                        $('#callStatusBlock').hide();
+                        showSuccess('smsVerificationStatus', 'Код отправлен на ваш телефон');
+                    } else {
+                        showError('smsVerificationStatus', response.message);
+                    }
                 },
-                body: 'phone=' + encodeURIComponent(phoneField.value)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("СМС с кодом отправлено (имитация). Введите код '123456' для проверки.");
-                } else {
-                    smsVerificationStatus.style.display = 'block';
-                    smsVerificationStatus.style.color = '#e74c3c';
-                    smsVerificationStatus.textContent = data.message || "Ошибка отправки кода";
+                error: function() {
+                    showError('smsVerificationStatus', 'Ошибка при отправке кода');
                 }
-            })
-            .catch(error => {
-                smsVerificationStatus.style.display = 'block';
-                smsVerificationStatus.style.color = '#e74c3c';
-                smsVerificationStatus.textContent = "Ошибка отправки кода";
-                console.error('Ошибка отправки SMS кода:', error);
             });
         });
 
-        // Обработчик проверки SMS-кода
-        verifySmsButton.addEventListener('click', function() {
-            const code = smsCodeInput.value.trim();
-            fetch('/auth/verify-sms-code', {
+        // Обработчик проверки SMS кода
+        $('#verifySmsButton').click(function() {
+            var phone = $('#phone').val();
+            var code = $('#smsCode').val();
+
+            $.ajax({
+                url: '/auth/verify-sms-code',
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    [csrfHeader]: csrfToken
+                data: { phone: phone, code: code },
+                success: function(response) {
+                    if (response.success) {
+                        showSuccess('smsVerificationStatus', 'Номер телефона подтвержден');
+                        $('#smsVerificationBlock').hide();
+                        validateForm();
+                    } else {
+                        showError('smsVerificationStatus', response.message);
+                    }
                 },
-                body: 'phone=' + encodeURIComponent(phoneField.value) + '&code=' + encodeURIComponent(code)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    smsVerificationStatus.style.display = 'block';
-                    smsVerificationStatus.style.color = '#2ecc71';
-                    smsVerificationStatus.textContent = "Код подтвержден";
-                    smsCodeInput.dataset.verified = "true";
-                    phoneVerified = true;
-
-                    // Отключаем кнопки после успешной верификации
-                    sendSmsButton.disabled = true;
-                    sendSmsButton.innerHTML = '<i class="fas fa-check"></i> Телефон подтвержден';
-                    sendCallButton.disabled = true;
-
-                    // Скрываем блок верификации через некоторое время
-                    setTimeout(() => {
-                        smsVerificationBlock.style.display = 'none';
-                    }, 1500);
-                } else {
-                    smsVerificationStatus.style.display = 'block';
-                    smsVerificationStatus.style.color = '#e74c3c';
-                    smsVerificationStatus.textContent = data.message || "Неверный код";
-                    smsCodeInput.dataset.verified = "false";
-                    phoneVerified = false;
+                error: function() {
+                    showError('smsVerificationStatus', 'Ошибка при проверке кода');
                 }
-                updateSubmitButton();
-            })
-            .catch(error => {
-                smsVerificationStatus.style.display = 'block';
-                smsVerificationStatus.style.color = '#e74c3c';
-                smsVerificationStatus.textContent = "Ошибка проверки кода";
-                smsCodeInput.dataset.verified = "false";
-                phoneVerified = false;
-                updateSubmitButton();
-                console.error('Ошибка проверки SMS кода:', error);
             });
         });
 
-        // Обработчик для отправки запроса на звонок с кодом
-        sendCallButton.addEventListener('click', function() {
-            if (!phoneDisplay.classList.contains('is-valid')) {
-                phoneDisplay.classList.add('is-invalid', 'error-shake');
-                setTimeout(() => phoneDisplay.classList.remove('error-shake'), 600);
-                return;
-            }
-
-            // Сбрасываем предыдущую верификацию и скрываем все блоки
-            resetPhoneVerification();
-            verificationMethod = 'call';
-
-            // Показываем только блок звонка
-            callVerificationBlock.style.display = 'block';
-
-            fetch('/auth/send-call-code', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    [csrfHeader]: csrfToken
-                },
-                body: 'phone=' + encodeURIComponent(phoneField.value)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Звонок с кодом инициирован (имитация). Введите код '123456' для проверки.");
-                } else {
-                    callVerificationStatus.style.display = 'block';
-                    callVerificationStatus.style.color = '#e74c3c';
-                    callVerificationStatus.textContent = data.message || "Ошибка инициации звонка";
-                }
-            })
-            .catch(error => {
-                callVerificationStatus.style.display = 'block';
-                callVerificationStatus.style.color = '#e74c3c';
-                callVerificationStatus.textContent = "Ошибка инициации звонка";
-                console.error('Ошибка отправки запроса на звонок:', error);
-            });
-        });
-
-        // Обработчик для проверки кода из звонка
-        verifyCallButton.addEventListener('click', function() {
-            const code = callCodeInput.value.trim();
-            fetch('/auth/verify-call-code', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    [csrfHeader]: csrfToken
-                },
-                body: 'phone=' + encodeURIComponent(phoneField.value) + '&code=' + encodeURIComponent(code)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    callVerificationStatus.style.display = 'block';
-                    callVerificationStatus.style.color = '#2ecc71';
-                    callVerificationStatus.textContent = "Код подтвержден";
-                    callCodeInput.dataset.verified = "true";
-                    phoneVerified = true;
-
-                    // Отключаем кнопки после успешной верификации
-                    sendCallButton.disabled = true;
-                    sendCallButton.innerHTML = '<i class="fas fa-check"></i> Телефон подтвержден';
-                    sendSmsButton.disabled = true;
-
-                    // Скрываем блок верификации через некоторое время
-                    setTimeout(() => {
-                        callVerificationBlock.style.display = 'none';
-                    }, 1500);
-                } else {
-                    callVerificationStatus.style.display = 'block';
-                    callVerificationStatus.style.color = '#e74c3c';
-                    callVerificationStatus.textContent = data.message || "Неверный код";
-                    callCodeInput.dataset.verified = "false";
-                }
-                updateSubmitButton();
-            })
-            .catch(error => {
-                callVerificationStatus.style.display = 'block';
-                callVerificationStatus.style.color = '#e74c3c';
-                callVerificationStatus.textContent = "Ошибка проверки кода";
-                callCodeInput.dataset.verified = "false";
-                updateSubmitButton();
-                console.error('Ошибка проверки кода из звонка:', error);
-            });
-        });
-
-        passwordInput.addEventListener('input', function() {
-            const pwd = passwordInput.value;
-            let strength = 0;
-            if(pwd.length >= 6) strength++;
-            if(pwd.length >= 8) strength++;
-            if(/[A-Z]/.test(pwd)) strength++;
-            if(/[0-9]/.test(pwd)) strength++;
-            if(/[^A-Za-z0-9]/.test(pwd)) strength++;
-
-            passwordStrength.className = 'password-strength';
-            if(pwd.length > 0) {
-                if(strength <= 2) {
-                    passwordStrength.classList.add('strength-weak');
-                } else if(strength <= 4) {
-                    passwordStrength.classList.add('strength-medium');
-                } else {
-                    passwordStrength.classList.add('strength-strong');
-                }
-            }
-            validatePasswordMatch();
-            updateSubmitButton();
-        });
-
-        confirmPasswordInput.addEventListener('input', validatePasswordMatch);
-
-        function validatePasswordMatch() {
-            if(confirmPasswordInput.value.length > 0) {
-                if(confirmPasswordInput.value === passwordInput.value) {
-                    confirmPasswordInput.classList.add('is-valid');
-                    confirmPasswordInput.classList.remove('is-invalid');
-                } else {
-                    confirmPasswordInput.classList.add('is-invalid');
-                    confirmPasswordInput.classList.remove('is-valid');
-                }
-            } else {
-                confirmPasswordInput.classList.remove('is-valid');
-                confirmPasswordInput.classList.remove('is-invalid');
-            }
-            updateSubmitButton();
+        // Функции для отображения сообщений
+        function showError(elementId, message) {
+            $('#' + elementId).text(message).show().addClass('error-shake');
+            setTimeout(function() {
+                $('#' + elementId).removeClass('error-shake');
+            }, 600);
         }
 
-        passwordToggle.addEventListener('click', function() {
-            if(passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                passwordToggle.classList.remove('fa-eye-slash');
-                passwordToggle.classList.add('fa-eye');
-            } else {
-                passwordInput.type = 'password';
-                passwordToggle.classList.remove('fa-eye');
-                passwordToggle.classList.add('fa-eye-slash');
-            }
-        });
-
-        confirmPasswordToggle.addEventListener('click', function() {
-            if(confirmPasswordInput.type === 'password') {
-                confirmPasswordInput.type = 'text';
-                confirmPasswordToggle.classList.remove('fa-eye-slash');
-                confirmPasswordToggle.classList.add('fa-eye');
-            } else {
-                confirmPasswordInput.type = 'password';
-                confirmPasswordToggle.classList.remove('fa-eye');
-                confirmPasswordToggle.classList.add('fa-eye-slash');
-            }
-        });
-
-        function updateSubmitButton() {
-            const isEmailValid = emailInput.value.length > 0 && emailInput.classList.contains('is-valid') && emailValidFromServer;
-            const isPhoneValid = phoneDisplay.value.length > 0 && phoneDisplay.classList.contains('is-valid');
-            const isPwdValid = passwordInput.value.length >= 6;
-            const isConfirmValid = (confirmPasswordInput.value === passwordInput.value) && (confirmPasswordInput.value.length > 0);
-            const isTermsAccepted = termsCheckbox.checked;
-            const isFirstNameValid = document.getElementById('firstName').value.length >= 2;
-            const isLastNameValid = document.getElementById('lastName').value.length >= 2;
-            const isEmailVerified = emailVerified || emailVerificationBlock.style.display === 'none';
-
-            // Проверка верификации телефона - если не показан ни один из блоков или верификация пройдена
-            const isPhoneVerified = phoneVerified ||
-                (smsVerificationBlock.style.display === 'none' && callVerificationBlock.style.display === 'none');
-
-            if (isEmailValid && isPhoneValid && isPwdValid && isConfirmValid && isTermsAccepted &&
-                isFirstNameValid && isLastNameValid && isEmailVerified && isPhoneVerified) {
-                registerButton.disabled = false;
-            } else {
-                registerButton.disabled = true;
-            }
+        function showSuccess(elementId, message) {
+            $('#' + elementId).text(message).show().removeClass('error-message').addClass('text-success');
         }
 
-        form.addEventListener('submit', function(event) {
-            let isValid = true;
-            if(!emailInput.classList.contains('is-valid') || !emailValidFromServer) {
-                isValid = false;
-                emailInput.classList.add('is-invalid', 'error-shake');
-                setTimeout(() => emailInput.classList.remove('error-shake'), 600);
-            }
-            if(!phoneDisplay.classList.contains('is-valid')) {
-                isValid = false;
-                phoneDisplay.classList.add('is-invalid', 'error-shake');
-                setTimeout(() => phoneDisplay.classList.remove('error-shake'), 600);
-            }
-            if(document.getElementById('firstName').value.length < 2) {
-                isValid = false;
-                const firstName = document.getElementById('firstName');
-                firstName.classList.add('is-invalid', 'error-shake');
-                setTimeout(() => firstName.classList.remove('error-shake'), 600);
-            }
-            if(document.getElementById('lastName').value.length < 2) {
-                isValid = false;
-                const lastName = document.getElementById('lastName');
-                lastName.classList.add('is-invalid', 'error-shake');
-                setTimeout(() => lastName.classList.remove('error-shake'), 600);
-            }
-            if(passwordInput.value.length < 8) {
-                isValid = false;
-                passwordInput.classList.add('is-invalid', 'error-shake');
-                setTimeout(() => passwordInput.classList.remove('error-shake'), 600);
-            }
-            if(confirmPasswordInput.value !== passwordInput.value) {
-                isValid = false;
-                confirmPasswordInput.classList.add('is-invalid', 'error-shake');
-                setTimeout(() => confirmPasswordInput.classList.remove('error-shake'), 600);
-            }
-            if(!termsCheckbox.checked) {
-                isValid = false;
-                termsCheckbox.classList.add('is-invalid');
-                const termsContainer = termsCheckbox.parentElement;
-                termsContainer.classList.add('error-shake');
-                setTimeout(() => termsContainer.classList.remove('error-shake'), 600);
-            }
-            if(emailVerificationBlock.style.display !== 'none' && !emailVerified) {
-                isValid = false;
-                emailVerificationStatus.style.display = 'block';
-                emailVerificationStatus.style.color = '#e74c3c';
-                emailVerificationStatus.textContent = "Необходимо подтвердить код из Email";
-            }
+        // Валидация формы
+        function validateForm() {
+            var isValid = true;
+            var phone = $('#phone').val();
+            var password = $('#password').val();
+            var confirmPassword = $('#confirmPassword').val();
+            var termsAgreed = $('#termsAgreement').is(':checked');
 
-            // Проверка верификации телефона в зависимости от метода
-            if(!phoneVerified) {
-                if(verificationMethod === 'sms' && smsVerificationBlock.style.display !== 'none') {
-                    isValid = false;
-                    smsVerificationStatus.style.display = 'block';
-                    smsVerificationStatus.style.color = '#e74c3c';
-                    smsVerificationStatus.textContent = "Необходимо подтвердить код из SMS";
-                } else if(verificationMethod === 'call' && callVerificationBlock.style.display !== 'none') {
-                    isValid = false;
-                    callVerificationStatus.style.display = 'block';
-                    callVerificationStatus.style.color = '#e74c3c';
-                    callVerificationStatus.textContent = "Необходимо подтвердить код из звонка";
+            // Проверка телефона
+            if (!phone || !/^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/.test(phone)) {
+                isValid = false;
+                if (phone.length === 16) {
+                    showError('phoneVerificationError', 'Введите корректный номер телефона');
+                } else {
+                    $('#phoneVerificationError').hide();
                 }
+            } else {
+                $('#phoneVerificationError').hide();
             }
 
-            if(!isValid) {
-                event.preventDefault();
-                const firstInvalid = document.querySelector('.is-invalid');
-                if(firstInvalid) {
-                    firstInvalid.scrollIntoView({behavior:'smooth', block:'center'});
-                }
+            // Проверка паролей
+            if (password.length < 8) {
+                isValid = false;
             }
-        });
+            if (password !== confirmPassword) {
+                isValid = false;
+            }
 
-        // Обновление состояния номера телефона при изменении
-        phoneDisplay.addEventListener('change', function() {
-            // Если номер телефона изменился, сбрасываем верификацию
-            resetPhoneVerification();
+            // Проверка согласия с условиями
+            if (!termsAgreed) {
+                isValid = false;
+            }
 
-            // Включаем кнопки верификации
-            sendSmsButton.disabled = false;
-            sendSmsButton.innerHTML = 'Отправить SMS с кодом';
-            sendCallButton.disabled = false;
-            sendCallButton.innerHTML = 'Получить код через звонок';
-
-            verificationMethod = null;
-        });
-
-        // Инициализация при загрузке
-        updateSubmitButton();
-
-        /* Если с сервера установлен флаг успешной регистрации (registrationSuccess == true),
-           то показываем toast уведомление и через несколько секунд перенаправляем на страницу аутентификации */
-        let registrationSuccess = [[${registrationSuccess != null && registrationSuccess ? true : false}]];
-        if(registrationSuccess) {
-            let toastEl = document.getElementById('registrationToast');
-            let toast = new bootstrap.Toast(toastEl);
-            toast.show();
-            setTimeout(function(){
-                window.location.href = "/auth/login";
-            }, 3000);
+            $('#registerButton').prop('disabled', !isValid);
         }
 
-        // Обработчики для модальных окон условий и политики
-        termsCheckbox.addEventListener('change', updateSubmitButton);
+        // Обработчики событий для валидации
+        $('#password, #confirmPassword').on('input', validateForm);
+        $('#termsAgreement').on('change', validateForm);
+    });
+    // Добавляем CSRF-токен ко всем AJAX-запросам
+    $(function () {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
     });
 </script>
 </body>

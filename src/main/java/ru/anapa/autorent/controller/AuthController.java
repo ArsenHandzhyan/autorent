@@ -23,6 +23,7 @@ import ru.anapa.autorent.service.UserService;
 import ru.anapa.autorent.service.SmsService;
 import ru.anapa.autorent.service.VerificationTokenService;
 import ru.anapa.autorent.model.VerificationToken;
+import ru.anapa.autorent.service.CallAuthService;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -36,13 +37,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AuthController {
     // В классе AuthController добавляем временное хранилище кодов
     private final ConcurrentHashMap<String, String> emailVerificationCodes = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, String> smsVerificationCodes = new ConcurrentHashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final SmsService smsService;
     private final VerificationTokenService verificationTokenService;
+    private final CallAuthService callAuthService;
 
     // Регулярное выражение для проверки телефонного номера
     private static final Pattern PHONE_PATTERN = Pattern.compile("^\\+7\\([0-9]{3}\\)[0-9]{3}-[0-9]{2}-[0-9]{2}$");
@@ -54,12 +55,14 @@ public class AuthController {
                           AuthenticationManager authenticationManager,
                           UserDetailsService userDetailsService,
                           SmsService smsService,
-                          VerificationTokenService verificationTokenService) {
+                          VerificationTokenService verificationTokenService,
+                          CallAuthService callAuthService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.smsService = smsService;
         this.verificationTokenService = verificationTokenService;
+        this.callAuthService = callAuthService;
         logger.info("AuthController initialized");
     }
 
@@ -131,6 +134,18 @@ public class AuthController {
         return "auth/register";
     }
 
+    private String normalizePhone(String phone) {
+        if (phone == null) return null;
+        String digits = phone.replaceAll("\\D", "");
+        if (digits.startsWith("8")) {
+            digits = "7" + digits.substring(1);
+        }
+        if (!digits.startsWith("7")) {
+            digits = "7" + digits;
+        }
+        return "+7(" + digits.substring(1, 4) + ")" + digits.substring(4, 7) + "-" + digits.substring(7, 9) + "-" + digits.substring(9, 11);
+    }
+
     @PostMapping("auth/register")
     public String registerUser(@Valid @ModelAttribute("user") UserRegistrationDto registrationDto,
                                BindingResult result, Model model, HttpServletRequest request) {
@@ -150,7 +165,8 @@ public class AuthController {
         }
 
         // Проверка существования пользователя с таким телефоном
-        if (userService.existsByPhone(registrationDto.getPhone())) {
+        String normalizedPhone = normalizePhone(registrationDto.getPhone());
+        if (userService.existsByPhone(normalizedPhone)) {
             result.addError(new FieldError("user", "phone", registrationDto.getPhone(),
                     false, null, null, "Пользователь с таким телефоном уже зарегистрирован"));
         }
@@ -171,7 +187,7 @@ public class AuthController {
                     registrationDto.getPassword(),
                     registrationDto.getFirstName().trim(),
                     registrationDto.getLastName().trim(),
-                    registrationDto.getPhone()
+                    normalizedPhone
             );
 
             logger.info("User created successfully with ID: {}", user.getId());
@@ -394,26 +410,19 @@ public class AuthController {
     public Map<String, Object> sendSmsCode(@RequestParam("phone") String phone) {
         Map<String, Object> response = new HashMap<>();
         try {
-            // Проверяем формат номера телефона
-            if (!PHONE_PATTERN.matcher(phone).matches()) {
+            String normalizedPhone = normalizePhone(phone);
+            if (!PHONE_PATTERN.matcher(normalizedPhone).matches()) {
                 response.put("success", false);
                 response.put("message", "Неверный формат номера телефона");
                 return response;
             }
-
-            // Проверяем, не превышен ли лимит попыток
-            if (verificationTokenService.hasTooManyAttempts(phone, VerificationToken.TokenType.SMS_VERIFICATION)) {
+            if (verificationTokenService.hasTooManyAttempts(normalizedPhone, VerificationToken.TokenType.SMS_VERIFICATION)) {
                 response.put("success", false);
                 response.put("message", "Превышен лимит попыток. Попробуйте позже");
                 return response;
             }
-
-            // Генерируем и отправляем код
-            String code = smsService.generateAndSendOtp(phone);
-            
-            // Сохраняем код в базе данных
-            verificationTokenService.createSmsVerificationToken(phone, code);
-            
+            String code = smsService.generateAndSendOtp(normalizedPhone);
+            verificationTokenService.createSmsVerificationToken(normalizedPhone, code);
             response.put("success", true);
             response.put("message", "Код отправлен на телефон");
         } catch (Exception e) {
@@ -429,37 +438,32 @@ public class AuthController {
     @ResponseBody
     public Map<String, Object> sendCallCode(@RequestParam("phone") String phone) {
         Map<String, Object> response = new HashMap<>();
-
         try {
+            String normalizedPhone = normalizePhone(phone);
             // Валидация номера телефона
-            if (!PHONE_PATTERN.matcher(phone).matches()) {
+            if (!PHONE_PATTERN.matcher(normalizedPhone).matches()) {
                 response.put("success", false);
                 response.put("message", "Неверный формат номера телефона");
                 return response;
             }
-
             // Проверка, не существует ли уже такой телефон
-            if (userService.existsByPhone(phone)) {
+            if (userService.existsByPhone(normalizedPhone)) {
                 response.put("success", false);
                 response.put("message", "Пользователь с таким номером телефона уже зарегистрирован");
                 return response;
             }
-
             // Генерируем и отправляем код через звонок
-            String code = smsService.generateAndSendCallOtp(phone);
-
-            // Сохраняем код для последующей проверки
-            smsVerificationCodes.put(phone, code);
-
+            String code = smsService.generateAndSendCallOtp(normalizedPhone);
+            // Сохраняем код для последующей проверки через VerificationTokenService
+            verificationTokenService.createSmsVerificationToken(normalizedPhone, code);
             response.put("success", true);
-            response.put("message", "Код верификации отправлен через звонок на номер " + phone);
-            logger.info("Код верификации через звонок отправлен на номер: {}", phone);
+            response.put("message", "Код верификации отправлен через звонок на номер " + normalizedPhone);
+            logger.info("Код верификации через звонок отправлен на номер: {}", normalizedPhone);
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Ошибка при отправке кода через звонок: " + e.getMessage());
             logger.error("Ошибка при отправке кода через звонок на номер {}: {}", phone, e.getMessage(), e);
         }
-
         return response;
     }
 
@@ -468,33 +472,23 @@ public class AuthController {
     @ResponseBody
     public Map<String, Object> verifyCallCode(@RequestParam("phone") String phone, @RequestParam("code") String code) {
         Map<String, Object> response = new HashMap<>();
-
         try {
-            // Получаем сохраненный код из кэша
-            String savedCode = smsVerificationCodes.get(phone);
-
-            if (savedCode == null) {
-                response.put("success", false);
-                response.put("message", "Код верификации не был отправлен или истек срок его действия");
-                return response;
-            }
-
-            // Проверка кода
-            if (savedCode.equals(code)) {
+            String normalizedPhone = normalizePhone(phone);
+            boolean isValid = verificationTokenService.verifySmsCode(normalizedPhone, code);
+            if (isValid) {
                 response.put("success", true);
                 response.put("message", "Номер телефона успешно подтвержден");
-                logger.info("Номер телефона {} успешно подтвержден через звонок", phone);
+                logger.info("Номер телефона {} успешно подтвержден через звонок", normalizedPhone);
             } else {
                 response.put("success", false);
-                response.put("message", "Неверный код верификации");
-                logger.warn("Введен неверный код при проверке через звонок для номера {}", phone);
+                response.put("message", "Неверный код верификации или срок его действия истек");
+                logger.warn("Введен неверный код при проверке через звонок для номера {}", normalizedPhone);
             }
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Ошибка при проверке кода: " + e.getMessage());
             logger.error("Ошибка при проверке кода из звонка для номера {}: {}", phone, e.getMessage(), e);
         }
-
         return response;
     }
 
@@ -504,13 +498,13 @@ public class AuthController {
     public Map<String, Object> verifySmsCode(@RequestParam("phone") String phone, @RequestParam("code") String code) {
         Map<String, Object> response = new HashMap<>();
         try {
-            if (!PHONE_PATTERN.matcher(phone).matches()) {
+            String normalizedPhone = normalizePhone(phone);
+            if (!PHONE_PATTERN.matcher(normalizedPhone).matches()) {
                 response.put("success", false);
                 response.put("message", "Неверный формат номера телефона");
                 return response;
             }
-
-            boolean isValid = verificationTokenService.verifySmsCode(phone, code);
+            boolean isValid = verificationTokenService.verifySmsCode(normalizedPhone, code);
             if (isValid) {
                 response.put("success", true);
                 response.put("message", "Код подтвержден");
@@ -522,6 +516,125 @@ public class AuthController {
             logger.error("Error verifying SMS code for {}: {}", phone, e.getMessage(), e);
             response.put("success", false);
             response.put("message", "Ошибка при проверке кода");
+        }
+        return response;
+    }
+
+    private String normalizePhoneForApi(String phone) {
+        String digits = phone.replaceAll("\\D", "");
+        if (digits.startsWith("8")) {
+            digits = "7" + digits.substring(1);
+        }
+        if (!digits.startsWith("7")) {
+            digits = "7" + digits;
+        }
+        return digits;
+    }
+
+    // Эндпоинт для инициализации авторизации по звонку
+    @PostMapping("/auth/initiate-call-auth")
+    @ResponseBody
+    public Map<String, Object> initiateCallAuth(@RequestParam("phone") String phone) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            String normalizedPhone = normalizePhone(phone);
+            String apiPhone = normalizePhoneForApi(phone);
+            if (!PHONE_PATTERN.matcher(normalizedPhone).matches()) {
+                response.put("success", false);
+                response.put("message", "Неверный формат номера телефона");
+                return response;
+            }
+            if (userService.existsByPhone(normalizedPhone)) {
+                response.put("success", false);
+                response.put("message", "Пользователь с таким номером телефона уже зарегистрирован");
+                return response;
+            }
+            Map<String, Object> result = callAuthService.initiateCallAuth(apiPhone);
+            if ("OK".equals(result.get("status"))) {
+                response.put("success", true);
+                response.put("message", "Ожидаем звонок для подтверждения");
+                response.put("call_phone", result.get("call_phone"));
+                response.put("call_phone_pretty", result.get("call_phone_pretty"));
+                response.put("call_phone_html", result.get("call_phone_html"));
+                response.put("check_id", result.get("check_id"));
+            } else {
+                response.put("success", false);
+                response.put("message", "Ошибка при инициализации авторизации по звонку");
+            }
+        } catch (Exception e) {
+            logger.error("Error initiating call auth for phone {}: {}", phone, e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "Ошибка при инициализации авторизации по звонку: " + e.getMessage());
+        }
+        return response;
+    }
+
+    // Эндпоинт для проверки статуса авторизации по звонку
+    @PostMapping("/auth/check-call-status")
+    @ResponseBody
+    public Map<String, Object> checkCallStatus(
+            @RequestParam(value = "phone", required = false) String phone,
+            @RequestParam(value = "check_id", required = false) String checkId) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            if (checkId != null) {
+                // Новый формат - проверка по check_id
+                Map<String, Object> result = callAuthService.checkCallStatusByCheckId(checkId);
+                if ("OK".equals(result.get("status"))) {
+                    String checkStatus = String.valueOf(result.get("check_status"));
+                    if ("401".equals(checkStatus)) {
+                        response.put("success", true);
+                        response.put("message", "Номер телефона успешно подтвержден");
+                    } else if ("400".equals(checkStatus)) {
+                        response.put("success", false);
+                        response.put("message", "Ожидаем звонок для подтверждения");
+                    } else if ("402".equals(checkStatus)) {
+                        response.put("success", false);
+                        response.put("message", "Время ожидания звонка истекло");
+                    } else {
+                        response.put("success", false);
+                        response.put("message", "Неизвестный статус проверки");
+                    }
+                } else {
+                    response.put("success", false);
+                    response.put("message", "Ошибка при проверке статуса звонка");
+                }
+            } else if (phone != null) {
+                // Старый формат - проверка по номеру телефона
+                String apiPhone = normalizePhoneForApi(phone);
+                Map<String, Object> result = callAuthService.checkCallStatus(apiPhone);
+                if ("ERROR".equals(result.get("status")) && "NO_ACTIVE_CHECK".equals(result.get("error_code"))) {
+                    response.put("success", false);
+                    response.put("message", "Не найдена активная проверка для этого номера. Пожалуйста, инициируйте звонок заново.");
+                    return response;
+                }
+                if ("OK".equals(result.get("status"))) {
+                    String checkStatus = String.valueOf(result.get("check_status"));
+                    if ("401".equals(checkStatus)) {
+                        response.put("success", true);
+                        response.put("message", "Номер телефона успешно подтвержден");
+                    } else if ("400".equals(checkStatus)) {
+                        response.put("success", false);
+                        response.put("message", "Ожидаем звонок для подтверждения");
+                    } else if ("402".equals(checkStatus)) {
+                        response.put("success", false);
+                        response.put("message", "Время ожидания звонка истекло");
+                    } else {
+                        response.put("success", false);
+                        response.put("message", "Неизвестный статус проверки");
+                    }
+                } else {
+                    response.put("success", false);
+                    response.put("message", "Ошибка при проверке статуса звонка");
+                }
+            } else {
+                response.put("success", false);
+                response.put("message", "Необходимо указать либо номер телефона, либо check_id");
+            }
+        } catch (Exception e) {
+            logger.error("Error checking call status: {}", e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "Ошибка при проверке статуса звонка: " + e.getMessage());
         }
         return response;
     }

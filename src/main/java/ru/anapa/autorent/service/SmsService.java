@@ -213,10 +213,11 @@ public class SmsService {
             parameters.put("code", code);
             parameters.put("json", "1");  // Получаем ответ в формате JSON
 
-            if (testMode) {
-                parameters.put("test", "1");  // Включаем тестовый режим
-                log.debug("Используется тестовый режим для звонка");
-            }
+            // Убираем тестовый режим, чтобы звонки отправлялись реально
+            // if (testMode) {
+            //     parameters.put("test", "1");
+            //     log.debug("Используется тестовый режим для звонка");
+            // }
 
             // Формируем строку запроса из параметров
             String requestBody = parameters.entrySet()
@@ -246,17 +247,15 @@ public class SmsService {
             // Парсим JSON ответ
             JsonNode rootNode = objectMapper.readTree(responseBody);
 
-            if (rootNode.has("status_code")) {
-                int apiStatusCode = rootNode.path("status_code").asInt();
-
-                if (apiStatusCode != 100) {
+            if (rootNode.has("status")) {
+                String status = rootNode.path("status").asText();
+                if (!"OK".equals(status)) {
                     String errorMessage = "Ошибка API SMS.ru для звонка: " + rootNode.path("status_text").asText();
                     log.error(errorMessage);
                     throw new RuntimeException(errorMessage);
                 }
+                log.info("Звонок с кодом {} успешно инициирован на номер {}", rootNode.path("code").asText(), phoneNumber);
             }
-
-            log.info("Звонок с кодом успешно инициирован на номер {}", phoneNumber);
 
         } catch (Exception e) {
             log.error("Ошибка при инициации звонка с кодом: {}", e.getMessage(), e);
