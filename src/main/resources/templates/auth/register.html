@@ -150,6 +150,12 @@
             </div>
 
             <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" th:field="*{email}" required>
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
                 <label for="phoneDisplay">Телефон:</label>
                 <div class="input-group">
                     <input type="tel" id="phoneDisplay" placeholder="+7(XXX)XXX-XX-XX" aria-label="Телефон" required pattern="\\+7\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}" autocomplete="tel" title="Введите номер в формате +7(XXX)XXX-XX-XX">
@@ -234,19 +240,79 @@
         let callCheckInterval;
         let callTimerInterval;
         let timeLeft = 300; // 5 минут в секундах
+        let isPhoneVerified = false;
 
         // Маска для телефона
         $('#phoneDisplay').mask('+7(000)000-00-00');
 
+        // Проверка существования email
+        $('#email').on('blur', function() {
+            var email = $(this).val();
+            if (email) {
+                $.ajax({
+                    url: '/auth/check-email',
+                    method: 'GET',
+                    data: { email: email },
+                    success: function(exists) {
+                        if (exists) {
+                            showError('email', 'Пользователь с таким email уже зарегистрирован');
+                            $('#email').addClass('is-invalid');
+                        } else {
+                            $('#email').removeClass('is-invalid');
+                        }
+                        validateForm();
+                    }
+                });
+            }
+        });
+
+        // Проверка существования телефона
+        $('#phoneDisplay').on('blur', function() {
+            var phone = $(this).val();
+            var phonePattern = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
+            if (phone && phonePattern.test(phone)) {
+                $.ajax({
+                    url: '/auth/check-phone',
+                    method: 'GET',
+                    data: { phone: phone },
+                    success: function(exists) {
+                        if (exists) {
+                            showError('phoneVerificationError', 'Пользователь с таким номером телефона уже зарегистрирован');
+                            $('#phoneDisplay').addClass('is-invalid');
+                        } else {
+                            $('#phoneDisplay').removeClass('is-invalid');
+                            $('#phoneVerificationError').hide();
+                        }
+                        validateForm();
+                    }
+                });
+            } else {
+                $('#phoneDisplay').addClass('is-invalid');
+                showError('phoneVerificationError', 'Введите корректный номер телефона');
+                validateForm();
+            }
+        });
+
         // Обработчик изменения телефона
         $('#phoneDisplay').on('input', function() {
             var phone = $(this).val();
+            var phonePattern = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
             $('#phone').val(phone);
+            if (phonePattern.test(phone)) {
+                $('#phoneDisplay').removeClass('is-invalid');
+                $('#phoneVerificationError').hide();
+            } else {
+                $('#phoneDisplay').addClass('is-invalid');
+                $('#phoneVerificationError').show().text('Введите корректный номер телефона');
+            }
             validateForm();
         });
 
         // Обработчики для кнопок верификации телефона
         $('#sendCallCodeButton').click(function() {
+            if (isPhoneVerified) {
+                return;
+            }
             var phone = $('#phone').val();
             if (!phone) {
                 showError('phoneVerificationError', 'Введите номер телефона');
@@ -309,6 +375,11 @@
                             clearInterval(callCheckInterval);
                             clearInterval(callTimerInterval);
                             $('#callStatusBlock').hide();
+                            $('#phoneVerificationError').hide();
+                            $('#phone').prop('readonly', true);
+                            $('#phoneDisplay').prop('readonly', true);
+                            $('#sendCallCodeButton, #sendSmsCodeButton').prop('disabled', true);
+                            isPhoneVerified = true;
                             showSuccess('phoneVerificationError', 'Номер телефона успешно подтвержден');
                             validateForm();
                         } else if (response.message === 'Время ожидания звонка истекло') {
@@ -388,9 +459,18 @@
         function validateForm() {
             var isValid = true;
             var phone = $('#phone').val();
+            var email = $('#email').val();
             var password = $('#password').val();
             var confirmPassword = $('#confirmPassword').val();
             var termsAgreed = $('#termsAgreement').is(':checked');
+
+            // Проверка email
+            if (!email || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+                isValid = false;
+                if (email) {
+                    showError('email', 'Введите корректный email адрес');
+                }
+            }
 
             // Проверка телефона
             if (!phone || !/^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/.test(phone)) {
@@ -400,6 +480,9 @@
                 } else {
                     $('#phoneVerificationError').hide();
                 }
+            } else if (!isPhoneVerified) {
+                isValid = false;
+                showError('phoneVerificationError', 'Необходимо подтвердить номер телефона');
             } else {
                 $('#phoneVerificationError').hide();
             }
@@ -421,7 +504,7 @@
         }
 
         // Обработчики событий для валидации
-        $('#password, #confirmPassword').on('input', validateForm);
+        $('#email, #password, #confirmPassword').on('input', validateForm);
         $('#termsAgreement').on('change', validateForm);
     });
     // Добавляем CSRF-токен ко всем AJAX-запросам
