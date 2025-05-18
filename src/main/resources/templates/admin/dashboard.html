@@ -7,6 +7,80 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 1rem 0;
+        }
+        .section-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .data-table th, .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .data-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .status-pending { background-color: #fff3cd; color: #856404; }
+        .status-active { background-color: #d4edda; color: #155724; }
+        .status-completed { background-color: #cce5ff; color: #004085; }
+        .status-cancelled { background-color: #f8d7da; color: #721c24; }
+        .status-pending_cancellation { background-color: #e2e3e5; color: #383d41; }
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .action-buttons .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .quick-actions .btn {
+            flex: 1;
+            padding: 1rem;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+    </style>
 
     <!-- CSRF токены -->
     <meta name="_csrf" th:content="${_csrf.token}" />
@@ -20,95 +94,114 @@
 <div id="message-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
 
 <main class="container py-5">
-    <h1>Админ-панель</h1>
-
-    <div class="dashboard-stats">
-        <div class="stat-card">
-            <h3>Пользователи</h3>
-            <p class="stat-number" th:text="${userCount}">0</p>
-            <a th:href="@{/admin/users}" class="btn">Управление</a>
-        </div>
-
-        <div class="stat-card">
-            <h3>Ожидающие аренды</h3>
-            <p class="stat-number" id="pending-count" th:text="${pendingRentals.size()}">0</p>
-            <a th:href="@{/admin/rentals/status/PENDING}" class="btn btn-primary">Просмотреть</a>
-        </div>
-
-        <div class="stat-card">
-            <h3>Активные аренды</h3>
-            <p class="stat-number" id="active-count" th:text="${activeRentals.size()}">0</p>
-            <a th:href="@{/admin/rentals/status/ACTIVE}" class="btn btn-primary">Просмотреть</a>
-        </div>
-
-        <div class="stat-card">
-            <h3>Запросы на отмену</h3>
-            <p class="stat-number" id="cancellation-count" th:text="${pendingCancellations.size()}">0</p>
-            <a th:href="@{/admin/rentals/status/PENDING_CANCELLATION}" class="btn btn-warning">Обработать</a>
-        </div>
-
-        <div class="admin-actions">
-            <a th:href="@{/admin/synchronize-car-statuses}" class="btn btn-secondary">Синхронизировать статусы
-                автомобилей</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Админ-панель</h1>
+        <div class="quick-actions">
+            <a th:href="@{/admin/synchronize-car-statuses}" class="btn btn-primary">
+                <i class="fas fa-sync-alt"></i> Синхронизировать статусы
+            </a>
+            <a th:href="@{/admin/statistics}" class="btn btn-info">
+                <i class="fas fa-chart-bar"></i> Статистика
+            </a>
         </div>
     </div>
 
-    <div class="recent-section">
-        <h2>Ожидающие подтверждения аренды</h2>
-        <table class="data-table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Пользователь</th>
-                <th>Автомобиль</th>
-                <th>Дата начала</th>
-                <th>Дата окончания</th>
-                <th>Стоимость</th>
-                <th>Статус</th>
-                <th>Действия</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="rental : ${pendingRentals}" th:id="'rental-row-' + ${rental.id}"
-                th:data-rental-id="${rental.id}" th:data-rental-status="${rental.status}">
-                <td th:text="${rental.id}">1</td>
-                <td th:text="${rental.user.fullName}">Иван Иванов</td>
-                <td th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</td>
-                <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2025</td>
-                <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
-                <td th:text="${rental.totalCost + ' ₽'}">15000 ₽</td>
-                <td class="rental-status" th:data-status="${rental.status}"
-                    th:text="${rental.status == 'PENDING' ? 'Ожидает подтверждения' :
-                              (rental.status == 'ACTIVE' ? 'Активна' :
-                              (rental.status == 'COMPLETED' ? 'Завершена' :
-                              (rental.status == 'CANCELLED' ? 'Отменена' :
-                              (rental.status == 'CANCELLATION_REQUESTED' || rental.status == 'PENDING_CANCELLATION' ? 'Запрос на отмену' : rental.status))))}">
-                    Ожидает подтверждения
-                </td>
-                <td>
-                    <div class="btn-group">
-                        <a th:href="@{/admin/rentals/{id}(id=${rental.id})}" class="btn btn-sm btn-info">Детали</a>
-                        <form th:action="@{/admin/rentals/{id}/approve(id=${rental.id})}" method="post" style="display: inline;">
-                            <button type="submit" class="btn btn-sm btn-success">Подтвердить</button>
-                        </form>
-                        <button type="button" class="btn btn-sm btn-danger"
-                                th:onclick="'showCancelForm(' + ${rental.id} + ')'">Отклонить</button>
-                    </div>
+    <!-- Статистика -->
+    <div class="dashboard-grid">
+        <div class="stat-card">
+            <h3><i class="fas fa-users"></i> Пользователи</h3>
+            <p class="stat-number" th:text="${userCount}">0</p>
+            <a th:href="@{/admin/users}" class="btn btn-outline-primary">Управление</a>
+        </div>
 
-                    <div th:id="'cancelForm-' + ${rental.id}" class="cancel-form" style="display: none;">
-                        <form th:action="@{/admin/rentals/{id}/cancel(id=${rental.id})}" method="post">
-                            <div class="form-group">
-                                <label for="notes">Причина отмены:</label>
-                                <textarea id="notes" name="notes" rows="3" class="form-control" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-danger">Подтвердить отмену</button>
-                            <button type="button" class="btn btn-secondary" th:onclick="'hideCancelForm(' + ${rental.id} + ')'">Закрыть</button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="stat-card">
+            <h3><i class="fas fa-clock"></i> Ожидающие аренды</h3>
+            <p class="stat-number" id="pending-count" th:text="${pendingRentals.size()}">0</p>
+            <a th:href="@{/admin/rentals/status/PENDING}" class="btn btn-outline-primary">Просмотреть</a>
+        </div>
+
+        <div class="stat-card">
+            <h3><i class="fas fa-car"></i> Активные аренды</h3>
+            <p class="stat-number" id="active-count" th:text="${activeRentals.size()}">0</p>
+            <a th:href="@{/admin/rentals/status/ACTIVE}" class="btn btn-outline-primary">Просмотреть</a>
+        </div>
+
+        <div class="stat-card">
+            <h3><i class="fas fa-ban"></i> Запросы на отмену</h3>
+            <p class="stat-number" id="cancellation-count" th:text="${pendingCancellations.size()}">0</p>
+            <a th:href="@{/admin/rentals/status/PENDING_CANCELLATION}" class="btn btn-outline-warning">Обработать</a>
+        </div>
+    </div>
+
+    <!-- Ожидающие подтверждения аренды -->
+    <div class="section-card">
+        <h2><i class="fas fa-clock"></i> Ожидающие подтверждения аренды</h2>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Пользователь</th>
+                    <th>Автомобиль</th>
+                    <th>Дата начала</th>
+                    <th>Дата окончания</th>
+                    <th>Стоимость</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="rental : ${pendingRentals}" th:id="'rental-row-' + ${rental.id}"
+                    th:data-rental-id="${rental.id}" th:data-rental-status="${rental.status}">
+                    <td th:text="${rental.id}">1</td>
+                    <td th:text="${rental.user.fullName}">Иван Иванов</td>
+                    <td th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</td>
+                    <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2025</td>
+                    <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
+                    <td th:text="${rental.totalCost + ' ₽'}">15000 ₽</td>
+                    <td>
+                        <span class="status-badge" th:classappend="'status-' + ${rental.status.toLowerCase()}"
+                              th:text="${rental.status == 'PENDING' ? 'Ожидает подтверждения' :
+                                      (rental.status == 'ACTIVE' ? 'Активна' :
+                                      (rental.status == 'COMPLETED' ? 'Завершена' :
+                                      (rental.status == 'CANCELLED' ? 'Отменена' :
+                                      (rental.status == 'CANCELLATION_REQUESTED' || rental.status == 'PENDING_CANCELLATION' ? 'Запрос на отмену' : rental.status))))}">
+                            Ожидает подтверждения
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <a th:href="@{/admin/rentals/{id}(id=${rental.id})}" class="btn btn-info">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                            <form th:action="@{/admin/rentals/{id}/approve(id=${rental.id})}" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </form>
+                            <button type="button" class="btn btn-danger"
+                                    th:onclick="'showCancelForm(' + ${rental.id} + ')'">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div th:id="'cancelForm-' + ${rental.id}" class="cancel-form mt-2" style="display: none;">
+                            <form th:action="@{/admin/rentals/{id}/cancel(id=${rental.id})}" method="post">
+                                <div class="form-group">
+                                    <label for="notes">Причина отмены:</label>
+                                    <textarea id="notes" name="notes" rows="3" class="form-control" required></textarea>
+                                </div>
+                                <div class="mt-2">
+                                    <button type="submit" class="btn btn-danger">Подтвердить отмену</button>
+                                    <button type="button" class="btn btn-secondary" th:onclick="'hideCancelForm(' + ${rental.id} + ')'">Закрыть</button>
+                                </div>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </main>
 
@@ -143,7 +236,6 @@
 
         messageContainer.appendChild(messageElement);
 
-        // Автоматически скрываем сообщение через 5 секунд
         setTimeout(() => {
             messageElement.classList.remove('show');
             setTimeout(() => {
@@ -158,20 +250,16 @@
         if (!row) return;
 
         if (newStatus === 'DELETED' || newStatus === 'CANCELLED' || newStatus === 'ACTIVE') {
-            // Добавляем класс для анимации
             row.classList.add('fade-out');
-
-            // Удаляем строку после завершения анимации
             setTimeout(() => {
                 row.remove();
                 updateCounters();
             }, 500);
         } else {
-            // Обновляем отображаемый статус
-            const statusCell = row.querySelector('.rental-status');
+            const statusCell = row.querySelector('.status-badge');
             if (statusCell) {
                 statusCell.textContent = getStatusText(newStatus);
-                statusCell.dataset.status = newStatus;
+                statusCell.className = `status-badge status-${newStatus.toLowerCase()}`;
             }
         }
     }
@@ -191,16 +279,12 @@
 
     // Функция для обновления счетчиков
     function updateCounters() {
-        // Подсчитываем оставшиеся строки в таблице
         const pendingCount = document.querySelectorAll('tr[data-rental-status="PENDING"]').length;
-
-        // Обновляем отображаемое количество
         const pendingCountElement = document.getElementById('pending-count');
         if (pendingCountElement) {
             pendingCountElement.textContent = pendingCount;
         }
 
-        // Если таблица пуста, показываем сообщение
         const table = document.querySelector('.data-table tbody');
         if (table && table.children.length === 0) {
             table.innerHTML = '<tr><td colspan="8" class="text-center">Нет ожидающих аренд</td></tr>';
@@ -209,33 +293,11 @@
 
     // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', function() {
-        // Добавляем стили для анимации удаления
         const style = document.createElement('style');
         style.textContent = `
             .fade-out {
                 opacity: 0;
                 transition: opacity 0.5s;
-            }
-            .status-active {
-                color: green;
-                font-weight: bold;
-            }
-            .status-pending {
-                color: orange;
-                font-weight: bold;
-            }
-            .status-completed {
-                color: blue;
-                font-weight: bold;
-            }
-            .status-cancelled {
-                color: red;
-                font-weight: bold;
-            }
-            .status-pending_cancellation,
-            .status-cancellation_requested {
-                color: purple;
-                font-weight: bold;
             }
         `;
         document.head.appendChild(style);
@@ -249,46 +311,26 @@
                 const rentalRow = this.closest('tr');
                 const rentalId = rentalRow ? rentalRow.dataset.rentalId : null;
 
-                // Создаем объект заголовков
-                const headers = {
-                    'X-Requested-With': 'XMLHttpRequest'
-                };
-
-                // Добавляем CSRF-токен в заголовки
-                if (csrfHeader && csrfToken) {
-                    headers[csrfHeader] = csrfToken;
-                }
-
                 fetch(this.action, {
-                    method: this.method,
+                    method: 'POST',
                     body: formData,
-                    headers: headers
+                    headers: {
+                        [csrfHeader]: csrfToken
+                    }
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Показываем сообщение об успехе
                         showMessage('success', data.message);
-
-                        // Если есть ID аренды, обновляем строку
-                        if (rentalId && data.newStatus) {
+                        if (rentalId) {
                             updateRentalRow(rentalId, data.newStatus);
                         }
-
-                        // Скрываем форму отмены
-                        if (this.closest('.cancel-form')) {
-                            const cancelFormId = this.closest('.cancel-form').id;
-                            const id = cancelFormId.split('-')[1];
-                            hideCancelForm(id);
-                        }
                     } else {
-                        // Показываем сообщение об ошибке
-                        showMessage('error', data.message || 'Произошла ошибка');
+                        showMessage('error', data.message);
                     }
                 })
                 .catch(error => {
-                    console.error('Ошибка:', error);
-                    showMessage('error', 'Произошла ошибка при отправке запроса');
+                    showMessage('error', 'Произошла ошибка при обработке запроса');
                 });
             });
         });

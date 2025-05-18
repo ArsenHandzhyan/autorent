@@ -12,11 +12,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.anapa.autorent.model.Role;
+import ru.anapa.autorent.model.Rental;
+import ru.anapa.autorent.model.RentalStatus;
 import ru.anapa.autorent.model.User;
+import ru.anapa.autorent.model.UserStats;
 import ru.anapa.autorent.repository.RoleRepository;
 import ru.anapa.autorent.repository.UserRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -35,12 +40,14 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RentalService rentalService;
 
     @Autowired
-    public UserService(@Lazy UserRepository userRepository, @Lazy RoleRepository roleRepository, @Lazy PasswordEncoder passwordEncoder) {
+    public UserService(@Lazy UserRepository userRepository, @Lazy RoleRepository roleRepository, @Lazy PasswordEncoder passwordEncoder, RentalService rentalService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.rentalService = rentalService;
     }
 
     @Override
@@ -621,5 +628,50 @@ public class UserService implements UserDetailsService {
      */
     public record UserStatistics(long totalUsers, long activeUsers, long disabledUsers, long adminCount,
                                  long newUsersLast30Days) {
+    }
+
+    public List<UserStats> getActiveUsers() {
+        List<User> allUsers = findAllUsers();
+        List<UserStats> userStats = new ArrayList<>();
+        
+        allUsers.forEach(user -> {
+            UserStats stats = new UserStats();
+            stats.setFirstName(user.getFirstName());
+            stats.setLastName(user.getLastName());
+            
+            // Получаем все аренды пользователя
+            List<Rental> userRentals = rentalService.findRentalsByUser(user);
+            
+            // Считаем количество аренд
+            stats.setRentalCount(userRentals.size());
+            
+            // Считаем общую сумму
+            BigDecimal totalSpent = userRentals.stream()
+                    .filter(rental -> rental.getStatus() == RentalStatus.COMPLETED)
+                    .map(Rental::getTotalCost)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            stats.setTotalSpent(totalSpent.doubleValue());
+            
+            // Получаем дату последней активности
+            LocalDateTime lastActivity = userRentals.stream()
+                    .map(Rental::getStartDate)
+                    .max(LocalDateTime::compareTo)
+                    .orElse(user.getLastLoginDate());
+            stats.setLastActivity(lastActivity);
+            
+            userStats.add(stats);
+        });
+        
+        // Сортируем по количеству аренд и сумме
+        userStats.sort((a, b) -> {
+            int compareByRentals = Integer.compare(b.getRentalCount(), a.getRentalCount());
+            if (compareByRentals != 0) return compareByRentals;
+            return Double.compare(b.getTotalSpent(), a.getTotalSpent());
+        });
+        
+        // Возвращаем топ-10 пользователей
+        return userStats.stream()
+                .limit(10)
+                .collect(Collectors.toList());
     }
 }

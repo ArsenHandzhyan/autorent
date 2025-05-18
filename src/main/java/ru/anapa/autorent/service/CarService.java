@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +16,13 @@ import ru.anapa.autorent.config.DataInitializer;
 import ru.anapa.autorent.dto.CarSummaryDto;
 import ru.anapa.autorent.dto.RentalPeriodDto;
 import ru.anapa.autorent.model.Car;
+import ru.anapa.autorent.model.CarStats;
 import ru.anapa.autorent.model.Rental;
+import ru.anapa.autorent.model.RentalStatus;
 import ru.anapa.autorent.repository.CarRepository;
 import ru.anapa.autorent.repository.RentalRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,12 +31,14 @@ import java.util.stream.Collectors;
 public class CarService {
     private final CarRepository carRepository;
     private final RentalRepository rentalRepository;
+    private final RentalService rentalService;
     private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 
     @Autowired
-    public CarService(CarRepository carRepository, RentalRepository rentalRepository) {
+    public CarService(CarRepository carRepository, RentalRepository rentalRepository, @Lazy RentalService rentalService) {
         this.carRepository = carRepository;
         this.rentalRepository = rentalRepository;
+        this.rentalService = rentalService;
     }
 
     // Метод для получения всех автомобилей
@@ -102,7 +108,7 @@ public class CarService {
 
         // Получаем все активные и ожидающие аренды одним запросом
         List<Rental> allRentals = rentalRepository.findRentalsByCarIdInAndStatusIn(
-                carIds, Arrays.asList("ACTIVE", "PENDING"));
+                carIds, Arrays.asList(RentalStatus.ACTIVE, RentalStatus.PENDING));
 
         // Группируем аренды по ID автомобиля для быстрого доступа
         Map<Long, List<Rental>> rentalsByCarId = allRentals.stream()
@@ -188,7 +194,7 @@ public class CarService {
         logger.info("Запуск проверки статусов автомобилей");
 
         // Получаем все активные аренды
-        List<Rental> activeRentals = rentalRepository.findByStatus("ACTIVE");
+        List<Rental> activeRentals = rentalRepository.findByStatus(RentalStatus.ACTIVE);
         Set<Long> activeCarIds = activeRentals.stream()
                 .map(rental -> rental.getCar().getId())
                 .collect(Collectors.toSet());
@@ -221,8 +227,8 @@ public class CarService {
 
         // Получаем все активные и ожидающие аренды
         List<Rental> allRelevantRentals = new ArrayList<>();
-        allRelevantRentals.addAll(rentalRepository.findByCarAndStatusOrderByEndDateAsc(car, "ACTIVE"));
-        allRelevantRentals.addAll(rentalRepository.findByCarAndStatusOrderByEndDateAsc(car, "PENDING"));
+        allRelevantRentals.addAll(rentalRepository.findByCarAndStatusOrderByEndDateAsc(car, RentalStatus.ACTIVE));
+        allRelevantRentals.addAll(rentalRepository.findByCarAndStatusOrderByEndDateAsc(car, RentalStatus.PENDING));
 
         // Сортируем по дате окончания
         allRelevantRentals.sort(Comparator.comparing(Rental::getEndDate));
@@ -245,11 +251,57 @@ public class CarService {
 
         // Находим все активные и ожидающие аренды
         List<Rental> rentals = rentalRepository.findByCarAndStatusInOrderByStartDateAsc(
-                car, List.of("ACTIVE", "PENDING"));
+                car, List.of(RentalStatus.ACTIVE, RentalStatus.PENDING));
 
         // Преобразуем в DTO
         return rentals.stream()
                 .map(rental -> new RentalPeriodDto(rental.getStartDate(), rental.getEndDate()))
+                .collect(Collectors.toList());
+    }
+
+    public List<CarStats> getPopularCars() {
+        List<Car> allCars = findAllCars();
+        List<CarStats> carStats = new ArrayList<>();
+        
+        allCars.forEach(car -> {
+            CarStats stats = new CarStats();
+            stats.setBrand(car.getBrand());
+            stats.setModel(car.getModel());
+            
+            // Получаем все аренды для этого автомобиля
+            List<Rental> carRentals = rentalService.findRentalsByCar(car);
+            
+            // Считаем количество аренд
+            stats.setRentalCount(carRentals.size());
+            
+            // Считаем общий доход
+            BigDecimal revenue = carRentals.stream()
+                    .filter(rental -> rental.getStatus().equals(RentalStatus.COMPLETED.name()))
+                    .map(Rental::getTotalCost)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            stats.setRevenue(revenue.doubleValue());
+            
+            // Считаем среднюю оценку
+            double averageRating = carRentals.stream()
+                    .filter(rental -> rental.getRating() != null)
+                    .mapToDouble(rental -> rental.getRating().doubleValue())
+                    .average()
+                    .orElse(0.0);
+            stats.setAverageRating(averageRating);
+            
+            carStats.add(stats);
+        });
+        
+        // Сортируем по количеству аренд и доходу
+        carStats.sort((a, b) -> {
+            int compareByRentals = Integer.compare(b.getRentalCount(), a.getRentalCount());
+            if (compareByRentals != 0) return compareByRentals;
+            return Double.compare(b.getRevenue(), a.getRevenue());
+        });
+        
+        // Возвращаем топ-10 автомобилей
+        return carStats.stream()
+                .limit(10)
                 .collect(Collectors.toList());
     }
 }

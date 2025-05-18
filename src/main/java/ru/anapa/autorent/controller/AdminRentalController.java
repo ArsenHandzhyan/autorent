@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.model.Rental;
+import ru.anapa.autorent.model.RentalStatus;
 import ru.anapa.autorent.service.CarService;
 import ru.anapa.autorent.service.RentalService;
 
@@ -58,7 +59,7 @@ public class AdminRentalController {
 
     @GetMapping("/status/{status}")
     public String listRentalsByStatus(@PathVariable String status, Model model) {
-        List<Rental> rentals = rentalService.findRentalsByStatus(status);
+        List<Rental> rentals = rentalService.findRentalsByStatus(RentalStatus.valueOf(status.toUpperCase()));
         model.addAttribute("rentals", rentals);
         model.addAttribute("currentStatus", status);
         return "rentals/all-rentals";
@@ -132,10 +133,8 @@ public class AdminRentalController {
                 response.put("message", e.getMessage());
                 return ResponseEntity.ok(response);
             }
-            Car car = carService.findCarById(id);
-            model.addAttribute("car", car);
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/rentals/all-rentals";
+            return "redirect:/admin/rentals";
         }
     }
 

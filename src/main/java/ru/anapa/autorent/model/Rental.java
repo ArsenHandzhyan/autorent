@@ -38,8 +38,15 @@ public class Rental {
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal totalCost = BigDecimal.ZERO;
 
-    @Column
-    private String status = "PENDING"; // PENDING, ACTIVE, COMPLETED, CANCELLED, PENDING_CANCELLATION
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RentalStatus status = RentalStatus.PENDING;
+
+    @Column(name = "rating")
+    private BigDecimal rating;
+
+    @Column(name = "comment")
+    private String comment;
 
     @Column
     private String notes;

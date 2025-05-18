@@ -10,10 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.anapa.autorent.model.Rental;
 import ru.anapa.autorent.model.User;
+import ru.anapa.autorent.model.RentalStatus;
 import ru.anapa.autorent.service.RentalService;
 import ru.anapa.autorent.service.UserService;
+import ru.anapa.autorent.model.CarStats;
+import ru.anapa.autorent.model.UserStats;
+import ru.anapa.autorent.service.CarService;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/admin")
@@ -22,11 +28,13 @@ public class AdminController {
 
     private final UserService userService;
     private final RentalService rentalService;
+    private final CarService carService;
 
     @Autowired
-    public AdminController(UserService userService, @Lazy RentalService rentalService) {
+    public AdminController(UserService userService, @Lazy RentalService rentalService, CarService carService) {
         this.userService = userService;
         this.rentalService = rentalService;
+        this.carService = carService;
     }
 
     @GetMapping("/dashboard")
@@ -53,9 +61,9 @@ public class AdminController {
         }
 
         List<User> users = userService.findAllUsers();
-        List<Rental> pendingRentals = rentalService.findRentalsByStatus("PENDING");
-        List<Rental> activeRentals = rentalService.findRentalsByStatus("ACTIVE");
-        List<Rental> pendingCancellations = rentalService.findRentalsByStatus("PENDING_CANCELLATION");
+        List<Rental> pendingRentals = rentalService.findRentalsByStatus(RentalStatus.PENDING);
+        List<Rental> activeRentals = rentalService.findRentalsByStatus(RentalStatus.ACTIVE);
+        List<Rental> pendingCancellations = rentalService.findRentalsByStatus(RentalStatus.PENDING_CANCELLATION);
 
         model.addAttribute("userCount", users.size());
         model.addAttribute("pendingRentals", pendingRentals);
@@ -83,12 +91,6 @@ public class AdminController {
         return "admin/user-details";
     }
 
-    @PostMapping("/users/{id}/promote")
-    public String promoteToAdmin(@PathVariable Long id) {
-        userService.promoteToAdmin(id);
-        return "redirect:/admin/users";
-    }
-
     @PostMapping("/users/{id}/disable")
     public String disableUser(@PathVariable Long id) {
         User user = userService.findById(id);
@@ -107,25 +109,48 @@ public class AdminController {
 
     @GetMapping("/pending-cancellations")
     public String pendingCancellations(Model model) {
-        List<Rental> rentals = rentalService.findRentalsByStatus("PENDING_CANCELLATION");
+        List<Rental> rentals = rentalService.findRentalsByStatus(RentalStatus.PENDING_CANCELLATION);
         model.addAttribute("rentals", rentals);
         return "admin/pending-cancellations";
     }
 
     @GetMapping("/statistics")
     public String statistics(Model model) {
-        // Получаем количество аренд по статусам
-        int pendingCount = rentalService.findRentalsByStatus("PENDING").size();
-        int activeCount = rentalService.findRentalsByStatus("ACTIVE").size();
-        int completedCount = rentalService.findRentalsByStatus("COMPLETED").size();
-        int cancelledCount = rentalService.findRentalsByStatus("CANCELLED").size();
-        int pendingCancellationCount = rentalService.findRentalsByStatus("PENDING_CANCELLATION").size();
+        // Получаем базовую статистику
+        int userCount = userService.findAllUsers().size();
+        int carCount = carService.findAllCars().size();
+        double totalRevenue = rentalService.calculateTotalRevenue();
+        double conversionRate = rentalService.calculateConversionRate();
 
-        model.addAttribute("pendingCount", pendingCount);
-        model.addAttribute("activeCount", activeCount);
-        model.addAttribute("completedCount", completedCount);
-        model.addAttribute("cancelledCount", cancelledCount);
-        model.addAttribute("pendingCancellationCount", pendingCancellationCount);
+        // Получаем статистику по арендам
+        List<Rental> allRentals = rentalService.findAllRentals();
+        Map<String, Integer> monthlyRentals = rentalService.getMonthlyRentalStats();
+        Map<String, Integer> statusDistribution = rentalService.getRentalStatusDistribution();
+
+        // Получаем популярные автомобили
+        List<CarStats> popularCars = carService.getPopularCars();
+
+        // Получаем активных пользователей
+        List<UserStats> activeUsers = userService.getActiveUsers();
+
+        // Подготавливаем данные для графиков
+        Map<String, Object> rentalData = new HashMap<>();
+        rentalData.put("labels", monthlyRentals.keySet().toArray());
+        rentalData.put("data", monthlyRentals.values().toArray());
+
+        Map<String, Object> statusData = new HashMap<>();
+        statusData.put("labels", statusDistribution.keySet().toArray());
+        statusData.put("data", statusDistribution.values().toArray());
+
+        // Добавляем все данные в модель
+        model.addAttribute("userCount", userCount);
+        model.addAttribute("carCount", carCount);
+        model.addAttribute("totalRevenue", totalRevenue);
+        model.addAttribute("conversionRate", conversionRate);
+        model.addAttribute("popularCars", popularCars);
+        model.addAttribute("activeUsers", activeUsers);
+        model.addAttribute("rentalData", rentalData);
+        model.addAttribute("statusData", statusData);
 
         return "admin/statistics";
     }

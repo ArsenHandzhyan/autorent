@@ -7,72 +7,223 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .user-profile {
+            background: #fff;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .profile-header h1 {
+            margin: 0;
+        }
+        .profile-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .info-group {
+            margin-bottom: 1rem;
+        }
+        .info-group label {
+            font-weight: 600;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .info-group span {
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-disabled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .role-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            margin: 0.125rem;
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        .role-admin {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #dee2e6;
+        }
+        .rentals-section {
+            background: #fff;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .data-table th, .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .data-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            text-align: left;
+        }
+        .data-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .rental-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .status-pending { background-color: #fff3cd; color: #856404; }
+        .status-active { background-color: #d4edda; color: #155724; }
+        .status-completed { background-color: #cce5ff; color: #004085; }
+        .status-cancelled { background-color: #f8d7da; color: #721c24; }
+        .status-pending_cancellation { background-color: #e2e3e5; color: #383d41; }
+    </style>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
-<main class="container">
-    <h1>Детали пользователя</h1>
+<main class="container py-5">
     <div class="user-profile">
-        <div class="profile-info">
-            <h2 th:text="${user.firstName + ' ' + user.lastName}">Иван Иванов</h2>
-            <p><strong>Email:</strong> <span th:text="${user.email}">ivan@example.com</span></p>
-            <p><strong>Телефон:</strong> <span th:text="${user.phone}">+7(999)999-99-99</span></p>
-            <p><strong>Дата регистрации:</strong> <span th:text="${#temporals.format(user.registrationDate, 'dd.MM.yyyy')}">01.01.2025</span></p>
-            <p><strong>Последний вход:</strong> <span th:text="${#temporals.format(user.lastLoginDate, 'dd.MM.yyyy')}">01.01.2025</span></p>
-            <p><strong>Статус:</strong> <span th:text="${user.enabled ? 'Активен' : 'Отключен'}">Активен</span></p>
-            <p><strong>Роли:</strong>
-                <span th:each="role : ${user.roles}" th:text="${role.name}">ROLE_USER</span>
-            </p>
+        <div class="profile-header">
+            <h1>Детали пользователя</h1>
+            <a th:href="@{/admin/users}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left"></i> Назад к списку
+            </a>
         </div>
+
+        <div class="profile-info">
+            <div class="info-group">
+                <label>Имя и фамилия</label>
+                <span th:text="${user.firstName + ' ' + user.lastName}">Иван Иванов</span>
+            </div>
+            <div class="info-group">
+                <label>Email</label>
+                <span th:text="${user.email}">ivan@example.com</span>
+            </div>
+            <div class="info-group">
+                <label>Телефон</label>
+                <span th:text="${user.phone}">+7(999)999-99-99</span>
+            </div>
+            <div class="info-group">
+                <label>Дата регистрации</label>
+                <span th:text="${#temporals.format(user.registrationDate, 'dd.MM.yyyy')}">01.01.2025</span>
+            </div>
+            <div class="info-group">
+                <label>Последний вход</label>
+                <span th:text="${#temporals.format(user.lastLoginDate, 'dd.MM.yyyy')}">01.01.2025</span>
+            </div>
+            <div class="info-group">
+                <label>Статус</label>
+                <span th:class="${'status-badge ' + (user.enabled ? 'status-active' : 'status-disabled')}"
+                      th:text="${user.enabled ? 'Активен' : 'Отключен'}">
+                    Активен
+                </span>
+            </div>
+            <div class="info-group">
+                <label>Роли</label>
+                <div>
+                    <span th:each="role : ${user.roles}" 
+                          th:class="${'role-badge ' + (role.name == 'ROLE_ADMIN' ? 'role-admin' : '')}"
+                          th:text="${role.name == 'ROLE_ADMIN' ? 'Администратор' : 'Пользователь'}">
+                        ROLE_USER
+                    </span>
+                </div>
+            </div>
+        </div>
+
         <div class="user-actions">
-            <form th:if="${!user.hasRole('ROLE_ADMIN')}"
-                  th:action="@{/admin/users/{id}/promote(id=${user.id})}"
-                  method="post" style="display: inline;">
-                <button type="submit" class="btn btn-small">Сделать админом</button>
-            </form>
             <form th:if="${user.enabled}"
                   th:action="@{/admin/users/{id}/disable(id=${user.id})}"
                   method="post" style="display: inline;">
-                <button type="submit" class="btn btn-small btn-danger">Отключить</button>
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-user-slash"></i> Отключить
+                </button>
             </form>
             <form th:unless="${user.enabled}"
                   th:action="@{/admin/users/{id}/enable(id=${user.id})}"
                   method="post" style="display: inline;">
-                <button type="submit" class="btn btn-small">Включить</button>
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-user-check"></i> Включить
+                </button>
             </form>
-            <a th:href="@{/admin/users}" class="btn">Назад к списку</a>
         </div>
     </div>
+
     <div class="rentals-section">
         <h2>История аренд</h2>
-        <table class="data-table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Автомобиль</th>
-                <th>Дата начала</th>
-                <th>Дата окончания</th>
-                <th>Статус</th>
-                <th>Стоимость</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="rental : ${rentals}">
-                <td th:text="${rental.id}">1</td>
-                <td th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</td>
-                <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2025</td>
-                <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
-                <td th:text="${rental.status}">Активна</td>
-                <td th:text="${rental.totalCost + ' ₽'}">10000 ₽</td>
-            </tr>
-            <tr th:if="${rentals.empty}">
-                <td colspan="6">Нет аренд</td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Автомобиль</th>
+                    <th>Дата начала</th>
+                    <th>Дата окончания</th>
+                    <th>Статус</th>
+                    <th>Стоимость</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="rental : ${rentals}">
+                    <td th:text="${rental.id}">1</td>
+                    <td th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</td>
+                    <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2025</td>
+                    <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
+                    <td>
+                        <span th:class="${'rental-status status-' + rental.status.toLowerCase()}"
+                              th:text="${rental.status == 'PENDING' ? 'Ожидает подтверждения' :
+                                      (rental.status == 'ACTIVE' ? 'Активна' :
+                                      (rental.status == 'COMPLETED' ? 'Завершена' :
+                                      (rental.status == 'CANCELLED' ? 'Отменена' :
+                                      (rental.status == 'CANCELLATION_REQUESTED' || rental.status == 'PENDING_CANCELLATION' ? 'Запрос на отмену' : rental.status))))}">
+                            Активна
+                        </span>
+                    </td>
+                    <td th:text="${rental.totalCost + ' ₽'}">10000 ₽</td>
+                </tr>
+                <tr th:if="${rentals.empty}">
+                    <td colspan="6" class="text-center py-4">Нет аренд</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </main>
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

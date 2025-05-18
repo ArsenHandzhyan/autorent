@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <title>Статистика - Автопрокат</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .stat-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 1rem 0;
+        }
+        .stat-label {
+            color: #6c757d;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .chart-container {
+            position: relative;
+            margin: 1rem 0;
+            height: 300px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .section-header h2 {
+            margin: 0;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .data-table th, .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .data-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            text-align: left;
+        }
+        .data-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            margin-left: 0.5rem;
+        }
+        .trend-up {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .trend-down {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .trend-neutral {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container py-5">
+    <div class="section-header">
+        <h1>Статистика сервиса</h1>
+        <a th:href="@{/admin/dashboard}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Назад к панели
+        </a>
+    </div>
+
+    <!-- Общая статистика -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-label">
+                    <i class="fas fa-users"></i> Всего пользователей
+                </div>
+                <div class="stat-number" th:text="${userCount}">0</div>
+                <div class="trend-indicator trend-up">
+                    <i class="fas fa-arrow-up"></i> +5% за месяц
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-label">
+                    <i class="fas fa-car"></i> Всего автомобилей
+                </div>
+                <div class="stat-number" th:text="${carCount}">0</div>
+                <div class="trend-indicator trend-up">
+                    <i class="fas fa-arrow-up"></i> +2% за месяц
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-label">
+                    <i class="fas fa-money-bill-wave"></i> Общий доход
+                </div>
+                <div class="stat-number" th:text="${totalRevenue + ' ₽'}">0 ₽</div>
+                <div class="trend-indicator trend-up">
+                    <i class="fas fa-arrow-up"></i> +15% за месяц
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-label">
+                    <i class="fas fa-chart-line"></i> Конверсия
+                </div>
+                <div class="stat-number" th:text="${conversionRate + '%'}">0%</div>
+                <div class="trend-indicator trend-neutral">
+                    <i class="fas fa-minus"></i> Без изменений
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Графики -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="stat-card">
+                <h3>Статистика аренд по месяцам</h3>
+                <div class="chart-container">
+                    <canvas id="rentalsChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="stat-card">
+                <h3>Распределение статусов аренд</h3>
+                <div class="chart-container">
+                    <canvas id="rentalStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Статистика по автомобилям -->
+    <div class="stat-card mt-4">
+        <h3>Популярные автомобили</h3>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>Модель</th>
+                    <th>Количество аренд</th>
+                    <th>Доход</th>
+                    <th>Средняя оценка</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="car : ${popularCars}">
+                    <td th:text="${car.brand + ' ' + car.model}">Toyota Camry</td>
+                    <td th:text="${car.rentalCount}">10</td>
+                    <td th:text="${car.revenue + ' ₽'}">100000 ₽</td>
+                    <td th:text="${car.averageRating + '/5'}">4.5/5</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Статистика по пользователям -->
+    <div class="stat-card mt-4">
+        <h3>Активные пользователи</h3>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>Пользователь</th>
+                    <th>Количество аренд</th>
+                    <th>Общая сумма</th>
+                    <th>Последняя активность</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${activeUsers}">
+                    <td th:text="${user.firstName + ' ' + user.lastName}">Иван Иванов</td>
+                    <td th:text="${user.rentalCount}">5</td>
+                    <td th:text="${user.totalSpent + ' ₽'}">50000 ₽</td>
+                    <td th:text="${#temporals.format(user.lastActivity, 'dd.MM.yyyy')}">01.01.2025</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+    // Данные для графиков
+    const rentalData = /*[[${rentalData}]]*/ {
+        labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн'],
+        datasets: [{
+            label: 'Количество аренд',
+            data: [12, 19, 15, 25, 22, 30],
+            borderColor: '#4CAF50',
+            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+            fill: true
+        }]
+    };
+
+    const statusData = /*[[${statusData}]]*/ {
+        labels: ['Активные', 'Завершенные', 'Отмененные', 'Ожидающие'],
+        datasets: [{
+            data: [30, 50, 10, 10],
+            backgroundColor: [
+                '#4CAF50',
+                '#2196F3',
+                '#F44336',
+                '#FFC107'
+            ]
+        }]
+    };
+
+    // Инициализация графиков
+    document.addEventListener('DOMContentLoaded', function() {
+        // График аренд по месяцам
+        new Chart(document.getElementById('rentalsChart'), {
+            type: 'line',
+            data: rentalData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // График статусов аренд
+        new Chart(document.getElementById('rentalStatusChart'), {
+            type: 'doughnut',
+            data: statusData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html> 
