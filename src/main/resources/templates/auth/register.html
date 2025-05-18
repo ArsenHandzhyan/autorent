@@ -152,6 +152,7 @@
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" th:field="*{email}" required>
+                <span id="emailError" class="error-message" style="display:none;"></span>
                 <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></span>
             </div>
 
@@ -242,39 +243,27 @@
         let timeLeft = 300; // 5 минут в секундах
         let isPhoneVerified = false;
 
-        // Маска для телефона
-        $('#phoneDisplay').mask('+7(000)000-00-00');
+        // Маска для телефона (разрешаем разные форматы)
+        $('#phoneDisplay').mask('+7 (000) 000-00-00', {placeholder: "+7 (___) ___-__-__"});
 
-        // Проверка существования email
-        $('#email').on('blur', function() {
-            var email = $(this).val();
-            if (email) {
-                $.ajax({
-                    url: '/auth/check-email',
-                    method: 'GET',
-                    data: { email: email },
-                    success: function(exists) {
-                        if (exists) {
-                            showError('email', 'Пользователь с таким email уже зарегистрирован');
-                            $('#email').addClass('is-invalid');
-                        } else {
-                            $('#email').removeClass('is-invalid');
-                        }
-                        validateForm();
-                    }
-                });
-            }
-        });
+        // Универсальная функция нормализации номера для сервера
+        function normalizePhone(phone) {
+            let digits = phone.replace(/\D/g, '');
+            if (digits.length === 11 && digits[0] === '8') digits = '7' + digits.slice(1);
+            if (digits.length === 10) digits = '7' + digits;
+            if (digits.length !== 11 || digits[0] !== '7') return null;
+            return `+7(${digits.slice(1,4)})${digits.slice(4,7)}-${digits.slice(7,9)}-${digits.slice(9,11)}`;
+        }
 
         // Проверка существования телефона
         $('#phoneDisplay').on('blur', function() {
             var phone = $(this).val();
-            var phonePattern = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
-            if (phone && phonePattern.test(phone)) {
+            var normalized = normalizePhone(phone);
+            if (normalized) {
                 $.ajax({
                     url: '/auth/check-phone',
                     method: 'GET',
-                    data: { phone: phone },
+                    data: { phone: normalized },
                     success: function(exists) {
                         if (exists) {
                             showError('phoneVerificationError', 'Пользователь с таким номером телефона уже зарегистрирован');
@@ -288,7 +277,7 @@
                 });
             } else {
                 $('#phoneDisplay').addClass('is-invalid');
-                showError('phoneVerificationError', 'Введите корректный номер телефона');
+                showError('phoneVerificationError', 'Введите корректный российский номер телефона');
                 validateForm();
             }
         });
@@ -296,56 +285,77 @@
         // Обработчик изменения телефона
         $('#phoneDisplay').on('input', function() {
             var phone = $(this).val();
-            var phonePattern = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
-            $('#phone').val(phone);
-            if (phonePattern.test(phone)) {
+            var normalized = normalizePhone(phone);
+            $('#phone').val(normalized ? normalized : '');
+            if (normalized) {
                 $('#phoneDisplay').removeClass('is-invalid');
                 $('#phoneVerificationError').hide();
             } else {
                 $('#phoneDisplay').addClass('is-invalid');
-                $('#phoneVerificationError').show().text('Введите корректный номер телефона');
+                $('#phoneVerificationError').show().text('Введите корректный российский номер телефона');
             }
             validateForm();
         });
 
+        // Проверка email на лету и при уходе с поля
+        $('#email').on('input blur', function() {
+            var email = $(this).val();
+            if (email) {
+                $.ajax({
+                    url: '/auth/check-email',
+                    method: 'GET',
+                    data: { email: email },
+                    success: function(exists) {
+                        if (exists) {
+                            showError('email', 'Пользователь с таким email уже зарегистрирован');
+                            $('#email').addClass('is-invalid').removeClass('is-valid');
+                            $('#emailError').text('Пользователь с таким email уже зарегистрирован');
+                        } else {
+                            $('#email').removeClass('is-invalid').addClass('is-valid');
+                            $('#emailError').hide();
+                        }
+                        validateForm();
+                    }
+                });
+            } else {
+                $('#email').removeClass('is-invalid is-valid');
+                $('#emailError').hide();
+                validateForm();
+            }
+        });
+
         // Обработчики для кнопок верификации телефона
         $('#sendCallCodeButton').click(function() {
-            if (isPhoneVerified) {
-                return;
-            }
+            if (isPhoneVerified) return;
             var phone = $('#phone').val();
             if (!phone) {
                 showError('phoneVerificationError', 'Введите номер телефона');
                 return;
             }
-
-            // Сброс предыдущих таймеров
             if (callCheckInterval) clearInterval(callCheckInterval);
             if (callTimerInterval) clearInterval(callTimerInterval);
             timeLeft = 300;
-
             $.ajax({
                 url: '/auth/initiate-call-auth',
                 method: 'POST',
                 data: { phone: phone },
                 success: function(response) {
+                    $('#callStatusBlock').show();
+                    $('#smsVerificationBlock').hide();
                     if (response.success) {
-                        $('#callStatusBlock').show();
-                        $('#smsVerificationBlock').hide();
                         $('#callStatusMessage').html('Пожалуйста, позвоните на номер: <strong>' + response.call_phone_pretty + '</strong>');
-                        
-                        // Запуск таймера
+                        // Запуск таймера и проверки статуса (оставить как было)
                         updateCallTimer();
                         callTimerInterval = setInterval(updateCallTimer, 1000);
-                        
-                        // Запуск проверки статуса с использованием check_id
                         startCallStatusCheck(response.check_id);
                     } else {
-                        showError('callStatusMessage', response.message);
+                        $('#callStatusMessage').html('<span class="text-danger">' + response.message + '</span>');
                     }
                 },
                 error: function() {
-                    showError('callStatusMessage', 'Ошибка при инициализации звонка');
+                    $('#callStatusBlock').show();
+                    $('#smsVerificationBlock').hide();
+                    $('#callStatusMessage').html('<span class="text-danger">Ошибка при инициализации звонка</span>');
                 }
             });
         });
@@ -378,7 +388,7 @@
                             $('#phoneVerificationError').hide();
                             $('#phone').prop('readonly', true);
                             $('#phoneDisplay').prop('readonly', true);
-                            $('#sendCallCodeButton, #sendSmsCodeButton').prop('disabled', true);
+                            $('#sendCallCodeButton, #sendSmsCodeButton').prop('disabled', true).addClass('disabled');
                             isPhoneVerified = true;
                             showSuccess('phoneVerificationError', 'Номер телефона успешно подтвержден');
                             validateForm();
@@ -394,26 +404,28 @@
         }
 
         $('#sendSmsCodeButton').click(function() {
+            if (isPhoneVerified) return;
             var phone = $('#phone').val();
             if (!phone) {
                 showError('phoneVerificationError', 'Введите номер телефона');
                 return;
             }
-
             $.ajax({
                 url: '/auth/send-sms-code',
                 method: 'POST',
                 data: { phone: phone },
                 success: function(response) {
+                    $('#smsVerificationBlock').show();
+                    $('#callStatusBlock').hide();
                     if (response.success) {
-                        $('#smsVerificationBlock').show();
-                        $('#callStatusBlock').hide();
                         showSuccess('smsVerificationStatus', 'Код отправлен на ваш телефон');
                     } else {
                         showError('smsVerificationStatus', response.message);
                     }
                 },
                 error: function() {
+                    $('#smsVerificationBlock').show();
+                    $('#callStatusBlock').hide();
                     showError('smsVerificationStatus', 'Ошибка при отправке кода');
                 }
             });
@@ -423,15 +435,19 @@
         $('#verifySmsButton').click(function() {
             var phone = $('#phone').val();
             var code = $('#smsCode').val();
-
             $.ajax({
                 url: '/auth/verify-sms-code',
                 method: 'POST',
                 data: { phone: phone, code: code },
                 success: function(response) {
                     if (response.success) {
-                        showSuccess('smsVerificationStatus', 'Номер телефона подтвержден');
+                        showSuccess('smsVerificationStatus', 'Телефон подтверждён');
                         $('#smsVerificationBlock').hide();
+                        isPhoneVerified = true;
+                        $('#phoneDisplay').prop('readonly', true);
+                        $('#sendCallCodeButton, #sendSmsCodeButton').prop('disabled', true).addClass('disabled');
+                        $('#phoneVerificationError').hide();
+                        $('<div id="phoneVerifiedSuccess" class="text-success mb-2">Телефон подтверждён</div>').insertAfter('#phoneDisplay').show();
                         validateForm();
                     } else {
                         showError('smsVerificationStatus', response.message);
@@ -445,9 +461,18 @@
 
         // Функции для отображения сообщений
         function showError(elementId, message) {
-            $('#' + elementId).text(message).show().addClass('error-shake');
+            if (elementId === 'email') {
+                $('#emailError').text(message).show().addClass('error-shake');
+                $('#email').addClass('is-invalid');
+            } else {
+                $('#' + elementId).text(message).show().addClass('error-shake');
+            }
             setTimeout(function() {
-                $('#' + elementId).removeClass('error-shake');
+                if (elementId === 'email') {
+                    $('#emailError').removeClass('error-shake');
+                } else {
+                    $('#' + elementId).removeClass('error-shake');
+                }
             }, 600);
         }
 
@@ -473,13 +498,9 @@
             }
 
             // Проверка телефона
-            if (!phone || !/^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/.test(phone)) {
+            if (!phone) {
                 isValid = false;
-                if (phone.length === 16) {
-                    showError('phoneVerificationError', 'Введите корректный номер телефона');
-                } else {
-                    $('#phoneVerificationError').hide();
-                }
+                showError('phoneVerificationError', 'Введите корректный российский номер телефона');
             } else if (!isPhoneVerified) {
                 isValid = false;
                 showError('phoneVerificationError', 'Необходимо подтвердить номер телефона');
@@ -498,6 +519,13 @@
             // Проверка согласия с условиями
             if (!termsAgreed) {
                 isValid = false;
+            }
+
+            // Кнопки подтверждения активны при валидном номере и не подтверждённом телефоне
+            if (phone && !isPhoneVerified) {
+                $('#sendCallCodeButton, #sendSmsCodeButton').prop('disabled', false).removeClass('disabled');
+            } else {
+                $('#sendCallCodeButton, #sendSmsCodeButton').prop('disabled', true).addClass('disabled');
             }
 
             $('#registerButton').prop('disabled', !isValid);
