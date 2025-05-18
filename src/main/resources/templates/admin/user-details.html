@@ -205,11 +205,7 @@
                     <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
                     <td>
                         <span th:class="${'rental-status status-' + rental.status.toLowerCase()}"
-                              th:text="${rental.status == 'PENDING' ? 'Ожидает подтверждения' :
-                                      (rental.status == 'ACTIVE' ? 'Активна' :
-                                      (rental.status == 'COMPLETED' ? 'Завершена' :
-                                      (rental.status == 'CANCELLED' ? 'Отменена' :
-                                      (rental.status == 'CANCELLATION_REQUESTED' || rental.status == 'PENDING_CANCELLATION' ? 'Запрос на отмену' : rental.status))))}">
+                              th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}">
                             Активна
                         </span>
                     </td>

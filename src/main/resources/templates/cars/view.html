@@ -18,7 +18,8 @@
         <div class="car-details-header">
             <h1 th:text="${car.brand + ' ' + car.model}">Toyota Camry</h1>
             <div class="car-status">
-                <span th:if="${car.available}" class="status available">Доступен</span>
+                <span th:if="${car.available}" class="status available">Доступен для аренды</span>
+                <span th:if="${!car.available}" class="status unavailable">Занят</span>
                 <span th:if="${nextDate != null}">
                     Доступен с <span th:text="${#temporals.format(nextDate, 'dd.MM.yyyy')}">01.01.2025</span>
                 </span>

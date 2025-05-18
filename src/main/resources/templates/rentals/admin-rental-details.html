@@ -33,7 +33,11 @@
                                       (rental.status == 'COMPLETED' ? 'status-completed' :
                                       (rental.status == 'CANCELLED' ? 'status-cancelled' :
                                       'status-pending-cancellation')))}">
-        Статус
+        <span th:text="${rental.status == 'ACTIVE' ? 'Активна' :
+                      (rental.status == 'PENDING' ? 'Ожидает подтверждения' :
+                      (rental.status == 'COMPLETED' ? 'Завершена' :
+                      (rental.status == 'CANCELLED' ? 'Отменена' :
+                      'Запрос на отмену')))}">Статус</span>
       </span>
     </div>
 

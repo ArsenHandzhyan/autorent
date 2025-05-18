@@ -37,10 +37,10 @@
                 <img th:unless="${car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
 
                 <!-- Изменённый блок статуса - теперь используем предварительно загруженные данные -->
-                <div class="status available">
-                    <span th:if="${car.nextAvailableDate == null}">Доступен сейчас</span>
+                <div class="status" th:classappend="${car.nextAvailableDate == null ? 'available' : 'unavailable'}">
+                    <span th:if="${car.nextAvailableDate == null}">Доступен для аренды</span>
                     <span th:if="${car.nextAvailableDate != null}">
-                        Доступен с <span th:text="${#temporals.format(car.nextAvailableDate, 'dd.MM.yyyy')}">01.01.2025</span>
+                        Занят до <span th:text="${#temporals.format(car.nextAvailableDate, 'dd.MM.yyyy')}">01.01.2025</span>
                     </span>
                 </div>
             </div>

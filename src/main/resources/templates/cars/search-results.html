@@ -33,13 +33,13 @@
                 <img th:unless="${car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
 
                 <!-- Блок статуса -->
-                <div th:if="${car.available}" class="status available">Доступен</div>
+                <div th:if="${car.available}" class="status available">Доступен для аренды</div>
                 <div th:unless="${car.available}" class="status unavailable">
                     Занят
                     <span th:with="nextDate=${@carService.getNextAvailableDate(car.id)}"
                           th:if="${nextDate != null}">
-        до <span th:text="${#temporals.format(nextDate, 'dd.MM.yyyy')}">01.01.2025</span>
-    </span>
+                        до <span th:text="${#temporals.format(nextDate, 'dd.MM.yyyy')}">01.01.2025</span>
+                    </span>
                 </div>
 
                 <!-- Блок действий -->

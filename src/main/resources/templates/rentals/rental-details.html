@@ -27,14 +27,14 @@
     <div class="rental-details-card">
         <div class="rental-header">
             <h2 th:text="${rental.car.brand + ' ' + rental.car.model}">Автомобиль</h2>
-            <span id="status-badge" class="status" th:text="${rental.status}"
+            <span id="status-badge" class="status" 
+                  th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}"
                   th:classappend="${rental.status == 'ACTIVE' ? 'status-active' :
                                       (rental.status == 'PENDING' ? 'status-pending' :
                                       (rental.status == 'COMPLETED' ? 'status-completed' :
                                       (rental.status == 'CANCELLED' ? 'status-cancelled' :
                                       'status-pending-cancellation')))}">
-        Статус
-      </span>
+            </span>
         </div>
 
         <div class="rental-info" id="rental-info-container">

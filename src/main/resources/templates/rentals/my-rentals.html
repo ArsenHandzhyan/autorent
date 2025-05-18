@@ -30,11 +30,8 @@
                 <span class="status-badge"
                       th:classappend="${rental.status == 'ACTIVE' ? 'status-active' :
                                            (rental.status == 'PENDING' ? 'status-pending' : 'status-pending-cancellation')}">
-                        <span th:text="${rental.status}">Статус</span>
-                        <span class="status-translation" th:if="${rental.status == 'ACTIVE'}">(Активна)</span>
-                        <span class="status-translation" th:if="${rental.status == 'PENDING'}">(Ожидает подтверждения)</span>
-                        <span class="status-translation" th:if="${rental.status == 'PENDING_CANCELLATION'}">(Ожидает отмены)</span>
-                    </span>
+                    <span th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}">Статус</span>
+                </span>
             </div>
 
             <img th:if="${rental.car.imageUrl}" th:src="${rental.car.imageUrl}" alt="Car Image" class="car-image">
@@ -95,10 +92,8 @@
                     <h3 th:text="${rental.car.brand + ' ' + rental.car.model}">Автомобиль</h3>
                     <span class="status-badge"
                           th:classappend="${rental.status == 'COMPLETED' ? 'status-completed' : 'status-cancelled'}">
-                            <span th:text="${rental.status}">Статус</span>
-                            <span class="status-translation" th:if="${rental.status == 'COMPLETED'}">(Завершена)</span>
-                            <span class="status-translation" th:if="${rental.status == 'CANCELLED'}">(Отменена)</span>
-                        </span>
+                        <span th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}"></span>
+                    </span>
                 </div>
 
                 <img th:if="${rental.car.imageUrl}" th:src="${rental.car.imageUrl}" alt="Car Image" class="car-image">

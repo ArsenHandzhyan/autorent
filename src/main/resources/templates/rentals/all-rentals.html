@@ -25,18 +25,17 @@
 
     <div class="filter-tabs">
         <a th:href="@{/admin/rentals}" class="filter-tab"
-           th:classappend="${currentStatus == null ? 'active' : ''}">Все</a> <!-- Обновлено -->
+           th:classappend="${currentStatus == null ? 'active' : ''}">Все</a>
         <a th:href="@{/admin/rentals/status/PENDING}" class="filter-tab"
-           th:classappend="${currentStatus == 'PENDING' ? 'active' : ''}">Ожидающие</a> <!-- Обновлено -->
+           th:classappend="${currentStatus == 'PENDING' ? 'active' : ''}">Ожидающие</a>
         <a th:href="@{/admin/rentals/status/ACTIVE}" class="filter-tab"
-           th:classappend="${currentStatus == 'ACTIVE' ? 'active' : ''}">Активные</a> <!-- Обновлено -->
+           th:classappend="${currentStatus == 'ACTIVE' ? 'active' : ''}">Активные</a>
         <a th:href="@{/admin/rentals/status/COMPLETED}" class="filter-tab"
-           th:classappend="${currentStatus == 'COMPLETED' ? 'active' : ''}">Завершенные</a> <!-- Обновлено -->
+           th:classappend="${currentStatus == 'COMPLETED' ? 'active' : ''}">Завершенные</a>
         <a th:href="@{/admin/rentals/status/CANCELLED}" class="filter-tab"
-           th:classappend="${currentStatus == 'CANCELLED' ? 'active' : ''}">Отмененные</a> <!-- Обновлено -->
+           th:classappend="${currentStatus == 'CANCELLED' ? 'active' : ''}">Отмененные</a>
         <a th:href="@{/admin/rentals/status/PENDING_CANCELLATION}" class="filter-tab"
            th:classappend="${currentStatus == 'PENDING_CANCELLATION' ? 'active' : ''}">Запросы на отмену</a>
-        <!-- Обновлено -->
     </div>
 
     <div th:if="${#lists.isEmpty(rentals)}" class="empty-state">
@@ -47,14 +46,14 @@
         <div class="rental-card" th:each="rental : ${rentals}">
             <div class="rental-header">
                 <h3 th:text="${rental.car.brand + ' ' + rental.car.model}">Автомобиль</h3>
-                <span class="status" th:text="${rental.status}"
+                <span class="status-badge"
                       th:classappend="${rental.status == 'ACTIVE' ? 'status-active' :
-                                          (rental.status == 'PENDING' ? 'status-pending' :
-                                          (rental.status == 'COMPLETED' ? 'status-completed' :
-                                          (rental.status == 'CANCELLED' ? 'status-cancelled' :
-                                          'status-pending-cancellation')))}">
-                        Статус
-                    </span>
+                                       (rental.status == 'PENDING' ? 'status-pending' :
+                                       (rental.status == 'COMPLETED' ? 'status-completed' :
+                                       (rental.status == 'CANCELLED' ? 'status-cancelled' :
+                                       'status-pending-cancellation')))}">
+                    <span th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}">Статус</span>
+                </span>
             </div>
 
             <div class="rental-details">

@@ -16,7 +16,6 @@ public class RentalStatusUtil {
                 return "Завершена";
             case "CANCELLED":
                 return "Отменена";
-            // Исправляем различие в названиях статусов
             case "CANCELLATION_REQUESTED":
             case "PENDING_CANCELLATION":
                 return "Запрос на отмену";
