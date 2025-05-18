@@ -1,5 +1,7 @@
 # Этот рабочий процесс создает и публикует Docker-образ в GitHub Container Registry, 
 # а затем деплоит его на платформу Render.
+# Процесс включает сборку приложения с Maven, создание Docker-образа, публикацию в GHCR
+# и последующее развертывание на сервисе Render с отслеживанием статуса деплоя.
 
 name: Build and Deploy to Render
 
@@ -68,3 +70,5 @@ jobs:
           image-url: ghcr.io/${{ env.REPO }}:${{ github.sha }}
           render-api-key: ${{ secrets.RENDER_API_KEY }}
           wait-for-deployment: true
+          docker-repo-prefix: docker.io
+          max-wait-time: 300
