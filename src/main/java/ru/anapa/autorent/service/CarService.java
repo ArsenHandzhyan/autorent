@@ -17,6 +17,7 @@ import ru.anapa.autorent.dto.CarSummaryDto;
 import ru.anapa.autorent.dto.RentalPeriodDto;
 import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.model.CarStats;
+import ru.anapa.autorent.model.CarStatus;
 import ru.anapa.autorent.model.Rental;
 import ru.anapa.autorent.model.RentalStatus;
 import ru.anapa.autorent.repository.CarRepository;
@@ -91,7 +92,12 @@ public class CarService {
         dto.setImageUrl(car.getImageUrl());
         dto.setDailyRate(car.getDailyRate());
         dto.setAvailable(car.isAvailable());
+        dto.setStatus(car.getStatus());
         dto.setNextAvailableDate(nextAvailableDate);
+        dto.setTransmission(car.getTransmission());
+        dto.setFuelType(car.getFuelType());
+        dto.setSeats(car.getSeats());
+        dto.setCategory(car.getCategory());
         return dto;
     }
 
@@ -199,15 +205,29 @@ public class CarService {
                 .map(rental -> rental.getCar().getId())
                 .collect(Collectors.toSet());
 
+        // Получаем все ожидающие аренды
+        List<Rental> pendingRentals = rentalRepository.findByStatus(RentalStatus.PENDING);
+        Set<Long> pendingCarIds = pendingRentals.stream()
+                .map(rental -> rental.getCar().getId())
+                .collect(Collectors.toSet());
+
         // Обновляем статусы автомобилей в одной транзакции
         List<Car> allCars = carRepository.findAll();
         int updatedCount = 0;
 
         for (Car car : allCars) {
-            boolean shouldBeAvailable = !activeCarIds.contains(car.getId());
+            CarStatus newStatus;
+            if (activeCarIds.contains(car.getId())) {
+                newStatus = CarStatus.RENTED;
+            } else if (pendingCarIds.contains(car.getId())) {
+                newStatus = CarStatus.RESERVED;
+            } else {
+                newStatus = CarStatus.AVAILABLE;
+            }
 
-            if (car.isAvailable() != shouldBeAvailable) {
-                car.setAvailable(shouldBeAvailable);
+            if (car.getStatus() != newStatus) {
+                car.setStatus(newStatus);
+                car.setAvailable(newStatus == CarStatus.AVAILABLE);
                 carRepository.save(car);
                 updatedCount++;
             }

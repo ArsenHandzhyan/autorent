@@ -2,6 +2,8 @@ package ru.anapa.autorent.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import ru.anapa.autorent.service.UserService;
 import ru.anapa.autorent.model.CarStats;
 import ru.anapa.autorent.model.UserStats;
 import ru.anapa.autorent.service.CarService;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
@@ -38,73 +41,94 @@ public class AdminController {
     }
 
     @GetMapping("/dashboard")
-    public String adminDashboard(Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
-        // Проверяем, авторизован ли пользователь
-        if (authentication == null || !authentication.isAuthenticated()) {
-            redirectAttributes.addFlashAttribute("error", "Необходимо авторизоваться для доступа к админ-панели");
-            return "redirect:/auth/login";
+    public ModelAndView adminDashboard(Authentication authentication) {
+        try {
+            if (authentication == null || !authentication.isAuthenticated()) {
+                ModelAndView mav = new ModelAndView("error");
+                mav.addObject("error", "Необходимо авторизоваться для доступа к админ-панели");
+                return mav;
+            }
+
+            boolean isAdmin = authentication.getAuthorities().stream()
+                    .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+            if (!isAdmin) {
+                ModelAndView mav = new ModelAndView("error");
+                mav.addObject("error", "У вас недостаточно прав для доступа к админ-панели");
+                return mav;
+            }
+
+            List<User> users = userService.findAllUsers();
+            List<Rental> pendingRentals = rentalService.findRentalsByStatus(RentalStatus.PENDING);
+            List<Rental> activeRentals = rentalService.findRentalsByStatus(RentalStatus.ACTIVE);
+            List<Rental> pendingCancellations = rentalService.findRentalsByStatus(RentalStatus.PENDING_CANCELLATION);
+
+            ModelAndView mav = new ModelAndView("admin/dashboard");
+            mav.addObject("userCount", users.size());
+            mav.addObject("pendingRentals", pendingRentals);
+            mav.addObject("activeRentals", activeRentals);
+            mav.addObject("pendingCancellations", pendingCancellations);
+
+            return mav;
+        } catch (Exception e) {
+            ModelAndView mav = new ModelAndView("error");
+            mav.addObject("error", "Ошибка при получении данных дашборда");
+            return mav;
         }
-
-        // Проверяем, имеет ли пользователь роль ADMIN
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
-
-        if (!isAdmin) {
-            // Если пользователь не админ, показываем сообщение и перенаправляем
-            redirectAttributes.addFlashAttribute("error",
-                    "У вас недостаточно прав для доступа к админ-панели. Пожалуйста, войдите как администратор.");
-
-            // Сохраняем информацию о необходимости входа как администратор
-            redirectAttributes.addFlashAttribute("adminLoginRequired", true);
-
-            return "redirect:/auth/login";
-        }
-
-        List<User> users = userService.findAllUsers();
-        List<Rental> pendingRentals = rentalService.findRentalsByStatus(RentalStatus.PENDING);
-        List<Rental> activeRentals = rentalService.findRentalsByStatus(RentalStatus.ACTIVE);
-        List<Rental> pendingCancellations = rentalService.findRentalsByStatus(RentalStatus.PENDING_CANCELLATION);
-
-        model.addAttribute("userCount", users.size());
-        model.addAttribute("pendingRentals", pendingRentals);
-        model.addAttribute("activeRentals", activeRentals);
-        model.addAttribute("pendingCancellations", pendingCancellations);
-
-        return "admin/dashboard";
     }
 
     @GetMapping("/users")
-    public String listUsers(Model model) {
-        List<User> users = userService.findAllUsers();
-        model.addAttribute("users", users);
-        return "admin/users";
+    public ResponseEntity<?> listUsers(Model model) {
+        try {
+            List<User> users = userService.findAllUsers();
+            return ResponseEntity.ok(Map.of("users", users));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Ошибка при получении списка пользователей"));
+        }
     }
 
     @GetMapping("/users/{id}")
-    public String viewUser(@PathVariable Long id, Model model) {
-        User user = userService.findById(id);
-        List<Rental> userRentals = rentalService.findRentalsByUser(user);
+    public ResponseEntity<?> viewUser(@PathVariable Long id, Model model) {
+        try {
+            User user = userService.findById(id);
+            List<Rental> userRentals = rentalService.findRentalsByUser(user);
 
-        model.addAttribute("user", user);
-        model.addAttribute("rentals", userRentals);
+            Map<String, Object> response = new HashMap<>();
+            response.put("user", user);
+            response.put("rentals", userRentals);
 
-        return "admin/user-details";
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "Пользователь не найден"));
+        }
     }
 
     @PostMapping("/users/{id}/disable")
-    public String disableUser(@PathVariable Long id) {
-        User user = userService.findById(id);
-        user.setEnabled(false);
-        userService.updateUser(user);
-        return "redirect:/admin/users";
+    public ResponseEntity<?> disableUser(@PathVariable Long id) {
+        try {
+            User user = userService.findById(id);
+            user.setEnabled(false);
+            userService.updateUser(user);
+            return ResponseEntity.ok(Map.of("message", "Пользователь успешно отключен"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Ошибка при отключении пользователя"));
+        }
     }
 
     @PostMapping("/users/{id}/enable")
-    public String enableUser(@PathVariable Long id) {
-        User user = userService.findById(id);
-        user.setEnabled(true);
-        userService.updateUser(user);
-        return "redirect:/admin/users";
+    public ResponseEntity<?> enableUser(@PathVariable Long id) {
+        try {
+            User user = userService.findById(id);
+            user.setEnabled(true);
+            userService.updateUser(user);
+            return ResponseEntity.ok(Map.of("message", "Пользователь успешно активирован"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Ошибка при активации пользователя"));
+        }
     }
 
     @GetMapping("/pending-cancellations")

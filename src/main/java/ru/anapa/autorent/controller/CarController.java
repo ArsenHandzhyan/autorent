@@ -3,11 +3,14 @@ package ru.anapa.autorent.controller;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.anapa.autorent.dto.CarDto;
 import ru.anapa.autorent.dto.CarSummaryDto;
@@ -19,6 +22,8 @@ import ru.anapa.autorent.service.RentalService;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/cars")
@@ -34,85 +39,259 @@ public class CarController {
     }
 
     @GetMapping("/available")
-    public String listAvailableCars(
+    public ModelAndView listAvailableCars(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            Model model) {
-        // Используем пагинацию для оптимизации выборки
-        Page<Car> carPage = carService.findAvailableCarsWithPagination(page, size);
-        model.addAttribute("cars", carPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", carPage.getTotalPages());
-        model.addAttribute("totalItems", carPage.getTotalElements());
-        return "cars/available";
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            Page<Car> carPage = carService.findAvailableCarsWithPagination(page, size);
+            ModelAndView mav = new ModelAndView("cars/available");
+            mav.addObject("cars", carPage.getContent());
+            mav.addObject("currentPage", page);
+            mav.addObject("totalPages", carPage.getTotalPages());
+            mav.addObject("totalItems", carPage.getTotalElements());
+            return mav;
+        } catch (Exception e) {
+            ModelAndView mav = new ModelAndView("error");
+            mav.addObject("error", "Ошибка при получении списка доступных автомобилей");
+            return mav;
+        }
     }
 
     @GetMapping("/{id}")
-    public String viewCar(@PathVariable Long id, Model model) {
-        Car car = carService.findCarById(id);
-        model.addAttribute("car", car);
+    public ModelAndView viewCar(@PathVariable Long id) {
+        try {
+            Car car = carService.findCarById(id);
+            LocalDateTime nextAvailableDate = carService.getNextAvailableDate(id);
+            List<RentalPeriodDto> bookedPeriods = carService.getBookedPeriods(id);
 
-        // Информация о доступности и периодах бронирования
-        LocalDateTime nextAvailableDate = carService.getNextAvailableDate(id);
-        List<RentalPeriodDto> bookedPeriods = carService.getBookedPeriods(id);
-
-        model.addAttribute("nextAvailableDate", nextAvailableDate);
-        model.addAttribute("bookedPeriods", bookedPeriods);
-
-        return "cars/view";
+            ModelAndView mav = new ModelAndView("cars/view");
+            mav.addObject("car", car);
+            mav.addObject("nextDate", nextAvailableDate);
+            mav.addObject("bookedPeriods", bookedPeriods);
+            return mav;
+        } catch (Exception e) {
+            ModelAndView mav = new ModelAndView("error");
+            mav.addObject("error", "Автомобиль не найден");
+            return mav;
+        }
     }
 
     @GetMapping
-    public String listCars(
+    public ModelAndView listCars(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            Model model) {
-
-        // Используем оптимизированный метод с пагинацией и предварительно загруженными датами доступности
-        Page<CarSummaryDto> carsPage = carService.findAllCarsWithAvailabilityPaginated(page, size);
-
-        model.addAttribute("cars", carsPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", carsPage.getTotalPages());
-        model.addAttribute("totalItems", carsPage.getTotalElements());
-
-        return "cars/list";
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            Page<CarSummaryDto> carsPage = carService.findAllCarsWithAvailabilityPaginated(page, size);
+            ModelAndView mav = new ModelAndView("cars/list");
+            mav.addObject("cars", carsPage.getContent());
+            mav.addObject("currentPage", page);
+            mav.addObject("totalPages", carsPage.getTotalPages());
+            mav.addObject("totalItems", carsPage.getTotalElements());
+            return mav;
+        } catch (Exception e) {
+            ModelAndView mav = new ModelAndView("error");
+            mav.addObject("error", "Ошибка при получении списка автомобилей");
+            return mav;
+        }
     }
 
     @GetMapping("/search")
-    public String searchCars(
+    public ModelAndView searchCars(
             @RequestParam String brand,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            Model model) {
-        // Используем оптимизированный метод поиска с пагинацией
-        Page<Car> carPage = carService.searchCarsByBrandWithPagination(brand, page, size);
-
-        model.addAttribute("cars", carPage.getContent());
-        model.addAttribute("searchTerm", brand);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", carPage.getTotalPages());
-        model.addAttribute("totalItems", carPage.getTotalElements());
-
-        return "cars/search-results";
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            Page<Car> carPage = carService.searchCarsByBrandWithPagination(brand, page, size);
+            ModelAndView mav = new ModelAndView("cars/search-results");
+            mav.addObject("cars", carPage.getContent());
+            mav.addObject("searchTerm", brand);
+            mav.addObject("currentPage", page);
+            mav.addObject("totalPages", carPage.getTotalPages());
+            mav.addObject("totalItems", carPage.getTotalElements());
+            return mav;
+        } catch (Exception e) {
+            ModelAndView mav = new ModelAndView("error");
+            mav.addObject("error", "Ошибка при поиске автомобилей");
+            return mav;
+        }
     }
 
     @GetMapping("/category/{category}")
-    public String getCarsByCategory(
+    public ModelAndView getCarsByCategory(
             @PathVariable String category,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            Model model) {
-        // Используем оптимизированный метод с пагинацией
-        Page<Car> carPage = carService.findCarsByCategory(category, page, size);
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            Page<Car> carPage = carService.findCarsByCategory(category, page, size);
+            ModelAndView mav = new ModelAndView("cars/category");
+            mav.addObject("cars", carPage.getContent());
+            mav.addObject("categoryName", category);
+            mav.addObject("currentPage", page);
+            mav.addObject("totalPages", carPage.getTotalPages());
+            mav.addObject("totalItems", carPage.getTotalElements());
+            return mav;
+        } catch (Exception e) {
+            ModelAndView mav = new ModelAndView("error");
+            mav.addObject("error", "Ошибка при получении автомобилей категории");
+            return mav;
+        }
+    }
 
-        model.addAttribute("cars", carPage.getContent());
-        model.addAttribute("categoryName", category);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", carPage.getTotalPages());
-        model.addAttribute("totalItems", carPage.getTotalElements());
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/add")
+    public ModelAndView showAddCarForm() {
+        ModelAndView mav = new ModelAndView("cars/add");
+        mav.addObject("car", new CarDto());
+        return mav;
+    }
 
-        return "cars/category";
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/add")
+    public ModelAndView addCar(@Valid @ModelAttribute("car") CarDto carDto,
+                             BindingResult result) {
+        if (result.hasErrors()) {
+            ModelAndView mav = new ModelAndView("cars/add");
+            mav.addObject("car", carDto);
+            return mav;
+        }
+
+        try {
+            if (carDto.getDailyRate() == null) {
+                carDto.setDailyRate(BigDecimal.ZERO);
+            }
+            Car car = new Car();
+            car.setBrand(carDto.getBrand());
+            car.setModel(carDto.getModel());
+            car.setYear(carDto.getYear());
+            car.setLicensePlate(carDto.getLicensePlate());
+            car.setDailyRate(carDto.getDailyRate());
+            car.setImageUrl(carDto.getImageUrl());
+            car.setDescription(carDto.getDescription());
+            car.setRegistrationNumber(carDto.getLicensePlate());
+            car.setAvailable(true);
+
+            if (carDto.getTransmission() != null) {
+                car.setTransmission(carDto.getTransmission());
+            }
+            if (carDto.getFuelType() != null) {
+                car.setFuelType(carDto.getFuelType());
+            }
+            if (carDto.getSeats() != null) {
+                car.setSeats(carDto.getSeats());
+            }
+            if (carDto.getColor() != null) {
+                car.setColor(carDto.getColor());
+            }
+            if (carDto.getCategory() != null) {
+                car.setCategory(carDto.getCategory());
+            }
+
+            Car savedCar = carService.saveCar(car);
+            ModelAndView mav = new ModelAndView("redirect:/cars/" + savedCar.getId());
+            mav.addObject("success", "Автомобиль успешно добавлен");
+            return mav;
+        } catch (Exception e) {
+            ModelAndView mav = new ModelAndView("cars/add");
+            mav.addObject("car", carDto);
+            mav.addObject("error", "Ошибка при добавлении автомобиля");
+            return mav;
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}/edit")
+    public ModelAndView showEditCarForm(@PathVariable Long id) {
+        try {
+            Car car = carService.findCarById(id);
+            CarDto carDto = new CarDto();
+            carDto.setBrand(car.getBrand());
+            carDto.setModel(car.getModel());
+            carDto.setYear(car.getYear());
+            carDto.setLicensePlate(car.getLicensePlate());
+            carDto.setDailyRate(car.getDailyRate());
+            carDto.setImageUrl(car.getImageUrl());
+            carDto.setDescription(car.getDescription());
+            carDto.setTransmission(car.getTransmission());
+            carDto.setFuelType(car.getFuelType());
+            carDto.setSeats(car.getSeats());
+            carDto.setColor(car.getColor());
+            carDto.setCategory(car.getCategory());
+
+            ModelAndView mav = new ModelAndView("cars/edit");
+            mav.addObject("car", carDto);
+            mav.addObject("carId", id);
+            return mav;
+        } catch (Exception e) {
+            ModelAndView mav = new ModelAndView("error");
+            mav.addObject("error", "Автомобиль не найден");
+            return mav;
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/{id}/edit")
+    public ModelAndView updateCar(@PathVariable Long id,
+                                @Valid @ModelAttribute("car") CarDto carDto,
+                                BindingResult result) {
+        if (result.hasErrors()) {
+            ModelAndView mav = new ModelAndView("cars/edit");
+            mav.addObject("car", carDto);
+            mav.addObject("carId", id);
+            return mav;
+        }
+
+        try {
+            if (carDto.getDailyRate() == null) {
+                carDto.setDailyRate(BigDecimal.ZERO);
+            }
+
+            Car car = carService.findCarById(id);
+            car.setBrand(carDto.getBrand());
+            car.setModel(carDto.getModel());
+            car.setYear(carDto.getYear());
+            car.setLicensePlate(carDto.getLicensePlate());
+            car.setDailyRate(carDto.getDailyRate());
+            car.setImageUrl(carDto.getImageUrl());
+            car.setDescription(carDto.getDescription());
+            car.setTransmission(carDto.getTransmission());
+            car.setFuelType(carDto.getFuelType());
+            car.setSeats(carDto.getSeats());
+            car.setColor(carDto.getColor());
+            car.setCategory(carDto.getCategory());
+            car.setRegistrationNumber(carDto.getLicensePlate());
+
+            Car updatedCar = carService.updateCar(car);
+            ModelAndView mav = new ModelAndView("redirect:/cars/" + updatedCar.getId());
+            mav.addObject("success", "Автомобиль успешно обновлен");
+            return mav;
+        } catch (Exception e) {
+            ModelAndView mav = new ModelAndView("cars/edit");
+            mav.addObject("car", carDto);
+            mav.addObject("carId", id);
+            mav.addObject("error", "Ошибка при обновлении автомобиля");
+            return mav;
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/dashboard")
+    public ModelAndView carsDashboard() {
+        try {
+            List<Car> allCars = carService.findAllCars();
+            List<Car> availableCars = carService.findAvailableCars();
+
+            ModelAndView mav = new ModelAndView("admin/cars-dashboard");
+            mav.addObject("allCars", allCars);
+            mav.addObject("availableCars", availableCars);
+            mav.addObject("totalCars", allCars.size());
+            mav.addObject("availableCount", availableCars.size());
+            mav.addObject("unavailableCount", allCars.size() - availableCars.size());
+            return mav;
+        } catch (Exception e) {
+            ModelAndView mav = new ModelAndView("error");
+            mav.addObject("error", "Ошибка при получении данных дашборда");
+            return mav;
+        }
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -128,123 +307,21 @@ public class CarController {
         return "redirect:/cars";
     }
 
-    // Остальные методы контроллера остаются без изменений
-
-    // CRUD операции для админа
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/add")
-    public String showAddCarForm(Model model) {
-        model.addAttribute("car", new CarDto());
-        return "cars/add";
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/add")
-    public String addCar(@Valid @ModelAttribute("car") CarDto carDto,
-                         BindingResult result) {
-        if (result.hasErrors()) {
-            return "cars/add";
-        }
-        if (carDto.getDailyRate() == null) {
-            carDto.setDailyRate(BigDecimal.ZERO);
-        }
-        Car car = new Car();
-        car.setBrand(carDto.getBrand());
-        car.setModel(carDto.getModel());
-        car.setYear(carDto.getYear());
-        car.setLicensePlate(carDto.getLicensePlate());
-        car.setDailyRate(carDto.getDailyRate());
-        car.setImageUrl(carDto.getImageUrl());
-        car.setDescription(carDto.getDescription());
-        car.setRegistrationNumber(carDto.getLicensePlate());
-        car.setAvailable(true);
-
-        if (carDto.getTransmission() != null) {
-            car.setTransmission(carDto.getTransmission());
-        }
-        if (carDto.getFuelType() != null) {
-            car.setFuelType(carDto.getFuelType());
-        }
-        if (carDto.getSeats() != null) {
-            car.setSeats(carDto.getSeats());
-        }
-        if (carDto.getColor() != null) {
-            car.setColor(carDto.getColor());
-        }
-        if (carDto.getCategory() != null) {
-            car.setCategory(carDto.getCategory());
-        }
-
-        carService.saveCar(car);
-        return "redirect:/cars";
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/{id}/edit")
-    public String showEditCarForm(@PathVariable Long id, Model model) {
-        Car car = carService.findCarById(id);
-
-        CarDto carDto = new CarDto();
-        carDto.setBrand(car.getBrand());
-        carDto.setModel(car.getModel());
-        carDto.setYear(car.getYear());
-        carDto.setLicensePlate(car.getLicensePlate());
-        carDto.setDailyRate(car.getDailyRate());
-        carDto.setImageUrl(car.getImageUrl());
-        carDto.setDescription(car.getDescription());
-        carDto.setTransmission(car.getTransmission());
-        carDto.setFuelType(car.getFuelType());
-        carDto.setSeats(car.getSeats());
-        carDto.setColor(car.getColor());
-        carDto.setCategory(car.getCategory());
-
-        model.addAttribute("car", carDto);
-        model.addAttribute("carId", id);
-        return "cars/edit";
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/{id}/edit")
-    public String updateCar(@PathVariable Long id,
-                            @Valid @ModelAttribute("car") CarDto carDto,
-                            BindingResult result) {
-        if (result.hasErrors()) {
-            return "cars/edit";
-        }
-
-        if (carDto.getDailyRate() == null) {
-            carDto.setDailyRate(BigDecimal.ZERO);
-        }
-
-        Car car = carService.findCarById(id);
-        car.setBrand(carDto.getBrand());
-        car.setModel(carDto.getModel());
-        car.setYear(carDto.getYear());
-        car.setLicensePlate(carDto.getLicensePlate());
-        car.setDailyRate(carDto.getDailyRate());
-        car.setImageUrl(carDto.getImageUrl());
-        car.setDescription(carDto.getDescription());
-        car.setTransmission(carDto.getTransmission());
-        car.setFuelType(carDto.getFuelType());
-        car.setSeats(carDto.getSeats());
-        car.setColor(carDto.getColor());
-        car.setCategory(carDto.getCategory());
-        car.setRegistrationNumber(carDto.getLicensePlate());
-
-        carService.updateCar(car);
-        return "redirect:/cars/" + id;
-    }
-
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/delete")
-    public String deleteCar(@PathVariable Long id) {
-        carService.deleteCar(id);
-        return "redirect:/cars";
+    public ResponseEntity<?> deleteCar(@PathVariable Long id) {
+        try {
+            carService.deleteCar(id);
+            return ResponseEntity.ok(Map.of("message", "Автомобиль успешно удален"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Ошибка при удалении автомобиля"));
+        }
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/availability")
-    public String toggleCarAvailability(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> toggleCarAvailability(@PathVariable Long id) {
         try {
             Car car = carService.findCarById(id);
             carService.updateCarAvailability(id, !car.isAvailable());
@@ -253,26 +330,11 @@ public class CarController {
                     "Автомобиль отмечен как недоступный" :
                     "Автомобиль отмечен как доступный";
 
-            redirectAttributes.addFlashAttribute("success", statusMessage);
-        } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return ResponseEntity.ok(Map.of("message", statusMessage));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Ошибка при изменении статуса доступности автомобиля"));
         }
-        return "redirect:/cars/" + id;
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/dashboard")
-    public String carsDashboard(Model model) {
-        List<Car> allCars = carService.findAllCars();
-        List<Car> availableCars = carService.findAvailableCars();
-
-        model.addAttribute("allCars", allCars);
-        model.addAttribute("availableCars", availableCars);
-        model.addAttribute("totalCars", allCars.size());
-        model.addAttribute("availableCount", availableCars.size());
-        model.addAttribute("unavailableCount", allCars.size() - availableCars.size());
-
-        return "admin/cars-dashboard";
     }
 
     @GetMapping("/filter")

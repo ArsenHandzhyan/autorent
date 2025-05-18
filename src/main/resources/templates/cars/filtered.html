@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
+<head>
+    <title>Отфильтрованные автомобили - Автопрокат</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container">
+    <!-- Сообщения об успехе/ошибке -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <span th:text="${success}">Успешное сообщение</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <span th:text="${error}">Сообщение об ошибке</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+
+    <h1>Отфильтрованные автомобили</h1>
+
+    <div class="filter-section">
+        <form th:action="@{/cars/filter}" method="get" class="filter-form">
+            <div class="filter-group">
+                <label for="brand">Марка</label>
+                <input type="text" id="brand" name="brand" th:value="${brand}" class="form-control">
+            </div>
+
+            <div class="filter-group">
+                <label for="model">Модель</label>
+                <input type="text" id="model" name="model" th:value="${model}" class="form-control">
+            </div>
+
+            <div class="filter-group">
+                <label for="minYear">Год от</label>
+                <input type="number" id="minYear" name="minYear" th:value="${minYear}" class="form-control" min="1900" max="2024">
+            </div>
+
+            <div class="filter-group">
+                <label for="maxYear">Год до</label>
+                <input type="number" id="maxYear" name="maxYear" th:value="${maxYear}" class="form-control" min="1900" max="2024">
+            </div>
+
+            <div class="filter-group">
+                <label for="transmission">Трансмиссия</label>
+                <select id="transmission" name="transmission" class="form-control">
+                    <option value="">Любая</option>
+                    <option value="AUTOMATIC" th:selected="${transmission == 'AUTOMATIC'}">Автомат</option>
+                    <option value="MANUAL" th:selected="${transmission == 'MANUAL'}">Механика</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="fuelType">Тип топлива</label>
+                <select id="fuelType" name="fuelType" class="form-control">
+                    <option value="">Любой</option>
+                    <option value="PETROL" th:selected="${fuelType == 'PETROL'}">Бензин</option>
+                    <option value="DIESEL" th:selected="${fuelType == 'DIESEL'}">Дизель</option>
+                    <option value="ELECTRIC" th:selected="${fuelType == 'ELECTRIC'}">Электро</option>
+                    <option value="HYBRID" th:selected="${fuelType == 'HYBRID'}">Гибрид</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="minSeats">Мин. количество мест</label>
+                <input type="number" id="minSeats" name="minSeats" th:value="${minSeats}" class="form-control" min="2" max="9">
+            </div>
+
+            <div class="filter-group">
+                <label for="category">Категория</label>
+                <select id="category" name="category" class="form-control">
+                    <option value="">Любая</option>
+                    <option value="ECONOMY" th:selected="${category == 'ECONOMY'}">Эконом</option>
+                    <option value="COMFORT" th:selected="${category == 'COMFORT'}">Комфорт</option>
+                    <option value="BUSINESS" th:selected="${category == 'BUSINESS'}">Бизнес</option>
+                    <option value="PREMIUM" th:selected="${category == 'PREMIUM'}">Премиум</option>
+                    <option value="SUV" th:selected="${category == 'SUV'}">Внедорожник</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <div class="form-check">
+                    <input type="checkbox" id="onlyAvailable" name="onlyAvailable" class="form-check-input" th:checked="${onlyAvailable}">
+                    <label for="onlyAvailable" class="form-check-label">Только доступные</label>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Применить фильтры
+                </button>
+                <a th:href="@{/cars}" class="btn btn-outline-secondary">
+                    <i class="fas fa-times"></i> Сбросить
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div class="cars-grid">
+        <div th:each="car : ${cars}" class="car-card">
+            <div class="car-image">
+                <img th:if="${car.imageUrl}" th:src="${car.imageUrl}" alt="Фото автомобиля">
+                <img th:unless="${car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
+            </div>
+            <div class="car-info">
+                <h3 th:text="${car.brand + ' ' + car.model}">Toyota Camry</h3>
+                <div class="car-details">
+                    <p><strong>Год:</strong> <span th:text="${car.year}">2023</span></p>
+                    <p><strong>Цена:</strong> <span th:text="${car.dailyRate + ' ₽/день'}">3000 ₽/день</span></p>
+                    <p th:if="${car.transmission}"><strong>Коробка:</strong> <span th:text="${car.transmission}">Автомат</span></p>
+                    <p th:if="${car.fuelType}"><strong>Топливо:</strong> <span th:text="${car.fuelType}">Бензин</span></p>
+                </div>
+                <div class="car-status">
+                    <span th:if="${car.available}" class="status available">Доступен</span>
+                    <span th:unless="${car.available}" class="status unavailable">Занят</span>
+                </div>
+                <div class="car-actions">
+                    <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-primary">Подробнее</a>
+                    <div sec:authorize="hasRole('ADMIN')" class="admin-actions">
+                        <a th:href="@{/cars/{id}/edit(id=${car.id})}" class="btn btn-outline-primary">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(cars)}" class="no-results">
+        <p>По вашему запросу ничего не найдено</p>
+        <a th:href="@{/cars}" class="btn">Вернуться к списку автомобилей</a>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html> 

@@ -50,97 +50,58 @@ public class JwtAuthController {
         this.verificationTokenService = verificationTokenService;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) {
-        logger.info("JWT login attempt with email: {}", authenticationRequest.getEmail());
-        
         try {
             authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
-            
-            User user = userService.findByEmail(authenticationRequest.getEmail());
-            
-            // Обновляем дату последнего входа
-            userService.updateLastLoginDate(authenticationRequest.getEmail());
-            
-            // Создаем JWT токен с дополнительной информацией о пользователе
-            final String token = jwtTokenUtil.generateTokenWithUserInfo(user);
-            
-            // Создаем Refresh токен для продления сессии
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-            final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
-            
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+            final String token = jwtTokenUtil.generateToken(userDetails);
+
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
-            response.put("refreshToken", refreshToken);
-            response.put("email", user.getEmail());
-            response.put("firstName", user.getFirstName());
-            response.put("lastName", user.getLastName());
-            response.put("userId", user.getId());
-            response.put("expiresIn", jwtTokenUtil.getTokenRemainingTimeInSeconds(token));
-            
+            response.put("user", userDetails);
+
             return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            logger.error("Error during JWT authentication: {}", e.getMessage());
+        } catch (DisabledException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("error", "Пользователь отключен"));
+        } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Неверное имя пользователя или пароль"));
+                    .body(Map.of("error", "Неверные учетные данные"));
+        } catch (Exception e) {
+            logger.error("Ошибка аутентификации", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Ошибка при аутентификации"));
         }
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDto registrationDto) {
-        logger.info("API registration attempt with email: {}", registrationDto.getEmail());
-        
         try {
-            // Проверка существования пользователя с таким email
             if (userService.existsByEmail(registrationDto.getEmail())) {
                 return ResponseEntity.badRequest()
-                        .body(Map.of("error", "Email уже используется другим пользователем"));
+                        .body(Map.of("error", "Пользователь с таким email уже существует"));
             }
-            
-            // Проверка совпадения паролей
-            if (!registrationDto.getPassword().equals(registrationDto.getConfirmPassword())) {
-                return ResponseEntity.badRequest()
-                        .body(Map.of("error", "Пароли не совпадают"));
-            }
-            
-            // Проверка существования пользователя с таким телефоном
-            if (userService.existsByPhone(registrationDto.getPhone())) {
-                return ResponseEntity.badRequest()
-                        .body(Map.of("error", "Телефон уже используется другим пользователем"));
-            }
-            
-            // Нормализуем email перед сохранением
-            String normalizedEmail = registrationDto.getEmail().toLowerCase().trim();
-            
+
             User user = userService.registerUser(
-                    normalizedEmail,
-                    registrationDto.getPassword(),
-                    registrationDto.getFirstName().trim(),
-                    registrationDto.getLastName().trim(),
-                    registrationDto.getPhone()
+                registrationDto.getEmail(),
+                registrationDto.getPassword(),
+                registrationDto.getFirstName(),
+                registrationDto.getLastName(),
+                registrationDto.getPhone()
             );
-            
-            // Создаем JWT токен с дополнительной информацией о пользователе
-            final String token = jwtTokenUtil.generateTokenWithUserInfo(user);
-            
-            // Создаем Refresh токен для продления сессии
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-            final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
-            
+            String token = jwtTokenUtil.generateToken(userDetailsService.loadUserByUsername(user.getEmail()));
+
             Map<String, Object> response = new HashMap<>();
+            response.put("message", "Пользователь успешно зарегистрирован");
             response.put("token", token);
-            response.put("refreshToken", refreshToken);
-            response.put("email", user.getEmail());
-            response.put("firstName", user.getFirstName());
-            response.put("lastName", user.getLastName());
-            response.put("userId", user.getId());
-            response.put("expiresIn", jwtTokenUtil.getTokenRemainingTimeInSeconds(token));
-            
-            return ResponseEntity.ok(response);
+            response.put("user", user);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
-            logger.error("Error during API registration: {}", e.getMessage());
-            return ResponseEntity.badRequest()
-                    .body(Map.of("error", e.getMessage()));
+            logger.error("Ошибка регистрации", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Ошибка при регистрации пользователя"));
         }
     }
 
@@ -273,13 +234,7 @@ public class JwtAuthController {
 
     private void authenticate(String username, String password) throws Exception {
         try {
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
-            );
-            
-            if (!auth.isAuthenticated()) {
-                throw new BadCredentialsException("Invalid credentials");
-            }
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="ru">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
 <head>
     <title>Все автомобили - Автопрокат</title>
     <meta charset="UTF-8">
@@ -12,6 +12,18 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="container">
+    <!-- Сообщения об успехе/ошибке -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <span th:text="${success}">Успешное сообщение</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <span th:text="${error}">Сообщение об ошибке</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+
     <h1>Все автомобили</h1>
 
     <div class="search-section">
@@ -35,77 +47,48 @@
             <div class="car-image">
                 <img th:if="${car.imageUrl}" th:src="${car.imageUrl}" alt="Фото автомобиля">
                 <img th:unless="${car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
-
-                <!-- Обновленный блок статуса -->
-                <div class="status" th:classappend="${car.status.name()}">
-                    <span th:switch="${car.status.name()}">
-                        <span th:case="'AVAILABLE'">Доступен для аренды</span>
-                        <span th:case="'RENTED'">
-                            Занят до <span th:text="${#temporals.format(car.nextAvailableDate, 'dd.MM.yyyy')}">01.01.2025</span>
-                        </span>
-                        <span th:case="'MAINTENANCE'">На обслуживании</span>
-                        <span th:case="'RESERVED'">Забронирован</span>
-                        <span th:case="'PENDING'">Ожидает подтверждения</span>
-                    </span>
-                </div>
             </div>
             <div class="car-info">
                 <h3 th:text="${car.brand + ' ' + car.model}">Toyota Camry</h3>
-                <p class="car-year" th:text="${car.year + ' г.'}">2023 г.</p>
-                <p class="car-price" th:text="${car.dailyRate + ' ₽/день'}">3000 ₽/день</p>
-                <div class="car-features">
-                    <span th:if="${car.transmission}" th:text="${car.transmission}">Автомат</span>
-                    <span th:if="${car.fuelType}" th:text="${car.fuelType}">Бензин</span>
-                    <span th:if="${car.seats}" th:text="${car.seats + ' мест'}">5 мест</span>
+                <div class="car-details">
+                    <p><strong>Год:</strong> <span th:text="${car.year}">2023</span></p>
+                    <p><strong>Цена:</strong> <span th:text="${car.dailyRate + ' ₽/день'}">3000 ₽/день</span></p>
+                    <p th:if="${car.transmission}"><strong>Коробка:</strong> <span th:text="${car.transmission}">Автомат</span></p>
+                    <p th:if="${car.fuelType}"><strong>Топливо:</strong> <span th:text="${car.fuelType}">Бензин</span></p>
                 </div>
-            </div>
-            <div class="car-actions">
-                <a th:href="@{/cars/{id}(id=${car.id})}" class="btn">Подробнее</a>
-
-                <!-- Обновленная кнопка аренды -->
-                <a sec:authorize="isAuthenticated()"
-                   th:if="${car.status.name() == 'AVAILABLE'}"
-                   th:href="@{/rentals/new/{id}(id=${car.id})}"
-                   class="btn btn-primary">
-                    Арендовать
-                </a>
-                <a sec:authorize="isAuthenticated()"
-                   th:if="${car.status.name() == 'RENTED'}"
-                   th:href="@{/rentals/new/{id}(id=${car.id}, startDate=${car.nextAvailableDate})}"
-                   class="btn btn-outline-primary">
-                    Забронировать с <span th:text="${#temporals.format(car.nextAvailableDate, 'dd.MM.yyyy')}"></span>
-                </a>
+                <div class="car-status">
+                    <span th:if="${car.available}" class="status available">Доступен</span>
+                    <span th:unless="${car.available}" class="status unavailable">Занят</span>
+                </div>
+                <div class="car-actions">
+                    <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-primary">Подробнее</a>
+                    <div sec:authorize="hasRole('ADMIN')" class="admin-actions">
+                        <a th:href="@{/cars/{id}/edit(id=${car.id})}" class="btn btn-outline-primary">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Добавляем пагинацию -->
-    <div th:if="${totalPages > 1}" class="pagination">
-        <ul class="pagination-list">
-            <li th:class="${currentPage == 0} ? 'disabled' : ''">
-                <a th:if="${currentPage > 0}" th:href="@{/cars(page=${currentPage - 1})}">&laquo; Назад</a>
-                <span th:unless="${currentPage > 0}">&laquo; Назад</span>
-            </li>
-
-            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                th:class="${currentPage == i} ? 'active' : ''">
-                <a th:if="${currentPage != i}" th:href="@{/cars(page=${i})}" th:text="${i + 1}"></a>
-                <span th:unless="${currentPage != i}" th:text="${i + 1}"></span>
-            </li>
-
-            <li th:class="${currentPage == totalPages - 1} ? 'disabled' : ''">
-                <a th:if="${currentPage < totalPages - 1}" th:href="@{/cars(page=${currentPage + 1})}">Вперед &raquo;</a>
-                <span th:unless="${currentPage < totalPages - 1}">Вперед &raquo;</span>
-            </li>
-        </ul>
-    </div>
-
-    <div th:if="${cars.empty}" class="no-results">
-        <p>Автомобили не найдены</p>
+    <!-- Пагинация -->
+    <div class="pagination" th:if="${totalPages > 1}">
+        <a th:if="${currentPage > 0}" th:href="@{/cars(page=${currentPage - 1})}" class="btn btn-outline-primary">
+            <i class="fas fa-chevron-left"></i> Назад
+        </a>
+        <span class="page-info">
+            Страница <span th:text="${currentPage + 1}">1</span> из <span th:text="${totalPages}">1</span>
+        </span>
+        <a th:if="${currentPage < totalPages - 1}" th:href="@{/cars(page=${currentPage + 1})}" class="btn btn-outline-primary">
+            Вперед <i class="fas fa-chevron-right"></i>
+        </a>
     </div>
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/main.js}"></script>
 </body>
 </html>

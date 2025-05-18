@@ -58,6 +58,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/auth/**", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll() // Эндпоинты для JWT аутентификации
                         .requestMatchers("/cars", "/cars/search", "/cars/{id}").permitAll()
+                        .requestMatchers("/about", "/contact", "/terms").permitAll() // Разрешаем доступ к статическим страницам
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Доступ только для администраторов
                         .anyRequest().authenticated()
                 )

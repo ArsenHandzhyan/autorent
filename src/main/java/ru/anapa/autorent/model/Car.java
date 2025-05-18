@@ -51,6 +51,11 @@ public class Car {
     @Builder.Default
     private boolean available = true;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private CarStatus status = CarStatus.AVAILABLE;
+
     @Column
     private String color;
 

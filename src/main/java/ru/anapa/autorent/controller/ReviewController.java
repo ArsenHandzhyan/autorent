@@ -13,6 +13,7 @@ import ru.anapa.autorent.dto.ReviewResponse;
 import ru.anapa.autorent.service.ReviewService;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/reviews")
@@ -25,29 +26,42 @@ public class ReviewController {
      * Отображает форму для создания отзыва
      */
     @GetMapping("/create")
-    public String showCreateReviewForm(@RequestParam Long rentalId, Model model) {
-        ReviewCreateRequest reviewRequest = new ReviewCreateRequest();
-        reviewRequest.setRentalId(rentalId);
-        model.addAttribute("reviewRequest", reviewRequest);
-        model.addAttribute("rentalId", rentalId);
-        return "reviews/create";
+    public ResponseEntity<?> showCreateReviewForm(@RequestParam Long rentalId, Model model) {
+        try {
+            ReviewCreateRequest reviewRequest = new ReviewCreateRequest();
+            reviewRequest.setRentalId(rentalId);
+            return ResponseEntity.ok(Map.of(
+                "reviewRequest", reviewRequest,
+                "rentalId", rentalId
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Ошибка при создании формы отзыва"));
+        }
     }
 
     /**
      * Обрабатывает отправку формы создания отзыва (HTML форма)
      */
     @PostMapping("/create")
-    public String createReview(@Valid @ModelAttribute("reviewRequest") ReviewCreateRequest request,
-                               BindingResult bindingResult,
-                               Model model) {
-
+    public ResponseEntity<?> createReview(@Valid @ModelAttribute("reviewRequest") ReviewCreateRequest request,
+                                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("rentalId", request.getRentalId());
-            return "reviews/create";
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Ошибка валидации данных отзыва"));
         }
 
-        reviewService.createReview(request);
-        return "redirect:/rentals/" + request.getRentalId();
+        try {
+            ReviewResponse createdReview = reviewService.createReview(request);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Map.of(
+                        "message", "Отзыв успешно создан",
+                        "review", createdReview
+                    ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Ошибка при создании отзыва"));
+        }
     }
 
     /**

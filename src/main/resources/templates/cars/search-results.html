@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="ru">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
 <head>
     <title>Результаты поиска - Автопрокат</title>
     <meta charset="UTF-8">
@@ -12,6 +12,18 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="container">
+    <!-- Сообщения об успехе/ошибке -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <span th:text="${success}">Успешное сообщение</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <span th:text="${error}">Сообщение об ошибке</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+
     <h1>Результаты поиска: <span th:text="${searchTerm}">Toyota</span></h1>
 
     <div class="search-section">
@@ -62,6 +74,19 @@
             <p>По вашему запросу ничего не найдено</p>
             <a th:href="@{/cars}" class="btn">Вернуться к списку автомобилей</a>
         </div>
+    </div>
+
+    <!-- Пагинация -->
+    <div class="pagination" th:if="${totalPages > 1}">
+        <a th:if="${currentPage > 0}" th:href="@{/cars/search(brand=${searchTerm}, page=${currentPage - 1})}" class="btn btn-outline-primary">
+            <i class="fas fa-chevron-left"></i> Назад
+        </a>
+        <span class="page-info">
+            Страница <span th:text="${currentPage + 1}">1</span> из <span th:text="${totalPages}">1</span>
+        </span>
+        <a th:if="${currentPage < totalPages - 1}" th:href="@{/cars/search(brand=${searchTerm}, page=${currentPage + 1})}" class="btn btn-outline-primary">
+            Вперед <i class="fas fa-chevron-right"></i>
+        </a>
     </div>
 </main>
 

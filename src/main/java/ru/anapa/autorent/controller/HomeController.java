@@ -25,23 +25,28 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        // Получаем популярные категории
-        List<Category> popularCategories = categoryService.findPopularCategories(6);
+        try {
+            // Получаем популярные категории
+            List<Category> popularCategories = categoryService.findPopularCategories(6);
 
-        // Получаем популярные предметы для проката
-        List<RentalItem> popularItems = rentalItemService.findPopularItems(8);
+            // Получаем популярные предметы для проката
+            List<RentalItem> popularItems = rentalItemService.findPopularItems(8);
 
-        // Получаем новые поступления
-        List<RentalItem> newItems = rentalItemService.findNewItems(4);
+            // Получаем новые поступления
+            List<RentalItem> newItems = rentalItemService.findNewItems(4);
 
-        // Получаем акционные предложения
-        List<RentalItem> promotionalItems = rentalItemService.findPromotionalItems(4);
+            // Получаем акционные предложения
+            List<RentalItem> promotionalItems = rentalItemService.findPromotionalItems(4);
 
-        model.addAttribute("categories", popularCategories);
-        model.addAttribute("popularItems", popularItems);
-        model.addAttribute("newItems", newItems);
-        model.addAttribute("promotionalItems", promotionalItems);
+            model.addAttribute("categories", popularCategories);
+            model.addAttribute("popularItems", popularItems);
+            model.addAttribute("newItems", newItems);
+            model.addAttribute("promotionalItems", promotionalItems);
 
-        return "home";
+            return "home";
+        } catch (Exception e) {
+            model.addAttribute("error", "Ошибка при получении данных главной страницы");
+            return "error";
+        }
     }
 }

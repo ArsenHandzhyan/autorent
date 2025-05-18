@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <title>Условия использования - Автопрокат</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h1 class="mb-4">Условия использования</h1>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">1. Общие положения</h2>
+                        <p>Настоящие условия использования регулируют отношения между компанией "Автопрокат" (далее - "Компания") и физическими лицами, использующими услуги аренды автомобилей (далее - "Клиенты").</p>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">2. Требования к арендаторам</h2>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-primary me-2"></i>
+                                Возраст не менее 21 года
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-primary me-2"></i>
+                                Стаж вождения не менее 2 лет
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-primary me-2"></i>
+                                Наличие действующих водительских прав категории B
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-primary me-2"></i>
+                                Отсутствие серьезных нарушений ПДД
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">3. Условия аренды</h2>
+                        <div class="mb-3">
+                            <h3 class="h5">3.1. Срок аренды</h3>
+                            <p>Минимальный срок аренды - 1 сутки. Максимальный срок аренды определяется индивидуально.</p>
+                        </div>
+                        <div class="mb-3">
+                            <h3 class="h5">3.2. Оплата</h3>
+                            <p>Оплата производится в рублях. Принимаются наличные и безналичные платежи.</p>
+                        </div>
+                        <div class="mb-3">
+                            <h3 class="h5">3.3. Страхование</h3>
+                            <p>Все автомобили застрахованы по программе КАСКО и ОСАГО.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">4. Ответственность сторон</h2>
+                        <div class="mb-3">
+                            <h3 class="h5">4.1. Обязанности арендатора</h3>
+                            <ul>
+                                <li>Своевременная оплата аренды</li>
+                                <li>Бережное отношение к автомобилю</li>
+                                <li>Своевременное сообщение о неисправностях</li>
+                                <li>Соблюдение ПДД</li>
+                            </ul>
+                        </div>
+                        <div class="mb-3">
+                            <h3 class="h5">4.2. Обязанности компании</h3>
+                            <ul>
+                                <li>Предоставление исправного автомобиля</li>
+                                <li>Своевременное техническое обслуживание</li>
+                                <li>Обеспечение страховой защиты</li>
+                                <li>Круглосуточная поддержка</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">5. Заключительные положения</h2>
+                        <p>Компания оставляет за собой право вносить изменения в настоящие условия использования. Клиенты будут уведомлены о существенных изменениях.</p>
+                        <p class="mb-0">По всем вопросам обращайтесь в службу поддержки клиентов.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

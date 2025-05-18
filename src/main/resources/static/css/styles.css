@@ -265,16 +265,28 @@ footer {
     border-radius: 4px;
     font-size: 0.8rem;
     font-weight: bold;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .status.available {
     background-color: #2ecc71;
-    color: white;
 }
 
 .status.unavailable {
     background-color: #e74c3c;
-    color: white;
+}
+
+.status.pending {
+    background-color: #f1c40f;
+}
+
+.status.maintenance {
+    background-color: #3498db;
+}
+
+.status.reserved {
+    background-color: #9b59b6;
 }
 
 .car-info {

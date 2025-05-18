@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
 <head>
-    <title>Редактирование автомобиля - Автопрокат</title>
+    <title>Редактировать автомобиль - Автопрокат</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,131 +12,124 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="container">
-    <h1>Редактирование автомобиля</h1>
-
-    <div class="form-container">
-        <form th:action="@{/cars/{id}/edit(id=${carId})}" th:object="${car}" method="post" class="car-form">
-            <div class="form-section">
-                <h2>Основная информация</h2>
-
-                <div class="form-group">
-                    <label for="brand">Марка*</label>
-                    <input type="text" id="brand" th:field="*{brand}" required>
-                    <span class="error" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Ошибка марки</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="model">Модель*</label>
-                    <input type="text" id="model" th:field="*{model}" required>
-                    <span class="error" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">Ошибка модели</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="year">Год выпуска*</label>
-                    <input type="number" id="year" th:field="*{year}" min="1900"
-                           th:max="${#calendars.format(#calendars.createNow(), 'yyyy')}" required>
-                    <span class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Ошибка года</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="licensePlate">Гос. номер*</label>
-                    <input type="text" id="licensePlate" th:field="*{licensePlate}" required>
-                    <span class="error" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}">Ошибка гос. номера</span>
-                </div>
-
-                <div class="form-group">
-                    <div class="info-item">
-                        <span class="info-label">Стоимость аренды:</span>
-                        <span class="info-value" th:text="${car.dailyRate + ' ₽/день'}">3000 ₽/день</span>
-                    </div>
-                    <input type="number" id="dailyRate" th:field="*{dailyRate}" min="0" step="100" required>
-                    <span class="error" th:if="${#fields.hasErrors('dailyRate')}" th:errors="*{dailyRate}">Ошибка стоимости</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="color">Цвет</label>
-                    <input type="text" id="color" th:field="*{color}">
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h2>Технические характеристики</h2>
-
-                <div class="form-group">
-                    <label for="transmission">Трансмиссия</label>
-                    <select id="transmission" th:field="*{transmission}">
-                        <option value="">Выберите тип трансмиссии</option>
-                        <option value="Механика">Механика</option>
-                        <option value="Автомат">Автомат</option>
-                        <option value="Робот">Робот</option>
-                        <option value="Вариатор">Вариатор</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="fuelType">Тип топлива</label>
-                    <select id="fuelType" th:field="*{fuelType}">
-                        <option value="">Выберите тип топлива</option>
-                        <option value="Бензин">Бензин</option>
-                        <option value="Дизель">Дизель</option>
-                        <option value="Газ">Газ</option>
-                        <option value="Электро">Электро</option>
-                        <option value="Гибрид">Гибрид</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="seats">Количество мест</label>
-                    <input type="number" id="seats" th:field="*{seats}" min="1" max="50">
-                </div>
-
-                <div class="form-group">
-                    <label for="category">Категория</label>
-                    <select id="category" th:field="*{category}">
-                        <option value="">Выберите категорию</option>
-                        <option value="Эконом">Эконом</option>
-                        <option value="Комфорт">Комфорт</option>
-                        <option value="Бизнес">Бизнес</option>
-                        <option value="Премиум">Премиум</option>
-                        <option value="Внедорожник">Внедорожник</option>
-                        <option value="Минивэн">Минивэн</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h2>Дополнительная информация</h2>
-
-                <!-- Изменили type="url" на type="text" -->
-                <div class="form-group">
-                    <label for="imageUrl">Путь к изображению</label>
-                    <input type="text" id="imageUrl" th:field="*{imageUrl}" placeholder="/images/car-placeholder.jpg">
-                    <span class="error" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}">Ошибка URL</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Описание</label>
-                    <textarea id="description" th:field="*{description}" rows="5"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="available">Статус</label>
-                    <select id="available" th:field="*{available}">
-                        <option value="true">Доступен</option>
-                        <option value="false">Недоступен</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-                <a th:href="@{/cars/{id}(id=${carId})}" class="btn">Отмена</a>
-            </div>
-        </form>
+    <!-- Сообщения об успехе/ошибке -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <span th:text="${success}">Успешное сообщение</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
     </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <span th:text="${error}">Сообщение об ошибке</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+
+    <h1>Редактировать автомобиль</h1>
+
+    <form th:action="@{/cars/{id}/edit(id=${carId})}" th:object="${car}" method="post" class="car-form">
+        <div class="form-group">
+            <label for="brand">Марка *</label>
+            <input type="text" id="brand" th:field="*{brand}" class="form-control" required>
+            <div class="error-message" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="model">Модель *</label>
+            <input type="text" id="model" th:field="*{model}" class="form-control" required>
+            <div class="error-message" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="year">Год выпуска *</label>
+            <input type="number" id="year" th:field="*{year}" class="form-control" required min="1900" max="2024">
+            <div class="error-message" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="licensePlate">Гос. номер *</label>
+            <input type="text" id="licensePlate" th:field="*{licensePlate}" class="form-control" required>
+            <div class="error-message" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="dailyRate">Стоимость аренды (₽/день) *</label>
+            <input type="number" id="dailyRate" th:field="*{dailyRate}" class="form-control" required min="0" step="0.01">
+            <div class="error-message" th:if="${#fields.hasErrors('dailyRate')}" th:errors="*{dailyRate}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="transmission">Трансмиссия</label>
+            <select id="transmission" th:field="*{transmission}" class="form-control">
+                <option value="">Выберите тип трансмиссии</option>
+                <option value="AUTOMATIC">Автомат</option>
+                <option value="MANUAL">Механика</option>
+            </select>
+            <div class="error-message" th:if="${#fields.hasErrors('transmission')}" th:errors="*{transmission}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="fuelType">Тип топлива</label>
+            <select id="fuelType" th:field="*{fuelType}" class="form-control">
+                <option value="">Выберите тип топлива</option>
+                <option value="PETROL">Бензин</option>
+                <option value="DIESEL">Дизель</option>
+                <option value="ELECTRIC">Электро</option>
+                <option value="HYBRID">Гибрид</option>
+            </select>
+            <div class="error-message" th:if="${#fields.hasErrors('fuelType')}" th:errors="*{fuelType}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="seats">Количество мест</label>
+            <input type="number" id="seats" th:field="*{seats}" class="form-control" min="2" max="9">
+            <div class="error-message" th:if="${#fields.hasErrors('seats')}" th:errors="*{seats}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="color">Цвет</label>
+            <input type="text" id="color" th:field="*{color}" class="form-control">
+            <div class="error-message" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Категория</label>
+            <select id="category" th:field="*{category}" class="form-control">
+                <option value="">Выберите категорию</option>
+                <option value="ECONOMY">Эконом</option>
+                <option value="COMFORT">Комфорт</option>
+                <option value="BUSINESS">Бизнес</option>
+                <option value="PREMIUM">Премиум</option>
+                <option value="SUV">Внедорожник</option>
+            </select>
+            <div class="error-message" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="imageUrl">URL изображения</label>
+            <input type="url" id="imageUrl" th:field="*{imageUrl}" class="form-control">
+            <div class="error-message" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Описание</label>
+            <textarea id="description" th:field="*{description}" class="form-control" rows="4"></textarea>
+            <div class="error-message" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Сохранить изменения
+            </button>
+            <a th:href="@{/cars/{id}(id=${carId})}" class="btn btn-outline-secondary">
+                <i class="fas fa-times"></i> Отмена
+            </a>
+        </div>
+    </form>
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/main.js}"></script>
 </body>
 </html>
