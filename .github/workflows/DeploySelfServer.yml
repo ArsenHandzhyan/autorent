@@ -1,9 +1,12 @@
+# Этот рабочий процесс создает и публикует Docker-образ в Docker Hub, 
+# а затем деплоит его на собственный сервер через SSH-соединение.
+# Процесс включает сборку приложения с Maven, создание образа Docker и автоматическое развертывание.
+
 name: Build and Deploy to Self-Hosted Server
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
