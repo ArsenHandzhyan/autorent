@@ -1,9 +1,10 @@
-name: Build and Deploy Spring Boot Application
+name: Build and Deploy to Self-Hosted Server
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -11,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -35,6 +36,7 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/autorent:latest,${{ secrets.DOCKER_HUB_USERNAME }}/autorent:${{ github.sha }}
+          file: ./Dockerfile
 
       - name: Deploy to production server
         uses: appleboy/ssh-action@master
