@@ -192,7 +192,7 @@ public class AuthController {
 
             logger.info("User created successfully with ID: {}", user.getId());
 
-            return "redirect:/auth/login?success=true&name=" + user.getFirstName();
+            return "redirect:/cars";
 
         } catch (Exception e) {
             logger.error("Error during registration: {}", e.getMessage(), e);
