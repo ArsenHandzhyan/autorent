@@ -38,8 +38,9 @@ public class Car {
     @Column(name = "price_per_day", precision = 10, scale = 2, nullable = false)
     private BigDecimal dailyRate;
 
-    @Column
-    private String imageUrl;
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<CarImage> images = new ArrayList<>();
 
     @Column(length = 1000)
     private String description;
@@ -70,6 +71,9 @@ public class Car {
 
     @Column
     private String category;
+
+    @Column(name = "schedule", columnDefinition = "TEXT")
+    private String schedule;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

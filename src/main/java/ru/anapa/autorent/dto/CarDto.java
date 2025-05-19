@@ -2,8 +2,10 @@ package ru.anapa.autorent.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class CarDto {
@@ -22,14 +24,15 @@ public class CarDto {
     private Integer year;
 
     @NotBlank(message = "Номер автомобиля обязателен")
-    @Pattern(regexp = "^[А-Я0-9]{6,10}$", message = "Пожалуйста, введите корректный номер автомобиля")
+    @Pattern(regexp = "^[АВЕКМНОРСТУХ]\\d{3}[АВЕКМНОРСТУХ]{2}\\d{2,3}$", message = "Пожалуйста, введите корректный номер автомобиля в формате А000АА000")
     private String licensePlate;
 
     @NotNull(message = "Стоимость аренды в день обязательна")
     @DecimalMin(value = "0.01", message = "Стоимость аренды должна быть больше нуля")
     private BigDecimal dailyRate;
 
-    private String imageUrl;
+    private List<MultipartFile> newImages;
+    private List<CarImageDto> existingImages;
 
     private String description;
 
@@ -45,4 +48,6 @@ public class CarDto {
     private String color; // Цвет автомобиля
 
     private String category; // Категория автомобиля (эконом, бизнес, премиум и т.д.)
+
+    private String schedule; // График работы автомобиля
 }

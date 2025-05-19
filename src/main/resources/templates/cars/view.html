@@ -9,6 +9,24 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/car-gallery.css}">
+    <style>
+        .rotated-90 {
+            transform: rotate(90deg);
+        }
+
+        .rotated-180 {
+            transform: rotate(180deg);
+        }
+
+        .rotated-270 {
+            transform: rotate(270deg);
+        }
+
+        .main-image img, .thumbnail img {
+            transition: transform 0.3s ease;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
@@ -39,9 +57,28 @@
         </div>
 
         <div class="car-details-content">
-            <div class="car-details-image">
-                <img th:if="${car.imageUrl}" th:src="${car.imageUrl}" alt="Фото автомобиля">
-                <img th:unless="${car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
+            <div class="car-gallery">
+                <div class="main-image">
+                    <img th:if="${car.images != null && !car.images.empty}" 
+                         th:src="${car.images[0].imageUrl}" 
+                         th:alt="${car.brand + ' ' + car.model}"
+                         th:class="${'img-fluid' + (car.images[0].rotation != null && car.images[0].rotation != 0 ? ' rotated-' + car.images[0].rotation : '')}"
+                         class="img-fluid">
+                    <div th:unless="${car.images != null && !car.images.empty}" class="no-image">
+                        <i class="fas fa-car"></i>
+                        <span>Нет фото</span>
+                    </div>
+                </div>
+                <div class="thumbnail-gallery" th:if="${car.images != null && !car.images.empty}">
+                    <div th:each="image : ${car.images}" class="thumbnail">
+                        <img th:src="${image.imageUrl}" 
+                             th:alt="${'Фото ' + car.brand + ' ' + car.model}" 
+                             th:class="${'img-thumbnail' + (image.rotation != null && image.rotation != 0 ? ' rotated-' + image.rotation : '')}"
+                             class="img-thumbnail"
+                             th:classappend="${image.main ? 'active' : ''}"
+                             onclick="changeMainImage(this.src)">
+                    </div>
+                </div>
             </div>
 
             <div class="car-details-info">
@@ -80,11 +117,14 @@
                     <div class="info-grid">
                         <div class="info-item" th:if="${car.transmission != null}">
                             <span class="info-label">Трансмиссия:</span>
-                            <span class="info-value" th:text="${car.transmission}">Автомат</span>
+                            <span class="info-value" th:text="${car.transmission == 'MANUAL' ? 'Механика' : 'Автомат'}">Автомат</span>
                         </div>
                         <div class="info-item" th:if="${car.fuelType != null}">
                             <span class="info-label">Тип топлива:</span>
-                            <span class="info-value" th:text="${car.fuelType}">Бензин</span>
+                            <span class="info-value" th:text="${car.fuelType == 'PETROL' ? 'Бензин' : 
+                                                                 car.fuelType == 'DIESEL' ? 'Дизель' : 
+                                                                 car.fuelType == 'ELECTRIC' ? 'Электро' : 
+                                                                 car.fuelType == 'HYBRID' ? 'Гибрид' : car.fuelType}">Бензин</span>
                         </div>
                         <div class="info-item" th:if="${car.seats != null}">
                             <span class="info-label">Количество мест:</span>
@@ -96,6 +136,11 @@
                 <div class="car-info-section" th:if="${car.description != null}">
                     <h2>Описание</h2>
                     <p th:text="${car.description}">Описание автомобиля</p>
+                </div>
+
+                <div class="car-info-section" th:if="${car.schedule != null}">
+                    <h2>График работы</h2>
+                    <p th:text="${car.schedule}">График работы автомобиля</p>
                 </div>
 
                 <div class="car-info-section" th:if="${not #lists.isEmpty(bookedPeriods)}">

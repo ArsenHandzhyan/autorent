@@ -32,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 /.mvn/wrapper/maven-wrapper.properties
+/logs/archived/autorent-dev-2025-05-18.0.log

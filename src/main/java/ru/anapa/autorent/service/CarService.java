@@ -1,6 +1,5 @@
 package ru.anapa.autorent.service;
 
-import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +11,23 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.anapa.autorent.config.DataInitializer;
 import ru.anapa.autorent.dto.CarSummaryDto;
 import ru.anapa.autorent.dto.RentalPeriodDto;
 import ru.anapa.autorent.model.Car;
+import ru.anapa.autorent.model.CarImage;
 import ru.anapa.autorent.model.CarStats;
 import ru.anapa.autorent.model.CarStatus;
 import ru.anapa.autorent.model.Rental;
 import ru.anapa.autorent.model.RentalStatus;
+import ru.anapa.autorent.repository.CarImageRepository;
 import ru.anapa.autorent.repository.CarRepository;
 import ru.anapa.autorent.repository.RentalRepository;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -33,13 +38,15 @@ public class CarService {
     private final CarRepository carRepository;
     private final RentalRepository rentalRepository;
     private final RentalService rentalService;
+    private final CarImageRepository carImageRepository;
     private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 
     @Autowired
-    public CarService(CarRepository carRepository, RentalRepository rentalRepository, @Lazy RentalService rentalService) {
+    public CarService(CarRepository carRepository, RentalRepository rentalRepository, @Lazy RentalService rentalService, CarImageRepository carImageRepository) {
         this.carRepository = carRepository;
         this.rentalRepository = rentalRepository;
         this.rentalService = rentalService;
+        this.carImageRepository = carImageRepository;
     }
 
     // Метод для получения всех автомобилей
@@ -48,9 +55,26 @@ public class CarService {
     }
 
     // Оптимизированный метод с пагинацией
+    @Transactional(readOnly = true)
     public Page<Car> findAllCarsWithPagination(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return carRepository.findAll(pageable);
+        Page<Car> carPage = carRepository.findAll(pageable);
+        
+        // Загружаем изображения для всех автомобилей одним запросом
+        List<Long> carIds = carPage.getContent().stream()
+                .map(Car::getId)
+                .collect(Collectors.toList());
+        
+        if (!carIds.isEmpty()) {
+            List<CarImage> images = carImageRepository.findByCarIdInOrderByDisplayOrderAsc(carIds);
+            Map<Long, List<CarImage>> imagesByCarId = images.stream()
+                    .collect(Collectors.groupingBy(img -> img.getCar().getId()));
+            
+            carPage.getContent().forEach(car -> 
+                car.setImages(imagesByCarId.getOrDefault(car.getId(), new ArrayList<>())));
+        }
+        
+        return carPage;
     }
 
     // Получение DTO с предварительно вычисленными датами доступности для списка автомобилей
@@ -89,7 +113,11 @@ public class CarService {
         dto.setBrand(car.getBrand());
         dto.setModel(car.getModel());
         dto.setYear(car.getYear());
-        dto.setImageUrl(car.getImageUrl());
+        dto.setImageUrl(car.getImages().stream()
+                .filter(CarImage::isMain)
+                .findFirst()
+                .map(CarImage::getImageUrl)
+                .orElseGet(() -> car.getImages().isEmpty() ? null : car.getImages().get(0).getImageUrl()));
         dto.setDailyRate(car.getDailyRate());
         dto.setAvailable(car.isAvailable());
         dto.setStatus(car.getStatus());
@@ -151,19 +179,86 @@ public class CarService {
     }
 
     public Car findCarById(Long id) {
-        return carRepository.findById(id)
+        Car car = carRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Автомобиль не найден"));
+        // Загружаем изображения в одном запросе
+        List<CarImage> images = carImageRepository.findByCarIdOrderByDisplayOrderAsc(id);
+        car.setImages(images);
+        return car;
     }
 
     @Transactional
     public Car saveCar(Car car) {
+        if (car.getImages() != null) {
+            for (int i = 0; i < car.getImages().size(); i++) {
+                CarImage image = car.getImages().get(i);
+                image.setCar(car);
+                image.setDisplayOrder(i);
+            }
+        }
         return carRepository.save(car);
     }
 
     @Transactional
-    @CacheEvict(value = "carAvailability", key = "#car.id")
     public Car updateCar(Car car) {
-        return carRepository.save(car);
+        Car existingCar = carRepository.findById(car.getId())
+                .orElseThrow(() -> new RuntimeException("Автомобиль не найден"));
+
+        // Обновляем основные поля
+        existingCar.setBrand(car.getBrand());
+        existingCar.setModel(car.getModel());
+        existingCar.setYear(car.getYear());
+        existingCar.setLicensePlate(car.getLicensePlate());
+        existingCar.setDailyRate(car.getDailyRate());
+        existingCar.setDescription(car.getDescription());
+        existingCar.setRegistrationNumber(car.getLicensePlate());
+        existingCar.setTransmission(car.getTransmission());
+        existingCar.setFuelType(car.getFuelType());
+        existingCar.setSeats(car.getSeats());
+        existingCar.setColor(car.getColor());
+        existingCar.setCategory(car.getCategory());
+        existingCar.setSchedule(car.getSchedule());
+
+        // Обновляем изображения
+        if (car.getImages() != null) {
+            // Получаем существующие изображения
+            List<CarImage> existingImages = carImageRepository.findByCarIdOrderByDisplayOrderAsc(car.getId());
+            
+            // Удаляем изображения, которых нет в новом списке
+            Set<Long> newImageIds = car.getImages().stream()
+                    .map(CarImage::getId)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toSet());
+            
+            existingImages.stream()
+                    .filter(img -> !newImageIds.contains(img.getId()))
+                    .forEach(img -> carImageRepository.deleteById(img.getId()));
+
+            // Обновляем или добавляем новые изображения
+            for (int i = 0; i < car.getImages().size(); i++) {
+                CarImage image = car.getImages().get(i);
+                if (image.getId() == null) {
+                    // Новое изображение
+                    image.setCar(existingCar);
+                    image.setDisplayOrder(i);
+                    existingCar.getImages().add(image);
+                } else {
+                    // Обновляем существующее изображение
+                    CarImage existingImage = existingImages.stream()
+                            .filter(img -> img.getId().equals(image.getId()))
+                            .findFirst()
+                            .orElse(null);
+                    
+                    if (existingImage != null) {
+                        existingImage.setMain(image.isMain());
+                        existingImage.setDisplayOrder(i);
+                        existingImage.setDescription(image.getDescription());
+                    }
+                }
+            }
+        }
+
+        return carRepository.save(existingCar);
     }
 
     @Transactional
@@ -323,5 +418,37 @@ public class CarService {
         return carStats.stream()
                 .limit(10)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<CarImage> getCarImages(Long carId) {
+        Car car = findCarById(carId);
+        return car.getImages().stream()
+                .sorted(Comparator.comparing(CarImage::getDisplayOrder))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public String saveCarImage(MultipartFile file) {
+        try {
+            // Генерируем уникальное имя файла
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            
+            // Создаем директорию для сохранения, если она не существует
+            String uploadDir = "uploads/cars";
+            File dir = new File(uploadDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            
+            // Сохраняем файл
+            File destFile = new File(dir.getAbsolutePath() + File.separator + fileName);
+            file.transferTo(destFile);
+            
+            // Возвращаем относительный путь к файлу
+            return "/uploads/cars/" + fileName;
+        } catch (IOException e) {
+            throw new RuntimeException("Не удалось сохранить изображение: " + e.getMessage(), e);
+        }
     }
 }

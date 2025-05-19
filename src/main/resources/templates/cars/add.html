@@ -26,7 +26,7 @@
 
     <h1>Добавить новый автомобиль</h1>
 
-    <form th:action="@{/cars/add}" th:object="${car}" method="post" class="car-form">
+    <form th:action="@{/cars/add}" th:object="${car}" method="post" class="car-form" enctype="multipart/form-data">
         <div class="form-group">
             <label for="brand">Марка *</label>
             <input type="text" id="brand" th:field="*{brand}" class="form-control" required>
@@ -92,6 +92,20 @@
         </div>
 
         <div class="form-group">
+            <label for="newImages">Фотографии автомобиля</label>
+            <div class="image-upload-container">
+                <div class="image-preview-container" id="imagePreviewContainer">
+                    <!-- Здесь будут превью загруженных изображений -->
+                </div>
+                <div class="image-upload-controls">
+                    <input type="file" id="newImages" name="newImages" class="form-control" multiple accept="image/*">
+                    <small class="form-text text-muted">Можно загрузить несколько фотографий. Первая загруженная фотография будет основной.</small>
+                </div>
+            </div>
+            <div class="error-message" th:if="${#fields.hasErrors('newImages')}" th:errors="*{newImages}"></div>
+        </div>
+
+        <div class="form-group">
             <label for="category">Категория</label>
             <select id="category" th:field="*{category}" class="form-control">
                 <option value="">Выберите категорию</option>
@@ -105,9 +119,11 @@
         </div>
 
         <div class="form-group">
-            <label for="imageUrl">URL изображения</label>
-            <input type="url" id="imageUrl" th:field="*{imageUrl}" class="form-control">
-            <div class="error-message" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"></div>
+            <label for="schedule">График работы</label>
+            <textarea id="schedule" th:field="*{schedule}" class="form-control" rows="3" 
+                      placeholder="Например: Пн-Пт: 9:00-18:00, Сб-Вс: 10:00-16:00"></textarea>
+            <small class="form-text text-muted">Укажите часы работы автомобиля</small>
+            <div class="error-message" th:if="${#fields.hasErrors('schedule')}" th:errors="*{schedule}"></div>
         </div>
 
         <div class="form-group">

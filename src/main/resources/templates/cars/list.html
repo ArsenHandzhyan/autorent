@@ -45,16 +45,25 @@
     <div class="cars-grid">
         <div th:each="car : ${cars}" class="car-card">
             <div class="car-image">
-                <img th:if="${car.imageUrl}" th:src="${car.imageUrl}" alt="Фото автомобиля">
-                <img th:unless="${car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
+                <img th:if="${car.images != null && !car.images.empty}" 
+                     th:src="${car.images[0].imageUrl}" 
+                     th:alt="${car.brand + ' ' + car.model}"
+                     class="img-fluid">
+                <div th:unless="${car.images != null && !car.images.empty}" class="no-image">
+                    <i class="fas fa-car"></i>
+                    <span>Нет фото</span>
+                </div>
             </div>
             <div class="car-info">
                 <h3 th:text="${car.brand + ' ' + car.model}">Toyota Camry</h3>
                 <div class="car-details">
                     <p><strong>Год:</strong> <span th:text="${car.year}">2023</span></p>
                     <p><strong>Цена:</strong> <span th:text="${car.dailyRate + ' ₽/день'}">3000 ₽/день</span></p>
-                    <p th:if="${car.transmission}"><strong>Коробка:</strong> <span th:text="${car.transmission}">Автомат</span></p>
-                    <p th:if="${car.fuelType}"><strong>Топливо:</strong> <span th:text="${car.fuelType}">Бензин</span></p>
+                    <p th:if="${car.transmission}"><strong>Коробка:</strong> <span th:text="${car.transmission == 'MANUAL' ? 'Механика' : 'Автомат'}">Автомат</span></p>
+                    <p th:if="${car.fuelType}"><strong>Топливо:</strong> <span th:text="${car.fuelType == 'PETROL' ? 'Бензин' : 
+                                                                 car.fuelType == 'DIESEL' ? 'Дизель' : 
+                                                                 car.fuelType == 'ELECTRIC' ? 'Электро' : 
+                                                                 car.fuelType == 'HYBRID' ? 'Гибрид' : car.fuelType}">Бензин</span></p>
                 </div>
                 <div class="car-status">
                     <span th:if="${car.available}" class="status available">Доступен</span>

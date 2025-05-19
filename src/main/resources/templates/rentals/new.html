@@ -25,8 +25,13 @@
         <div class="car-summary">
             <h2 th:text="${car.brand + ' ' + car.model}">Toyota Camry</h2>
             <div class="car-image">
-                <img th:if="${car.imageUrl}" th:src="${car.imageUrl}" alt="Фото автомобиля">
-                <img th:unless="${car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
+                <img th:if="${!car.images.empty}" 
+                     th:src="${car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].imageUrl : car.images[0].imageUrl}" 
+                     alt="Фото автомобиля">
+                <div th:unless="${!car.images.empty}" class="no-image">
+                    <i class="fas fa-car"></i>
+                    <span>Нет фото</span>
+                </div>
             </div>
             <div class="car-details">
                 <p><strong>Год выпуска:</strong> <span th:text="${car.year}">2023</span></p>
@@ -92,10 +97,10 @@
 
 <script th:inline="javascript">
     // Получаем стоимость аренды в день
-    const dailyRate = [[${car.dailyRate}]];
+    const dailyRate = /*[[${car.dailyRate}]]*/ 0;
 
     // Получаем забронированные периоды
-    const bookedPeriods = [[${bookedPeriods}]];
+    const bookedPeriods = /*[[${bookedPeriods}]]*/ [];
 
     // Преобразуем забронированные периоды в формат, понятный flatpickr
     const disabledDateRanges = bookedPeriods.map(period => {
