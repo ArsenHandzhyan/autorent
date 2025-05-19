@@ -41804,3 +41804,2816 @@ java.lang.NumberFormatException: For input string: ""
 2025-05-19 23:34:50,555 INFO o.s.o.j.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-05-19 23:34:50,555 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
 2025-05-19 23:34:50,984 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2025-05-19 23:34:56,318 INFO o.h.v.i.u.Version [background-preinit] HV000001: Hibernate Validator 8.0.2.Final
+2025-05-19 23:34:56,387 INFO o.s.b.StartupInfoLogger [main] Starting AutorentApplication using Java 17.0.14 with PID 8852 (C:\Users\Администратор\IdeaProjects\autorent\target\classes started by Администратор in C:\Users\Администратор\IdeaProjects\autorent)
+2025-05-19 23:34:56,389 INFO o.s.b.SpringApplication [main] The following 1 profile is active: "dev"
+2025-05-19 23:34:57,771 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-19 23:34:57,882 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 104 ms. Found 9 JPA repository interfaces.
+2025-05-19 23:34:59,025 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2025-05-19 23:34:59,039 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2025-05-19 23:34:59,055 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
+2025-05-19 23:34:59,055 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-05-19 23:34:59,134 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2025-05-19 23:34:59,134 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2670 ms
+2025-05-19 23:34:59,609 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-19 23:34:59,675 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-05-19 23:34:59,735 INFO o.h.c.i.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2025-05-19 23:35:00,083 INFO o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-19 23:35:00,146 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2025-05-19 23:35:01,801 INFO c.z.h.p.HikariPool [main] HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5d84b088
+2025-05-19 23:35:01,805 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2025-05-19 23:35:02,047 WARN o.h.e.j.d.i.DialectFactoryImpl [main] HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-19 23:35:02,068 INFO o.h.e.j.e.i.JdbcEnvironmentInitiator [main] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.40
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-19 23:35:03,165 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-19 23:35:05,269 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-19 23:35:05,692 INFO o.s.d.j.r.q.QueryEnhancerFactory [main] Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-19 23:35:07,081 WARN o.s.a.f.CglibAopProxy [main] Unable to proxy interface-implementing method [public final void org.springframework.web.filter.OncePerRequestFilter.doFilter(jakarta.servlet.ServletRequest,jakarta.servlet.ServletResponse,jakarta.servlet.FilterChain) throws jakarta.servlet.ServletException,java.io.IOException] because it is marked as final, consider using interface-based JDK proxies instead.
+2025-05-19 23:35:07,081 WARN o.s.a.f.CglibAopProxy [main] Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2025-05-19 23:35:07,359 INFO r.a.a.s.SmsService [main] SmsService инициализирован с использованием SMS.ru API
+2025-05-19 23:35:07,477 INFO r.a.a.c.AuthController [main] AuthController initialized
+2025-05-19 23:35:07,625 INFO o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [main] Global AuthenticationManager configured with UserDetailsService bean with name userService
+2025-05-19 23:35:08,168 INFO o.s.b.a.e.w.EndpointLinksResolver [main] Exposing 1 endpoint beneath base path '/actuator'
+2025-05-19 23:35:08,307 DEBUG o.s.s.w.DefaultSecurityFilterChain [main] Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CsrfFilter, LogoutFilter, JwtRequestFilter$$SpringCGLIB$$0, UsernamePasswordAuthenticationFilter, ConcurrentSessionFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-05-19 23:35:08,806 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2025-05-19 23:35:08,837 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2025-05-19 23:35:08,852 INFO o.s.b.StartupInfoLogger [main] Started AutorentApplication in 12.947 seconds (process running for 13.319)
+2025-05-19 23:35:09,066 INFO r.a.a.s.CarService [scheduling-1] Запуск проверки статусов автомобилей
+2025-05-19 23:35:09,163 DEBUG o.h.e.j.s.SqlStatementLogger [scheduling-1] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+2025-05-19 23:35:09,168 DEBUG o.h.e.j.s.SqlStatementLogger [main] 
+    select
+        count(*) 
+    from
+        roles r1_0
+2025-05-19 23:35:09,288 DEBUG o.h.e.j.s.SqlStatementLogger [scheduling-1] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+2025-05-19 23:35:09,399 DEBUG o.h.e.j.s.SqlStatementLogger [scheduling-1] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+2025-05-19 23:35:09,512 INFO r.a.a.s.CarService [scheduling-1] Обновлены статусы 0 автомобилей
+2025-05-19 23:35:09,537 INFO r.a.a.c.DataInitializer [main] DataInitializer: проверка наличия пользователей
+2025-05-19 23:35:09,571 DEBUG o.h.e.j.s.SqlStatementLogger [main] 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-05-19 23:35:09,662 DEBUG o.h.e.j.s.SqlStatementLogger [main] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:35:09,753 INFO r.a.a.c.DataInitializer [main] DataInitializer: admin@example.com существует: true
+2025-05-19 23:35:09,839 DEBUG o.h.e.j.s.SqlStatementLogger [main] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+        and r1_0.end_date<?
+2025-05-19 23:35:09,936 DEBUG o.h.e.j.s.SqlStatementLogger [main] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+        and r1_0.start_date between ? and ?
+2025-05-19 23:35:10,028 DEBUG o.h.e.j.s.SqlStatementLogger [main] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+2025-05-19 23:35:10,125 DEBUG o.h.e.j.s.SqlStatementLogger [main] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status in (?, ?)
+2025-05-19 23:35:10,382 INFO r.a.a.c.CarStatusInitializer [main] Статусы автомобилей синхронизированы при запуске приложения
+2025-05-19 23:35:20,695 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-19 23:35:20,697 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-2] Initializing Servlet 'dispatcherServlet'
+2025-05-19 23:35:20,700 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-2] Completed initialization in 3 ms
+2025-05-19 23:35:20,752 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-2] Securing GET /cars/11/edit
+2025-05-19 23:35:20,791 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-2] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:20,796 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-2] Secured GET /cars/11/edit
+2025-05-19 23:35:20,844 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-2] Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.showEditCarForm(java.lang.Long); target is of class [ru.anapa.autorent.controller.CarController]
+2025-05-19 23:35:20,903 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-2] Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.showEditCarForm(java.lang.Long); target is of class [ru.anapa.autorent.controller.CarController]
+2025-05-19 23:35:21,200 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-2] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2025-05-19 23:35:21,596 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-2] 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+2025-05-19 23:35:22,916 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-1] Securing GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:35:22,916 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-6] Securing GET /css/styles.css
+2025-05-19 23:35:22,920 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-1] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:22,924 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-6] Secured GET /css/styles.css
+2025-05-19 23:35:22,925 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-1] Secured GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:35:22,926 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Securing GET /uploads/cars/e077594e-d073-4452-9372-298c4547a100_photo_2025-05-19_21-50-34.jpg
+2025-05-19 23:35:22,927 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-7] Securing GET /uploads/cars/4d847ce5-f32d-4db2-81cf-1089d7684b00_photo_2025-05-19_20-35-10.jpg
+2025-05-19 23:35:22,928 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-3] Securing GET /uploads/cars/f2ea7a9c-8478-42c4-8cea-a103ebea8f19_photo_2025-05-19_21-50-29.jpg
+2025-05-19 23:35:22,931 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-4] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:22,932 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-3] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:22,932 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-7] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:22,933 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Secured GET /uploads/cars/e077594e-d073-4452-9372-298c4547a100_photo_2025-05-19_21-50-34.jpg
+2025-05-19 23:35:22,935 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-3] Secured GET /uploads/cars/f2ea7a9c-8478-42c4-8cea-a103ebea8f19_photo_2025-05-19_21-50-29.jpg
+2025-05-19 23:35:22,935 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-7] Secured GET /uploads/cars/4d847ce5-f32d-4db2-81cf-1089d7684b00_photo_2025-05-19_20-35-10.jpg
+2025-05-19 23:35:22,948 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-2] Securing GET /uploads/cars/97db1a42-1b57-4386-aa39-6240911a0d96_photo_2025-05-19_21-50-19.jpg
+2025-05-19 23:35:22,953 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-2] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:22,956 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-2] Secured GET /uploads/cars/97db1a42-1b57-4386-aa39-6240911a0d96_photo_2025-05-19_21-50-19.jpg
+2025-05-19 23:35:22,968 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-6] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:22,985 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-6] Securing GET /js/main.js
+2025-05-19 23:35:22,988 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-6] Secured GET /js/main.js
+2025-05-19 23:35:22,998 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-6] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:37,564 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-5] Securing POST /cars/11/edit
+2025-05-19 23:35:37,652 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-5] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:37,653 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-5] Secured POST /cars/11/edit
+2025-05-19 23:35:37,771 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-5] Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.updateCar(java.lang.Long,ru.anapa.autorent.dto.CarDto,java.lang.Long,java.util.Map,org.springframework.validation.BindingResult); target is of class [ru.anapa.autorent.controller.CarController]
+2025-05-19 23:35:37,779 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-5] Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.updateCar(java.lang.Long,ru.anapa.autorent.dto.CarDto,java.lang.Long,java.util.Map,org.springframework.validation.BindingResult); target is of class [ru.anapa.autorent.controller.CarController]
+2025-05-19 23:35:38,062 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-5] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2025-05-19 23:35:38,449 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-5] 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+2025-05-19 23:35:38,647 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-5] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2025-05-19 23:35:38,781 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-5] 
+    update
+        cars 
+    set
+        available=?,
+        brand=?,
+        category=?,
+        color=?,
+        daily_rate=?,
+        description=?,
+        fuel_type=?,
+        license_plate=?,
+        model=?,
+        registration_number=?,
+        schedule=?,
+        seats=?,
+        status=?,
+        transmission=?,
+        year=? 
+    where
+        id=?
+2025-05-19 23:35:38,889 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-5] 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+2025-05-19 23:35:38,993 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-5] 
+    select
+        i1_0.car_id,
+        i1_0.id,
+        i1_0.description,
+        i1_0.display_order,
+        i1_0.image_url,
+        i1_0.is_main,
+        i1_0.rotation 
+    from
+        car_images i1_0 
+    where
+        i1_0.car_id=?
+2025-05-19 23:35:39,356 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-8] Securing GET /cars/11?success=%D0%90%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D1%8C+%D1%83%D1%81%D0%BF%D0%B5%D1%88%D0%BD%D0%BE+%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD
+2025-05-19 23:35:39,374 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-8] Secured GET /cars/11?success=%D0%90%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D1%8C+%D1%83%D1%81%D0%BF%D0%B5%D1%88%D0%BD%D0%BE+%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD
+2025-05-19 23:35:39,564 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2025-05-19 23:35:39,955 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+2025-05-19 23:35:40,252 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2025-05-19 23:35:40,651 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+2025-05-19 23:35:40,758 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status=? 
+    order by
+        r1_0.end_date
+2025-05-19 23:35:40,884 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status=? 
+    order by
+        r1_0.end_date
+2025-05-19 23:35:41,171 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2025-05-19 23:35:41,554 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+2025-05-19 23:35:41,661 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status in (?, ?) 
+    order by
+        r1_0.start_date
+2025-05-19 23:35:41,795 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-8] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:41,852 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-2] Securing GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:35:41,852 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-9] Securing GET /css/car-gallery.css
+2025-05-19 23:35:41,852 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Securing GET /css/styles.css
+2025-05-19 23:35:41,852 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Securing GET /uploads/cars/4d847ce5-f32d-4db2-81cf-1089d7684b00_photo_2025-05-19_20-35-10.jpg
+2025-05-19 23:35:41,854 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-9] Secured GET /css/car-gallery.css
+2025-05-19 23:35:41,854 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-4] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:41,854 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Secured GET /css/styles.css
+2025-05-19 23:35:41,856 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-3] Securing GET /uploads/cars/e077594e-d073-4452-9372-298c4547a100_photo_2025-05-19_21-50-34.jpg
+2025-05-19 23:35:41,854 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-2] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:41,858 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Secured GET /uploads/cars/4d847ce5-f32d-4db2-81cf-1089d7684b00_photo_2025-05-19_20-35-10.jpg
+2025-05-19 23:35:41,859 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-2] Secured GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:35:41,859 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-3] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:41,863 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-3] Secured GET /uploads/cars/e077594e-d073-4452-9372-298c4547a100_photo_2025-05-19_21-50-34.jpg
+2025-05-19 23:35:41,871 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-10] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:41,876 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-9] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:41,883 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Securing GET /uploads/cars/f2ea7a9c-8478-42c4-8cea-a103ebea8f19_photo_2025-05-19_21-50-29.jpg
+2025-05-19 23:35:41,886 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-9] Securing GET /uploads/cars/97db1a42-1b57-4386-aa39-6240911a0d96_photo_2025-05-19_21-50-19.jpg
+2025-05-19 23:35:41,890 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-9] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:41,890 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-10] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:35:41,892 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-9] Secured GET /uploads/cars/97db1a42-1b57-4386-aa39-6240911a0d96_photo_2025-05-19_21-50-19.jpg
+2025-05-19 23:35:41,892 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Secured GET /uploads/cars/f2ea7a9c-8478-42c4-8cea-a103ebea8f19_photo_2025-05-19_21-50-29.jpg
+2025-05-19 23:35:41,898 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-1] Securing GET /js/main.js
+2025-05-19 23:35:41,910 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-1] Secured GET /js/main.js
+2025-05-19 23:35:41,918 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-1] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:38:41,590 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Securing GET /cars
+2025-05-19 23:38:41,592 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Secured GET /cars
+2025-05-19 23:38:41,873 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-4] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    limit
+        ?, ?
+2025-05-19 23:38:41,976 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-4] 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id in (?) 
+    order by
+        ci1_0.display_order
+2025-05-19 23:38:42,362 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-4] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:38:42,384 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-9] Securing GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:38:42,384 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Securing GET /css/styles.css
+2025-05-19 23:38:42,386 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Secured GET /css/styles.css
+2025-05-19 23:38:42,386 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-9] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:38:42,386 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-9] Secured GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:38:42,386 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-1] Securing GET /js/main.js
+2025-05-19 23:38:42,386 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-1] Secured GET /js/main.js
+2025-05-19 23:38:42,386 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-10] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:38:42,391 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-1] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:38:46,806 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-7] Securing GET /admin/dashboard
+2025-05-19 23:38:46,809 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-7] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:38:46,811 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-7] Secured GET /admin/dashboard
+2025-05-19 23:38:46,814 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-7] Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.security.core.Authentication); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:38:46,817 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-7] Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.security.core.Authentication); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:38:47,105 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0
+2025-05-19 23:38:47,212 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:47,308 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:47,405 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:47,502 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:47,597 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:47,693 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:47,790 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:47,887 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:47,983 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:48,079 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:48,175 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:48,272 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:48,370 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:38:48,750 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+2025-05-19 23:38:48,854 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+2025-05-19 23:38:48,953 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+2025-05-19 23:38:49,240 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+2025-05-19 23:38:49,663 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-6] Securing GET /css/styles.css
+2025-05-19 23:38:49,670 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-6] Secured GET /css/styles.css
+2025-05-19 23:38:49,675 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-6] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:38:52,379 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-5] Securing GET /admin/cars
+2025-05-19 23:38:52,381 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-5] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:38:52,383 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-5] Secured GET /admin/cars
+2025-05-19 23:38:52,384 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-5] Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:38:52,387 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-5] Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:38:52,673 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-5] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    limit
+        ?, ?
+2025-05-19 23:38:52,774 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-5] 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id in (?) 
+    order by
+        ci1_0.display_order
+2025-05-19 23:38:53,222 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-2] Securing GET /js/main.js
+2025-05-19 23:38:53,222 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-8] Securing GET /css/styles.css
+2025-05-19 23:38:53,222 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-3] Securing GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:38:53,224 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-8] Secured GET /css/styles.css
+2025-05-19 23:38:53,225 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-3] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:38:53,225 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-3] Secured GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:38:53,226 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-2] Secured GET /js/main.js
+2025-05-19 23:38:53,230 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-8] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:38:53,231 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-2] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:38:57,000 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Securing PUT /api/cars/11/status
+2025-05-19 23:38:57,002 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-4] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:38:57,003 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Secured PUT /api/cars/11/status
+2025-05-19 23:38:57,400 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-4] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2025-05-19 23:38:57,888 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-4] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        i1_0.car_id,
+        i1_0.id,
+        i1_0.description,
+        i1_0.display_order,
+        i1_0.image_url,
+        i1_0.is_main,
+        i1_0.rotation 
+    from
+        cars c1_0 
+    left join
+        car_images i1_0 
+            on c1_0.id=i1_0.car_id 
+    where
+        c1_0.id=?
+2025-05-19 23:38:57,993 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-4] 
+    select
+        r1_0.car_id,
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        rentals r1_0 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    where
+        r1_0.car_id=?
+2025-05-19 23:38:58,095 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-4] 
+    update
+        cars 
+    set
+        available=?,
+        brand=?,
+        category=?,
+        color=?,
+        daily_rate=?,
+        description=?,
+        fuel_type=?,
+        license_plate=?,
+        model=?,
+        registration_number=?,
+        schedule=?,
+        seats=?,
+        status=?,
+        transmission=?,
+        year=? 
+    where
+        id=?
+2025-05-19 23:39:30,365 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Securing PUT /api/cars/11/status
+2025-05-19 23:39:30,365 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-10] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:39:30,365 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Secured PUT /api/cars/11/status
+2025-05-19 23:39:30,654 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-10] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2025-05-19 23:39:31,125 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-10] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        i1_0.car_id,
+        i1_0.id,
+        i1_0.description,
+        i1_0.display_order,
+        i1_0.image_url,
+        i1_0.is_main,
+        i1_0.rotation 
+    from
+        cars c1_0 
+    left join
+        car_images i1_0 
+            on c1_0.id=i1_0.car_id 
+    where
+        c1_0.id=?
+2025-05-19 23:39:31,229 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-10] 
+    select
+        r1_0.car_id,
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        rentals r1_0 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    where
+        r1_0.car_id=?
+2025-05-19 23:39:31,327 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-10] 
+    update
+        cars 
+    set
+        available=?,
+        brand=?,
+        category=?,
+        color=?,
+        daily_rate=?,
+        description=?,
+        fuel_type=?,
+        license_plate=?,
+        model=?,
+        registration_number=?,
+        schedule=?,
+        seats=?,
+        status=?,
+        transmission=?,
+        year=? 
+    where
+        id=?
+2025-05-19 23:40:06,738 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-6] Securing PUT /api/cars/11/status
+2025-05-19 23:40:06,748 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-6] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:06,748 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-6] Secured PUT /api/cars/11/status
+2025-05-19 23:40:07,036 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-6] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2025-05-19 23:40:07,503 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-6] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        i1_0.car_id,
+        i1_0.id,
+        i1_0.description,
+        i1_0.display_order,
+        i1_0.image_url,
+        i1_0.is_main,
+        i1_0.rotation 
+    from
+        cars c1_0 
+    left join
+        car_images i1_0 
+            on c1_0.id=i1_0.car_id 
+    where
+        c1_0.id=?
+2025-05-19 23:40:07,600 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-6] 
+    select
+        r1_0.car_id,
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        rentals r1_0 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    where
+        r1_0.car_id=?
+2025-05-19 23:40:07,701 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-6] 
+    update
+        cars 
+    set
+        available=?,
+        brand=?,
+        category=?,
+        color=?,
+        daily_rate=?,
+        description=?,
+        fuel_type=?,
+        license_plate=?,
+        model=?,
+        registration_number=?,
+        schedule=?,
+        seats=?,
+        status=?,
+        transmission=?,
+        year=? 
+    where
+        id=?
+2025-05-19 23:40:14,070 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-7] Securing GET /admin/dashboard
+2025-05-19 23:40:14,072 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-7] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:14,075 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-7] Secured GET /admin/dashboard
+2025-05-19 23:40:14,080 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-7] Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.security.core.Authentication); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:40:14,085 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-7] Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.security.core.Authentication); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:40:14,373 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0
+2025-05-19 23:40:14,477 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:14,574 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:14,670 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:14,768 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:14,867 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:14,963 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:15,059 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:15,155 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:15,253 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:15,349 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:15,448 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:15,545 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:15,645 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:16,034 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+2025-05-19 23:40:16,140 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+2025-05-19 23:40:16,241 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+2025-05-19 23:40:16,530 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+2025-05-19 23:40:16,942 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-5] Securing GET /css/styles.css
+2025-05-19 23:40:16,944 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-5] Secured GET /css/styles.css
+2025-05-19 23:40:16,949 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-5] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:18,517 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-8] Securing GET /admin/cars
+2025-05-19 23:40:18,518 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-8] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:18,519 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-8] Secured GET /admin/cars
+2025-05-19 23:40:18,520 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-8] Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:40:18,521 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-8] Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:40:18,805 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    limit
+        ?, ?
+2025-05-19 23:40:18,903 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id in (?) 
+    order by
+        ci1_0.display_order
+2025-05-19 23:40:19,314 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Securing GET /js/main.js
+2025-05-19 23:40:19,314 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-3] Securing GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:40:19,314 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-2] Securing GET /css/styles.css
+2025-05-19 23:40:19,316 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Secured GET /js/main.js
+2025-05-19 23:40:19,316 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-2] Secured GET /css/styles.css
+2025-05-19 23:40:19,316 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-3] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:19,317 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-3] Secured GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:40:19,324 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-4] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:19,327 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-2] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:23,561 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Securing PUT /api/cars/11/status
+2025-05-19 23:40:23,564 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-10] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:23,565 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Secured PUT /api/cars/11/status
+2025-05-19 23:40:23,851 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-10] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2025-05-19 23:40:24,323 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-10] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        i1_0.car_id,
+        i1_0.id,
+        i1_0.description,
+        i1_0.display_order,
+        i1_0.image_url,
+        i1_0.is_main,
+        i1_0.rotation 
+    from
+        cars c1_0 
+    left join
+        car_images i1_0 
+            on c1_0.id=i1_0.car_id 
+    where
+        c1_0.id=?
+2025-05-19 23:40:24,420 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-10] 
+    select
+        r1_0.car_id,
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        rentals r1_0 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    where
+        r1_0.car_id=?
+2025-05-19 23:40:24,518 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-10] 
+    update
+        cars 
+    set
+        available=?,
+        brand=?,
+        category=?,
+        color=?,
+        daily_rate=?,
+        description=?,
+        fuel_type=?,
+        license_plate=?,
+        model=?,
+        registration_number=?,
+        schedule=?,
+        seats=?,
+        status=?,
+        transmission=?,
+        year=? 
+    where
+        id=?
+2025-05-19 23:40:28,217 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-1] Securing GET /admin/dashboard
+2025-05-19 23:40:28,219 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-1] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:28,220 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-1] Secured GET /admin/dashboard
+2025-05-19 23:40:28,224 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-1] Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.security.core.Authentication); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:40:28,226 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-1] Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.security.core.Authentication); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:40:28,516 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0
+2025-05-19 23:40:28,626 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:28,730 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:28,874 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:28,969 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:29,067 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:29,167 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:29,267 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:29,369 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:29,466 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:29,570 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:29,668 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:29,766 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:29,863 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:30,245 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+2025-05-19 23:40:30,345 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+2025-05-19 23:40:30,446 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+2025-05-19 23:40:30,734 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+2025-05-19 23:40:31,141 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-9] Securing GET /css/styles.css
+2025-05-19 23:40:31,143 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-9] Secured GET /css/styles.css
+2025-05-19 23:40:31,147 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-9] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:33,154 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-6] Securing GET /admin/cars
+2025-05-19 23:40:33,156 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-6] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:33,158 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-6] Secured GET /admin/cars
+2025-05-19 23:40:33,160 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-6] Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:40:33,162 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-6] Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:40:33,447 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-6] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    limit
+        ?, ?
+2025-05-19 23:40:33,548 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-6] 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id in (?) 
+    order by
+        ci1_0.display_order
+2025-05-19 23:40:33,955 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-7] Securing GET /css/styles.css
+2025-05-19 23:40:33,955 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-5] Securing GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:40:33,955 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-8] Securing GET /js/main.js
+2025-05-19 23:40:33,957 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-5] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:33,957 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-8] Secured GET /js/main.js
+2025-05-19 23:40:33,957 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-7] Secured GET /css/styles.css
+2025-05-19 23:40:33,958 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-5] Secured GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:40:33,960 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-8] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:33,964 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-7] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:38,985 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Securing PUT /api/cars/11/status
+2025-05-19 23:40:38,988 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-4] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:38,989 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Secured PUT /api/cars/11/status
+2025-05-19 23:40:39,272 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-4] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2025-05-19 23:40:39,741 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-4] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        i1_0.car_id,
+        i1_0.id,
+        i1_0.description,
+        i1_0.display_order,
+        i1_0.image_url,
+        i1_0.is_main,
+        i1_0.rotation 
+    from
+        cars c1_0 
+    left join
+        car_images i1_0 
+            on c1_0.id=i1_0.car_id 
+    where
+        c1_0.id=?
+2025-05-19 23:40:39,840 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-4] 
+    select
+        r1_0.car_id,
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        rentals r1_0 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    where
+        r1_0.car_id=?
+2025-05-19 23:40:39,944 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-4] 
+    update
+        cars 
+    set
+        available=?,
+        brand=?,
+        category=?,
+        color=?,
+        daily_rate=?,
+        description=?,
+        fuel_type=?,
+        license_plate=?,
+        model=?,
+        registration_number=?,
+        schedule=?,
+        seats=?,
+        status=?,
+        transmission=?,
+        year=? 
+    where
+        id=?
+2025-05-19 23:40:46,132 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-2] Securing GET /cars
+2025-05-19 23:40:46,134 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-2] Secured GET /cars
+2025-05-19 23:40:46,415 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-2] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    limit
+        ?, ?
+2025-05-19 23:40:46,518 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-2] 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id in (?) 
+    order by
+        ci1_0.display_order
+2025-05-19 23:40:46,898 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-2] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:46,922 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-3] Securing GET /css/styles.css
+2025-05-19 23:40:46,922 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-1] Securing GET /js/main.js
+2025-05-19 23:40:46,923 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Securing GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:40:46,924 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-3] Secured GET /css/styles.css
+2025-05-19 23:40:46,925 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-1] Secured GET /js/main.js
+2025-05-19 23:40:46,925 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-10] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:46,926 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Secured GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:40:46,930 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-1] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:46,932 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-3] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:49,268 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-9] Securing GET /admin/dashboard
+2025-05-19 23:40:49,269 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-9] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:49,270 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-9] Secured GET /admin/dashboard
+2025-05-19 23:40:49,273 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-9] Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.security.core.Authentication); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:40:49,274 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-9] Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.security.core.Authentication); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:40:49,558 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0
+2025-05-19 23:40:49,663 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:49,762 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:49,858 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:49,953 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:50,048 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:50,144 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:50,241 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:50,335 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:50,432 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:50,530 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:50,626 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:50,722 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:50,818 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2025-05-19 23:40:51,197 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+2025-05-19 23:40:51,299 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+2025-05-19 23:40:51,402 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+2025-05-19 23:40:51,685 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-9] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+2025-05-19 23:40:52,086 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-6] Securing GET /css/styles.css
+2025-05-19 23:40:52,088 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-6] Secured GET /css/styles.css
+2025-05-19 23:40:52,094 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-6] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:53,541 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-8] Securing GET /admin/cars
+2025-05-19 23:40:53,543 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-8] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:53,544 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-8] Secured GET /admin/cars
+2025-05-19 23:40:53,547 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-8] Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:40:53,548 DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor [http-nio-8080-exec-8] Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+2025-05-19 23:40:53,832 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    limit
+        ?, ?
+2025-05-19 23:40:53,933 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id in (?) 
+    order by
+        ci1_0.display_order
+2025-05-19 23:40:54,342 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-7] Securing GET /css/styles.css
+2025-05-19 23:40:54,342 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Securing GET /js/main.js
+2025-05-19 23:40:54,343 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-5] Securing GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:40:54,345 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-4] Secured GET /js/main.js
+2025-05-19 23:40:54,345 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-5] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:54,346 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-5] Secured GET /uploads/cars/7ae61e6d-3398-4036-8934-c1f82c57dd91_photo_2025-05-19_21-50-48.jpg
+2025-05-19 23:40:54,345 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-7] Secured GET /css/styles.css
+2025-05-19 23:40:54,352 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-4] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:40:54,365 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-7] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:42:04,455 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Securing PUT /api/cars/11/status
+2025-05-19 23:42:04,455 DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository [http-nio-8080-exec-10] Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DFB7F784FD6FB248B10683F07BD33C04], Granted Authorities=[ROLE_ADMIN]]]
+2025-05-19 23:42:04,465 DEBUG o.s.s.w.FilterChainProxy [http-nio-8080-exec-10] Secured PUT /api/cars/11/status
+2025-05-19 23:42:04,748 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-10] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2025-05-19 23:42:05,212 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-10] 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        i1_0.car_id,
+        i1_0.id,
+        i1_0.description,
+        i1_0.display_order,
+        i1_0.image_url,
+        i1_0.is_main,
+        i1_0.rotation 
+    from
+        cars c1_0 
+    left join
+        car_images i1_0 
+            on c1_0.id=i1_0.car_id 
+    where
+        c1_0.id=?
+2025-05-19 23:42:05,318 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-10] 
+    select
+        r1_0.car_id,
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        rentals r1_0 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    where
+        r1_0.car_id=?
+2025-05-19 23:42:05,417 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-10] 
+    update
+        cars 
+    set
+        available=?,
+        brand=?,
+        category=?,
+        color=?,
+        daily_rate=?,
+        description=?,
+        fuel_type=?,
+        license_plate=?,
+        model=?,
+        registration_number=?,
+        schedule=?,
+        seats=?,
+        status=?,
+        transmission=?,
+        year=? 
+    where
+        id=?
+2025-05-19 23:43:38,133 INFO o.s.b.w.e.t.GracefulShutdown [SpringApplicationShutdownHook] Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-19 23:43:38,302 INFO o.s.b.w.e.t.GracefulShutdown [tomcat-shutdown] Graceful shutdown complete
+2025-05-19 23:43:38,314 INFO o.s.o.j.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-19 23:43:38,317 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2025-05-19 23:43:38,771 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

@@ -60,4 +60,34 @@ function validateForm(form) {
     });
 
     return isValid;
+}
+
+// Функция для обновления статуса автомобиля (админ)
+function updateCarStatus(carId, newStatus) {
+    fetch(`/api/cars/${carId}/status`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Ошибка при обновлении статуса');
+        }
+        // Не парсим JSON, если тело пустое
+        return response.text();
+    })
+    .then(() => {
+        // Обновляем стиль селекта в зависимости от нового статуса
+        const select = document.querySelector(`select[onchange*="${carId}"]`);
+        if (select) {
+            select.className = `status-select status-${newStatus.toLowerCase()}`;
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        alert('Произошла ошибка при обновлении статуса');
+    });
 } 

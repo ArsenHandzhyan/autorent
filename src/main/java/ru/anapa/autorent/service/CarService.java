@@ -257,6 +257,7 @@ public class CarService {
                         existingImage.setMain(image.isMain());
                         existingImage.setDisplayOrder(i);
                         existingImage.setDescription(image.getDescription());
+                        existingImage.setRotation(image.getRotation());
                         existingCar.getImages().add(existingImage);
                     }
                 }
