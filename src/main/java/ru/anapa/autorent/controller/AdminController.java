@@ -2,6 +2,7 @@ package ru.anapa.autorent.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +20,7 @@ import ru.anapa.autorent.model.CarStats;
 import ru.anapa.autorent.model.UserStats;
 import ru.anapa.autorent.service.CarService;
 import org.springframework.web.servlet.ModelAndView;
+import ru.anapa.autorent.model.Car;
 
 import java.util.List;
 import java.util.Map;
@@ -68,7 +70,7 @@ public class AdminController {
             mav.addObject("pendingRentals", pendingRentals);
             mav.addObject("activeRentals", activeRentals);
             mav.addObject("pendingCancellations", pendingCancellations);
-
+            mav.addObject("carCount", carService.findAllCars().size());
             return mav;
         } catch (Exception e) {
             ModelAndView mav = new ModelAndView("error");
@@ -189,5 +191,25 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("error", "Ошибка при синхронизации статусов: " + e.getMessage());
         }
         return "redirect:/admin/dashboard";
+    }
+
+    @GetMapping("/cars")
+    public ModelAndView adminCars() {
+        Page<Car> carPage = carService.findAllCarsWithPagination(0, 100);
+        ModelAndView mav = new ModelAndView("admin/cars");
+        mav.addObject("cars", carPage.getContent());
+        return mav;
+    }
+
+    @PostMapping("/cars/{id}/delete")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> deleteCar(@PathVariable Long id) {
+        try {
+            carService.deleteCar(id);
+            return ResponseEntity.ok(Map.of("message", "Автомобиль успешно удален"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Ошибка при удалении автомобиля: " + e.getMessage()));
+        }
     }
 }
