@@ -35,7 +35,7 @@ public class Car {
     @Column(nullable = false)
     private String licensePlate;
 
-    @Column(name = "price_per_day", precision = 10, scale = 2, nullable = false)
+    @Column(name = "daily_rate", precision = 10, scale = 2, nullable = false)
     private BigDecimal dailyRate;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -53,7 +53,7 @@ public class Car {
     private boolean available = true;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     @Builder.Default
     private CarStatus status = CarStatus.AVAILABLE;
 

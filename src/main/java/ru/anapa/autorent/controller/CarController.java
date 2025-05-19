@@ -351,7 +351,15 @@ public class CarController {
                 car.getImages().forEach(img -> {
                     String rotationKey = "imageRotation_" + img.getId();
                     if (allParams.containsKey(rotationKey)) {
-                        int rotation = Integer.parseInt(allParams.get(rotationKey));
+                        String value = allParams.get(rotationKey);
+                        int rotation = 0;
+                        if (value != null && !value.isEmpty()) {
+                            try {
+                                rotation = Integer.parseInt(value);
+                            } catch (NumberFormatException e) {
+                                rotation = 0;
+                            }
+                        }
                         img.setRotation(rotation);
                     }
                 });

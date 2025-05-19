@@ -209,7 +209,7 @@ public class AdminController {
             return ResponseEntity.ok(Map.of("message", "Автомобиль успешно удален"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Ошибка при удалении автомобиля: " + e.getMessage()));
+                    .body(Map.of("message", "Ошибка при удалении автомобиля: " + e.getMessage()));
         }
     }
 }

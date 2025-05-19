@@ -218,6 +218,7 @@ public class CarService {
         existingCar.setColor(car.getColor());
         existingCar.setCategory(car.getCategory());
         existingCar.setSchedule(car.getSchedule());
+        existingCar.setStatus(car.getStatus());
 
         // Обновляем изображения
         if (car.getImages() != null) {
@@ -233,6 +234,9 @@ public class CarService {
             existingImages.stream()
                     .filter(img -> !newImageIds.contains(img.getId()))
                     .forEach(img -> carImageRepository.deleteById(img.getId()));
+
+            // Очищаем список изображений и добавляем новые
+            existingCar.getImages().clear();
 
             // Обновляем или добавляем новые изображения
             for (int i = 0; i < car.getImages().size(); i++) {
@@ -253,6 +257,7 @@ public class CarService {
                         existingImage.setMain(image.isMain());
                         existingImage.setDisplayOrder(i);
                         existingImage.setDescription(image.getDescription());
+                        existingCar.getImages().add(existingImage);
                     }
                 }
             }
@@ -450,5 +455,12 @@ public class CarService {
         } catch (IOException e) {
             throw new RuntimeException("Не удалось сохранить изображение: " + e.getMessage(), e);
         }
+    }
+
+    public void updateCarStatus(Long carId, CarStatus status) {
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new RuntimeException("Автомобиль не найден"));
+        car.setStatus(status);
+        carRepository.save(car);
     }
 }
