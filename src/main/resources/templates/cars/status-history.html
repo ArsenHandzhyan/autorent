@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>История статусов автомобиля</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .period-filter {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .period-filter a {
+            display: inline-block;
+            padding: 8px 15px;
+            margin-right: 10px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .period-filter a:hover {
+            background-color: #e9ecef;
+        }
+        
+        .period-filter a.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .history-table th,
+        .history-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .history-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .history-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .status-change {
+            font-weight: bold;
+        }
+        
+        .status-change.available { color: #28a745; }
+        .status-change.rented { color: #007bff; }
+        .status-change.maintenance { color: #dc3545; }
+        .status-change.reserved { color: #ffc107; }
+        
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background-color: #5a6268;
+        }
+
+        .timeline {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .timeline-date {
+            min-width: 120px;
+            font-weight: bold;
+        }
+
+        .timeline-status {
+            flex-grow: 1;
+            height: 20px;
+            margin: 0 10px;
+            border-radius: 3px;
+        }
+
+        .timeline-status.available { background-color: #28a745; }
+        .timeline-status.rented { background-color: #007bff; }
+        .timeline-status.maintenance { background-color: #dc3545; }
+        .timeline-status.reserved { background-color: #ffc107; }
+
+        .legend {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .legend-item {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .legend-color {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+            border-radius: 3px;
+        }
+
+        .navigation-buttons {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navigation-buttons">
+            <a th:href="@{/cars/dashboard}" class="nav-button">← К списку автомобилей</a>
+            <a th:href="@{/cars/{id}(id=${car.id})}" class="nav-button">К автомобилю</a>
+        </div>
+
+        <h1>История статусов автомобиля</h1>
+        <h2 th:text="${car.brand + ' ' + car.model + ' (' + car.licensePlate + ')'}"></h2>
+        
+        <div class="period-filter">
+            <a th:href="@{/cars/{id}/status-history(id=${car.id})}" 
+               th:class="${selectedPeriod == 'all' ? 'active' : ''}">Все время</a>
+            <a th:href="@{/cars/{id}/status-history(id=${car.id}, period='day')}" 
+               th:class="${selectedPeriod == 'day' ? 'active' : ''}">За день</a>
+            <a th:href="@{/cars/{id}/status-history(id=${car.id}, period='month')}" 
+               th:class="${selectedPeriod == 'month' ? 'active' : ''}">За месяц</a>
+            <a th:href="@{/cars/{id}/status-history(id=${car.id}, period='year')}" 
+               th:class="${selectedPeriod == 'year' ? 'active' : ''}">За год</a>
+        </div>
+
+        <!-- Легенда -->
+        <div class="legend">
+            <div class="legend-item">
+                <span class="legend-color" style="background-color: #28a745;"></span>
+                Доступен
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background-color: #007bff;"></span>
+                Арендован
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background-color: #dc3545;"></span>
+                На обслуживании
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background-color: #ffc107;"></span>
+                Забронирован
+            </div>
+        </div>
+
+        <!-- Графическое представление для месяца и года -->
+        <div th:if="${selectedPeriod == 'month' || selectedPeriod == 'year'}" class="timeline">
+            <div th:each="record : ${history}" class="timeline-item">
+                <div class="timeline-date" th:text="${#temporals.format(record.changeDate, 'dd.MM.yyyy')}"></div>
+                <div th:class="${'timeline-status ' + record.newStatus.toString().toLowerCase()}"></div>
+            </div>
+        </div>
+
+        <!-- Детальная таблица для дня и всех записей -->
+        <table th:if="${selectedPeriod == 'day' || selectedPeriod == 'all'}" class="history-table">
+            <thead>
+                <tr>
+                    <th>Дата изменения</th>
+                    <th>Старый статус</th>
+                    <th>Новый статус</th>
+                    <th>Изменил</th>
+                    <th>Причина</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="record : ${history}">
+                    <td th:text="${#temporals.format(record.changeDate, 'dd.MM.yyyy HH:mm')}"></td>
+                    <td>
+                        <span th:text="${record.oldStatus == 'AVAILABLE' ? 'Доступен' : 
+                                      record.oldStatus == 'RENTED' ? 'Арендован' : 
+                                      record.oldStatus == 'MAINTENANCE' ? 'На обслуживании' : 
+                                      'Забронирован'}" 
+                              th:class="${'status-change ' + record.oldStatus.toString().toLowerCase()}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${record.newStatus == 'AVAILABLE' ? 'Доступен' : 
+                                      record.newStatus == 'RENTED' ? 'Арендован' : 
+                                      record.newStatus == 'MAINTENANCE' ? 'На обслуживании' : 
+                                      'Забронирован'}" 
+                              th:class="${'status-change ' + record.newStatus.toString().toLowerCase()}"></span>
+                    </td>
+                    <td th:text="${record.changedBy}"></td>
+                    <td th:text="${record.reason != null ? record.reason : '-'}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> 
