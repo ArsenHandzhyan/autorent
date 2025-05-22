@@ -80,30 +80,29 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<?> listUsers(Model model) {
+    public String listUsers(Model model) {
         try {
             List<User> users = userService.findAllUsers();
-            return ResponseEntity.ok(Map.of("users", users));
+            model.addAttribute("users", users);
+            return "admin/users";
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Ошибка при получении списка пользователей"));
+            model.addAttribute("error", "Ошибка при получении списка пользователей");
+            return "error";
         }
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<?> viewUser(@PathVariable Long id, Model model) {
+    public String viewUser(@PathVariable Long id, Model model) {
         try {
             User user = userService.findById(id);
             List<Rental> userRentals = rentalService.findRentalsByUser(user);
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("user", user);
-            response.put("rentals", userRentals);
-
-            return ResponseEntity.ok(response);
+            model.addAttribute("user", user);
+            model.addAttribute("rentals", userRentals);
+            return "admin/user-details";
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("error", "Пользователь не найден"));
+            model.addAttribute("error", "Пользователь не найден");
+            return "error";
         }
     }
 

@@ -1,226 +1,191 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Детали пользователя - Автопрокат</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Информация о пользователе</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        .user-profile {
-            background: #fff;
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 2rem;
+        .user-info-card, .rental-history {
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .profile-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-radius: 8px;
             margin-bottom: 2rem;
         }
-        .profile-header h1 {
-            margin: 0;
+        .card-header {
+            border-radius: 8px 8px 0 0;
         }
-        .profile-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .info-group {
-            margin-bottom: 1rem;
-        }
-        .info-group label {
-            font-weight: 600;
-            color: #6c757d;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-        .info-group span {
-            font-size: 1.1rem;
-            color: #2c3e50;
+        .badge {
+            font-size: 0.9em;
+            padding: 0.5em 0.8em;
         }
         .status-badge {
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-size: 0.9em;
+            padding: 0.5em 0.8em;
         }
-        .status-active {
-            background-color: #d4edda;
-            color: #155724;
+        .back-button {
+            margin-bottom: 1rem;
         }
-        .status-disabled {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        .role-badge {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.875rem;
-            margin: 0.125rem;
-            background-color: #e9ecef;
-            color: #495057;
-        }
-        .role-admin {
-            background-color: #cce5ff;
-            color: #004085;
-        }
-        .user-actions {
+        .btn-group {
             display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid #dee2e6;
+            gap: 5px;
         }
-        .rentals-section {
-            background: #fff;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        .data-table th, .data-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #dee2e6;
-        }
-        .data-table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            text-align: left;
-        }
-        .data-table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-        .rental-status {
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-        .status-pending { background-color: #fff3cd; color: #856404; }
-        .status-active { background-color: #d4edda; color: #155724; }
-        .status-completed { background-color: #cce5ff; color: #004085; }
-        .status-cancelled { background-color: #f8d7da; color: #721c24; }
-        .status-pending_cancellation { background-color: #e2e3e5; color: #383d41; }
     </style>
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div class="container mt-4">
+        <a href="/admin/dashboard" class="btn btn-outline-primary mb-3">
+            <i class="fas fa-arrow-left"></i> Вернуться в админ-панель
+        </a>
+        <a href="/admin/users" class="btn btn-outline-secondary mb-3 ml-2">
+            <i class="fas fa-arrow-left"></i> Назад к списку пользователей
+        </a>
 
-<main class="container py-5">
-    <div class="user-profile">
-        <div class="profile-header">
-            <h1>Детали пользователя</h1>
-            <a th:href="@{/admin/users}" class="btn btn-outline-primary">
-                <i class="fas fa-arrow-left"></i> Назад к списку
-            </a>
-        </div>
-
-        <div class="profile-info">
-            <div class="info-group">
-                <label>Имя и фамилия</label>
-                <span th:text="${user.firstName + ' ' + user.lastName}">Иван Иванов</span>
+        <div class="card user-info-card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Информация о пользователе</h3>
             </div>
-            <div class="info-group">
-                <label>Email</label>
-                <span th:text="${user.email}">ivan@example.com</span>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Основная информация</h4>
+                        <table class="table">
+                            <tr>
+                                <th>ID:</th>
+                                <td th:text="${user.id}"></td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td th:text="${user.email}"></td>
+                            </tr>
+                            <tr>
+                                <th>Имя:</th>
+                                <td th:text="${user.firstName}"></td>
+                            </tr>
+                            <tr>
+                                <th>Фамилия:</th>
+                                <td th:text="${user.lastName}"></td>
+                            </tr>
+                            <tr>
+                                <th>Телефон:</th>
+                                <td th:text="${user.phone}"></td>
+                            </tr>
+                            <tr>
+                                <th>Статус:</th>
+                                <td>
+                                    <span th:if="${user.enabled}" class="badge badge-success">Активен</span>
+                                    <span th:unless="${user.enabled}" class="badge badge-danger">Отключен</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Дополнительная информация</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Роли:</th>
+                                <td>
+                                    <span th:each="role : ${user.roles}"
+                                          th:text="${role.name == 'ROLE_ADMIN' ? 'Администратор' : (role.name == 'ROLE_USER' ? 'Пользователь' : role.name)}"
+                                          class="badge badge-info mr-1"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Дата регистрации:</th>
+                                <td th:text="${#temporals.format(user.registrationDate, 'dd.MM.yyyy HH:mm')}"></td>
+                            </tr>
+                            <tr>
+                                <th>Последний вход:</th>
+                                <td th:text="${user.lastLoginDate != null ? #temporals.format(user.lastLoginDate, 'dd.MM.yyyy HH:mm') : 'Нет'}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="info-group">
-                <label>Телефон</label>
-                <span th:text="${user.phone}">+7(999)999-99-99</span>
-            </div>
-            <div class="info-group">
-                <label>Дата регистрации</label>
-                <span th:text="${#temporals.format(user.registrationDate, 'dd.MM.yyyy')}">01.01.2025</span>
-            </div>
-            <div class="info-group">
-                <label>Последний вход</label>
-                <span th:text="${#temporals.format(user.lastLoginDate, 'dd.MM.yyyy')}">01.01.2025</span>
-            </div>
-            <div class="info-group">
-                <label>Статус</label>
-                <span th:class="${'status-badge ' + (user.enabled ? 'status-active' : 'status-disabled')}"
-                      th:text="${user.enabled ? 'Активен' : 'Отключен'}">
-                    Активен
-                </span>
-            </div>
-            <div class="info-group">
-                <label>Роли</label>
-                <div>
-                    <span th:each="role : ${user.roles}" 
-                          th:class="${'role-badge ' + (role.name == 'ROLE_ADMIN' ? 'role-admin' : '')}"
-                          th:text="${role.name == 'ROLE_ADMIN' ? 'Администратор' : 'Пользователь'}">
-                        ROLE_USER
-                    </span>
+            <div class="card-footer">
+                <div class="btn-group">
+                    <button th:if="${user.enabled}"
+                            th:onclick="'disableUser(' + ${user.id} + ')'"
+                            class="btn btn-warning">
+                        <i class="fas fa-user-slash"></i> Отключить пользователя
+                    </button>
+                    <button th:unless="${user.enabled}"
+                            th:onclick="'enableUser(' + ${user.id} + ')'"
+                            class="btn btn-success">
+                        <i class="fas fa-user-check"></i> Активировать пользователя
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div class="user-actions">
-            <form th:if="${user.enabled}"
-                  th:action="@{/admin/users/{id}/disable(id=${user.id})}"
-                  method="post" style="display: inline;">
-                <button type="submit" class="btn btn-danger">
-                    <i class="fas fa-user-slash"></i> Отключить
-                </button>
-            </form>
-            <form th:unless="${user.enabled}"
-                  th:action="@{/admin/users/{id}/enable(id=${user.id})}"
-                  method="post" style="display: inline;">
-                <button type="submit" class="btn btn-success">
-                    <i class="fas fa-user-check"></i> Включить
-                </button>
-            </form>
+        <div class="card rental-history">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0">История аренд</h3>
+            </div>
+            <div class="card-body">
+                <div th:if="${rentals.empty}" class="alert alert-info">
+                    У пользователя пока нет аренд
+                </div>
+                <div th:unless="${rentals.empty}" class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Автомобиль</th>
+                                <th>Дата начала</th>
+                                <th>Дата окончания</th>
+                                <th>Статус</th>
+                                <th>Стоимость</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="rental : ${rentals}">
+                                <td th:text="${rental.id}"></td>
+                                <td th:text="${rental.car != null ? rental.car.brand + ' ' + rental.car.model : 'Н/Д'}"></td>
+                                <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy HH:mm')}"></td>
+                                <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy HH:mm')}"></td>
+                                <td>
+                                    <span th:class="${'badge ' + 
+                                        (rental.status == T(ru.anapa.autorent.model.RentalStatus).ACTIVE ? 'badge-success' : 
+                                         rental.status == T(ru.anapa.autorent.model.RentalStatus).PENDING ? 'badge-warning' :
+                                         rental.status == T(ru.anapa.autorent.model.RentalStatus).COMPLETED ? 'badge-info' :
+                                         rental.status == T(ru.anapa.autorent.model.RentalStatus).CANCELLED ? 'badge-danger' :
+                                         'badge-secondary')}"
+                                          th:text="${rental.status}">
+                                    </span>
+                                </td>
+                                <td th:text="${rental.totalCost + ' ₽'}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="rentals-section">
-        <h2>История аренд</h2>
-        <div class="table-responsive">
-            <table class="data-table">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Автомобиль</th>
-                    <th>Дата начала</th>
-                    <th>Дата окончания</th>
-                    <th>Статус</th>
-                    <th>Стоимость</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="rental : ${rentals}">
-                    <td th:text="${rental.id}">1</td>
-                    <td th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</td>
-                    <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2025</td>
-                    <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
-                    <td>
-                        <span th:class="${'rental-status status-' + rental.status.toLowerCase()}"
-                              th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}">
-                            Активна
-                        </span>
-                    </td>
-                    <td th:text="${rental.totalCost + ' ₽'}">10000 ₽</td>
-                </tr>
-                <tr th:if="${rentals.empty}">
-                    <td colspan="6" class="text-center py-4">Нет аренд</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</main>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script th:inline="javascript">
+        function disableUser(userId) {
+            if (confirm('Вы уверены, что хотите отключить этого пользователя?')) {
+                $.post('/admin/users/' + userId + '/disable', function(response) {
+                    location.reload();
+                });
+            }
+        }
+
+        function enableUser(userId) {
+            if (confirm('Вы уверены, что хотите активировать этого пользователя?')) {
+                $.post('/admin/users/' + userId + '/enable', function(response) {
+                    location.reload();
+                });
+            }
+        }
+    </script>
 </body>
 </html>
