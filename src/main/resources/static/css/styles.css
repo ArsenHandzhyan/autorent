@@ -282,11 +282,31 @@ footer {
 }
 
 .status.maintenance {
-    background-color: #3498db;
+    background-color: #fff3cd;
+    color: #856404;
+    font-weight: bold;
 }
 
 .status.reserved {
     background-color: #9b59b6;
+}
+
+.status-select.status-maintenance {
+    background-color: #fff3cd;
+    color: #856404;
+    border-color: #ffeeba;
+}
+
+.btn-maintenance {
+    background-color: #ffc107;
+    color: #856404;
+    border-color: #ffeeba;
+}
+
+.btn-maintenance:hover {
+    background-color: #e0a800;
+    color: #856404;
+    border-color: #ffeeba;
 }
 
 .car-info {

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:data-is-admin="${#authorization.expression('hasRole(''ADMIN'')')}" lang="ru">
 <head>
     <title>Управление автомобилями - Автопрокат</title>
     <meta charset="UTF-8">
@@ -141,13 +143,28 @@
                 <td>
                     <select class="status-select"
                             th:onchange="'updateCarStatus(' + ${car.id} + ', this.value)'"
-                            th:classappend="${'status-' + car.status.name().toLowerCase()}">
+                            th:classappend="${'status-' + car.status.name().toLowerCase()}"
+                            th:data-previous-status="${car.status.name()}"
+                            th:value="${car.status.name()}">
                         <option value="AVAILABLE" th:selected="${car.status == T(ru.anapa.autorent.model.CarStatus).AVAILABLE}">Доступен</option>
                         <option value="RENTED" th:selected="${car.status == T(ru.anapa.autorent.model.CarStatus).RENTED}">Арендован</option>
                         <option value="MAINTENANCE" th:selected="${car.status == T(ru.anapa.autorent.model.CarStatus).MAINTENANCE}">На обслуживании</option>
                         <option value="RESERVED" th:selected="${car.status == T(ru.anapa.autorent.model.CarStatus).RESERVED}">Забронирован</option>
                         <option value="PENDING" th:selected="${car.status == T(ru.anapa.autorent.model.CarStatus).PENDING}">Ожидает подтверждения</option>
                     </select>
+                    <button th:if="${car.status != T(ru.anapa.autorent.model.CarStatus).MAINTENANCE}"
+                            class="btn btn-warning btn-sm ms-2"
+                            th:onclick="'toggleMaintenance(' + ${car.id} + ', true)'">
+                        <i class="fas fa-tools"></i> На обслуживание
+                    </button>
+                    <button th:if="${car.status == T(ru.anapa.autorent.model.CarStatus).MAINTENANCE}"
+                            class="btn btn-success btn-sm ms-2"
+                            th:onclick="'toggleMaintenance(' + ${car.id} + ', false)'">
+                        <i class="fas fa-check"></i> Снять с обслуживания
+                    </button>
+                    <a th:href="@{/cars/{id}/status-history(id=${car.id})}" class="btn btn-info btn-sm ms-2">
+                        <i class="fas fa-history"></i> История
+                    </a>
                 </td>
                 <td>
                     <div class="action-buttons">
@@ -175,5 +192,58 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/main.js}"></script>
+<script th:inline="javascript">
+// Добавляем обработчик для сохранения предыдущего значения при фокусе на select
+document.addEventListener('DOMContentLoaded', function() {
+    const statusSelects = document.querySelectorAll('.status-select');
+    statusSelects.forEach(select => {
+        select.addEventListener('focus', function() {
+            this.setAttribute('data-previous-status', this.value);
+        });
+    });
+});
+
+function toggleMaintenance(carId, inMaintenance) {
+    const reason = prompt(`Укажите причину ${inMaintenance ? 'перевода на обслуживание' : 'снятия с обслуживания'} (необязательно):`);
+    
+    if (reason === null) {
+        return;
+    }
+
+    const token = document.querySelector("meta[name='_csrf']").getAttribute("content");
+    const header = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+    fetch(`/cars/${carId}/maintenance?inMaintenance=${inMaintenance}&reason=${encodeURIComponent(reason)}`, {
+        method: 'POST',
+        headers: {
+            [header]: token
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            showMessage(data.error, 'error');
+        } else {
+            showMessage(data.message, 'success');
+            // Обновляем страницу для отображения нового статуса
+            setTimeout(() => window.location.reload(), 1000);
+        }
+    })
+    .catch(error => {
+        showMessage('Произошла ошибка при обновлении статуса', 'error');
+    });
+}
+
+function showMessage(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+</script>
 </body>
 </html> 

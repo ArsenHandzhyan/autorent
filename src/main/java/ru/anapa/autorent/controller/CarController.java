@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,8 @@ import ru.anapa.autorent.dto.CarSummaryDto;
 import ru.anapa.autorent.dto.RentalPeriodDto;
 import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.model.CarImage;
+import ru.anapa.autorent.model.CarStatus;
+import ru.anapa.autorent.model.CarStatusHistory;
 import ru.anapa.autorent.service.CarService;
 import ru.anapa.autorent.service.RentalService;
 
@@ -513,5 +516,94 @@ public class CarController {
         modelAttribute.addAttribute("onlyAvailable", onlyAvailable);
 
         return "cars/filtered";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/{id}/status")
+    @ResponseBody
+    public ResponseEntity<?> updateCarStatus(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> request,
+            Authentication authentication) {
+        try {
+            String newStatus = request.get("status");
+            if (newStatus == null || newStatus.trim().isEmpty()) {
+                return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Статус не может быть пустым"));
+            }
+
+            String reason = request.get("reason");
+            String changedBy = authentication.getName();
+            
+            CarStatus status;
+            try {
+                status = CarStatus.valueOf(newStatus.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Некорректный статус: " + newStatus));
+            }
+            
+            Car car = carService.updateCarStatus(id, status, changedBy, reason);
+            
+            return ResponseEntity.ok(Map.of(
+                "message", "Статус автомобиля успешно обновлен",
+                "status", car.getStatus().name()
+            ));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            logger.error("Ошибка при обновлении статуса автомобиля {}: {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Ошибка при обновлении статуса: " + e.getMessage()));
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/{id}/maintenance")
+    @ResponseBody
+    public ResponseEntity<?> toggleMaintenanceStatus(
+            @PathVariable Long id,
+            @RequestParam boolean inMaintenance,
+            @RequestParam(required = false) String reason,
+            Authentication authentication) {
+        try {
+            Car car = carService.setMaintenanceStatus(
+                id,
+                inMaintenance,
+                authentication.getName(),
+                reason
+            );
+            
+            String message = inMaintenance ? 
+                "Автомобиль переведен на обслуживание" : 
+                "Автомобиль снят с обслуживания";
+                
+            return ResponseEntity.ok(Map.of(
+                "message", message,
+                "status", car.getStatus().name()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Ошибка при обновлении статуса: " + e.getMessage()));
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}/status-history")
+    public ModelAndView getCarStatusHistory(@PathVariable Long id) {
+        try {
+            Car car = carService.findCarById(id);
+            List<CarStatusHistory> history = carService.getCarStatusHistory(id);
+            
+            ModelAndView mav = new ModelAndView("admin/car-status-history");
+            mav.addObject("car", car);
+            mav.addObject("history", history);
+            return mav;
+        } catch (Exception e) {
+            ModelAndView mav = new ModelAndView("error");
+            mav.addObject("error", "Ошибка при получении истории статусов: " + e.getMessage());
+            return mav;
+        }
     }
 }

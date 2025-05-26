@@ -38,7 +38,7 @@ public class Car {
     @Column(name = "daily_rate", precision = 10, scale = 2, nullable = false)
     private BigDecimal dailyRate;
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     @Builder.Default
     private List<CarImage> images = new ArrayList<>();
 

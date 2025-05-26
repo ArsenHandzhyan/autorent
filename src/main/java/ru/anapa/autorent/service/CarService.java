@@ -20,10 +20,12 @@ import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.model.CarImage;
 import ru.anapa.autorent.model.CarStats;
 import ru.anapa.autorent.model.CarStatus;
+import ru.anapa.autorent.model.CarStatusHistory;
 import ru.anapa.autorent.model.Rental;
 import ru.anapa.autorent.model.RentalStatus;
 import ru.anapa.autorent.repository.CarImageRepository;
 import ru.anapa.autorent.repository.CarRepository;
+import ru.anapa.autorent.repository.CarStatusHistoryRepository;
 import ru.anapa.autorent.repository.RentalRepository;
 
 import java.io.File;
@@ -39,14 +41,16 @@ public class CarService {
     private final RentalRepository rentalRepository;
     private final RentalService rentalService;
     private final CarImageRepository carImageRepository;
+    private final CarStatusHistoryRepository carStatusHistoryRepository;
     private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 
     @Autowired
-    public CarService(CarRepository carRepository, RentalRepository rentalRepository, @Lazy RentalService rentalService, CarImageRepository carImageRepository) {
+    public CarService(CarRepository carRepository, RentalRepository rentalRepository, @Lazy RentalService rentalService, CarImageRepository carImageRepository, CarStatusHistoryRepository carStatusHistoryRepository) {
         this.carRepository = carRepository;
         this.rentalRepository = rentalRepository;
         this.rentalService = rentalService;
         this.carImageRepository = carImageRepository;
+        this.carStatusHistoryRepository = carStatusHistoryRepository;
     }
 
     // Метод для получения всех автомобилей
@@ -317,6 +321,11 @@ public class CarService {
         int updatedCount = 0;
 
         for (Car car : allCars) {
+            // Пропускаем автомобили на обслуживании
+            if (car.getStatus() == CarStatus.MAINTENANCE) {
+                continue;
+            }
+
             CarStatus newStatus;
             if (activeCarIds.contains(car.getId())) {
                 newStatus = CarStatus.RENTED;
@@ -458,10 +467,70 @@ public class CarService {
         }
     }
 
-    public void updateCarStatus(Long carId, CarStatus status) {
+    @Transactional
+    public Car updateCarStatus(Long carId, CarStatus newStatus, String changedBy, String reason) {
+        if (newStatus == null) {
+            throw new IllegalArgumentException("Новый статус не может быть null");
+        }
+        
         Car car = carRepository.findById(carId)
-                .orElseThrow(() -> new RuntimeException("Автомобиль не найден"));
-        car.setStatus(status);
-        carRepository.save(car);
+                .orElseThrow(() -> new IllegalArgumentException("Автомобиль не найден"));
+        
+        CarStatus oldStatus = car.getStatus();
+        if (oldStatus == newStatus) {
+            logger.info("Статус автомобиля {} уже установлен как {}", carId, newStatus);
+            return car;
+        }
+        
+        try {
+            // Сохраняем историю изменения статуса
+            CarStatusHistory history = new CarStatusHistory(car, oldStatus, newStatus, changedBy);
+            if (reason != null) {
+                history.setReason(reason);
+            }
+            carStatusHistoryRepository.save(history);
+            
+            // Обновляем только статус и доступность
+            car.setStatus(newStatus);
+            car.setAvailable(newStatus == CarStatus.AVAILABLE);
+            
+            // Сохраняем автомобиль
+            Car savedCar = carRepository.save(car);
+            
+            logger.info("Статус автомобиля {} изменен с {} на {} пользователем {}", 
+                       carId, oldStatus, newStatus, changedBy);
+            
+            return savedCar;
+        } catch (Exception e) {
+            logger.error("Ошибка при обновлении статуса автомобиля {}: {}", carId, e.getMessage());
+            throw new RuntimeException("Не удалось обновить статус автомобиля: " + e.getMessage());
+        }
+    }
+
+    public List<CarStatusHistory> getCarStatusHistory(Long carId) {
+        return carStatusHistoryRepository.findByCarIdOrderByChangeDateDesc(carId);
+    }
+
+    @Transactional
+    public Car setMaintenanceStatus(Long carId, boolean inMaintenance, String changedBy, String reason) {
+        Car car = findCarById(carId);
+        CarStatus oldStatus = car.getStatus();
+        CarStatus newStatus = inMaintenance ? CarStatus.MAINTENANCE : CarStatus.AVAILABLE;
+        
+        // Сохраняем историю изменения статуса
+        CarStatusHistory history = new CarStatusHistory(car, oldStatus, newStatus, changedBy);
+        if (reason != null) {
+            history.setReason(reason);
+        }
+        carStatusHistoryRepository.save(history);
+        
+        // Обновляем статус автомобиля
+        car.setStatus(newStatus);
+        car.setAvailable(!inMaintenance);
+        
+        logger.info("Статус обслуживания автомобиля {} изменен на {} пользователем {}", 
+                   carId, newStatus, changedBy);
+        
+        return carRepository.save(car);
     }
 }
