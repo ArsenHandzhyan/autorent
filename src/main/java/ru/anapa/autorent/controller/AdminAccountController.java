@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,16 +30,6 @@ public class AdminAccountController {
     public String listAccounts(Model model) {
         model.addAttribute("accounts", accountService.getAllAccounts());
         return "admin/accounts";
-    }
-
-    /**
-     * Временный эндпоинт для массового создания счетов
-     */
-    @GetMapping("/assign-missing")
-    @ResponseBody
-    public String assignAccountsToUsers() {
-        int count = userService.createAccountsForUsersWithoutAccount();
-        return "Создано счетов: " + count;
     }
 
     @GetMapping("/{id}/edit")

@@ -20,6 +20,9 @@ import ru.anapa.autorent.dto.RentalPeriodDto;
 import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.model.Rental;
 import ru.anapa.autorent.model.User;
+import ru.anapa.autorent.model.Account;
+import ru.anapa.autorent.model.Transaction;
+import ru.anapa.autorent.service.AccountService;
 import ru.anapa.autorent.service.CarService;
 import ru.anapa.autorent.service.RentalService;
 import ru.anapa.autorent.service.UserService;
@@ -39,17 +42,19 @@ public class RentalController {
     private final RentalService rentalService;
     private final UserService userService;
     private final CarService carService;
+    private final AccountService accountService;
 
     @Autowired
-    public RentalController(RentalService rentalService, UserService userService, CarService carService) {
+    public RentalController(RentalService rentalService, UserService userService, CarService carService, AccountService accountService) {
         this.rentalService = rentalService;
         this.userService = userService;
         this.carService = carService;
+        this.accountService = accountService;
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping
-    public ResponseEntity<?> myRentals(Model model) {
+    public String myRentals(Model model) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.findByEmail(authentication.getName());
@@ -68,15 +73,20 @@ public class RentalController {
                                     "CANCELLED".equals(rental.getStatus()))
                     .collect(Collectors.toList());
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("rentals", rentals);
-            response.put("activeRentals", activeRentals);
-            response.put("historyRentals", historyRentals);
+            // Получаем данные о счете пользователя
+            Account account = accountService.getAccountByUserId(user.getId());
+            List<Transaction> transactions = accountService.getAccountTransactions(user.getId());
 
-            return ResponseEntity.ok(response);
+            model.addAttribute("rentals", rentals);
+            model.addAttribute("activeRentals", activeRentals);
+            model.addAttribute("historyRentals", historyRentals);
+            model.addAttribute("account", account);
+            model.addAttribute("transactions", transactions);
+
+            return "rentals/my-rentals";
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Ошибка при получении списка аренд"));
+            model.addAttribute("error", "Ошибка при получении данных");
+            return "error";
         }
     }
 
