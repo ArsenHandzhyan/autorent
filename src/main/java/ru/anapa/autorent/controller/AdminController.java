@@ -21,6 +21,9 @@ import ru.anapa.autorent.model.UserStats;
 import ru.anapa.autorent.service.CarService;
 import org.springframework.web.servlet.ModelAndView;
 import ru.anapa.autorent.model.Car;
+import ru.anapa.autorent.service.AccountService;
+import ru.anapa.autorent.model.Account;
+import java.math.BigDecimal;
 
 import java.util.List;
 import java.util.Map;
@@ -34,12 +37,14 @@ public class AdminController {
     private final UserService userService;
     private final RentalService rentalService;
     private final CarService carService;
+    private final AccountService accountService;
 
     @Autowired
-    public AdminController(UserService userService, @Lazy RentalService rentalService, CarService carService) {
+    public AdminController(UserService userService, @Lazy RentalService rentalService, CarService carService, AccountService accountService) {
         this.userService = userService;
         this.rentalService = rentalService;
         this.carService = carService;
+        this.accountService = accountService;
     }
 
     @GetMapping("/dashboard")
@@ -176,6 +181,13 @@ public class AdminController {
         model.addAttribute("activeUsers", activeUsers);
         model.addAttribute("rentalData", rentalData);
         model.addAttribute("statusData", statusData);
+
+        int accountsCount = accountService.getAccountsCount();
+        BigDecimal totalAccountsBalance = accountService.getTotalAccountsBalance();
+        List<User> allUsers = userService.findAllUsers();
+        model.addAttribute("accountsCount", accountsCount);
+        model.addAttribute("totalAccountsBalance", totalAccountsBalance);
+        model.addAttribute("allUsers", allUsers);
 
         return "admin/statistics";
     }

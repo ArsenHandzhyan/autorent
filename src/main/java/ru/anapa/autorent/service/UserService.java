@@ -11,11 +11,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.anapa.autorent.model.Account;
 import ru.anapa.autorent.model.Role;
 import ru.anapa.autorent.model.Rental;
 import ru.anapa.autorent.model.RentalStatus;
 import ru.anapa.autorent.model.User;
 import ru.anapa.autorent.model.UserStats;
+import ru.anapa.autorent.repository.AccountRepository;
 import ru.anapa.autorent.repository.RoleRepository;
 import ru.anapa.autorent.repository.UserRepository;
 
@@ -41,13 +43,15 @@ public class UserService implements UserDetailsService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final RentalService rentalService;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public UserService(@Lazy UserRepository userRepository, @Lazy RoleRepository roleRepository, @Lazy PasswordEncoder passwordEncoder, RentalService rentalService) {
+    public UserService(@Lazy UserRepository userRepository, @Lazy RoleRepository roleRepository, @Lazy PasswordEncoder passwordEncoder, RentalService rentalService, AccountRepository accountRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.rentalService = rentalService;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -673,5 +677,41 @@ public class UserService implements UserDetailsService {
         return userStats.stream()
                 .limit(10)
                 .collect(Collectors.toList());
+    }
+
+    public User getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        if (user.getAccount() == null) {
+            createAccountForUser(user);
+        }
+        return user;
+    }
+
+    private void createAccountForUser(User user) {
+        Account account = new Account();
+        account.setUser(user);
+        account.setBalance(BigDecimal.ZERO);
+        account.setCreditLimit(BigDecimal.ZERO);
+        account.setAllowNegativeBalance(false);
+        accountRepository.save(account);
+        user.setAccount(account);
+        userRepository.save(user);
+    }
+
+    /**
+     * Создаёт счета для всех пользователей, у которых их нет
+     */
+    @Transactional
+    public int createAccountsForUsersWithoutAccount() {
+        List<User> users = userRepository.findAll();
+        int created = 0;
+        for (User user : users) {
+            if (user.getAccount() == null) {
+                createAccountForUser(user);
+                created++;
+            }
+        }
+        return created;
     }
 }

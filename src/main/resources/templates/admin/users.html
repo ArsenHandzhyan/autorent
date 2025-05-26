@@ -29,6 +29,7 @@
                         <th>Имя</th>
                         <th>Фамилия</th>
                         <th>Телефон</th>
+                        <th>Счет</th>
                         <th>Статус</th>
                         <th>Роли</th>
                         <th>Дата регистрации</th>
@@ -43,6 +44,13 @@
                         <td th:text="${user.firstName}"></td>
                         <td th:text="${user.lastName}"></td>
                         <td th:text="${user.phone}"></td>
+                        <td>
+                            <span th:if="${user != null && user.account != null}" th:text="${user.account.balance + ' ₽'}">1000 ₽</span>
+                            <span th:unless="${user != null && user.account != null}">Нет счета</span>
+                            <a th:if="${user != null && user.account != null}" th:href="@{/admin/accounts/{id}(id=${user.account.id})}" class="btn btn-sm btn-info ms-2">
+                                <i class="fas fa-wallet"></i> Управление
+                            </a>
+                        </td>
                         <td>
                             <span th:if="${user.enabled}" class="badge bg-success">Активен</span>
                             <span th:unless="${user.enabled}" class="badge bg-danger">Отключен</span>

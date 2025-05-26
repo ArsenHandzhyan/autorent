@@ -58,6 +58,9 @@ public class User {
     @JsonIgnore
     private Set<Rental> rentals = new HashSet<>();
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Account account;
+
     public void addRole(Role role) {
         this.roles.add(role);
     }
@@ -75,5 +78,13 @@ public class User {
     // Метод для получения полного имени пользователя
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
