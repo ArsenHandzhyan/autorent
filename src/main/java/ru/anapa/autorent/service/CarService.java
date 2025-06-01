@@ -533,4 +533,9 @@ public class CarService {
         
         return carRepository.save(car);
     }
+
+    public Car getCarById(Long id) {
+        return carRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Автомобиль не найден: " + id));
+    }
 }

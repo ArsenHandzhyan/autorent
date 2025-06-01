@@ -1,0 +1,98 @@
+<div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAccountModalLabel">Редактирование счета</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{/admin/accounts/update}" method="post" id="editAccountForm">
+                <div class="modal-body">
+                    <input type="hidden" id="accountId" name="id">
+                    
+                    <div class="mb-3">
+                        <label for="accountNumber" class="form-label">Номер счета</label>
+                        <input type="text" class="form-control" id="accountNumber" name="accountNumber" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="balance" class="form-label">Текущий баланс (₽)</label>
+                        <input type="number" step="0.01" class="form-control" id="balance" name="balance" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="initialBalance" class="form-label">Начальный баланс (₽)</label>
+                        <input type="number" step="0.01" min="0" class="form-control" id="initialBalance" name="initialBalance" required>
+                        <div class="form-text">Минимальная сумма, необходимая для аренды автомобиля</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="creditLimit" class="form-label">Кредитный лимит (₽)</label>
+                        <input type="number" step="0.01" min="0" class="form-control" id="creditLimit" name="creditLimit" required>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="allowNegativeBalance" name="allowNegativeBalance">
+                        <label class="form-check-label" for="allowNegativeBalance">Разрешить отрицательный баланс</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    // Функция для открытия модального окна редактирования
+    window.editAccount = function(id, accountNumber, balance, initialBalance, creditLimit, allowNegativeBalance) {
+        document.getElementById('accountId').value = id;
+        document.getElementById('accountNumber').value = accountNumber;
+        document.getElementById('balance').value = balance;
+        document.getElementById('initialBalance').value = initialBalance;
+        document.getElementById('creditLimit').value = creditLimit;
+        document.getElementById('allowNegativeBalance').checked = allowNegativeBalance;
+        
+        new bootstrap.Modal(document.getElementById('editAccountModal')).show();
+    }
+});
+</script>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Номер счета</th>
+            <th>Пользователь</th>
+            <th>Баланс</th>
+            <th>Начальный баланс</th>
+            <th>Кредитный лимит</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="account : ${accounts}">
+            <td th:text="${account.id}">1</td>
+            <td th:text="${account.accountNumber}">ACC-20240101-12345</td>
+            <td th:text="${account.user.fullName}">Иван Иванов</td>
+            <td th:text="${#numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT') + ' ₽'}">0.00 ₽</td>
+            <td th:text="${#numbers.formatDecimal(account.initialBalance, 1, 'COMMA', 2, 'POINT') + ' ₽'}">0.00 ₽</td>
+            <td th:text="${#numbers.formatDecimal(account.creditLimit, 1, 'COMMA', 2, 'POINT') + ' ₽'}">0.00 ₽</td>
+            <td>
+                <span th:if="${account.allowNegativeBalance}" class="badge bg-success">Активен</span>
+                <span th:unless="${account.allowNegativeBalance}" class="badge bg-warning">Ограничен</span>
+            </td>
+            <td>
+                <button class="btn btn-primary btn-sm" 
+                        th:onclick="'editAccount(' + ${account.id} + ', \'' + ${account.accountNumber} + '\', ' + 
+                        ${account.balance} + ', ' + ${account.initialBalance} + ', ' + 
+                        ${account.creditLimit} + ', ' + ${account.allowNegativeBalance} + ')'">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table> 

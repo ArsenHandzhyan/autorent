@@ -27,12 +27,13 @@
   <div class="rental-details-card">
     <div class="rental-header">
       <h2 th:text="${rental.car.brand + ' ' + rental.car.model}">Автомобиль</h2>
-      <span id="status-badge" class="status" th:text="${rental.status}"
+      <span id="status-badge" class="status"
+            th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}"
             th:classappend="${rental.status == 'ACTIVE' ? 'status-active' :
-                                      (rental.status == 'PENDING' ? 'status-pending' :
-                                      (rental.status == 'COMPLETED' ? 'status-completed' :
-                                      (rental.status == 'CANCELLED' ? 'status-cancelled' :
-                                      'status-pending-cancellation')))}">
+                             (rental.status == 'PENDING' ? 'status-pending' :
+                             (rental.status == 'PENDING_CANCELLATION' ? 'status-pending-cancellation' :
+                             (rental.status == 'COMPLETED' ? 'status-completed' :
+                             (rental.status == 'CANCELLED' ? 'status-cancelled' : ''))))}">
         <span th:text="${rental.status == 'ACTIVE' ? 'Активна' :
                       (rental.status == 'PENDING' ? 'Ожидает подтверждения' :
                       (rental.status == 'COMPLETED' ? 'Завершена' :
@@ -233,8 +234,7 @@
       case 'ACTIVE': return 'Активна';
       case 'COMPLETED': return 'Завершена';
       case 'CANCELLED': return 'Отменена';
-      case 'PENDING_CANCELLATION':
-      case 'CANCELLATION_REQUESTED': return 'Запрос на отмену';
+      case 'PENDING_CANCELLATION': return 'Ожидает отмены';
       default: return status;
     }
   }
@@ -242,9 +242,7 @@
   // Функция для обновления отображения статуса
   function updateStatusDisplay(newStatus) {
     const statusBadge = document.getElementById('status-badge');
-    statusBadge.textContent = newStatus;
-
-    // Удаляем все классы статусов
+    statusBadge.textContent = getStatusText(newStatus);
     statusBadge.classList.remove(
       'status-active',
       'status-pending',
@@ -252,19 +250,15 @@
       'status-cancelled',
       'status-pending-cancellation'
     );
-
-    // Добавляем новый класс статуса
     let statusClass;
     switch (newStatus) {
       case 'ACTIVE': statusClass = 'status-active'; break;
       case 'PENDING': statusClass = 'status-pending'; break;
       case 'COMPLETED': statusClass = 'status-completed'; break;
       case 'CANCELLED': statusClass = 'status-cancelled'; break;
-      case 'PENDING_CANCELLATION':
-      case 'CANCELLATION_REQUESTED': statusClass = 'status-pending-cancellation'; break;
+      case 'PENDING_CANCELLATION': statusClass = 'status-pending-cancellation'; break;
       default: statusClass = ''; break;
     }
-
     if (statusClass) {
       statusBadge.classList.add(statusClass);
     }

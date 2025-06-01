@@ -16,9 +16,12 @@ public class RentalStatusUtil {
                 return "Завершена";
             case "CANCELLED":
                 return "Отменена";
-            case "CANCELLATION_REQUESTED":
             case "PENDING_CANCELLATION":
-                return "Запрос на отмену";
+                return "Ожидает отмены";
+            case "APPROVED":
+                return "Подтверждена";
+            case "REJECTED":
+                return "Отклонена";
             default:
                 return status;
         }

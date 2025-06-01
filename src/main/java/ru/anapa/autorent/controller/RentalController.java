@@ -17,11 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.anapa.autorent.dto.RentalDto;
 import ru.anapa.autorent.dto.RentalPeriodDto;
-import ru.anapa.autorent.model.Car;
-import ru.anapa.autorent.model.Rental;
-import ru.anapa.autorent.model.User;
-import ru.anapa.autorent.model.Account;
-import ru.anapa.autorent.model.Transaction;
+import ru.anapa.autorent.model.*;
 import ru.anapa.autorent.service.AccountService;
 import ru.anapa.autorent.service.CarService;
 import ru.anapa.autorent.service.RentalService;
@@ -34,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
+import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/rentals")
@@ -90,6 +87,15 @@ public class RentalController {
         }
     }
 
+    @GetMapping("/new")
+    @PreAuthorize("isAuthenticated()")
+    public String showRentalFormWithQueryParam(@RequestParam Long carId,
+                                             @RequestParam(required = false)
+                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                             Model model) {
+        return showRentalForm(carId, startDate, model);
+    }
+
     @GetMapping("/new/{carId}")
     @PreAuthorize("isAuthenticated()")
     public String showRentalForm(@PathVariable Long carId,
@@ -122,53 +128,46 @@ public class RentalController {
         return "rentals/new";
     }
 
-    @PostMapping("/new/{carId}")
+    @PostMapping("/new")
     @PreAuthorize("isAuthenticated()")
-    public String createRental(@PathVariable Long carId,
-                               @ModelAttribute RentalDto rentalDto,
-                               @AuthenticationPrincipal UserDetails userDetails,
-                               RedirectAttributes redirectAttributes,
-                               Model model) {
+    public String createRental(@RequestParam Long carId,
+                             @ModelAttribute RentalDto rentalDto,
+                             BindingResult result,
+                             Model model,
+                             Authentication authentication) {
+        if (result.hasErrors()) {
+            Car car = carService.getCarById(carId);
+            model.addAttribute("car", car);
+            model.addAttribute("rental", rentalDto);
+            return "rentals/new";
+        }
+
         try {
-            LocalDateTime now = LocalDateTime.now();
-
-            // Валидация дат
-            if (rentalDto.getStartDate() == null || rentalDto.getEndDate() == null) {
-                redirectAttributes.addFlashAttribute("error", "Даты начала и окончания аренды обязательны");
-                return "redirect:/rentals/new/" + carId;
-            }
-
-            // Проверяем, что дата начала не в прошлом (с небольшим запасом в 5 минут)
-            if (rentalDto.getStartDate().isBefore(now.minusMinutes(5))) {
-                redirectAttributes.addFlashAttribute("error", "Дата начала аренды должна быть в настоящем или будущем");
-                return "redirect:/rentals/new/" + carId;
-            }
-
-            if (rentalDto.getEndDate().isBefore(rentalDto.getStartDate().plusHours(1))) {
-                redirectAttributes.addFlashAttribute("error", "Дата окончания аренды должна быть как минимум на 1 час позже даты начала");
-                return "redirect:/rentals/new/" + carId;
-            }
-
-            User user = userService.findByEmail(userDetails.getUsername());
-
-            // Создаем аренду с указанными датами
-            Rental rental = rentalService.createRental(
-                    user,
-                    carId,
-                    rentalDto.getStartDate(),
-                    rentalDto.getEndDate()
-            );
-
-            redirectAttributes.addFlashAttribute("success",
-                    "Заявка на аренду успешно создана! Ожидайте подтверждения.");
-            return "redirect:/rentals";
+            User user = userService.getCurrentUser(authentication);
+            Car car = carService.getCarById(carId);
+            
+            // Проверяем ограничения счета
+            BigDecimal totalAmount = car.getPricePerDay().multiply(BigDecimal.valueOf(rentalDto.getDurationDays()));
+            accountService.validateRentalConstraints(user.getId(), totalAmount, rentalDto.getDurationDays());
+            
+            // Создаем аренду
+            Rental rental = new Rental();
+            rental.setUser(user);
+            rental.setCar(car);
+            rental.setStartDate(rentalDto.getStartDate());
+            rental.setEndDate(rentalDto.getStartDate().plusDays(rentalDto.getDurationDays()));
+            rental.setTotalCost(totalAmount);
+            rental.setStatus(RentalStatus.PENDING);
+            
+            rentalService.createRental(rental);
+            
+            return "redirect:/rentals/my-rentals?success=Аренда успешно создана";
         } catch (Exception e) {
-            // Логирование ошибки
-            System.err.println("Ошибка при создании аренды: " + e.getMessage());
-            e.printStackTrace();
-
-            redirectAttributes.addFlashAttribute("error", "Произошла ошибка: " + e.getMessage());
-            return "redirect:/rentals/new/" + carId;
+            model.addAttribute("error", e.getMessage());
+            Car car = carService.getCarById(carId);
+            model.addAttribute("car", car);
+            model.addAttribute("rental", rentalDto);
+            return "rentals/new";
         }
     }
 

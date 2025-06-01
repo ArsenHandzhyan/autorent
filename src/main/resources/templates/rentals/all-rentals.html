@@ -49,9 +49,9 @@
                 <span class="status-badge"
                       th:classappend="${rental.status == 'ACTIVE' ? 'status-active' :
                                        (rental.status == 'PENDING' ? 'status-pending' :
+                                       (rental.status == 'PENDING_CANCELLATION' ? 'status-pending-cancellation' :
                                        (rental.status == 'COMPLETED' ? 'status-completed' :
-                                       (rental.status == 'CANCELLED' ? 'status-cancelled' :
-                                       'status-pending-cancellation')))}">
+                                       (rental.status == 'CANCELLED' ? 'status-cancelled' : ''))))}">
                     <span th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}">Статус</span>
                 </span>
             </div>

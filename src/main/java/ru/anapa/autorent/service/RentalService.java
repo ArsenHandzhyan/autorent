@@ -65,55 +65,12 @@ public class RentalService {
     }
 
     @Transactional
-    public Rental createRental(User user, Long carId, LocalDateTime startDate, LocalDateTime endDate) {
-        Car car = carRepository.findById(carId)
-                .orElseThrow(() -> new ResourceNotFoundException("Автомобиль не найден"));
-
-        // Проверяем, что дата начала аренды не раньше текущей даты
-        if (startDate.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("Дата начала аренды не может быть в прошлом");
+    public Rental createRental(Rental rental) {
+        // Проверяем доступность автомобиля
+        if (!isCarAvailable(rental.getCar().getId(), rental.getStartDate(), rental.getEndDate())) {
+            throw new RuntimeException("Автомобиль недоступен на выбранные даты");
         }
-
-        // Проверяем, что дата окончания аренды позже даты начала
-        if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("Дата окончания аренды должна быть позже даты начала");
-        }
-
-        // Проверяем, что период аренды не пересекается с существующими арендами
-        List<Rental> existingRentals = rentalRepository.findByCarAndStatusInOrderByStartDateAsc(
-                car, List.of(RentalStatus.ACTIVE, RentalStatus.PENDING));
-
-        for (Rental existingRental : existingRentals) {
-            // Проверяем пересечение периодов
-            if (!(endDate.isBefore(existingRental.getStartDate()) ||
-                    startDate.isAfter(existingRental.getEndDate()))) {
-                throw new IllegalArgumentException(
-                        "Выбранный период пересекается с существующей арендой. " +
-                                "Пожалуйста, выберите другие даты."
-                );
-            }
-        }
-
-        // Рассчитываем стоимость аренды
-        long days = ChronoUnit.DAYS.between(startDate, endDate);
-        if (days < 1) days = 1; // Минимум 1 день
-
-        // Создаем новую аренду
-        Rental rental = new Rental();
-        rental.setUser(user);
-        rental.setCar(car);
-        rental.setStartDate(startDate);
-        rental.setEndDate(endDate);
-        rental.setTotalCost(car.getDailyRate());
-        rental.setStatus(RentalStatus.PENDING);
-        rental.setCreatedAt(LocalDateTime.now());
-
-        // Если аренда начинается сегодня, то автомобиль становится недоступным
-        if (startDate.toLocalDate().equals(LocalDateTime.now().toLocalDate())) {
-            car.setAvailable(false);
-            carRepository.save(car);
-        }
-
+        
         return rentalRepository.save(rental);
     }
 
@@ -397,5 +354,34 @@ public class RentalService {
         rental.setUpdatedAt(LocalDateTime.now());
         
         return rentalRepository.save(rental);
+    }
+
+    private boolean isCarAvailable(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new RuntimeException("Автомобиль не найден"));
+
+        // Проверяем, что дата начала аренды не раньше текущей даты
+        if (startDate.isBefore(LocalDateTime.now())) {
+            return false;
+        }
+
+        // Проверяем, что дата окончания аренды позже даты начала
+        if (endDate.isBefore(startDate)) {
+            return false;
+        }
+
+        // Проверяем, что период аренды не пересекается с существующими арендами
+        List<Rental> existingRentals = rentalRepository.findByCarAndStatusInOrderByStartDateAsc(
+                car, List.of(RentalStatus.PENDING, RentalStatus.APPROVED));
+
+        for (Rental existingRental : existingRentals) {
+            // Проверяем пересечение периодов
+            if (!(endDate.isBefore(existingRental.getStartDate()) ||
+                    startDate.isAfter(existingRental.getEndDate()))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

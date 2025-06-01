@@ -30,8 +30,15 @@ public class Transaction {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
-    private LocalDateTime date = LocalDateTime.now();
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
 
     public enum TransactionType {
         RENT_PAYMENT,

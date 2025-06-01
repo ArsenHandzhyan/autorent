@@ -56,7 +56,7 @@
             <p class="warning-text">Пожалуйста, выбирайте даты, не пересекающиеся с уже забронированными периодами.</p>
         </div>
 
-        <form th:action="@{/rentals/new/{id}(id=${car.id})}" method="post" th:object="${rental}" class="rental-form">
+        <form th:action="@{/rentals/new(carId=${car.id})}" method="post" th:object="${rental}" class="rental-form">
             <div class="form-group mb-3">
                 <label for="startDate" class="form-label">Дата и время начала аренды:</label>
                 <input type="datetime-local" id="startDate" th:field="*{startDate}" required

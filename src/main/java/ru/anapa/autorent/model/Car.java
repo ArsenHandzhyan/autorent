@@ -38,6 +38,9 @@ public class Car {
     @Column(name = "daily_rate", precision = 10, scale = 2, nullable = false)
     private BigDecimal dailyRate;
 
+    @Column(name = "price_per_day", nullable = false)
+    private BigDecimal pricePerDay;
+
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     @Builder.Default
     private List<CarImage> images = new ArrayList<>();
@@ -82,4 +85,12 @@ public class Car {
     @Transient
     @Builder.Default
     private Map<String, Object> metadata = new HashMap<>();
+
+    public BigDecimal getPricePerDay() {
+        return pricePerDay;
+    }
+
+    public void setPricePerDay(BigDecimal pricePerDay) {
+        this.pricePerDay = pricePerDay;
+    }
 }

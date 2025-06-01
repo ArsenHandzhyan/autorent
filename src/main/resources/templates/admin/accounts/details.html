@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <title>Детали счета - Автопрокат</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Детали счета</h1>
+        <a th:href="@{/admin/accounts}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Назад к списку
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Основная информация</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Номер счета:</label>
+                        <p class="form-control-static" th:text="${account.accountNumber}">ACC-20240101-12345</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Владелец:</label>
+                        <p class="form-control-static" th:text="${account.user.fullName}">Иван Иванов</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email:</label>
+                        <p class="form-control-static" th:text="${account.user.email}">user@example.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Финансовая информация</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Текущий баланс:</label>
+                        <p class="form-control-static" th:text="${#numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT') + ' ₽'}">0.00 ₽</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Начальный баланс:</label>
+                        <p class="form-control-static" th:text="${#numbers.formatDecimal(account.initialBalance, 1, 'COMMA', 2, 'POINT') + ' ₽'}">0.00 ₽</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Кредитный лимит:</label>
+                        <p class="form-control-static" th:text="${#numbers.formatDecimal(account.creditLimit, 1, 'COMMA', 2, 'POINT') + ' ₽'}">0.00 ₽</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Статус:</label>
+                        <p class="form-control-static">
+                            <span th:if="${account.allowNegativeBalance}" class="badge bg-success">Активен</span>
+                            <span th:unless="${account.allowNegativeBalance}" class="badge bg-warning">Ограничен</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- История изменений -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>История изменений</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Дата изменения</th>
+                            <th>Изменено</th>
+                            <th>Старое значение</th>
+                            <th>Новое значение</th>
+                            <th>Кем изменено</th>
+                            <th>Причина</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="history : ${accountHistory}">
+                            <td th:text="${#temporals.format(history.changeDate, 'dd.MM.yyyy HH:mm')}">01.01.2024 12:00</td>
+                            <td th:text="${history.fieldName}">Поле</td>
+                            <td th:text="${history.oldValue}">Старое значение</td>
+                            <td th:text="${history.newValue}">Новое значение</td>
+                            <td th:text="${history.changedBy}">Администратор</td>
+                            <td th:text="${history.changeReason}">Причина изменения</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- История операций -->
+    <div class="card">
+        <div class="card-header">
+            <h3>История операций</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Операция</th>
+                            <th>Сумма</th>
+                            <th>Баланс после операции</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${#lists.isEmpty(transactions)}">
+                            <td colspan="4" class="text-center">История операций пуста</td>
+                        </tr>
+                        <tr th:each="transaction : ${transactions}">
+                            <td th:text="${#temporals.format(transaction.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2024 12:00</td>
+                            <td th:text="${transaction.description}">Пополнение счета</td>
+                            <td th:text="${#numbers.formatDecimal(transaction.amount, 1, 'COMMA', 2, 'POINT') + ' ₽'}"
+                                th:class="${transaction.amount > 0 ? 'text-success' : 'text-danger'}">0.00 ₽</td>
+                            <td th:text="${#numbers.formatDecimal(transaction.balanceAfter, 1, 'COMMA', 2, 'POINT') + ' ₽'}">0.00 ₽</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопки действий -->
+    <div class="mt-4">
+        <button class="btn btn-primary"
+                th:attr="data-account-id=${account.id},
+                         data-account-number=${account.accountNumber},
+                         data-balance=${account.balance},
+                         data-initial-balance=${account.initialBalance},
+                         data-credit-limit=${account.creditLimit},
+                         data-allow-negative-balance=${account.allowNegativeBalance}"
+                onclick="editAccountFromButton(this)">
+            <i class="fas fa-edit"></i> Редактировать
+        </button>
+    </div>
+</main>
+
+<!-- Модальное окно редактирования -->
+<div th:replace="~{admin/accounts/list :: #editAccountModal}"></div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    window.editAccountFromButton = function(btn) {
+        document.getElementById('accountId').value = btn.getAttribute('data-account-id');
+        document.getElementById('accountNumber').value = btn.getAttribute('data-account-number');
+        document.getElementById('balance').value = btn.getAttribute('data-balance');
+        document.getElementById('initialBalance').value = btn.getAttribute('data-initial-balance');
+        document.getElementById('creditLimit').value = btn.getAttribute('data-credit-limit');
+        document.getElementById('allowNegativeBalance').checked = btn.getAttribute('data-allow-negative-balance') === 'true';
+        new bootstrap.Modal(document.getElementById('editAccountModal')).show();
+    }
+});
+</script>
+</body>
+</html> 

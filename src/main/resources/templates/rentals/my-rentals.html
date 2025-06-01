@@ -34,7 +34,10 @@
                 <h3 th:text="${rental.car.brand + ' ' + rental.car.model}">Автомобиль</h3>
                 <span class="status-badge"
                       th:classappend="${rental.status == 'ACTIVE' ? 'status-active' :
-                                           (rental.status == 'PENDING' ? 'status-pending' : 'status-pending-cancellation')}">
+                                           (rental.status == 'PENDING' ? 'status-pending' :
+                                           (rental.status == 'PENDING_CANCELLATION' ? 'status-pending-cancellation' :
+                                           (rental.status == 'COMPLETED' ? 'status-completed' :
+                                           (rental.status == 'CANCELLED' ? 'status-cancelled' : ''))))}">
                     <span th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}">Статус</span>
                 </span>
             </div>
@@ -170,20 +173,58 @@
             </div>
         </div>
 
-        <div class="transactions-section">
-            <h4>История операций</h4>
-            <div class="transactions-list">
-                <div th:if="${#lists.isEmpty(transactions)}" class="alert alert-info">
-                    История операций пуста
+        <div class="account-info mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Информация о счете</h3>
                 </div>
-                <div class="transaction-item" th:each="transaction : ${transactions}">
-                    <div class="transaction-info">
-                        <span class="transaction-type" th:text="${transaction.type}">Тип операции</span>
-                        <span class="transaction-date" th:text="${#temporals.format(transaction.date, 'dd.MM.yyyy HH:mm')}">01.01.2023 12:00</span>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Номер счета:</strong> <span th:text="${account.accountNumber}">ACC-20240101-12345</span></p>
+                            <p><strong>Статус:</strong> 
+                                <span th:if="${account.allowNegativeBalance}" class="badge bg-success">Активен</span>
+                                <span th:unless="${account.allowNegativeBalance}" class="badge bg-warning">Ограничен</span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Текущий баланс:</strong> <span th:text="${#numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT')}">0.00</span> ₽</p>
+                            <p><strong>Начальный баланс:</strong> <span th:text="${#numbers.formatDecimal(account.initialBalance, 1, 'COMMA', 2, 'POINT')}">0.00</span> ₽</p>
+                            <p th:if="${account.creditLimit > 0}">
+                                <strong>Кредитный лимит:</strong> <span th:text="${#numbers.formatDecimal(account.creditLimit, 1, 'COMMA', 2, 'POINT')}">0.00</span> ₽
+                            </p>
+                        </div>
                     </div>
-                    <div class="transaction-amount" th:classappend="${transaction.amount > 0 ? 'amount-positive' : 'amount-negative'}"
-                         th:text="${transaction.amount + ' ₽'}">1000 ₽</div>
-                    <div class="transaction-description" th:text="${transaction.description}">Описание операции</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="transactions-history mb-4" th:if="${!transactions.empty}">
+            <div class="card">
+                <div class="card-header">
+                    <h3>История операций</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>Операция</th>
+                                    <th>Сумма</th>
+                                    <th>Баланс</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="transaction : ${transactions}">
+                                    <td th:text="${#temporals.format(transaction.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2024 12:00</td>
+                                    <td th:text="${transaction.description}">Пополнение счета</td>
+                                    <td th:text="${#numbers.formatDecimal(transaction.amount, 1, 'COMMA', 2, 'POINT')}">0.00</td>
+                                    <td th:text="${#numbers.formatDecimal(transaction.balanceAfter, 1, 'COMMA', 2, 'POINT')}">0.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -250,4 +250,59 @@
         align-items: flex-start;
         gap: 0.25rem;
     }
+}
+
+.account-info {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.account-info .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.account-info .card-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.account-info .card-body {
+    padding: 1.5rem;
+}
+
+.account-info p {
+    margin-bottom: 0.5rem;
+}
+
+.account-info .badge {
+    font-size: 0.875rem;
+    padding: 0.5em 0.75em;
+}
+
+.transactions-history {
+    margin-top: 2rem;
+}
+
+.transactions-history .table {
+    margin-bottom: 0;
+}
+
+.transactions-history th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.transactions-history td {
+    vertical-align: middle;
+}
+
+.transactions-history .amount-positive {
+    color: #28a745;
+}
+
+.transactions-history .amount-negative {
+    color: #dc3545;
 } 

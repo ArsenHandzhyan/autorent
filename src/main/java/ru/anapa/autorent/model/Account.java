@@ -32,6 +32,15 @@ public class Account {
     @Column(name = "account_number", unique = true)
     private String accountNumber;
 
+    @Column(name = "initial_balance", nullable = false)
+    private BigDecimal initialBalance = BigDecimal.ZERO;
+
+    @Column(name = "max_rental_amount")
+    private BigDecimal maxRentalAmount;
+
+    @Column(name = "max_rental_duration")
+    private Integer maxRentalDuration;
+
     @PrePersist
     public void generateAccountNumber() {
         if (accountNumber == null) {
@@ -41,5 +50,29 @@ public class Account {
             int random = (int) (Math.random() * 90000) + 10000;
             accountNumber = String.format("ACC-%s-%d", timestamp, random);
         }
+    }
+
+    public BigDecimal getInitialBalance() {
+        return initialBalance;
+    }
+
+    public void setInitialBalance(BigDecimal initialBalance) {
+        this.initialBalance = initialBalance;
+    }
+
+    public BigDecimal getMaxRentalAmount() {
+        return maxRentalAmount;
+    }
+
+    public void setMaxRentalAmount(BigDecimal maxRentalAmount) {
+        this.maxRentalAmount = maxRentalAmount;
+    }
+
+    public Integer getMaxRentalDuration() {
+        return maxRentalDuration;
+    }
+
+    public void setMaxRentalDuration(Integer maxRentalDuration) {
+        this.maxRentalDuration = maxRentalDuration;
     }
 } 

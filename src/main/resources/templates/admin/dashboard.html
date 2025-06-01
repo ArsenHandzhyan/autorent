@@ -98,13 +98,10 @@
                     <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
                     <td th:text="${rental.totalCost + ' ₽'}">15000 ₽</td>
                     <td>
-                        <span class="status-badge" th:classappend="'status-' + ${rental.status.toLowerCase()}"
-                              th:text="${rental.status == 'PENDING' ? 'Ожидает подтверждения' :
-                                      (rental.status == 'ACTIVE' ? 'Активна' :
-                                      (rental.status == 'COMPLETED' ? 'Завершена' :
-                                      (rental.status == 'CANCELLED' ? 'Отменена' :
-                                      (rental.status == 'CANCELLATION_REQUESTED' || rental.status == 'PENDING_CANCELLATION' ? 'Запрос на отмену' : rental.status))))}">
-                            Ожидает подтверждения
+                        <span class="status-badge" 
+                              th:classappend="${rental.status != null ? 'status-' + #strings.toLowerCase(rental.status) : ''}"
+                              th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}">
+                            Статус
                         </span>
                     </td>
                     <td>
