@@ -18,6 +18,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.List;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestParam;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Controller
 @RequestMapping("/admin/accounts")
@@ -51,7 +53,8 @@ public class AdminAccountController {
                               Authentication authentication) {
         String changedBy = authentication.getName();
         accountService.updateAccountFromAdmin(id, account, changedBy, reason);
-        return "redirect:/admin/accounts/" + id + "?success=Настройки счета обновлены";
+        String successMessage = URLEncoder.encode("Настройки счета обновлены", StandardCharsets.UTF_8);
+        return "redirect:/admin/accounts/" + id + "?success=" + successMessage;
     }
 
     @GetMapping("/{id}")

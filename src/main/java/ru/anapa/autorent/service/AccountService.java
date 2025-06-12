@@ -135,18 +135,20 @@ public class AccountService {
             account.setAllowNegativeBalance(updated.isAllowNegativeBalance());
         }
         
-        if (!account.getMaxRentalAmount().equals(updated.getMaxRentalAmount())) {
+        if ((account.getMaxRentalAmount() == null && updated.getMaxRentalAmount() != null) ||
+            (account.getMaxRentalAmount() != null && !account.getMaxRentalAmount().equals(updated.getMaxRentalAmount()))) {
             saveAccountHistory(account, changedBy, "maxRentalAmount", 
-                account.getMaxRentalAmount().toString(), 
-                updated.getMaxRentalAmount().toString(), 
+                account.getMaxRentalAmount() != null ? account.getMaxRentalAmount().toString() : "null", 
+                updated.getMaxRentalAmount() != null ? updated.getMaxRentalAmount().toString() : "null", 
                 reason);
             account.setMaxRentalAmount(updated.getMaxRentalAmount());
         }
         
-        if (!account.getMaxRentalDuration().equals(updated.getMaxRentalDuration())) {
+        if ((account.getMaxRentalDuration() == null && updated.getMaxRentalDuration() != null) ||
+            (account.getMaxRentalDuration() != null && !account.getMaxRentalDuration().equals(updated.getMaxRentalDuration()))) {
             saveAccountHistory(account, changedBy, "maxRentalDuration", 
-                account.getMaxRentalDuration().toString(), 
-                updated.getMaxRentalDuration().toString(), 
+                account.getMaxRentalDuration() != null ? account.getMaxRentalDuration().toString() : "null", 
+                updated.getMaxRentalDuration() != null ? updated.getMaxRentalDuration().toString() : "null", 
                 reason);
             account.setMaxRentalDuration(updated.getMaxRentalDuration());
         }

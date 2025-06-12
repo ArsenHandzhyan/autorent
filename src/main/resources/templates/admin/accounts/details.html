@@ -19,6 +19,11 @@
         </a>
     </div>
 
+    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${param.success}">Сообщение об успехе</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <div class="row">
         <div class="col-md-6">
             <div class="card mb-4">
