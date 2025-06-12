@@ -8,23 +8,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <style>
-        .back-button {
-            position: fixed;
-            top: 80px;
-            left: 20px;
-            z-index: 9999;
+        .edit-button {
+            position: relative;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .edit-button:hover {
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
-<a th:href="@{/admin/accounts}" class="btn btn-outline-secondary back-button">
-    <i class="fas fa-arrow-left"></i> Назад к счетам
-</a>
-
 <main class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a th:href="@{/admin/accounts}" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-arrow-left"></i> Назад к счетам
+            </a>
+            <a th:href="@{/admin/accounts/{id}/edit(id=${account.id})}" class="btn btn-primary edit-button">
+                <i class="fas fa-edit"></i> Редактировать
+            </a>
+        </div>
         <h1>Детали счета</h1>
     </div>
 
@@ -151,40 +158,10 @@
             </div>
         </div>
     </div>
-
-    <!-- Кнопки действий -->
-    <div class="mt-4">
-        <button class="btn btn-primary"
-                th:attr="data-account-id=${account.id},
-                         data-account-number=${account.accountNumber},
-                         data-balance=${account.balance},
-                         data-initial-balance=${account.initialBalance},
-                         data-credit-limit=${account.creditLimit},
-                         data-allow-negative-balance=${account.allowNegativeBalance}"
-                onclick="editAccountFromButton(this)">
-            <i class="fas fa-edit"></i> Редактировать
-        </button>
-    </div>
 </main>
-
-<!-- Модальное окно редактирования -->
-<div th:replace="~{admin/accounts/list :: #editAccountModal}"></div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script th:inline="javascript">
-document.addEventListener('DOMContentLoaded', function() {
-    window.editAccountFromButton = function(btn) {
-        document.getElementById('accountId').value = btn.getAttribute('data-account-id');
-        document.getElementById('accountNumber').value = btn.getAttribute('data-account-number');
-        document.getElementById('balance').value = btn.getAttribute('data-balance');
-        document.getElementById('initialBalance').value = btn.getAttribute('data-initial-balance');
-        document.getElementById('creditLimit').value = btn.getAttribute('data-credit-limit');
-        document.getElementById('allowNegativeBalance').checked = btn.getAttribute('data-allow-negative-balance') === 'true';
-        new bootstrap.Modal(document.getElementById('editAccountModal')).show();
-    }
-});
-</script>
 </body>
 </html> 
