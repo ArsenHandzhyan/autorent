@@ -85,7 +85,7 @@
         <h2>История аренд</h2>
         <button class="toggle-section btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#historyCollapse" aria-expanded="true" aria-controls="historyCollapse">
             <span>Показать/скрыть</span>
-            <i class="fas fa-chevron-up"></i>
+            <i class="fas fa-chevron-down"></i>
         </button>
     </div>
 
@@ -146,7 +146,7 @@
         <h2>Мой счет</h2>
         <button class="toggle-section btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#accountCollapse" aria-expanded="true" aria-controls="accountCollapse">
             <span>Показать/скрыть</span>
-            <i class="fas fa-chevron-up"></i>
+            <i class="fas fa-chevron-down"></i>
         </button>
     </div>
 
@@ -218,6 +218,44 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- История изменений -->
+                <div class="transactions-history mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>История изменений</h3>
+                        </div>
+                        <div class="card-body">
+                            <div th:if="${#lists.isEmpty(accountHistory)}" class="alert alert-info text-center">
+                                История изменений счета пуста.
+                            </div>
+                            <div th:unless="${#lists.isEmpty(accountHistory)}" class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Дата изменения</th>
+                                            <th>Изменено</th>
+                                            <th>Старое значение</th>
+                                            <th>Новое значение</th>
+                                            <th>Кем изменено</th>
+                                            <th>Причина</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="history : ${accountHistory}">
+                                            <td th:text="${#temporals.format(history.changeDate, 'dd.MM.yyyy HH:mm')}">01.01.2024 12:00</td>
+                                            <td th:text="${history.fieldName}">Поле</td>
+                                            <td th:text="${history.oldValue}">Старое значение</td>
+                                            <td th:text="${history.newValue}">Новое значение</td>
+                                            <td th:text="${history.changedBy}">Администратор</td>
+                                            <td th:text="${history.changeReason}">Причина изменения</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -234,16 +272,8 @@
             const targetId = button.getAttribute('data-bs-target').substring(1); // Используем data-bs-target
             const targetElement = document.getElementById(targetId);
 
-            // Слушаем события Bootstrap для обновления иконки
-            targetElement.addEventListener('shown.bs.collapse', function () {
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
-            });
-
-            targetElement.addEventListener('hidden.bs.collapse', function () {
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
-            });
+            // Удаляем слушателей событий Bootstrap для обновления иконки, чтобы избежать конфликтов.
+            // Иконка теперь будет управляться только через CSS на основе атрибута aria-expanded.
         });
 
         // Обработка сумм в таблице транзакций

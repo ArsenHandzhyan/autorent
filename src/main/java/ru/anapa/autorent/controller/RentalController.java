@@ -73,12 +73,14 @@ public class RentalController {
             // Получаем данные о счете пользователя
             Account account = accountService.getAccountByUserId(user.getId());
             List<Transaction> transactions = accountService.getAccountTransactions(user.getId());
+            List<AccountHistory> accountHistory = accountService.getAccountHistory(account.getId());
 
             model.addAttribute("rentals", rentals);
             model.addAttribute("activeRentals", activeRentals);
             model.addAttribute("historyRentals", historyRentals);
             model.addAttribute("account", account);
             model.addAttribute("transactions", transactions);
+            model.addAttribute("accountHistory", accountHistory);
 
             return "rentals/my-rentals";
         } catch (Exception e) {
