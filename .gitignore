@@ -1,4 +1,5 @@
-HELP.md
+1HELP.md
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -33,3 +34,5 @@ build/
 .vscode/
 /.mvn/wrapper/maven-wrapper.properties
 /logs/archived/autorent-dev-2025-05-18.0.log
+/logs/archived/autorent-dev-2025-06-01.0.log
+/logs/archived/autorent-dev-2025-06-02.0.log
