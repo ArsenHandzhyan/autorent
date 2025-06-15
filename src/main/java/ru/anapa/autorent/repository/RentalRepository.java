@@ -51,4 +51,14 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findByUser(User user);
 
     List<Rental> findByCar(Car car);
+
+    @Query("SELECT r FROM Rental r WHERE r.car.id = :carId " +
+           "AND r.status IN :statuses " +
+           "AND ((r.startDate <= :endDate AND r.endDate >= :startDate) " +
+           "OR (r.startDate >= :startDate AND r.startDate <= :endDate) " +
+           "OR (r.endDate >= :startDate AND r.endDate <= :endDate))")
+    List<Rental> findOverlappingRentals(@Param("carId") Long carId,
+                                       @Param("startDate") LocalDateTime startDate,
+                                       @Param("endDate") LocalDateTime endDate,
+                                       @Param("statuses") List<RentalStatus> statuses);
 }

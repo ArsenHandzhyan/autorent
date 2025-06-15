@@ -59,12 +59,12 @@
                     <a th:href="@{/cars/{id}(id=${car.id})}" class="btn">Подробнее</a>
 
                     <a th:if="${car.available}" sec:authorize="isAuthenticated()"
-                       th:href="@{/rentals/new/{id}(id=${car.id})}" class="btn">Арендовать</a>
+                       th:href="@{/rentals/new(carId=${car.id})}" class="btn">Арендовать</a>
 
                     <a th:unless="${car.available}" sec:authorize="isAuthenticated()"
                        th:with="nextDate=${@carService.getNextAvailableDate(car.id)}"
                        th:if="${nextDate != null}"
-                       th:href="@{/rentals/new/{id}(id=${car.id}, startDate=${nextDate})}"
+                       th:href="@{/rentals/new(carId=${car.id}, startDate=${nextDate})}"
                        class="btn btn-outline-primary">Забронировать с <span th:text="${#temporals.format(nextDate, 'dd.MM.yyyy')}"></span></a>
                 </div>
             </div>

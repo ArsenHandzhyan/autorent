@@ -94,6 +94,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Преобразуем все формы в AJAX-запросы
     document.querySelectorAll('form').forEach(form => {
         form.addEventListener('submit', function(e) {
+            // Исключаем logout-форму из AJAX-обработки
+            if (this.action.includes('/auth/logout')) {
+                return; // пусть браузер обработает logout как обычную форму
+            }
             e.preventDefault();
 
             const formData = new FormData(this);

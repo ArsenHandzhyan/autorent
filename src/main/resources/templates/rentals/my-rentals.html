@@ -15,67 +15,135 @@
 <div class="rentals-container">
     <h1 class="mb-4">Мои аренды</h1>
 
-    <!-- Active Rentals Section -->
+    <!-- Flash Messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Pending Rentals Section -->
     <div class="section-header">
+        <h2>Запросы на аренду</h2>
+    </div>
+
+    <div th:if="${#lists.isEmpty(pendingRentals)}" class="alert alert-info">
+        У вас нет запросов на аренду. <a th:href="@{/cars}" class="alert-link">Выберите автомобиль для аренды</a>!
+    </div>
+
+    <div th:if="${not #lists.isEmpty(pendingRentals)}">
+        <div class="rentals-list">
+            <div class="rental-card" th:each="rental : ${pendingRentals}" th:data-rental-id="${rental.id}">
+                <div class="rental-header">
+                    <h3 th:text="${rental.car.brand + ' ' + rental.car.model}"></h3>
+                    <span class="status-badge status-pending">
+                        <span th:text="${rental.status.displayName}">Статус</span>
+                    </span>
+                </div>
+
+                <img th:if="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
+                     th:src="${rental.car.images[0].imageUrl}" 
+                     alt="Car Image" 
+                     class="car-image">
+                <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
+                     th:src="@{/images/default-car.jpg}" 
+                     alt="Default Car Image" 
+                     class="car-image">
+
+                <div class="rental-details">
+                    <h5 class="mb-2">Детали аренды</h5>
+                    <p class="mb-1"><strong>Автомобиль:</strong> <span th:text="${rental.car != null ? rental.car.brand + ' ' + rental.car.model : 'Не указано'}"></span></p>
+                    <p class="mb-1"><strong>Гос. номер:</strong> <span th:text="${rental.car != null ? rental.car.licensePlate : 'Не указано'}"></span></p>
+                    <p class="mb-1"><strong>Дата начала:</strong> <span th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}"></span></p>
+                    <p class="mb-1"><strong>Дата окончания:</strong> <span th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}"></span></p>
+                    <div class="detail-item">
+                        <span class="detail-label">Дата начала</span>
+                        <span class="detail-value" th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2023</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Дата окончания</span>
+                        <span class="detail-value" th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2023</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Стоимость</span>
+                        <span class="detail-value" th:text="${rental.totalCost + ' ₽'}">10000 ₽</span>
+                    </div>
+                </div>
+
+                <div class="rental-actions">
+                    <a th:href="@{/rentals/{id}(id=${rental.id})}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-info-circle"></i> Подробнее
+                    </a>
+
+                    <a th:href="@{/rentals/{id}/cancel(id=${rental.id})}"
+                       class="btn btn-outline-danger btn-sm">
+                        <i class="fas fa-times-circle"></i> Отменить заявку
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Rentals Section -->
+    <div class="section-header mt-5">
         <h2>Активные аренды</h2>
     </div>
 
     <div th:if="${#lists.isEmpty(activeRentals)}" class="alert alert-info">
-        У вас нет активных аренд. <a th:href="@{/cars}" class="alert-link">Арендовать автомобиль</a>
+        У вас нет активных аренд.
     </div>
 
-    <div th:if="${#lists.isEmpty(activeRentals) and #lists.isEmpty(historyRentals)}" class="alert alert-warning mt-4">
-        У вас пока нет ни одной аренды. <a th:href="@{/cars}" class="alert-link">Выберите автомобиль для аренды</a>!
-    </div>
-
-    <div class="rentals-list">
-        <div class="rental-card" th:each="rental : ${activeRentals}">
-            <div class="rental-header">
-                <h3 th:text="${rental.car.brand + ' ' + rental.car.model}">Автомобиль</h3>
-                <span class="status-badge"
-                      th:classappend="${rental.status == 'ACTIVE' ? 'status-active' :
-                                           (rental.status == 'PENDING' ? 'status-pending' :
-                                           (rental.status == 'PENDING_CANCELLATION' ? 'status-pending-cancellation' :
-                                           (rental.status == 'COMPLETED' ? 'status-completed' :
-                                           (rental.status == 'CANCELLED' ? 'status-cancelled' : ''))))}">
-                    <span th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}">Статус</span>
-                </span>
-            </div>
-
-            <img th:if="${rental.car.imageUrl}" th:src="${rental.car.imageUrl}" alt="Car Image" class="car-image">
-            <img th:unless="${rental.car.imageUrl}" th:src="@{/images/default-car.jpg}" alt="Default Car Image" class="car-image">
-
-            <div class="rental-details">
-                <div class="detail-item">
-                    <span class="detail-label">Дата начала</span>
-                    <span class="detail-value" th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2023</span>
+    <div th:if="${not #lists.isEmpty(activeRentals)}">
+        <div class="rentals-list">
+            <div class="rental-card" th:each="rental : ${activeRentals}" th:data-rental-id="${rental.id}">
+                <div class="rental-header">
+                    <h3 th:text="${rental.car.brand + ' ' + rental.car.model}"></h3>
+                    <span class="status-badge"
+                          th:classappend="${rental.status.name() == 'ACTIVE' ? 'status-active' :
+                                               (rental.status.name() == 'PENDING_CANCELLATION' ? 'status-pending-cancellation' :
+                                               (rental.status.name() == 'COMPLETED' ? 'status-completed' :
+                                               (rental.status.name() == 'CANCELLED' ? 'status-cancelled' : '')))}"
+                          th:text="${rental.status.displayName}"></span>
                 </div>
-                <div class="detail-item">
-                    <span class="detail-label">Дата окончания</span>
-                    <span class="detail-value" th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2023</span>
+
+                <img th:if="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
+                     th:src="${rental.car.images[0].imageUrl}" 
+                     alt="Car Image" 
+                     class="car-image">
+                <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
+                     th:src="@{/images/default-car.jpg}" 
+                     alt="Default Car Image" 
+                     class="car-image">
+
+                <div class="rental-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Дата начала</span>
+                        <span class="detail-value" th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy HH:mm')}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Дата окончания</span>
+                        <span class="detail-value" th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy HH:mm')}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Гос. номер</span>
+                        <span class="detail-value" th:text="${rental.car != null ? rental.car.licensePlate : 'Не указано'}"></span>
+                    </div>
                 </div>
-                <div class="detail-item">
-                    <span class="detail-label">Место получения</span>
-                    <span class="detail-value">По умолчанию</span>
+
+                <div class="rental-actions">
+                    <a th:href="@{/rentals/{id}(id=${rental.id})}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-info-circle"></i> Подробнее
+                    </a>
+
+                    <a th:if="${rental.status.name() == 'ACTIVE' and #authorization.expression('hasRole(''ADMIN'')')}"
+                       th:href="@{/rentals/{id}/cancel(id=${rental.id})}"
+                       class="btn btn-outline-danger btn-sm">
+                        <i class="fas fa-times-circle"></i> Отменить
+                    </a>
                 </div>
-            </div>
-
-            <div class="rental-actions">
-                <a th:href="@{/rentals/{id}(id=${rental.id})}" class="btn btn-outline-primary btn-sm">
-                    <i class="fas fa-info-circle"></i> Подробнее
-                </a>
-
-                <a th:if="${rental.status == 'ACTIVE'}"
-                   th:href="@{/rentals/{id}/cancel(id=${rental.id})}"
-                   class="btn btn-outline-danger btn-sm">
-                    <i class="fas fa-times-circle"></i> Отменить
-                </a>
-
-                <a th:if="${rental.status == 'PENDING'}"
-                   th:href="@{/rentals/{id}/cancel(id=${rental.id})}"
-                   class="btn btn-outline-danger btn-sm">
-                    <i class="fas fa-times-circle"></i> Отменить заявку
-                </a>
             </div>
         </div>
     </div>
@@ -95,34 +163,40 @@
         </div>
 
         <div class="rentals-list">
-            <div class="rental-card" th:each="rental : ${historyRentals}">
+            <div class="rental-card" th:each="rental : ${historyRentals}" th:data-rental-id="${rental.id}">
                 <div class="rental-header">
-                    <h3 th:text="${rental.car.brand + ' ' + rental.car.model}">Автомобиль</h3>
+                    <h3 th:text="${rental.car.brand + ' ' + rental.car.model}"></h3>
                     <span class="status-badge"
-                          th:classappend="${rental.status == 'COMPLETED' ? 'status-completed' : 'status-cancelled'}">
-                        <span th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}"></span>
+                          th:classappend="${rental.status.name() == 'COMPLETED' ? 'status-completed' : 'status-cancelled'}">
+                        <span th:text="${rental.status.name() == 'COMPLETED' ? 'Завершена' : 'Отменена'}"></span>
                     </span>
                 </div>
 
-                <img th:if="${rental.car.imageUrl}" th:src="${rental.car.imageUrl}" alt="Car Image" class="car-image">
-                <img th:unless="${rental.car.imageUrl}" th:src="@{/images/default-car.jpg}" alt="Default Car Image" class="car-image">
+                <img th:if="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
+                     th:src="${rental.car.images[0].imageUrl}" 
+                     alt="Car Image" 
+                     class="car-image">
+                <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
+                     th:src="@{/images/default-car.jpg}" 
+                     alt="Default Car Image" 
+                     class="car-image">
 
                 <div class="rental-details">
                     <div class="detail-item">
                         <span class="detail-label">Дата начала</span>
-                        <span class="detail-value" th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2023</span>
+                        <span class="detail-value" th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy HH:mm')}"></span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Дата окончания</span>
-                        <span class="detail-value" th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2023</span>
+                        <span class="detail-value" th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy HH:mm')}"></span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Стоимость</span>
-                        <span class="detail-value" th:text="${rental.totalCost + ' ₽'}">10000 ₽</span>
+                        <span class="detail-value" th:text="${rental.totalCost + ' ₽'}"></span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Место получения</span>
-                        <span class="detail-value">По умолчанию</span>
+                        <span class="detail-label">Гос. номер</span>
+                        <span class="detail-value" th:text="${rental.car != null ? rental.car.licensePlate : 'Не указано'}"></span>
                     </div>
                 </div>
 
@@ -356,5 +430,29 @@
         }
     });
 </script>
+
+<!-- Форма отмены аренды -->
+<div class="modal fade" id="cancelRentalModal" tabindex="-1" aria-labelledby="cancelRentalModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelRentalModalLabel">Отмена аренды</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{/rentals/{id}/admin-cancel(id=${rental.id})}" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="cancelReason" class="form-label">Причина отмены</label>
+                        <textarea class="form-control" id="cancelReason" name="cancelReason" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-danger">Отменить аренду</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

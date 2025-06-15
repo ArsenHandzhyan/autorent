@@ -130,35 +130,35 @@
 
 /* Стили для статусов */
 .status-badge {
-    padding: 0.25rem 0.75rem;
+    padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.875rem;
     font-weight: 500;
 }
 
 .status-active {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: #28a745;
+    color: #fff;
 }
 
 .status-pending {
-    background-color: #fff3cd;
-    color: #856404;
+    background-color: #ffc107;
+    color: #000;
 }
 
 .status-pending-cancellation {
-    background-color: #f8d7da;
-    color: #721c24;
+    background-color: #dc3545;
+    color: #fff;
 }
 
 .status-completed {
-    background-color: #cce5ff;
-    color: #004085;
+    background-color: #17a2b8;
+    color: #fff;
 }
 
 .status-cancelled {
-    background-color: #f8d7da;
-    color: #721c24;
+    background-color: #6c757d;
+    color: #fff;
 }
 
 /* Стили для таблицы транзакций */
@@ -255,4 +255,184 @@
     .rental-actions .btn:last-child {
         margin-bottom: 0;
     }
+}
+
+.rental-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: transform 0.2s ease-in-out;
+}
+
+.rental-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.rental-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.rental-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.rental-details {
+    margin-bottom: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.detail-value {
+    color: #333;
+    font-weight: 500;
+}
+
+.rental-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.toggle-section {
+    color: #6c757d;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.toggle-section:hover {
+    color: #333;
+}
+
+.toggle-section i {
+    transition: transform 0.2s ease-in-out;
+}
+
+.toggle-section[aria-expanded="false"] i {
+    transform: rotate(-90deg);
+}
+
+.account-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+}
+
+.account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.account-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.balance {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #28a745;
+}
+
+.badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.bg-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.bg-warning {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.alert {
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+}
+
+.alert-info {
+    background-color: #e3f2fd;
+    border-color: #90caf9;
+    color: #0d47a1;
+}
+
+.alert-info .alert-link {
+    color: #1565c0;
+    text-decoration: underline;
+}
+
+.alert-info .alert-link:hover {
+    color: #0d47a1;
+    text-decoration: none;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.empty-state p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.cancel-reason {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.cancel-reason p {
+    margin: 0;
+    color: #dc3545;
+}
+
+.cancel-reason strong {
+    color: #dc3545;
 } 

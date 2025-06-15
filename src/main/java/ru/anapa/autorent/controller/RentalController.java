@@ -1,6 +1,8 @@
 package ru.anapa.autorent.controller;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -31,10 +33,13 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/rentals")
 public class RentalController {
+
+    private static final Logger logger = LoggerFactory.getLogger(RentalController.class);
 
     private final RentalService rentalService;
     private final UserService userService;
@@ -56,19 +61,34 @@ public class RentalController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.findByEmail(authentication.getName());
             List<Rental> rentals = rentalService.findRentalsByUser(user);
+            
+            logger.info("Found {} rentals for user {}", rentals.size(), user.getEmail());
+            rentals.forEach(rental -> logger.info("Rental ID: {}, Status: {}", rental.getId(), rental.getStatus()));
+
+            List<Rental> pendingRentals = rentals.stream()
+                    .filter(rental -> rental.getStatus() == RentalStatus.PENDING)
+                    .collect(Collectors.toList());
+            
+            logger.info("Found {} pending rentals", pendingRentals.size());
+            pendingRentals.forEach(rental -> logger.info("Pending Rental ID: {}, Status: {}", rental.getId(), rental.getStatus()));
 
             List<Rental> activeRentals = rentals.stream()
                     .filter(rental ->
-                            "ACTIVE".equals(rental.getStatus()) ||
-                                    "PENDING".equals(rental.getStatus()) ||
-                                    "PENDING_CANCELLATION".equals(rental.getStatus()))
+                            rental.getStatus() == RentalStatus.ACTIVE ||
+                            rental.getStatus() == RentalStatus.PENDING_CANCELLATION)
                     .collect(Collectors.toList());
+            
+            logger.info("Found {} active rentals", activeRentals.size());
+            activeRentals.forEach(rental -> logger.info("Active Rental ID: {}, Status: {}", rental.getId(), rental.getStatus()));
 
             List<Rental> historyRentals = rentals.stream()
                     .filter(rental ->
-                            "COMPLETED".equals(rental.getStatus()) ||
-                                    "CANCELLED".equals(rental.getStatus()))
+                            rental.getStatus() == RentalStatus.COMPLETED ||
+                            rental.getStatus() == RentalStatus.CANCELLED)
                     .collect(Collectors.toList());
+            
+            logger.info("Found {} history rentals", historyRentals.size());
+            historyRentals.forEach(rental -> logger.info("History Rental ID: {}, Status: {}", rental.getId(), rental.getStatus()));
 
             // Получаем данные о счете пользователя
             Account account = accountService.getAccountByUserId(user.getId());
@@ -76,6 +96,7 @@ public class RentalController {
             List<AccountHistory> accountHistory = accountService.getAccountHistory(account.getId());
 
             model.addAttribute("rentals", rentals);
+            model.addAttribute("pendingRentals", pendingRentals);
             model.addAttribute("activeRentals", activeRentals);
             model.addAttribute("historyRentals", historyRentals);
             model.addAttribute("account", account);
@@ -91,19 +112,10 @@ public class RentalController {
 
     @GetMapping("/new")
     @PreAuthorize("isAuthenticated()")
-    public String showRentalFormWithQueryParam(@RequestParam Long carId,
-                                             @RequestParam(required = false)
-                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-                                             Model model) {
-        return showRentalForm(carId, startDate, model);
-    }
-
-    @GetMapping("/new/{carId}")
-    @PreAuthorize("isAuthenticated()")
-    public String showRentalForm(@PathVariable Long carId,
-                                 @RequestParam(required = false)
-                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-                                 Model model) {
+    public String showRentalForm(@RequestParam Long carId,
+                               @RequestParam(required = false)
+                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                               Model model) {
         Car car = carService.findCarById(carId);
 
         RentalDto rentalDto = new RentalDto();
@@ -113,11 +125,13 @@ public class RentalController {
             rentalDto.setStartDate(startDate);
             // Устанавливаем конечную дату на следующий день после начальной
             rentalDto.setEndDate(startDate.plusDays(1));
+            rentalDto.setDurationDays(1);
         } else {
             // Иначе устанавливаем текущую дату и время
             LocalDateTime now = LocalDateTime.now();
             rentalDto.setStartDate(now);
             rentalDto.setEndDate(now.plusDays(1));
+            rentalDto.setDurationDays(1);
         }
 
         model.addAttribute("rental", rentalDto);
@@ -125,7 +139,7 @@ public class RentalController {
 
         // Добавляем информацию о забронированных периодах
         List<RentalPeriodDto> bookedPeriods = carService.getBookedPeriods(carId);
-        model.addAttribute("bookedPeriods", bookedPeriods);
+        model.addAttribute("bookedPeriods", bookedPeriods != null ? bookedPeriods : new ArrayList<>());
 
         return "rentals/new";
     }
@@ -136,9 +150,13 @@ public class RentalController {
                              @ModelAttribute RentalDto rentalDto,
                              BindingResult result,
                              Model model,
-                             Authentication authentication) {
+                             Authentication authentication,
+                             RedirectAttributes redirectAttributes) {
+        logger.info("Creating rental for carId: {}, rentalDto: {}", carId, rentalDto);
+        
         if (result.hasErrors()) {
-            Car car = carService.getCarById(carId);
+            logger.error("Validation errors: {}", result.getAllErrors());
+            Car car = carService.findCarById(carId);
             model.addAttribute("car", car);
             model.addAttribute("rental", rentalDto);
             return "rentals/new";
@@ -146,27 +164,42 @@ public class RentalController {
 
         try {
             User user = userService.getCurrentUser(authentication);
-            Car car = carService.getCarById(carId);
+            Car car = carService.findCarById(carId);
             
             // Проверяем ограничения счета
             BigDecimal totalAmount = car.getPricePerDay().multiply(BigDecimal.valueOf(rentalDto.getDurationDays()));
             accountService.validateRentalConstraints(user.getId(), totalAmount, rentalDto.getDurationDays());
+            
+            // Проверяем доступность автомобиля на выбранные даты
+            if (!rentalService.isCarAvailableForPeriod(carId, rentalDto.getStartDate(), rentalDto.getEndDate())) {
+                logger.warn("Car {} is not available for the selected period", carId);
+                model.addAttribute("error", "Автомобиль недоступен на выбранные даты");
+                model.addAttribute("car", car);
+                model.addAttribute("rental", rentalDto);
+                return "rentals/new";
+            }
             
             // Создаем аренду
             Rental rental = new Rental();
             rental.setUser(user);
             rental.setCar(car);
             rental.setStartDate(rentalDto.getStartDate());
-            rental.setEndDate(rentalDto.getStartDate().plusDays(rentalDto.getDurationDays()));
+            rental.setEndDate(rentalDto.getEndDate());
             rental.setTotalCost(totalAmount);
             rental.setStatus(RentalStatus.PENDING);
+            rental.setNotes(rentalDto.getNotes());
+            rental.setCreatedAt(LocalDateTime.now());
+            rental.setUpdatedAt(LocalDateTime.now());
             
             rentalService.createRental(rental);
+            logger.info("Rental created successfully: {}", rental.getId());
             
-            return "redirect:/rentals/my-rentals?success=Аренда успешно создана";
+            redirectAttributes.addFlashAttribute("success", "Заявка на аренду успешно создана");
+            return "redirect:/rentals";
         } catch (Exception e) {
+            logger.error("Error creating rental", e);
             model.addAttribute("error", e.getMessage());
-            Car car = carService.getCarById(carId);
+            Car car = carService.findCarById(carId);
             model.addAttribute("car", car);
             model.addAttribute("rental", rentalDto);
             return "rentals/new";
@@ -249,5 +282,21 @@ public class RentalController {
         model.addAttribute("car", car);
         model.addAttribute("rental", rental);
         return "rentals/rental-details"; // Имя шаблона для отображения деталей аренды
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/{id}/admin-cancel")
+    public String adminCancelRental(@PathVariable Long id, 
+                                  @RequestParam(required = false) String cancelReason,
+                                  RedirectAttributes redirectAttributes) {
+        try {
+            rentalService.cancelRental(id, cancelReason);
+            redirectAttributes.addFlashAttribute("success", "Аренда успешно отменена");
+            return "redirect:/rentals";
+        } catch (Exception e) {
+            logger.error("Error cancelling rental: {}", e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Ошибка при отмене аренды: " + e.getMessage());
+            return "redirect:/rentals";
+        }
     }
 }

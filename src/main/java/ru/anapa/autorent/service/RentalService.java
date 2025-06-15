@@ -23,6 +23,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Arrays;
 
 @Service
 public class RentalService {
@@ -46,8 +47,24 @@ public class RentalService {
         return rentalRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Rental> findRentalsByUser(User user) {
-        return rentalRepository.findByUser(user);
+        List<Rental> rentals = rentalRepository.findByUserOrderByCreatedAtDesc(user);
+        // Загружаем связанные сущности
+        rentals.forEach(rental -> {
+            if (rental.getCar() != null) {
+                // Инициализируем коллекцию изображений
+                rental.getCar().getImages().forEach(image -> {
+                    image.getImageUrl();
+                    image.getDescription();
+                });
+                // Инициализируем остальные поля
+                rental.getCar().getBrand();
+                rental.getCar().getModel();
+                rental.getCar().getPricePerDay();
+            }
+        });
+        return rentals;
     }
 
     public List<Rental> findRentalsByStatus(RentalStatus status) {
@@ -383,5 +400,18 @@ public class RentalService {
         }
 
         return true;
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isCarAvailableForPeriod(Long carId, LocalDateTime startDate, LocalDateTime endDate) {
+        // Проверяем, есть ли активные или ожидающие аренды на этот период
+        List<Rental> overlappingRentals = rentalRepository.findOverlappingRentals(
+            carId,
+            startDate,
+            endDate,
+            Arrays.asList(RentalStatus.ACTIVE, RentalStatus.PENDING)
+        );
+        
+        return overlappingRentals.isEmpty();
     }
 }
