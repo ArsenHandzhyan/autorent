@@ -1,198 +1,148 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
-    <title>Новая аренда - Автопрокат</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <!-- Добавляем flatpickr для удобного выбора даты и времени -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <title>Создание аренды - Автопрокат</title>
+    <link rel="stylesheet" th:href="@{/css/rental.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
 
-<main class="container">
-    <h1>Аренда автомобиля</h1>
+    <div class="container">
+        <h1 class="text-center my-4">Создание аренды</h1>
 
-    <!-- Показываем сообщение об ошибке, если оно есть -->
-    <div th:if="${error}" class="alert alert-danger" role="alert">
-        <span th:text="${error}"></span>
-    </div>
-
-    <div class="rental-form-container">
-        <div class="car-summary">
-            <h2 th:text="${car.brand + ' ' + car.model}">Toyota Camry</h2>
-            <div class="car-image">
-                <img th:if="${car.images != null and !car.images.empty}" 
-                     th:src="${car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].imageUrl : car.images[0].imageUrl}" 
-                     alt="Фото автомобиля">
-                <div th:unless="${car.images != null and !car.images.empty}" class="no-image">
-                    <i class="fas fa-car"></i>
-                    <span>Нет фото</span>
-                </div>
-            </div>
-            <div class="car-details">
-                <p><strong>Год выпуска:</strong> <span th:text="${car.year}">2023</span></p>
-                <div class="info-item">
-                    <span class="info-label">Стоимость аренды:</span>
-                    <span class="info-value" th:text="${car.dailyRate + ' ₽/день'}">3000 ₽/день</span>
-                </div>
-                <p th:if="${car.transmission}"><strong>Трансмиссия:</strong> <span th:text="${car.transmission}">Автомат</span></p>
-                <p th:if="${car.fuelType}"><strong>Тип топлива:</strong> <span th:text="${car.fuelType}">Бензин</span></p>
-            </div>
+        <!-- Показываем сообщение об ошибке, если оно есть -->
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
         </div>
 
-        <!-- Добавляем информацию о забронированных периодах -->
-        <div class="booked-periods" th:if="${bookedPeriods != null and !bookedPeriods.empty}">
-            <h3>Автомобиль уже забронирован на следующие даты:</h3>
-            <ul class="booked-periods-list">
-                <li th:each="period : ${bookedPeriods}">
-                    <span th:text="${#temporals.format(period.startDate, 'dd.MM.yyyy HH:mm')}">01.01.2025 12:00</span> -
-                    <span th:text="${#temporals.format(period.endDate, 'dd.MM.yyyy HH:mm')}">10.01.2025 12:00</span>
-                </li>
-            </ul>
-            <p class="warning-text">Пожалуйста, выбирайте даты, не пересекающиеся с уже забронированными периодами.</p>
-        </div>
-
-        <form th:action="@{/rentals/new(carId=${car.id})}" method="post" th:object="${rental}" class="rental-form">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-            <div class="form-group mb-3">
-                <label for="startDate" class="form-label">Дата и время начала аренды:</label>
-                <input type="datetime-local" id="startDate" th:field="*{startDate}" required
-                       class="form-control">
+        <div class="rental-form-container">
+            <div class="car-info mb-4">
+                <h2 th:text="${car.brand + ' ' + car.model}"></h2>
+                <p class="text-muted" th:text="${car.year + ' год'}"></p>
+                <p class="price" th:text="${'Цена за день: ' + car.pricePerDay + ' ₽'}"></p>
             </div>
 
-            <div class="form-group mb-3">
-                <label for="endDate" class="form-label">Дата и время окончания аренды:</label>
-                <input type="datetime-local" id="endDate" th:field="*{endDate}" required
-                       class="form-control">
-            </div>
-
-            <input type="hidden" id="durationDays" th:field="*{durationDays}" />
-
-            <div class="form-group mb-3">
-                <label for="notes" class="form-label">Дополнительные пожелания:</label>
-                <textarea id="notes" th:field="*{notes}" class="form-control" rows="3"></textarea>
-            </div>
-
-            <div class="rental-summary mb-3">
-                <h3>Предварительный расчет стоимости:</h3>
-                <div id="rentalCost">
-                    <p>Выберите даты аренды для расчета стоимости</p>
+            <form th:action="@{/rentals/new}" method="post" th:object="${rental}" class="rental-form" id="rentalForm">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <input type="hidden" name="carId" th:value="${car.id}" />
+                <input type="hidden" name="durationDays" id="durationDays" value="1" />
+                
+                <!-- Блок ошибок теперь внутри формы -->
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                    </ul>
                 </div>
-            </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Отправить заявку</button>
-                <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-secondary">Отмена</a>
-            </div>
-        </form>
+                <div class="form-group">
+                    <label for="startDate" class="form-label">Дата и время начала аренды:</label>
+                    <input type="datetime-local" id="startDate" name="startDate" th:value="${rental.startDate}" required
+                           class="form-control" th:classappend="${#fields.hasErrors('startDate')} ? 'is-invalid'">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="endDate" class="form-label">Дата и время окончания аренды:</label>
+                    <input type="datetime-local" id="endDate" name="endDate" th:value="${rental.endDate}" required
+                           class="form-control" th:classappend="${#fields.hasErrors('endDate')} ? 'is-invalid'">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes" class="form-label">Дополнительные пожелания:</label>
+                    <textarea id="notes" name="notes" th:text="${rental.notes}" class="form-control" rows="3"
+                             th:classappend="${#fields.hasErrors('notes')} ? 'is-invalid'"></textarea>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></div>
+                </div>
+
+                <div class="rental-cost" id="rentalCost">
+                    Стоимость аренды: <span id="cost">0</span> ₽
+                </div>
+
+                <button type="submit" class="btn btn-primary">Создать аренду</button>
+            </form>
+        </div>
     </div>
-</main>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+            const costElement = document.getElementById('cost');
+            const pricePerDay = /*[[${car.pricePerDay}]]*/ 0;
 
-<script th:inline="javascript">
-    // Получаем стоимость аренды в день
-    const dailyRate = /*[[${car.dailyRate}]]*/ 0;
+            // Устанавливаем русскую локаль для полей ввода даты
+            startDateInput.setAttribute('lang', 'ru');
+            endDateInput.setAttribute('lang', 'ru');
 
-    // Получаем забронированные периоды
-    const bookedPeriods = /*[[${bookedPeriods}]]*/ [];
+            function updateRentalCost() {
+                const startDate = new Date(startDateInput.value);
+                const endDate = new Date(endDateInput.value);
 
-    // Преобразуем забронированные периоды в формат, понятный flatpickr
-    const disabledDateRanges = bookedPeriods.map(period => {
-        return {
-            from: new Date(period.startDate),
-            to: new Date(period.endDate)
-        };
-    });
-
-    // Текущая дата (добавляем 30 минут для выбора ближайшего времени)
-    const currentDate = new Date();
-    currentDate.setMinutes(currentDate.getMinutes() + 30);
-
-    // Следующий день
-    const nextDayDate = new Date(currentDate);
-    nextDayDate.setDate(nextDayDate.getDate() + 1);
-
-    // Инициализация flatpickr для начальной даты
-    flatpickr("#startDate", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        minDate: "today",
-        locale: "ru",
-        disable: disabledDateRanges,
-        onChange: function(selectedDates, dateStr) {
-            // Обновляем минимальную дату для конечной даты
-            endDatePicker.set("minDate", selectedDates[0]);
-            
-            // Если конечная дата раньше начальной, обновляем её
-            if (endDatePicker.selectedDates[0] < selectedDates[0]) {
-                endDatePicker.setDate(selectedDates[0].fp_incr(1));
+                if (startDate && endDate && !isNaN(startDate) && !isNaN(endDate)) {
+                    const diffTime = Math.abs(endDate - startDate);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    const totalCost = diffDays * pricePerDay;
+                    costElement.textContent = totalCost.toLocaleString('ru-RU');
+                    document.getElementById('durationDays').value = diffDays;
+                } else {
+                    costElement.textContent = '0';
+                    document.getElementById('durationDays').value = '1';
+                }
             }
-            
-            updateRentalCost();
-        }
-    });
 
-    // Инициализация flatpickr для конечной даты
-    const endDatePicker = flatpickr("#endDate", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        minDate: nextDayDate,
-        locale: "ru",
-        disable: disabledDateRanges,
-        onChange: function() {
-            updateRentalCost();
-        }
-    });
+            startDateInput.addEventListener('change', updateRentalCost);
+            endDateInput.addEventListener('change', updateRentalCost);
 
-    // Функция для обновления стоимости аренды
-    function updateRentalCost() {
-        const startDate = document.getElementById("startDate").value;
-        const endDate = document.getElementById("endDate").value;
-        
-        if (startDate && endDate) {
-            const start = new Date(startDate);
-            const end = new Date(endDate);
-            
-            // Вычисляем разницу в днях
-            const diffTime = Math.abs(end - start);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            
-            // Обновляем скрытое поле durationDays
-            document.getElementById("durationDays").value = diffDays;
-            
-            // Вычисляем и отображаем стоимость
-            const totalCost = dailyRate * diffDays;
-            document.getElementById("rentalCost").innerHTML = `
-                <p>Стоимость аренды: ${totalCost} ₽</p>
-                <p>Продолжительность: ${diffDays} ${getDayWord(diffDays)}</p>
-            `;
-        }
-    }
-
-    // Функция для склонения слова "день"
-    function getDayWord(days) {
-        if (days % 10 === 1 && days % 100 !== 11) {
-            return "день";
-        } else if (days % 10 >= 2 && days % 10 <= 4 && (days % 100 < 10 || days % 100 >= 20)) {
-            return "дня";
-        } else {
-            return "дней";
-        }
-    }
-
-    // Инициализация стоимости при загрузке страницы
-    document.addEventListener('DOMContentLoaded', function() {
-        updateRentalCost();
-    });
-</script>
+            // Обработка отправки формы
+            document.getElementById('rentalForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        // Показываем ошибки валидации
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'alert alert-danger';
+                        if (data.errors && data.errors.length > 0) {
+                            const errorList = document.createElement('ul');
+                            data.errors.forEach(error => {
+                                const li = document.createElement('li');
+                                li.textContent = error;
+                                errorList.appendChild(li);
+                            });
+                            errorDiv.appendChild(errorList);
+                        } else {
+                            errorDiv.textContent = data.error || 'Произошла ошибка при создании аренды';
+                        }
+                        document.querySelector('.rental-form-container').insertBefore(errorDiv, document.querySelector('.rental-form'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'alert alert-danger';
+                    errorDiv.textContent = 'Произошла ошибка при отправке формы';
+                    document.querySelector('.rental-form-container').insertBefore(errorDiv, document.querySelector('.rental-form'));
+                });
+            });
+        });
+    </script>
 </body>
 </html>
