@@ -301,7 +301,7 @@ public class AuthController {
         return "auth/login";
     }
 
-    @GetMapping("auth/logout")
+    @PostMapping("auth/logout")
     public String logout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         logger.info("Logout requested");
 

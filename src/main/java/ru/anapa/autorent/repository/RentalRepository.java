@@ -19,6 +19,8 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     List<Rental> findByStatusOrderByCreatedAtDesc(RentalStatus status);
 
+    List<Rental> findByUserIdAndStatusOrderByCreatedAtDesc(Long userId, RentalStatus status);
+
     @Query("SELECT r FROM Rental r WHERE r.car = :car AND r.status IN ('ACTIVE', 'PENDING') " +
             "AND r.id != :rentalId " +
             "AND ((r.startDate BETWEEN :startDate AND :endDate) OR " +

@@ -107,11 +107,11 @@ public class AdminRentalController {
     @PostMapping("/{id}/cancel")
     public Object cancelRental(Model model,
                                @PathVariable Long id,
-                               @RequestParam(required = false) String notes,
+                               @RequestParam(required = false) String cancelReason,
                                RedirectAttributes redirectAttributes,
                                @RequestHeader(name = "X-Requested-With", required = false) String requestedWith) {
         try {
-            Rental rental = rentalService.cancelRental(id, notes);
+            Rental rental = rentalService.cancelRental(id, cancelReason);
 
             // Если это AJAX-запрос
             if ("XMLHttpRequest".equals(requestedWith)) {

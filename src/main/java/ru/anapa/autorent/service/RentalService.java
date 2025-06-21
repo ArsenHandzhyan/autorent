@@ -31,12 +31,14 @@ public class RentalService {
     private final RentalRepository rentalRepository;
     private final CarService carService;
     private final CarRepository carRepository;
+    private final DailyPaymentService dailyPaymentService;
 
     @Autowired
-    public RentalService(RentalRepository rentalRepository, @Lazy CarService carService, CarRepository carRepository) {
+    public RentalService(RentalRepository rentalRepository, @Lazy CarService carService, CarRepository carRepository, DailyPaymentService dailyPaymentService) {
         this.rentalRepository = rentalRepository;
         this.carService = carService;
         this.carRepository = carRepository;
+        this.dailyPaymentService = dailyPaymentService;
     }
 
     public Page<Rental> findAllRentals(Pageable pageable) {
@@ -125,7 +127,31 @@ public class RentalService {
             carService.updateCar(car);
         }
 
+        // Создаем ежедневные платежи для активной аренды
+        createDailyPaymentsForRental(rental);
+
         return rentalRepository.save(rental);
+    }
+
+    /**
+     * Создает ежедневные платежи для аренды
+     */
+    private void createDailyPaymentsForRental(Rental rental) {
+        try {
+            LocalDate startDate = rental.getStartDate().toLocalDate();
+            LocalDate endDate = rental.getEndDate().toLocalDate();
+            LocalDate today = LocalDate.now();
+
+            // Создаем платежи только для дат, которые еще не прошли
+            LocalDate paymentStartDate = startDate.isBefore(today) ? today : startDate;
+
+            for (LocalDate date = paymentStartDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+                dailyPaymentService.createDailyPayment(rental, date);
+            }
+        } catch (Exception e) {
+            // Логируем ошибку, но не прерываем процесс активации аренды
+            System.err.println("Ошибка при создании ежедневных платежей для аренды " + rental.getId() + ": " + e.getMessage());
+        }
     }
 
     @Transactional
@@ -413,5 +439,13 @@ public class RentalService {
         );
         
         return overlappingRentals.isEmpty();
+    }
+
+    /**
+     * Находит активные аренды пользователя
+     */
+    @Transactional(readOnly = true)
+    public List<Rental> findActiveRentalsByUser(Long userId) {
+        return rentalRepository.findByUserIdAndStatusOrderByCreatedAtDesc(userId, RentalStatus.ACTIVE);
     }
 }

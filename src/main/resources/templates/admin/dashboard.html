@@ -19,126 +19,134 @@
 <!-- Контейнер для сообщений -->
 <div id="message-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
 
-<main class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Админ-панель</h1>
-        <div class="quick-actions">
-            <a th:href="@{/admin/synchronize-car-statuses}" class="btn btn-primary">
-                <i class="fas fa-sync-alt"></i> Синхронизировать статусы
-            </a>
-            <a th:href="@{/admin/statistics}" class="btn btn-info">
-                <i class="fas fa-chart-bar"></i> Статистика
-            </a>
-        </div>
-    </div>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
 
-    <!-- Статистика -->
-    <div class="dashboard-grid">
-        <div class="stat-card">
-            <h3><i class="fas fa-users"></i> Пользователи</h3>
-            <p class="stat-number" th:text="${userCount}">0</p>
-            <a th:href="@{/admin/users}" class="btn btn-outline-primary">Управление</a>
-        </div>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">
+                    <i class="fas fa-tachometer-alt"></i> Админ-панель
+                </h1>
+                <div class="quick-actions">
+                    <a th:href="@{/admin/synchronize-car-statuses}" class="btn btn-primary">
+                        <i class="fas fa-sync-alt"></i> Синхронизировать статусы
+                    </a>
+                    <a th:href="@{/admin/statistics}" class="btn btn-info">
+                        <i class="fas fa-chart-bar"></i> Статистика
+                    </a>
+                </div>
+            </div>
 
-        <div class="stat-card">
-            <h3><i class="fas fa-wallet"></i> Счета</h3>
-            <p class="stat-number" th:text="${accountCount}">0</p>
-            <a th:href="@{/admin/accounts}" class="btn btn-outline-primary">Управление</a>
-        </div>
+            <!-- Статистика -->
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <h3><i class="fas fa-users"></i> Пользователи</h3>
+                    <p class="stat-number" th:text="${userCount}">0</p>
+                    <a th:href="@{/admin/users}" class="btn btn-outline-primary">Управление</a>
+                </div>
 
-        <div class="stat-card">
-            <h3><i class="fas fa-clock"></i> Ожидающие аренды</h3>
-            <p class="stat-number" id="pending-count" th:text="${pendingRentals.size()}">0</p>
-            <a th:href="@{/admin/rentals/status/PENDING}" class="btn btn-outline-primary">Просмотреть</a>
-        </div>
+                <div class="stat-card">
+                    <h3><i class="fas fa-wallet"></i> Счета</h3>
+                    <p class="stat-number" th:text="${accountCount}">0</p>
+                    <a th:href="@{/admin/accounts}" class="btn btn-outline-primary">Управление</a>
+                </div>
 
-        <div class="stat-card">
-            <h3><i class="fas fa-car"></i> Активные аренды</h3>
-            <p class="stat-number" id="active-count" th:text="${activeRentals.size()}">0</p>
-            <a th:href="@{/admin/rentals/status/ACTIVE}" class="btn btn-outline-primary">Просмотреть</a>
-        </div>
+                <div class="stat-card">
+                    <h3><i class="fas fa-clock"></i> Ожидающие аренды</h3>
+                    <p class="stat-number" id="pending-count" th:text="${pendingRentals.size()}">0</p>
+                    <a th:href="@{/admin/rentals/status/PENDING}" class="btn btn-outline-primary">Просмотреть</a>
+                </div>
 
-        <div class="stat-card">
-            <h3><i class="fas fa-car"></i> Автомобили</h3>
-            <p class="stat-number" th:text="${carCount}">0</p>
-            <a th:href="@{/admin/cars}" class="btn btn-outline-primary">Управление</a>
-        </div>
+                <div class="stat-card">
+                    <h3><i class="fas fa-car"></i> Активные аренды</h3>
+                    <p class="stat-number" id="active-count" th:text="${activeRentals.size()}">0</p>
+                    <a th:href="@{/admin/rentals/status/ACTIVE}" class="btn btn-outline-primary">Просмотреть</a>
+                </div>
 
-        <div class="stat-card">
-            <h3><i class="fas fa-ban"></i> Запросы на отмену</h3>
-            <p class="stat-number" id="cancellation-count" th:text="${pendingCancellations.size()}">0</p>
-            <a th:href="@{/admin/rentals/status/PENDING_CANCELLATION}" class="btn btn-outline-warning">Обработать</a>
-        </div>
-    </div>
+                <div class="stat-card">
+                    <h3><i class="fas fa-car"></i> Автомобили</h3>
+                    <p class="stat-number" th:text="${carCount}">0</p>
+                    <a th:href="@{/admin/cars}" class="btn btn-outline-primary">Управление</a>
+                </div>
 
-    <!-- Ожидающие подтверждения аренды -->
-    <div class="section-card">
-        <h2><i class="fas fa-clock"></i> Ожидающие подтверждения аренды</h2>
-        <div class="table-responsive">
-            <table class="data-table">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Пользователь</th>
-                    <th>Автомобиль</th>
-                    <th>Дата начала</th>
-                    <th>Дата окончания</th>
-                    <th>Стоимость</th>
-                    <th>Статус</th>
-                    <th>Действия</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="rental : ${pendingRentals}" th:id="'rental-row-' + ${rental.id}"
-                    th:data-rental-id="${rental.id}" th:data-rental-status="${rental.status}">
-                    <td th:text="${rental.id}">1</td>
-                    <td th:text="${rental.user.fullName}">Иван Иванов</td>
-                    <td th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</td>
-                    <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2025</td>
-                    <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
-                    <td th:text="${rental.totalCost + ' ₽'}">15000 ₽</td>
-                    <td>
-                        <span class="status-badge" 
-                              th:classappend="${rental.status != null ? 'status-' + #strings.toLowerCase(rental.status) : ''}"
-                              th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}">
-                            Статус
-                        </span>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <a th:href="@{/admin/rentals/{id}(id=${rental.id})}" class="btn btn-info">
-                                <i class="fas fa-info-circle"></i>
-                            </a>
-                            <form th:action="@{/admin/rentals/{id}/approve(id=${rental.id})}" method="post" style="display: inline;">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                            </form>
-                            <button type="button" class="btn btn-danger"
-                                    th:onclick="'showCancelForm(' + ${rental.id} + ')'">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
+                <div class="stat-card">
+                    <h3><i class="fas fa-ban"></i> Запросы на отмену</h3>
+                    <p class="stat-number" id="cancellation-count" th:text="${pendingCancellations.size()}">0</p>
+                    <a th:href="@{/admin/rentals/status/PENDING_CANCELLATION}" class="btn btn-outline-warning">Обработать</a>
+                </div>
+            </div>
 
-                        <div th:id="'cancelForm-' + ${rental.id}" class="cancel-form mt-2" style="display: none;">
-                            <form th:action="@{/admin/rentals/{id}/cancel(id=${rental.id})}" method="post">
-                                <div class="form-group">
-                                    <label for="notes">Причина отмены:</label>
-                                    <textarea id="notes" name="notes" rows="3" class="form-control" required></textarea>
+            <!-- Ожидающие подтверждения аренды -->
+            <div class="section-card">
+                <h2><i class="fas fa-clock"></i> Ожидающие подтверждения аренды</h2>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Пользователь</th>
+                            <th>Автомобиль</th>
+                            <th>Дата начала</th>
+                            <th>Дата окончания</th>
+                            <th>Стоимость</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="rental : ${pendingRentals}" th:id="'rental-row-' + ${rental.id}"
+                            th:data-rental-id="${rental.id}" th:data-rental-status="${rental.status}">
+                            <td th:text="${rental.id}">1</td>
+                            <td th:text="${rental.user.fullName}">Иван Иванов</td>
+                            <td th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</td>
+                            <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2025</td>
+                            <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2025</td>
+                            <td th:text="${rental.totalCost + ' ₽'}">15000 ₽</td>
+                            <td>
+                                <span class="status-badge" 
+                                      th:classappend="${rental.status != null ? 'status-' + #strings.toLowerCase(rental.status) : ''}"
+                                      th:text="${T(ru.anapa.autorent.util.RentalStatusUtil).getStatusText(rental.status)}">
+                                    Статус
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a th:href="@{/admin/rentals/{id}(id=${rental.id})}" class="btn btn-info">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <form th:action="@{/admin/rentals/{id}/approve(id=${rental.id})}" method="post" style="display: inline;">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <button type="button" class="btn btn-danger"
+                                            th:onclick="'showCancelForm(' + ${rental.id} + ')'">
+                                        <i class="fas fa-times"></i>
+                                    </button>
                                 </div>
-                                <div class="mt-2">
-                                    <button type="submit" class="btn btn-danger">Подтвердить отмену</button>
-                                    <button type="button" class="btn btn-secondary" th:onclick="'hideCancelForm(' + ${rental.id} + ')'">Закрыть</button>
+
+                                <div th:id="'cancelForm-' + ${rental.id}" class="cancel-form mt-2" style="display: none;">
+                                    <form th:action="@{/admin/rentals/{id}/cancel(id=${rental.id})}" method="post">
+                                        <div class="form-group">
+                                            <label for="notes">Причина отмены:</label>
+                                            <textarea id="notes" name="notes" rows="3" class="form-control" required></textarea>
+                                        </div>
+                                        <div class="mt-2">
+                                            <button type="submit" class="btn btn-danger">Подтвердить отмену</button>
+                                            <button type="button" class="btn btn-secondary" th:onclick="'hideCancelForm(' + ${rental.id} + ')'">Закрыть</button>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     </div>
-</main>
+</div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 

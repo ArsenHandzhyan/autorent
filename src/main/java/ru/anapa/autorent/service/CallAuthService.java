@@ -7,9 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 @Service
 public class CallAuthService {
@@ -21,8 +25,11 @@ public class CallAuthService {
     @Value("${sms.ru.api.id}")
     private String apiId;
 
-    public CallAuthService() {
-        this.restTemplate = new RestTemplate();
+    @Value("${sms.api.key}")
+    private String apiKey;
+
+    public CallAuthService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     private String normalizePhone(String phone) {
@@ -135,6 +142,33 @@ public class CallAuthService {
         } catch (Exception e) {
             logger.error("Error checking call status for check_id {}: {}", checkId, e.getMessage(), e);
             throw new RuntimeException("Ошибка при проверке статуса звонка", e);
+        }
+    }
+
+    public boolean authenticate(String phone, String code) {
+        try {
+            String url = "https://sms.ru/call/check";
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            
+            Map<String, String> requestBody = new HashMap<>();
+            requestBody.put("api_id", apiKey);
+            requestBody.put("phone", phone);
+            requestBody.put("code", code);
+            
+            HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
+            
+            ResponseEntity<Map> response = restTemplate.postForEntity(url, request, Map.class);
+            
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                Map<String, Object> responseBody = response.getBody();
+                return "OK".equals(responseBody.get("status"));
+            }
+            
+            return false;
+        } catch (Exception e) {
+            return false;
         }
     }
 } 

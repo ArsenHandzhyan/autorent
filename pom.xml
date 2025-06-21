@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.4</version>
+		<version>3.2.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.anapa</groupId>
@@ -32,6 +32,7 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -139,8 +140,11 @@
 					</annotationProcessorPaths>
 					<parameters>true</parameters>
 					<compilerArgs>
-						<arg>-J-Duser.language=en</arg>
+						<arg>-J-Dfile.encoding=UTF-8</arg>
 					</compilerArgs>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -153,6 +157,9 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<jvmArguments>
+						-Dfile.encoding=UTF-8
+					</jvmArguments>
 				</configuration>
 			</plugin>
 		</plugins>

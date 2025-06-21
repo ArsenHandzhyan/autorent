@@ -6,35 +6,38 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "car_images")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "car_images")
 public class CarImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "car_id")
     private Car car;
 
-    @Column(nullable = false)
+    @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    @Column
-    private String description;
+    @Column(name = "description")
+    @Builder.Default
+    private String description = "";
+
+    @Column(name = "is_main")
+    @Builder.Default
+    private boolean isMain = false;
 
     @Column(name = "display_order")
-    private Integer displayOrder;
+    @Builder.Default
+    private int displayOrder = 0;
 
     @Column(name = "rotation")
     private Integer rotation = 0;
-
-    @Column(name = "is_main")
-    private boolean main;
 
     public Integer getRotation() {
         return rotation;

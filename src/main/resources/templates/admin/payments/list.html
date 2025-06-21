@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление ежедневными платежами</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/admin-dashboard.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">
+                        <i class="fas fa-credit-card"></i> Управление ежедневными платежами
+                    </h1>
+                </div>
+
+                <!-- Панель управления -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Создание платежей</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="paymentDate" class="form-label">Дата платежа:</label>
+                                    <input type="date" class="form-control" id="paymentDate" 
+                                           th:value="${#temporals.format(#temporals.createToday(), 'yyyy-MM-dd')}">
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="createPayments()">
+                                    <i class="fas fa-plus"></i> Создать платежи
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Обработка платежей</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="processDate" class="form-label">Дата обработки:</label>
+                                    <input type="date" class="form-control" id="processDate" 
+                                           th:value="${#temporals.format(#temporals.createToday(), 'yyyy-MM-dd')}">
+                                </div>
+                                <button type="button" class="btn btn-success" onclick="processPayments()">
+                                    <i class="fas fa-play"></i> Обработать платежи
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Список активных аренд -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Активные аренды</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${activeRentals.empty}" class="text-center py-4">
+                            <i class="fas fa-info-circle fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">Нет активных аренд</h5>
+                            <p class="text-muted">Для тестирования системы платежей создайте активную аренду</p>
+                            <a th:href="@{/admin/rentals}" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Создать аренду
+                            </a>
+                        </div>
+                        <div th:unless="${activeRentals.empty}" class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Клиент</th>
+                                        <th>Автомобиль</th>
+                                        <th>Дата начала</th>
+                                        <th>Дата окончания</th>
+                                        <th>Стоимость за день</th>
+                                        <th>Статус</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="rental : ${activeRentals}">
+                                        <td th:text="${rental.id}">1</td>
+                                        <td>
+                                            <span th:text="${rental.user.firstName + ' ' + rental.user.lastName}">Иван Иванов</span>
+                                            <br>
+                                            <small class="text-muted" th:text="${rental.user.email}">ivan@example.com</small>
+                                        </td>
+                                        <td>
+                                            <span th:text="${rental.car.brand + ' ' + rental.car.model}">Toyota Camry</span>
+                                            <br>
+                                            <small class="text-muted" th:text="${rental.car.registrationNumber}">А123БВ 123</small>
+                                        </td>
+                                        <td th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2024</td>
+                                        <td th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2024</td>
+                                        <td th:text="${rental.car.pricePerDay + ' ₽'}">1000 ₽</td>
+                                        <td>
+                                            <span class="badge bg-success" th:text="${rental.status}">ACTIVE</span>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/admin/payments/rental/{id}(id=${rental.id})}" 
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i> Платежи
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-info" 
+                                                    th:onclick="'getPaymentStatistics(' + ${rental.id} + ')'">
+                                                <i class="fas fa-chart-bar"></i> Статистика
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Модальное окно для статистики -->
+    <div class="modal fade" id="statisticsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Статистика платежей</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="statisticsContent">
+                    <!-- Содержимое будет загружено динамически -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/admin-payments.js}"></script>
+    <script th:inline="javascript">
+        function createPayments() {
+            const paymentDate = document.getElementById('paymentDate').value;
+            if (!paymentDate) {
+                alert('Пожалуйста, выберите дату');
+                return;
+            }
+
+            fetch('/admin/payments/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'paymentDate=' + encodeURIComponent(paymentDate)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Платежи успешно созданы');
+                    location.reload();
+                } else {
+                    alert('Ошибка: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при создании платежей');
+            });
+        }
+
+        function processPayments() {
+            const processDate = document.getElementById('processDate').value;
+            if (!processDate) {
+                alert('Пожалуйста, выберите дату');
+                return;
+            }
+
+            fetch('/admin/payments/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'paymentDate=' + encodeURIComponent(processDate)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Платежи успешно обработаны');
+                    location.reload();
+                } else {
+                    alert('Ошибка: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при обработке платежей');
+            });
+        }
+
+        function getPaymentStatistics(rentalId) {
+            fetch('/admin/payments/statistics/' + rentalId)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const statistics = data.statistics;
+                    const content = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Количество платежей:</h6>
+                                <ul class="list-unstyled">
+                                    <li>Всего: ${statistics.totalPayments}</li>
+                                    <li>Обработано: ${statistics.processedPayments}</li>
+                                    <li>Ожидает: ${statistics.pendingPayments}</li>
+                                    <li>Ошибки: ${statistics.failedPayments}</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Суммы:</h6>
+                                <ul class="list-unstyled">
+                                    <li>Общая сумма: ${statistics.totalAmount} ₽</li>
+                                    <li>Обработано: ${statistics.processedAmount} ₽</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('statisticsContent').innerHTML = content;
+                    new bootstrap.Modal(document.getElementById('statisticsModal')).show();
+                } else {
+                    alert('Ошибка при получении статистики: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при получении статистики');
+            });
+        }
+    </script>
+</body>
+</html> 

@@ -1482,20 +1482,20 @@ footer hr {
     font-size: 0.9rem;
 }
 
-.toggle-section {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #f8f9fa;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
 .empty-message {
     text-align: center;
     padding: 40px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 .car-image {
