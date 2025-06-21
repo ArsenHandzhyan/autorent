@@ -36,4 +36,11 @@ public interface DailyPaymentRepository extends JpaRepository<DailyPayment, Long
 
     @Query("SELECT dp FROM DailyPayment dp WHERE dp.account.user.id = :userId ORDER BY dp.paymentDate DESC")
     List<DailyPayment> findByAccountUserIdOrderByPaymentDateDesc(@Param("userId") Long userId);
+
+    @Query("SELECT DISTINCT dp FROM DailyPayment dp " +
+           "LEFT JOIN FETCH dp.rental r " +
+           "LEFT JOIN FETCH r.car c " +
+           "WHERE dp.account.user.id = :userId " +
+           "ORDER BY dp.paymentDate DESC")
+    List<DailyPayment> findPaymentsByUserWithCarData(@Param("userId") Long userId);
 } 

@@ -448,4 +448,12 @@ public class RentalService {
     public List<Rental> findActiveRentalsByUser(Long userId) {
         return rentalRepository.findByUserIdAndStatusOrderByCreatedAtDesc(userId, RentalStatus.ACTIVE);
     }
+
+    /**
+     * Находит активные аренды пользователя с загруженными изображениями
+     */
+    @Transactional(readOnly = true)
+    public List<Rental> findActiveRentalsByUserWithImages(Long userId) {
+        return rentalRepository.findActiveRentalsByUserWithImages(userId);
+    }
 }

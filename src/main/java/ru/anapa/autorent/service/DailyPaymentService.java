@@ -324,6 +324,13 @@ public class DailyPaymentService {
     }
 
     /**
+     * Находит все платежи пользователя с данными автомобилей
+     */
+    public List<DailyPayment> findPaymentsByUserWithCarData(Long userId) {
+        return dailyPaymentRepository.findPaymentsByUserWithCarData(userId);
+    }
+
+    /**
      * Класс для хранения статистики платежей
      */
     public static class PaymentStatistics {

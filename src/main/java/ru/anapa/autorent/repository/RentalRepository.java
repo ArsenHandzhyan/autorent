@@ -63,4 +63,11 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
                                        @Param("startDate") LocalDateTime startDate,
                                        @Param("endDate") LocalDateTime endDate,
                                        @Param("statuses") List<RentalStatus> statuses);
+
+    @Query("SELECT DISTINCT r FROM Rental r " +
+           "LEFT JOIN FETCH r.car c " +
+           "LEFT JOIN FETCH c.images " +
+           "WHERE r.user.id = :userId AND r.status = 'ACTIVE' " +
+           "ORDER BY r.createdAt DESC")
+    List<Rental> findActiveRentalsByUserWithImages(@Param("userId") Long userId);
 }

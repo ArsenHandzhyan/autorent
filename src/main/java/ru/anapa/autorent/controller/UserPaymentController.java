@@ -48,11 +48,11 @@ public class UserPaymentController {
             return "redirect:/login";
         }
 
-        // Получаем активные аренды пользователя
-        List<Rental> activeRentals = rentalService.findActiveRentalsByUser(user.getId());
+        // Получаем активные аренды пользователя с загруженными изображениями
+        List<Rental> activeRentals = rentalService.findActiveRentalsByUserWithImages(user.getId());
         
         // Получаем историю платежей пользователя
-        List<DailyPayment> userPayments = dailyPaymentService.findPaymentsByUser(user.getId());
+        List<DailyPayment> userPayments = dailyPaymentService.findPaymentsByUserWithCarData(user.getId());
         
         // Получаем счет пользователя
         Account userAccount = accountService.findByUserId(user.getId());

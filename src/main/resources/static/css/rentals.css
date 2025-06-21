@@ -24,26 +24,30 @@
 
 /* Стили для кнопки переключения секции */
 .toggle-section {
+    color: #6c757d;
+    text-decoration: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #6c757d;
-    text-decoration: none;
+    border: none;
+    background: none;
     cursor: pointer;
-    transition: color 0.3s ease;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    transition: color 0.2s ease-in-out;
 }
 
 .toggle-section:hover {
-    color: #495057;
+    color: #333;
     text-decoration: none;
 }
 
 .toggle-section i {
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease-in-out;
 }
 
-.toggle-section[aria-expanded="true"] i {
-    transform: rotate(180deg);
+.toggle-section[aria-expanded="false"] i {
+    transform: rotate(-90deg);
 }
 
 /* Стили для списка аренд и аккаунтов */
@@ -319,26 +323,6 @@
 .btn-sm {
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
-}
-
-.toggle-section {
-    color: #6c757d;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.toggle-section:hover {
-    color: #333;
-}
-
-.toggle-section i {
-    transition: transform 0.2s ease-in-out;
-}
-
-.toggle-section[aria-expanded="false"] i {
-    transform: rotate(-90deg);
 }
 
 .account-card {

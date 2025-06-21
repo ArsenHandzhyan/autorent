@@ -76,15 +76,15 @@
         <div class="rentals-list">
             <div class="rental-card" th:each="rental : ${activeRentals}" th:data-rental-id="${rental.id}">
                 <div class="rental-header">
-                    <h3 th:text="${rental.car.brand + ' ' + rental.car.model}"></h3>
+                    <h3 th:text="${rental.car != null ? rental.car.brand + ' ' + rental.car.model : 'Автомобиль не найден'}"></h3>
                     <span class="status-badge status-active" th:text="${rental.status.displayName}"></span>
                 </div>
 
-                <img th:if="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
+                <img th:if="${rental.car != null and rental.car.images != null and rental.car.images.size() > 0}" 
                      th:src="${rental.car.images[0].imageUrl}" 
                      alt="Car Image" 
                      class="car-image">
-                <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
+                <img th:unless="${rental.car != null and rental.car.images != null and rental.car.images.size() > 0}" 
                      th:src="@{/images/default-car.jpg}" 
                      alt="Default Car Image" 
                      class="car-image">
@@ -100,11 +100,11 @@
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Стоимость за день</span>
-                        <span class="detail-value" th:text="${rental.car.pricePerDay + ' ₽'}"></span>
+                        <span class="detail-value" th:text="${rental.car != null ? rental.car.pricePerDay + ' ₽' : 'Не указано'}"></span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Гос. номер</span>
-                        <span class="detail-value" th:text="${rental.car.licensePlate}"></span>
+                        <span class="detail-value" th:text="${rental.car != null ? rental.car.licensePlate : 'Не указано'}"></span>
                     </div>
                 </div>
 
@@ -146,7 +146,7 @@
                 <tbody>
                     <tr th:each="payment : ${userPayments}">
                         <td th:text="${#temporals.format(payment.paymentDate, 'dd.MM.yyyy')}">01.01.2024</td>
-                        <td th:text="${payment.rental.car.brand + ' ' + payment.rental.car.model}">Автомобиль</td>
+                        <td th:text="${payment.rental != null and payment.rental.car != null ? payment.rental.car.brand + ' ' + payment.rental.car.model : 'Автомобиль не найден'}">Автомобиль</td>
                         <td th:text="${payment.amount + ' ₽'}" 
                             th:class="${payment.amount > 0 ? 'text-danger' : 'text-success'}">1000 ₽</td>
                         <td>

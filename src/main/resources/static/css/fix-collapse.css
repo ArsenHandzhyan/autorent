@@ -1,0 +1,54 @@
+/* Исправления для Bootstrap collapse */
+
+/* Переопределяем конфликтующие стили toggle-section */
+.toggle-section {
+    color: #6c757d !important;
+    text-decoration: none !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    border: none !important;
+    background: none !important;
+    cursor: pointer !important;
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.875rem !important;
+    transition: color 0.2s ease-in-out !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+}
+
+.toggle-section:hover {
+    color: #333 !important;
+    text-decoration: none !important;
+}
+
+.toggle-section i {
+    transition: transform 0.2s ease-in-out !important;
+}
+
+.toggle-section[aria-expanded="false"] i {
+    transform: rotate(-90deg) !important;
+}
+
+.toggle-section[aria-expanded="true"] i {
+    transform: rotate(0deg) !important;
+}
+
+/* Обеспечиваем правильную работу Bootstrap collapse */
+.collapse {
+    transition: height 0.35s ease !important;
+}
+
+.collapse.show {
+    display: block !important;
+}
+
+.collapse:not(.show) {
+    display: none !important;
+}
+
+/* Исправляем z-index для кнопок */
+.btn {
+    position: relative !important;
+    z-index: 1 !important;
+} 
