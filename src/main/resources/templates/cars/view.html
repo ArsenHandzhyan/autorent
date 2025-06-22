@@ -60,21 +60,57 @@
                 <!-- ... (другие характеристики) ... -->
             </ul>
 
-            <form th:action="@{/rentals/new}" method="post">
+            <!-- Блок статуса автомобиля -->
+            <div class="car-status mb-3">
+                <span class="badge fs-5"
+                      th:classappend="${car.status.name() == 'AVAILABLE'} ? 'bg-success' :
+                                     (car.status.name() == 'RENTED' ? 'bg-danger' :
+                                     (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
+                                     (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))">
+                    <span th:switch="${car.status.name()}">
+                        <span th:case="'AVAILABLE'">Доступен</span>
+                        <span th:case="'RENTED'">Арендован</span>
+                        <span th:case="'RESERVED'">Забронирован</span>
+                        <span th:case="'MAINTENANCE'">На обслуживании</span>
+                        <span th:case="*">Неизвестно</span>
+                    </span>
+                </span>
+                <span th:if="${car.status.name() == 'RENTED' || car.status.name() == 'RESERVED'}">
+                    <span class="ms-2">до
+                        <span th:text="${nextDate != null ? #temporals.format(nextDate, 'dd.MM.yyyy HH:mm') : ''}"></span>
+                    </span>
+                </span>
+            </div>
+
+            <!-- Список занятых периодов -->
+            <div th:if="${bookedPeriods != null && !#lists.isEmpty(bookedPeriods)}" class="mb-3">
+                <strong>Занятые периоды:</strong>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item px-0 py-1" th:each="period : ${bookedPeriods}">
+                        <span th:text="${#temporals.format(period.startDate, 'dd.MM.yyyy HH:mm')}"></span>
+                        &mdash;
+                        <span th:text="${#temporals.format(period.endDate, 'dd.MM.yyyy HH:mm')}"></span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Форма аренды с блокировкой занятых дат -->
+            <form th:action="@{/rentals/new}" method="post" id="carRentalForm">
                 <input type="hidden" name="carId" th:value="${car.id}"/>
                 <div class="mb-3">
-                    <label for="startDate" class="form-label">Дата начала аренды</label>
-                    <input type="date" id="startDate" name="startDate" class="form-control" required/>
+                    <label for="startDate" class="form-label">Дата и время начала аренды</label>
+                    <input type="datetime-local" id="startDate" name="startDate" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="endDate" class="form-label">Дата окончания аренды</label>
-                    <input type="date" id="endDate" name="endDate" class="form-control" required/>
+                    <label for="endDate" class="form-label">Дата и время окончания аренды</label>
+                    <input type="datetime-local" id="endDate" name="endDate" class="form-control" required>
                 </div>
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary btn-lg">
+                    <button type="submit" class="btn btn-primary btn-lg" id="rentBtn">
                         <i class="fas fa-calendar-plus"></i> Забронировать
                     </button>
                 </div>
+                <div class="form-text mt-2" id="dateWarning" style="display:none;color:red;">Выбранные даты пересекаются с уже забронированными!</div>
             </form>
         </div>
     </div>
@@ -87,6 +123,44 @@
         document.getElementById('mainCarImage').src = src;
         // ... (логика для активной миниатюры) ...
     }
+</script>
+
+<script th:inline="javascript">
+    // Получаем периоды бронирования из Thymeleaf
+    const bookedPeriods = /*[[${bookedPeriods}]]*/ [];
+    function parsePeriods(periods) {
+        return periods.map(p => ({
+            start: new Date(p.startDate),
+            end: new Date(p.endDate)
+        }));
+    }
+    const periods = parsePeriods(bookedPeriods);
+    const startInput = document.getElementById('startDate');
+    const endInput = document.getElementById('endDate');
+    const rentBtn = document.getElementById('rentBtn');
+    const warning = document.getElementById('dateWarning');
+
+    function isOverlapping(start, end) {
+        return periods.some(p => !(end <= p.start || start >= p.end));
+    }
+    function validateDates() {
+        const start = new Date(startInput.value);
+        const end = new Date(endInput.value);
+        if (start && end && !isNaN(start) && !isNaN(end)) {
+            if (isOverlapping(start, end)) {
+                rentBtn.disabled = true;
+                warning.style.display = 'block';
+            } else {
+                rentBtn.disabled = false;
+                warning.style.display = 'none';
+            }
+        } else {
+            rentBtn.disabled = false;
+            warning.style.display = 'none';
+        }
+    }
+    startInput.addEventListener('change', validateDates);
+    endInput.addEventListener('change', validateDates);
 </script>
 </body>
 </html>
