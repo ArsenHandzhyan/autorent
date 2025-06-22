@@ -127,7 +127,8 @@
         </div>
 
         <div id="rental-actions" class="rental-actions">
-            <a th:href="@{/admin/rentals}" class="btn btn-secondary">Назад к списку</a>
+            <a th:href="@{/rentals/my-rentals}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Мои аренды</a>
+            <a th:href="@{/user/payments}" class="btn btn-info"><i class="fas fa-file-invoice-dollar"></i> История платежей</a>
 
             <!-- Кнопки для ожидающих аренд -->
             <div id="pending-actions" th:if="${rental.status == 'PENDING'}" class="action-buttons">

@@ -51,6 +51,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initPaymentSystem();
     initNotificationSystem();
     initAccountPages();
+    initCarDeletionConfirmation();
+    initRejectCancellationForm();
+    initUserStatusToggle();
     
     console.log('AutoRent: Приложение инициализировано');
 });
@@ -199,13 +202,12 @@ function initCarGallery() {
     
     thumbnails.forEach(thumbnail => {
         thumbnail.addEventListener('click', function() {
-            const imgSrc = this.querySelector('img').src;
+            const newSrc = this.getAttribute('data-src');
+            mainImage.setAttribute('src', newSrc);
             
-            // Обновляем главное изображение
-            mainImage.src = imgSrc;
-            
-            // Обновляем активный thumbnail
+            // Снимаем активный класс со всех миниатюр
             thumbnails.forEach(t => t.classList.remove('active'));
+            // Добавляем активный класс к нажатой миниатюре
             this.classList.add('active');
         });
     });
@@ -1259,4 +1261,86 @@ function formatPhone(phone) {
     }
     
     return phone;
+}
+
+/**
+ * Инициализация подтверждения удаления автомобиля
+ */
+function initCarDeletionConfirmation() {
+    const deleteForms = document.querySelectorAll('.delete-car-form');
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            const confirmation = confirm('Вы уверены, что хотите удалить этот автомобиль?');
+            if (!confirmation) {
+                event.preventDefault();
+            }
+        });
+    });
+}
+
+/**
+ * Инициализация отображения формы отклонения отмены аренды
+ */
+function initRejectCancellationForm() {
+    const rejectButtons = document.querySelectorAll('.reject-cancellation-btn');
+    rejectButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const rentalId = this.getAttribute('data-rental-id');
+            const rejectForm = document.getElementById('rejectForm-' + rentalId);
+            if (rejectForm) {
+                rejectForm.classList.toggle('d-none');
+            }
+        });
+    });
+}
+
+/**
+ * Инициализация переключения статуса пользователя (вкл/выкл)
+ */
+function initUserStatusToggle() {
+    document.body.addEventListener('click', function(event) {
+        const disableBtn = event.target.closest('.disable-user-btn');
+        const enableBtn = event.target.closest('.enable-user-btn');
+
+        if (disableBtn) {
+            const userId = disableBtn.getAttribute('data-user-id');
+            if (confirm('Вы уверены, что хотите отключить этого пользователя?')) {
+                toggleUserStatus(userId, 'disable');
+            }
+        }
+
+        if (enableBtn) {
+            const userId = enableBtn.getAttribute('data-user-id');
+            if (confirm('Вы уверены, что хотите активировать этого пользователя?')) {
+                toggleUserStatus(userId, 'enable');
+            }
+        }
+    });
+}
+
+function toggleUserStatus(userId, action) {
+    // CSRF токены должны быть инициализированы в initCSRF()
+    if (!csrfToken || !csrfHeader) {
+        console.error('CSRF token not found');
+        return;
+    }
+
+    fetch(`/admin/users/${userId}/${action}`, {
+        method: 'POST',
+        headers: {
+            [csrfHeader]: csrfToken
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            location.reload();
+        } else {
+            console.error('Failed to update user status');
+            alert('Не удалось обновить статус пользователя.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Произошла ошибка.');
+    });
 } 

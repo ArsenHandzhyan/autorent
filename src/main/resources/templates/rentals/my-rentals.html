@@ -7,7 +7,12 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <div class="container py-5">
-    <h1 class="mb-4">Мои аренды</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Мои аренды</h1>
+        <a th:href="@{/user/payments}" class="btn btn-outline-primary">
+            <i class="fas fa-file-invoice-dollar"></i> История платежей
+        </a>
+    </div>
 
     <!-- Flash Messages -->
     <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -37,16 +42,14 @@
                         <span class="badge bg-warning text-dark" th:text="${rental.status.displayName}">Статус</span>
                     </div>
 
-                    <img th:if="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
-                         th:src="${rental.car.images[0].imageUrl}" 
-                         alt="Car Image" 
-                         class="card-img-top"
-                         style="height: 200px; object-fit: cover;">
-                    <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
-                         th:src="@{/images/default-car.jpg}" 
-                         alt="Default Car Image" 
-                         class="card-img-top"
-                         style="height: 200px; object-fit: cover;">
+                    <img th:if="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}"
+                         th:src="${rental.car.images[0].imageUrl}"
+                         alt="Car Image"
+                         class="card-img-top rental-card-img">
+                    <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}"
+                         th:src="@{/images/default-car.jpg}"
+                         alt="Default Car Image"
+                         class="card-img-top rental-card-img">
 
                     <div class="card-body">
                         <div class="mb-2">
@@ -106,16 +109,14 @@
                               th:text="${rental.status.displayName}"></span>
                     </div>
 
-                    <img th:if="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
-                         th:src="${rental.car.images[0].imageUrl}" 
-                         alt="Car Image" 
-                         class="card-img-top"
-                         style="height: 200px; object-fit: cover;">
-                    <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
-                         th:src="@{/images/default-car.jpg}" 
-                         alt="Default Car Image" 
-                         class="card-img-top"
-                         style="height: 200px; object-fit: cover;">
+                    <img th:if="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}"
+                         th:src="${rental.car.images[0].imageUrl}"
+                         alt="Car Image"
+                         class="card-img-top rental-card-img">
+                    <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}"
+                         th:src="@{/images/default-car.jpg}"
+                         alt="Default Car Image"
+                         class="card-img-top rental-card-img">
 
                     <div class="card-body">
                         <div class="mb-2">
@@ -174,16 +175,14 @@
                         </span>
                     </div>
 
-                    <img th:if="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
-                         th:src="${rental.car.images[0].imageUrl}" 
-                         alt="Car Image" 
-                         class="card-img-top"
-                         style="height: 200px; object-fit: cover;">
-                    <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}" 
-                         th:src="@{/images/default-car.jpg}" 
-                         alt="Default Car Image" 
-                         class="card-img-top"
-                         style="height: 200px; object-fit: cover;">
+                    <img th:if="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}"
+                         th:src="${rental.car.images[0].imageUrl}"
+                         alt="Car Image"
+                         class="card-img-top rental-card-img">
+                    <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}"
+                         th:src="@{/images/default-car.jpg}"
+                         alt="Default Car Image"
+                         class="card-img-top rental-card-img">
 
                     <div class="card-body">
                         <div class="mb-2">

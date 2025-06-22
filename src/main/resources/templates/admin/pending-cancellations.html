@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
-<head>
-    <title>Запросы на отмену</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-</head>
+<head th:replace="~{fragments/head :: head(pageTitle='Запросы на отмену')}"></head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
@@ -38,15 +31,15 @@
             </div>
 
             <div class="rental-actions">
-                <form th:action="@{/admin/rentals/{id}/confirm-cancellation(id=${rental.id})}" method="post" style="display: inline;"> <!-- Обновлено -->
+                <form th:action="@{/admin/rentals/{id}/confirm-cancellation(id=${rental.id})}" method="post" class="d-inline">
                     <button type="submit" class="btn btn-success">Подтвердить отмену</button>
                 </form>
 
-                <button type="button" class="btn btn-danger"
-                        th:onclick="'showRejectForm(' + ${rental.id} + ')'">Отклонить</button>
+                <button type="button" class="btn btn-danger reject-cancellation-btn"
+                        th:data-rental-id="${rental.id}">Отклонить</button>
 
-                <div th:id="'rejectForm-' + ${rental.id}" class="reject-form" style="display: none;">
-                    <form th:action="@{/admin/rentals/{id}/reject-cancellation(id=${rental.id})}" method="post"> <!-- Обновлено -->
+                <div th:id="'rejectForm-' + ${rental.id}" class="reject-form d-none mt-2">
+                    <form th:action="@{/admin/rentals/{id}/reject-cancellation(id=${rental.id})}" method="post">
                         <div class="form-group">
                             <label for="adminNotes">Причина отказа:</label>
                             <textarea id="adminNotes" name="adminNotes" rows="3" class="form-control" required></textarea>
@@ -60,11 +53,5 @@
 </div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    function showRejectForm(rentalId) {
-        document.getElementById('rejectForm-' + rentalId).style.display = 'block';
-    }
-</script>
 </body>
 </html>
