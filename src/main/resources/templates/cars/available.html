@@ -46,8 +46,9 @@
         <div th:each="car : ${cars}" class="car-card">
             <div class="car-image">
                 <img th:if="${!car.images.empty}" 
-                     th:src="${car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].imageUrl : car.images[0].imageUrl}" 
-                     alt="Фото автомобиля">
+                     th:src="${car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].imageUrl : car.images[0].imageUrl}"
+                     alt="Фото автомобиля"
+                     th:style="'transform: rotate(' + ((car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].rotation : car.images[0].rotation) != null ? (car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].rotation : car.images[0].rotation) : 0) + 'deg);'">
                 <div th:unless="${!car.images.empty}" class="no-image">
                     <i class="fas fa-car"></i>
                     <span>Нет фото</span>

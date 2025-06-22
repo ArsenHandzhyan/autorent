@@ -19,7 +19,12 @@
         <div class="col-lg-7">
             <div class="car-gallery">
                 <div class="main-image mb-3">
-                    <img th:if="${!#lists.isEmpty(car.images)}" th:src="@{${car.images[0].imageUrl}}" id="mainCarImage" class="img-fluid rounded shadow" alt="Основное фото автомобиля"/>
+                    <img th:if="${!#lists.isEmpty(car.images)}"
+                         th:src="@{${car.images[0].imageUrl}}"
+                         id="mainCarImage"
+                         class="img-fluid rounded shadow"
+                         alt="Основное фото автомобиля"
+                         th:style="'transform: rotate(' + (${car.images[0].rotation} != null ? ${car.images[0].rotation} : 0) + 'deg);'"/>
                     <img th:if="${#lists.isEmpty(car.images)}" th:src="@{/images/default-car.jpg}" class="img-fluid rounded shadow" alt="Фото отсутствует"/>
                 </div>
                 <div th:if="${!#lists.isEmpty(car.images) && #lists.size(car.images) > 1}" class="thumbnails row g-2">
@@ -28,6 +33,7 @@
                              class="img-fluid rounded thumbnail"
                              th:classappend="${iter.index == 0} ? 'active' : ''"
                              alt="Миниатюра"
+                             th:style="'transform: rotate(' + (${image.rotation} != null ? ${image.rotation} : 0) + 'deg);'"
                              onclick="changeMainImage(this.src)"/>
                     </div>
                 </div>
