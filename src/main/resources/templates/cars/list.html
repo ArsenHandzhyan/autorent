@@ -60,7 +60,7 @@
     <div th:if="${not #lists.isEmpty(cars.content)}" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <div class="col" th:each="car : ${cars.content}">
             <div class="card h-100 car-card shadow-sm">
-                <a th:href="@{/cars/view/{id}(id=${car.id})}">
+                <a th:href="@{/cars/{id}(id=${car.id})}">
                     <img th:if="${car.images != null && !car.images.empty}"
                          th:src="@{${car.images[0].imageUrl}}"
                          class="card-img-top"
@@ -78,7 +78,7 @@
                     <div class="mt-auto">
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="price fw-bold fs-5" th:text="${#numbers.formatDecimal(car.pricePerDay, 0, 'WHITESPACE', 2, 'POINT')} + ' ₽/день'"></span>
-                            <a th:href="@{/cars/view/{id}(id=${car.id})}" class="btn btn-primary btn-sm">
+                            <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-primary btn-sm">
                                 <i class="fas fa-info-circle"></i> Детали
                             </a>
                         </div>

@@ -38,14 +38,18 @@
 
                             <div class="mb-3">
                                 <label for="startDate" class="form-label">Дата и время начала аренды:</label>
-                                <input type="datetime-local" id="startDate" name="startDate" th:value="${rental.startDate}" required
+                                <input type="datetime-local" id="startDate" name="startDate"
+                                       th:value="${rental.startDate != null ? #dates.format(rental.startDate, 'yyyy-MM-dd\'T\'HH:mm') : ''}"
+                                       required
                                        class="form-control" th:classappend="${#fields.hasErrors('startDate')} ? 'is-invalid'">
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="endDate" class="form-label">Дата и время окончания аренды:</label>
-                                <input type="datetime-local" id="endDate" name="endDate" th:value="${rental.endDate}" required
+                                <input type="datetime-local" id="endDate" name="endDate"
+                                       th:value="${rental.endDate != null ? #dates.format(rental.endDate, 'yyyy-MM-dd\'T\'HH:mm') : ''}"
+                                       required
                                        class="form-control" th:classappend="${#fields.hasErrors('endDate')} ? 'is-invalid'">
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
                             </div>
