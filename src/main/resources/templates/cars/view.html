@@ -64,9 +64,9 @@
             <div class="car-status mb-3">
                 <span class="badge fs-5"
                       th:classappend="${car.status.name() == 'AVAILABLE'} ? 'bg-success' :
-                                     (car.status.name() == 'RENTED' ? 'bg-danger' :
-                                     (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
-                                     (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))">
+                      (car.status.name() == 'RENTED' ? 'bg-danger' :
+                      (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
+                      (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))">
                     <span th:switch="${car.status.name()}">
                         <span th:case="'AVAILABLE'">Доступен</span>
                         <span th:case="'RENTED'">Арендован</span>
