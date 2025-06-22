@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:replace="~{fragments/head :: head}">
+    <title>Мой профиль - AutoRent</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Левая колонка: Информация о пользователе -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto" 
+                             style="width: 80px; height: 80px; font-size: 2rem;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <h4 th:text="${user.firstName + ' ' + user.lastName}">Имя Фамилия</h4>
+                    <p class="text-muted" th:text="${user.email}">email@example.com</p>
+                    <p class="text-muted" th:text="${user.phone}">+7 (999) 123-45-67</p>
+                    
+                    <div class="mt-3">
+                        <a th:href="@{/account/settings}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-cog"></i> Настройки
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая колонка: Информация об аккаунте -->
+        <div class="col-lg-8">
+            <!-- Баланс аккаунта -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-wallet text-primary"></i> Баланс аккаунта
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="mb-2">
+                                <span class="fs-4 fw-bold" th:text="${account.balance + ' ₽'}">0 ₽</span>
+                            </div>
+                            <small class="text-muted">Текущий баланс</small>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-2">
+                                <span class="fs-4 fw-bold" th:text="${account.creditLimit + ' ₽'}">0 ₽</span>
+                            </div>
+                            <small class="text-muted">Кредитный лимит</small>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-2">
+                                <span class="fs-4 fw-bold" th:text="${account.allowNegativeBalance ? 'Да' : 'Нет'}">Нет</span>
+                            </div>
+                            <small class="text-muted">Разрешен минусовый баланс</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Последние транзакции -->
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-history text-primary"></i> Последние транзакции
+                    </h5>
+                    <a th:href="@{/account/transactions}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-list"></i> Все транзакции
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div th:if="${#lists.isEmpty(transactions)}" class="text-center py-4">
+                        <i class="fas fa-inbox text-muted" style="font-size: 3rem;"></i>
+                        <p class="text-muted mt-2">Транзакций пока нет</p>
+                    </div>
+                    
+                    <div th:if="${not #lists.isEmpty(transactions)}" class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>Описание</th>
+                                    <th>Сумма</th>
+                                    <th>Тип</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="transaction : ${#lists.subList(transactions, 0, 5)}">
+                                    <td th:text="${#temporals.format(transaction.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2023</td>
+                                    <td th:text="${transaction.description}">Описание транзакции</td>
+                                    <td>
+                                        <span th:class="${transaction.amount.compareTo(java.math.BigDecimal.ZERO) > 0 ? 'text-success' : 'text-danger'}"
+                                              th:text="${transaction.amount + ' ₽'}">1000 ₽</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge" 
+                                              th:classappend="${transaction.type == 'DEPOSIT' ? 'bg-success' : 
+                                                              (transaction.type == 'WITHDRAWAL' ? 'bg-danger' : 'bg-info')}"
+                                              th:text="${transaction.type == 'DEPOSIT' ? 'Пополнение' : 
+                                                        (transaction.type == 'WITHDRAWAL' ? 'Списание' : 'Перевод')}">
+                                            Тип
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Быстрые действия -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bolt text-primary"></i> Быстрые действия
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6 col-lg-3">
+                            <a th:href="@{/cars}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-car"></i> Арендовать автомобиль
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a th:href="@{/rentals/my-rentals}" class="btn btn-outline-info w-100">
+                                <i class="fas fa-history"></i> Мои аренды
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a th:href="@{/user/payments}" class="btn btn-outline-warning w-100">
+                                <i class="fas fa-file-invoice-dollar"></i> История платежей
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a th:href="@{/account/transactions}" class="btn btn-outline-success w-100">
+                                <i class="fas fa-list"></i> История транзакций
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a th:href="@{/account/settings}" class="btn btn-outline-secondary w-100">
+                                <i class="fas fa-cog"></i> Настройки
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html> 

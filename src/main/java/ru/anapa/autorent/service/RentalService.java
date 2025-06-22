@@ -73,6 +73,14 @@ public class RentalService {
         return rentalRepository.findByStatusOrderByCreatedAtDesc(status);
     }
 
+    public long countRentalsByStatus(RentalStatus status) {
+        return rentalRepository.countByStatus(status);
+    }
+
+    public List<Rental> findRecentRentals() {
+        return rentalRepository.findFirst5ByOrderByCreatedAtDesc();
+    }
+
     public Rental findById(Long id) {
         return rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Аренда не найдена"));
@@ -337,22 +345,20 @@ public class RentalService {
         }
     }
 
-    public double calculateTotalRevenue() {
-        return findAllRentals().stream()
-                .filter(rental -> rental.getStatus() == RentalStatus.COMPLETED)
-                .mapToDouble(rental -> rental.getTotalCost().doubleValue())
-                .sum();
+    public BigDecimal calculateTotalRevenue() {
+        return rentalRepository.findAll().stream()
+                .filter(r -> r.getStatus() == RentalStatus.COMPLETED && r.getTotalCost() != null)
+                .map(Rental::getTotalCost)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public double calculateConversionRate() {
-        List<Rental> allRentals = findAllRentals();
-        if (allRentals.isEmpty()) return 0.0;
+        long totalRentals = rentalRepository.count();
+        if (totalRentals == 0) return 0.0;
         
-        long completedCount = allRentals.stream()
-                .filter(rental -> rental.getStatus() == RentalStatus.COMPLETED)
-                .count();
+        long completedCount = rentalRepository.countByStatus(RentalStatus.COMPLETED);
         
-        return (double) completedCount / allRentals.size() * 100;
+        return (double) completedCount / totalRentals * 100;
     }
 
     public Map<String, Integer> getMonthlyRentalStats() {

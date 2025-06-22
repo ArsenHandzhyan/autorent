@@ -9,6 +9,7 @@ import java.util.List;
 public class DashboardDto {
     private Long totalUsers;
     private Long totalCars;
+    private Long availableCars;
     private Long activeRentals;
     private Long completedRentals;
     private BigDecimal totalRevenue;

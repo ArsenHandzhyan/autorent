@@ -55,7 +55,19 @@ public class CarService {
 
     // Метод для получения всех автомобилей
     public List<Car> findAllCars() {
-        return carRepository.findAll();
+        return carRepository.findAllWithImages();
+    }
+
+    public long countCars() {
+        return carRepository.count();
+    }
+
+    public long countCarsByStatus(CarStatus status) {
+        return carRepository.countByStatus(status);
+    }
+
+    public List<Car> findCarsByStatus(CarStatus status) {
+        return carRepository.findByStatus(status);
     }
 
     // Оптимизированный метод с пагинацией

@@ -7,7 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.anapa.autorent.model.Account;
 import ru.anapa.autorent.model.Transaction;
 import ru.anapa.autorent.model.User;
@@ -17,50 +20,191 @@ import ru.anapa.autorent.service.UserService;
 import java.math.BigDecimal;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/accounts")
+@Controller
+@RequestMapping("/account")
 @RequiredArgsConstructor
 public class AccountController {
     private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
     private final AccountService accountService;
     private final UserService userService;
 
-    @GetMapping("/ping")
+    /**
+     * Страница профиля пользователя
+     */
+    @GetMapping("/profile")
+    @PreAuthorize("isAuthenticated()")
+    public String profile(Model model) {
+        logger.info("Отображение страницы профиля пользователя");
+        
+        User currentUser = getCurrentUser();
+        Account userAccount = accountService.getAccountByUserId(currentUser.getId());
+        List<Transaction> transactions = accountService.getAccountTransactions(currentUser.getId());
+        
+        model.addAttribute("user", currentUser);
+        model.addAttribute("account", userAccount);
+        model.addAttribute("transactions", transactions);
+        model.addAttribute("pageTitle", "Мой профиль");
+        
+        return "account/profile";
+    }
+
+    /**
+     * Страница настроек аккаунта
+     */
+    @GetMapping("/settings")
+    @PreAuthorize("isAuthenticated()")
+    public String settings(Model model) {
+        logger.info("Отображение страницы настроек аккаунта");
+        
+        User currentUser = getCurrentUser();
+        model.addAttribute("user", currentUser);
+        model.addAttribute("pageTitle", "Настройки аккаунта");
+        
+        return "account/settings";
+    }
+
+    /**
+     * Страница истории транзакций
+     */
+    @GetMapping("/transactions")
+    @PreAuthorize("isAuthenticated()")
+    public String transactions(Model model) {
+        logger.info("Отображение страницы истории транзакций");
+        
+        User currentUser = getCurrentUser();
+        List<Transaction> transactions = accountService.getAccountTransactions(currentUser.getId());
+        
+        model.addAttribute("transactions", transactions);
+        model.addAttribute("pageTitle", "История транзакций");
+        
+        return "account/transactions";
+    }
+
+    /**
+     * Обновление профиля пользователя
+     */
+    @PostMapping("/settings/update-profile")
+    @PreAuthorize("isAuthenticated()")
+    public String updateProfile(@RequestParam String firstName,
+                               @RequestParam String lastName,
+                               @RequestParam String phone,
+                               RedirectAttributes redirectAttributes) {
+        logger.info("Обновление профиля пользователя");
+        
+        try {
+            User currentUser = getCurrentUser();
+            currentUser.setFirstName(firstName);
+            currentUser.setLastName(lastName);
+            currentUser.setPhone(phone);
+            
+            userService.updateUser(currentUser);
+            
+            redirectAttributes.addFlashAttribute("success", "Профиль успешно обновлен");
+        } catch (Exception e) {
+            logger.error("Ошибка при обновлении профиля", e);
+            redirectAttributes.addFlashAttribute("error", "Ошибка при обновлении профиля");
+        }
+        
+        return "redirect:/account/settings";
+    }
+
+    /**
+     * Изменение пароля пользователя
+     */
+    @PostMapping("/settings/change-password")
+    @PreAuthorize("isAuthenticated()")
+    public String changePassword(@RequestParam String currentPassword,
+                                @RequestParam String newPassword,
+                                @RequestParam String confirmPassword,
+                                RedirectAttributes redirectAttributes) {
+        logger.info("Изменение пароля пользователя");
+        
+        try {
+            if (!newPassword.equals(confirmPassword)) {
+                redirectAttributes.addFlashAttribute("error", "Новые пароли не совпадают");
+                return "redirect:/account/settings";
+            }
+            
+            User currentUser = getCurrentUser();
+            User updatedUser = userService.changePassword(currentUser.getId(), currentPassword, newPassword);
+            
+            if (updatedUser != null) {
+                redirectAttributes.addFlashAttribute("success", "Пароль успешно изменен");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Неверный текущий пароль");
+            }
+        } catch (Exception e) {
+            logger.error("Ошибка при изменении пароля", e);
+            redirectAttributes.addFlashAttribute("error", "Ошибка при изменении пароля: " + e.getMessage());
+        }
+        
+        return "redirect:/account/settings";
+    }
+
+    /**
+     * Удаление аккаунта пользователя
+     */
+    @PostMapping("/settings/delete-account")
+    @PreAuthorize("isAuthenticated()")
+    public String deleteAccount(RedirectAttributes redirectAttributes) {
+        logger.info("Удаление аккаунта пользователя");
+        
+        try {
+            User currentUser = getCurrentUser();
+            userService.deleteUser(currentUser.getId());
+            
+            redirectAttributes.addFlashAttribute("success", "Аккаунт успешно удален");
+            return "redirect:/logout";
+        } catch (Exception e) {
+            logger.error("Ошибка при удалении аккаунта", e);
+            redirectAttributes.addFlashAttribute("error", "Ошибка при удалении аккаунта");
+            return "redirect:/account/settings";
+        }
+    }
+
+    // REST API методы (оставляем для совместимости)
+    @GetMapping("/api/ping")
+    @ResponseBody
     public String ping() {
         logger.info("AccountController /api/accounts/ping called");
         return "AccountController is working!";
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/api/{userId}")
     @PreAuthorize("hasRole('ADMIN') or @securityService.isCurrentUser(#userId)")
+    @ResponseBody
     public ResponseEntity<Account> getAccount(@PathVariable Long userId) {
         logger.info("Получение счета пользователя с id={}", userId);
         return ResponseEntity.ok(accountService.getAccountByUserId(userId));
     }
 
-    @GetMapping
+    @GetMapping("/api")
     @PreAuthorize("hasRole('ADMIN')")
+    @ResponseBody
     public ResponseEntity<List<Account>> getAllAccounts() {
         logger.info("Получение всех счетов (админ)");
         return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
-    @GetMapping("/me")
+    @GetMapping("/api/me")
     @PreAuthorize("isAuthenticated()")
+    @ResponseBody
     public ResponseEntity<Account> getCurrentUserAccount() {
         logger.info("Получение счета текущего пользователя");
         return ResponseEntity.ok(accountService.getAccountByUserId(getCurrentUserId()));
     }
 
-    @GetMapping("/me/transactions")
+    @GetMapping("/api/me/transactions")
     @PreAuthorize("isAuthenticated()")
+    @ResponseBody
     public ResponseEntity<List<Transaction>> getCurrentUserTransactions() {
         logger.info("Получение истории транзакций текущего пользователя");
         return ResponseEntity.ok(accountService.getAccountTransactions(getCurrentUserId()));
     }
 
-    @PostMapping("/{userId}/balance")
+    @PostMapping("/api/{userId}/balance")
     @PreAuthorize("hasRole('ADMIN')")
+    @ResponseBody
     public ResponseEntity<Account> updateBalance(
             @PathVariable Long userId,
             @RequestParam BigDecimal amount) {
@@ -68,8 +212,9 @@ public class AccountController {
         return ResponseEntity.ok(accountService.updateBalance(userId, amount));
     }
 
-    @PostMapping("/{userId}/credit-limit")
+    @PostMapping("/api/{userId}/credit-limit")
     @PreAuthorize("hasRole('ADMIN')")
+    @ResponseBody
     public ResponseEntity<Account> setCreditLimit(
             @PathVariable Long userId,
             @RequestParam BigDecimal creditLimit) {
@@ -77,8 +222,9 @@ public class AccountController {
         return ResponseEntity.ok(accountService.setCreditLimit(userId, creditLimit));
     }
 
-    @PostMapping("/{userId}/allow-negative")
+    @PostMapping("/api/{userId}/allow-negative")
     @PreAuthorize("hasRole('ADMIN')")
+    @ResponseBody
     public ResponseEntity<Account> setAllowNegativeBalance(
             @PathVariable Long userId,
             @RequestParam boolean allow) {
@@ -86,10 +232,13 @@ public class AccountController {
         return ResponseEntity.ok(accountService.setAllowNegativeBalance(userId, allow));
     }
 
-    private Long getCurrentUserId() {
+    private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        User user = userService.findByEmail(email);
-        return user.getId();
+        return userService.findByEmail(email);
+    }
+
+    private Long getCurrentUserId() {
+        return getCurrentUser().getId();
     }
 } 

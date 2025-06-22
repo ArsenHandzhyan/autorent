@@ -24,6 +24,9 @@ import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.service.AccountService;
 import ru.anapa.autorent.model.Account;
 import java.math.BigDecimal;
+import ru.anapa.autorent.model.CarStatus;
+import ru.anapa.autorent.dto.DashboardDto;
+import ru.anapa.autorent.dto.RentalDetailsDto;
 
 import java.util.List;
 import java.util.Map;
@@ -48,39 +51,27 @@ public class AdminController {
     }
 
     @GetMapping("/dashboard")
-    public ModelAndView adminDashboard(Authentication authentication) {
+    public String adminDashboard(Model model) {
         try {
-            if (authentication == null || !authentication.isAuthenticated()) {
-                ModelAndView mav = new ModelAndView("error");
-                mav.addObject("error", "Необходимо авторизоваться для доступа к админ-панели");
-                return mav;
-            }
+            DashboardDto dashboardStats = new DashboardDto();
+            dashboardStats.setTotalUsers(userService.countUsers());
+            dashboardStats.setTotalCars(carService.countCars());
+            dashboardStats.setAvailableCars(carService.countCarsByStatus(CarStatus.AVAILABLE));
+            dashboardStats.setActiveRentals(rentalService.countRentalsByStatus(RentalStatus.ACTIVE));
+            dashboardStats.setCompletedRentals(rentalService.countRentalsByStatus(RentalStatus.COMPLETED));
+            dashboardStats.setTotalRevenue(rentalService.calculateTotalRevenue());
 
-            boolean isAdmin = authentication.getAuthorities().stream()
-                    .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+            List<Rental> recentRentals = rentalService.findRecentRentals();
+            List<Car> maintenanceCars = carService.findCarsByStatus(CarStatus.MAINTENANCE);
 
-            if (!isAdmin) {
-                ModelAndView mav = new ModelAndView("error");
-                mav.addObject("error", "У вас недостаточно прав для доступа к админ-панели");
-                return mav;
-            }
+            model.addAttribute("dashboardStats", dashboardStats);
+            model.addAttribute("recentRentals", recentRentals);
+            model.addAttribute("maintenanceCars", maintenanceCars);
 
-            List<User> users = userService.findAllUsers();
-            List<Rental> pendingRentals = rentalService.findRentalsByStatus(RentalStatus.PENDING);
-            List<Rental> activeRentals = rentalService.findRentalsByStatus(RentalStatus.ACTIVE);
-            List<Rental> pendingCancellations = rentalService.findRentalsByStatus(RentalStatus.PENDING_CANCELLATION);
-
-            ModelAndView mav = new ModelAndView("admin/dashboard");
-            mav.addObject("userCount", users.size());
-            mav.addObject("pendingRentals", pendingRentals);
-            mav.addObject("activeRentals", activeRentals);
-            mav.addObject("pendingCancellations", pendingCancellations);
-            mav.addObject("carCount", carService.findAllCars().size());
-            return mav;
+            return "admin/dashboard";
         } catch (Exception e) {
-            ModelAndView mav = new ModelAndView("error");
-            mav.addObject("error", "Ошибка при получении данных дашборда");
-            return mav;
+            model.addAttribute("error", "Ошибка при получении данных дашборда: " + e.getMessage());
+            return "error";
         }
     }
 
@@ -149,7 +140,7 @@ public class AdminController {
         // Получаем базовую статистику
         int userCount = userService.findAllUsers().size();
         int carCount = carService.findAllCars().size();
-        double totalRevenue = rentalService.calculateTotalRevenue();
+        BigDecimal totalRevenue = rentalService.calculateTotalRevenue();
         double conversionRate = rentalService.calculateConversionRate();
 
         // Получаем статистику по арендам

@@ -7,11 +7,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.anapa.autorent.model.Car;
+import ru.anapa.autorent.model.CarStatus;
 
 import java.util.List;
 
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
+    List<Car> findByStatus(CarStatus status);
+
+    long countByStatus(CarStatus status);
+
     // Базовые методы поиска
     List<Car> findByAvailableTrue();
     Page<Car> findByAvailableTrue(Pageable pageable);
@@ -28,4 +33,8 @@ public interface CarRepository extends JpaRepository<Car, Long> {
             "WHERE (r.status IN ('ACTIVE', 'PENDING') OR r IS NULL) " +
             "AND c.id IN :ids")
     List<Car> findByIdInWithRentals(@Param("ids") List<Long> ids);
+
+    // Оптимизированный метод для получения всех автомобилей с изображениями
+    @Query("SELECT DISTINCT c FROM Car c LEFT JOIN FETCH c.images")
+    List<Car> findAllWithImages();
 }

@@ -1,555 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
-<head>
+<head th:replace="~{fragments/head :: head}">
     <title>Регистрация | АвтоРент</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <style>
-        /* Стили для контейнера формы регистрации */
-        .auth-container {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 35px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .auth-container h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #2c3e50;
-            font-weight: 600;
-        }
-        .auth-form .form-group {
-            margin-bottom: 22px;
-            position: relative;
-        }
-        .auth-form label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #2c3e50;
-        }
-        .auth-form input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        .auth-form input:focus {
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-            outline: none;
-        }
-        /* Стили для красочной валидации */
-        .is-valid { border-color: #2ecc71 !important; }
-        .is-invalid { border-color: #e74c3c !important; }
-        .validation-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        .valid-icon { color: #2ecc71; }
-        .invalid-icon { color: #e74c3c; }
-        /* Прочие стили */
-        .auth-btn {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            margin-top: 15px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .auth-btn:hover { background-color: #2980b9; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
-        .error-message { color: #e74c3c; font-size: 14px; margin-top: 5px; display: block; }
-        .field-info { color: #7f8c8d; font-size: 13px; margin-top: 5px; display: block; }
-        .links { text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; }
-        .links a { color: #3498db; text-decoration: none; font-weight: 500; }
-        .links a:hover { color: #2980b9; text-decoration: underline; }
-        /* Стили для индикатора силы пароля */
-        .password-strength {
-            height: 5px; margin-top: 8px; border-radius: 3px; transition: all 0.3s; background-color: #ecf0f1;
-        }
-        .strength-weak { width: 33%; background-color: #e74c3c; }
-        .strength-medium { width: 66%; background-color: #f39c12; }
-        .strength-strong { width: 100%; background-color: #2ecc71; }
-        /* Анимация для ошибок */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-        .error-shake { animation: shake 0.6s; }
-        /* Для адаптивного футера */
-        body { display: flex; flex-direction: column; min-height: 100vh; background-color: #f9f9f9; }
-        main { flex: 1; }
-        /* Стили для чекбокса согласия вынесены отдельно */
-        .form-check-input {
-            width: 1.2em;
-            height: 1.2em;
-            margin-top: 0.25em;
-        }
-        .form-check-label {
-            margin-left: 0.5em;
-            vertical-align: middle;
-        }
-        .form-check {
-            display: flex;
-            align-items: flex-start;
-        }
-        /* Стили для кнопок верификации */
-        .phone-verification-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .phone-verification-buttons button {
-            flex: 1;
-            min-width: 200px;
-        }
-        .btn.disabled, .btn:disabled {
-            opacity: 0.65 !important;
-            pointer-events: none;
-            background-color: #adb5bd !important;
-            border-color: #adb5bd !important;
-            color: #fff !important;
-        }
-    </style>
 </head>
-<body>
-<main>
-    <div class="auth-container">
-        <h2>Регистрация</h2>
-        <div th:if="${error}" class="alert alert-danger error-shake">
-            <i class="fas fa-exclamation-circle me-2"></i>
-            <span th:text="${error}">Ошибка</span>
-        </div>
-        <form class="auth-form" th:action="@{/auth/register}" th:object="${user}" method="post" id="registrationForm"
-              novalidate>
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-
-            <div class="form-group">
-                <label for="firstName">Имя:</label>
-                <input type="text" id="firstName" th:field="*{firstName}" required minlength="2">
-                <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error-message"></span>
-            </div>
-            <div class="form-group">
-                <label for="lastName">Фамилия:</label>
-                <input type="text" id="lastName" th:field="*{lastName}" required minlength="2">
-                <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error-message"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" th:field="*{email}" required>
-                <span id="emailError" class="error-message" style="display:none;"></span>
-                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="phoneDisplay">Телефон:</label>
-                <div class="input-group">
-                    <input type="tel" id="phoneDisplay" placeholder="+7(XXX)XXX-XX-XX" aria-label="Телефон" required pattern="\\+7\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}" autocomplete="tel" title="Введите номер в формате +7(XXX)XXX-XX-XX">
-                </div>
-                <small class="form-text text-muted">Формат: +7(XXX)XXX-XX-XX</small>
-                <input type="hidden" th:field="*{phone}" id="phone" name="phone">
-                <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message"></span>
-            </div>
-
-            <!-- Блок с кодом из SMS -->
-            <div class="form-group" id="smsVerificationBlock" style="display:none;">
-                <label for="smsCode">Код из SMS:</label>
-                <div class="input-group">
-                    <input type="text" id="smsCode" placeholder="Введите код из SMS" aria-label="SMS код">
-                    <button type="button" class="btn btn-outline-primary" id="verifySmsButton">Проверить</button>
-                </div>
-                <span id="smsVerificationStatus" class="error-message" style="display:none;"></span>
-            </div>
-
-            <!-- Блок статуса звонка -->
-            <div class="form-group" id="callStatusBlock" style="display:none;">
-                <div class="alert alert-info">
-                    <i class="fas fa-phone me-2"></i>
-                    <span id="callStatusMessage">Ожидаем звонок...</span>
-                    <div id="callTimer" class="mt-2"></div>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="auth-container">
+                    <h2 class="text-center mb-4">
+                        <i class="fas fa-user-plus text-primary"></i> Регистрация
+                    </h2>
+                    
+                    <form th:action="@{/auth/register}" method="post" class="auth-form" data-validate>
+                        <div class="form-group">
+                            <label for="firstName">Имя *</label>
+                            <input type="text" id="firstName" name="firstName" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName">Фамилия *</label>
+                            <input type="text" id="lastName" name="lastName" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Телефон *</label>
+                            <input type="tel" id="phoneDisplay" name="phone" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Пароль *</label>
+                            <input type="password" id="password" name="password" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">Подтвердите пароль *</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                        </div>
+                        
+                        <button type="submit" class="auth-btn">
+                            <i class="fas fa-user-plus"></i> Зарегистрироваться
+                        </button>
+                    </form>
+                    
+                    <div class="auth-links">
+                        <p>Уже есть аккаунт? <a th:href="@{/auth/login}">Войти</a></p>
+                    </div>
                 </div>
             </div>
-
-            <div class="form-group phone-verification-buttons">
-                <button type="button" class="btn btn-primary" id="sendCallCodeButton">
-                    <i class="fas fa-phone me-2"></i>Подтвердить номер звонком
-                </button>
-                <button type="button" class="btn btn-secondary" id="sendSmsCodeButton">
-                    <i class="fas fa-sms me-2"></i>Отправить SMS с кодом
-                </button>
-                <span id="phoneVerificationError" class="error-message" style="display:none;">Необходимо подтвердить номер телефона</span>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Пароль:</label>
-                <div class="input-with-icon">
-                    <input type="password" id="password" th:field="*{password}" required minlength="8">
-                    <i class="fas fa-eye-slash input-icon password-toggle" id="passwordToggle"></i>
-                </div>
-                <div class="password-strength" id="passwordStrength"></div>
-                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></span>
-                <small class="field-info">Минимум 8 символов, рекомендуется использовать буквы, цифры и специальные символы</small>
-            </div>
-            <div class="form-group">
-                <label for="confirmPassword">Подтверждение пароля:</label>
-                <div class="input-with-icon">
-                    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required minlength="8">
-                    <i class="fas fa-eye-slash input-icon password-toggle" id="confirmPasswordToggle"></i>
-                </div>
-                <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="error-message"></span>
-                <small class="field-info">Повторите пароль для подтверждения</small>
-            </div>
-
-            <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="termsAgreement" required>
-                    <label class="form-check-label" for="termsAgreement">
-                        Я согласен с <a href="#" class="terms-link">условиями использования</a> и
-                        <a href="#" class="privacy-link">политикой конфиденциальности</a>
-                    </label>
-                </div>
-            </div>
-            <button type="submit" class="auth-btn" id="registerButton" disabled>Зарегистрироваться</button>
-        </form>
-        <div class="links">
-            <p>Уже есть аккаунт? <a th:href="@{/auth/login}">Войти</a></p>
-            <p><a th:href="@{/}"><i class="fas fa-home me-1"></i>Вернуться на главную</a></p>
         </div>
     </div>
-</main>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-<script th:inline="javascript">
-    $(document).ready(function() {
-        let callCheckInterval;
-        let callTimerInterval;
-        let timeLeft = 300; // 5 минут в секундах
-        let isPhoneVerified = false;
-
-        // Маска для телефона (разрешаем разные форматы)
-        $('#phoneDisplay').mask('+7 (000) 000-00-00', {placeholder: "+7 (___) ___-__-__"});
-
-        // Универсальная функция нормализации номера для сервера
-        function normalizePhone(phone) {
-            let digits = phone.replace(/\D/g, '');
-            if (digits.length === 11 && digits[0] === '8') digits = '7' + digits.slice(1);
-            if (digits.length === 10) digits = '7' + digits;
-            if (digits.length !== 11 || digits[0] !== '7') return null;
-            return `+7(${digits.slice(1,4)})${digits.slice(4,7)}-${digits.slice(7,9)}-${digits.slice(9,11)}`;
-        }
-
-        // Проверка существования телефона
-        $('#phoneDisplay').on('blur', function() {
-            var phone = $(this).val();
-            var normalized = normalizePhone(phone);
-            if (normalized) {
-                $.ajax({
-                    url: '/auth/check-phone',
-                    method: 'GET',
-                    data: { phone: normalized },
-                    success: function(exists) {
-                        if (exists) {
-                            showError('phoneVerificationError', 'Пользователь с таким номером телефона уже зарегистрирован');
-                            $('#phoneDisplay').addClass('is-invalid');
-                        } else {
-                            $('#phoneDisplay').removeClass('is-invalid');
-                            $('#phoneVerificationError').hide();
-                        }
-                        validateForm();
-                    }
-                });
-            } else {
-                $('#phoneDisplay').addClass('is-invalid');
-                showError('phoneVerificationError', 'Введите корректный российский номер телефона');
-                validateForm();
-            }
-        });
-
-        // Обработчик изменения телефона
-        $('#phoneDisplay').on('input', function() {
-            var phone = $(this).val();
-            var normalized = normalizePhone(phone);
-            $('#phone').val(normalized ? normalized : '');
-            if (normalized) {
-                $('#phoneDisplay').removeClass('is-invalid');
-                $('#phoneVerificationError').hide();
-            } else {
-                $('#phoneDisplay').addClass('is-invalid');
-                $('#phoneVerificationError').show().text('Введите корректный российский номер телефона');
-            }
-            validateForm();
-        });
-
-        // Проверка email на лету и при уходе с поля
-        $('#email').on('input blur', function() {
-            var email = $(this).val();
-            if (email) {
-                $.ajax({
-                    url: '/auth/check-email',
-                    method: 'GET',
-                    data: { email: email },
-                    success: function(exists) {
-                        if (exists) {
-                            showError('email', 'Пользователь с таким email уже зарегистрирован');
-                            $('#email').addClass('is-invalid').removeClass('is-valid');
-                            $('#emailError').text('Пользователь с таким email уже зарегистрирован');
-                        } else {
-                            $('#email').removeClass('is-invalid').addClass('is-valid');
-                            $('#emailError').hide();
-                        }
-                        validateForm();
-                    }
-                });
-            } else {
-                $('#email').removeClass('is-invalid is-valid');
-                $('#emailError').hide();
-                validateForm();
-            }
-        });
-
-        // Обработчики для кнопок верификации телефона
-        $('#sendCallCodeButton').click(function() {
-            if (isPhoneVerified) return;
-            var phone = $('#phone').val();
-            if (!phone) {
-                showError('phoneVerificationError', 'Введите номер телефона');
-                return;
-            }
-            if (callCheckInterval) clearInterval(callCheckInterval);
-            if (callTimerInterval) clearInterval(callTimerInterval);
-            timeLeft = 300;
-            $.ajax({
-                url: '/auth/initiate-call-auth',
-                method: 'POST',
-                data: { phone: phone },
-                success: function(response) {
-                    $('#callStatusBlock').show();
-                    $('#smsVerificationBlock').hide();
-                    if (response.success) {
-                        $('#callStatusMessage').html('Пожалуйста, позвоните на номер: <strong>' + response.call_phone_pretty + '</strong>');
-                        // Запуск таймера и проверки статуса (оставить как было)
-                        updateCallTimer();
-                        callTimerInterval = setInterval(updateCallTimer, 1000);
-                        startCallStatusCheck(response.check_id);
-                    } else {
-                        $('#callStatusMessage').html('<span class="text-danger">' + response.message + '</span>');
-                    }
-                },
-                error: function() {
-                    $('#callStatusBlock').show();
-                    $('#smsVerificationBlock').hide();
-                    $('#callStatusMessage').html('<span class="text-danger">Ошибка при инициализации звонка</span>');
-                }
-            });
-        });
-
-        function updateCallTimer() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            $('#callTimer').text(`Осталось времени: ${minutes}:${seconds.toString().padStart(2, '0')}`);
-            
-            if (timeLeft <= 0) {
-                clearInterval(callTimerInterval);
-                clearInterval(callCheckInterval);
-                $('#callStatusBlock').hide();
-                showError('phoneVerificationError', 'Время ожидания звонка истекло');
-            }
-            timeLeft--;
-        }
-
-        function startCallStatusCheck(checkId) {
-            callCheckInterval = setInterval(function() {
-                $.ajax({
-                    url: '/auth/check-call-status',
-                    method: 'POST',
-                    data: { check_id: checkId },
-                    success: function(response) {
-                        if (response.success) {
-                            clearInterval(callCheckInterval);
-                            clearInterval(callTimerInterval);
-                            $('#callStatusBlock').hide();
-                            $('#phoneVerificationError').hide();
-                            $('#phone').prop('readonly', true);
-                            $('#phoneDisplay').prop('readonly', true);
-                            $('#sendCallCodeButton, #sendSmsCodeButton').prop('disabled', true).addClass('disabled');
-                            isPhoneVerified = true;
-                            showSuccess('phoneVerificationError', 'Номер телефона успешно подтвержден');
-                            validateForm();
-                        } else if (response.message === 'Время ожидания звонка истекло') {
-                            clearInterval(callCheckInterval);
-                            clearInterval(callTimerInterval);
-                            $('#callStatusBlock').hide();
-                            showError('phoneVerificationError', 'Время ожидания звонка истекло');
-                        }
-                    }
-                });
-            }, 5000); // Проверка каждые 5 секунд
-        }
-
-        $('#sendSmsCodeButton').click(function() {
-            if (isPhoneVerified) return;
-            var phone = $('#phone').val();
-            if (!phone) {
-                showError('phoneVerificationError', 'Введите номер телефона');
-                return;
-            }
-            $.ajax({
-                url: '/auth/send-sms-code',
-                method: 'POST',
-                data: { phone: phone },
-                success: function(response) {
-                    $('#smsVerificationBlock').show();
-                    $('#callStatusBlock').hide();
-                    if (response.success) {
-                        showSuccess('smsVerificationStatus', 'Код отправлен на ваш телефон');
-                    } else {
-                        showError('smsVerificationStatus', response.message);
-                    }
-                },
-                error: function() {
-                    $('#smsVerificationBlock').show();
-                    $('#callStatusBlock').hide();
-                    showError('smsVerificationStatus', 'Ошибка при отправке кода');
-                }
-            });
-        });
-
-        // Обработчик проверки SMS кода
-        $('#verifySmsButton').click(function() {
-            var phone = $('#phone').val();
-            var code = $('#smsCode').val();
-            $.ajax({
-                url: '/auth/verify-sms-code',
-                method: 'POST',
-                data: { phone: phone, code: code },
-                success: function(response) {
-                    if (response.success) {
-                        showSuccess('smsVerificationStatus', 'Телефон подтверждён');
-                        $('#smsVerificationBlock').hide();
-                        isPhoneVerified = true;
-                        $('#phoneDisplay').prop('readonly', true);
-                        $('#sendCallCodeButton, #sendSmsCodeButton').prop('disabled', true).addClass('disabled');
-                        $('#phoneVerificationError').hide();
-                        $('<div id="phoneVerifiedSuccess" class="text-success mb-2">Телефон подтверждён</div>').insertAfter('#phoneDisplay').show();
-                        validateForm();
-                    } else {
-                        showError('smsVerificationStatus', response.message);
-                    }
-                },
-                error: function() {
-                    showError('smsVerificationStatus', 'Ошибка при проверке кода');
-                }
-            });
-        });
-
-        // Функции для отображения сообщений
-        function showError(elementId, message) {
-            if (elementId === 'email') {
-                $('#emailError').text(message).show().addClass('error-shake');
-                $('#email').addClass('is-invalid');
-            } else {
-                $('#' + elementId).text(message).show().addClass('error-shake');
-            }
-            setTimeout(function() {
-                if (elementId === 'email') {
-                    $('#emailError').removeClass('error-shake');
-                } else {
-                    $('#' + elementId).removeClass('error-shake');
-                }
-            }, 600);
-        }
-
-        function showSuccess(elementId, message) {
-            $('#' + elementId).text(message).show().removeClass('error-message').addClass('text-success');
-        }
-
-        // Валидация формы
-        function validateForm() {
-            var isValid = true;
-            var phone = $('#phone').val();
-            var email = $('#email').val();
-            var password = $('#password').val();
-            var confirmPassword = $('#confirmPassword').val();
-            var termsAgreed = $('#termsAgreement').is(':checked');
-
-            // Проверка email
-            if (!email || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-                isValid = false;
-                if (email) {
-                    showError('email', 'Введите корректный email адрес');
-                }
-            }
-
-            // Проверка телефона
-            if (!phone) {
-                isValid = false;
-                showError('phoneVerificationError', 'Введите корректный российский номер телефона');
-            } else if (!isPhoneVerified) {
-                isValid = false;
-                showError('phoneVerificationError', 'Необходимо подтвердить номер телефона');
-            } else {
-                $('#phoneVerificationError').hide();
-            }
-
-            // Проверка паролей
-            if (password.length < 8) {
-                isValid = false;
-            }
-            if (password !== confirmPassword) {
-                isValid = false;
-            }
-
-            // Проверка согласия с условиями
-            if (!termsAgreed) {
-                isValid = false;
-            }
-
-            // Кнопки подтверждения активны при валидном номере и не подтверждённом телефоне
-            if (phone && !isPhoneVerified) {
-                $('#sendCallCodeButton, #sendSmsCodeButton').prop('disabled', false).removeClass('disabled');
-            } else {
-                $('#sendCallCodeButton, #sendSmsCodeButton').prop('disabled', true).addClass('disabled');
-            }
-
-            $('#registerButton').prop('disabled', !isValid);
-        }
-
-        // Обработчики событий для валидации
-        $('#email, #password, #confirmPassword').on('input', validateForm);
-        $('#termsAgreement').on('change', validateForm);
-    });
-    // Добавляем CSRF-токен ко всем AJAX-запросам
-    $(function () {
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        $(document).ajaxSend(function(e, xhr, options) {
-            xhr.setRequestHeader(header, token);
-        });
-    });
-</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 </body>
 </html>

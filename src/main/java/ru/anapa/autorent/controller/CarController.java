@@ -168,7 +168,7 @@ public class CarController {
             carPage.getContent().forEach(car -> car.getImages().size());
             
             ModelAndView mav = new ModelAndView("cars/available");
-            mav.addObject("cars", carPage.getContent());
+            mav.addObject("cars", carPage);
             mav.addObject("currentPage", page);
             mav.addObject("totalPages", carPage.getTotalPages());
             mav.addObject("totalItems", carPage.getTotalElements());
@@ -188,7 +188,7 @@ public class CarController {
             Page<Car> carPage = carService.findAllCarsWithPagination(page, size);
             
             ModelAndView mav = new ModelAndView("cars/list");
-            mav.addObject("cars", carPage.getContent());
+            mav.addObject("cars", carPage);
             mav.addObject("currentPage", page);
             mav.addObject("totalPages", carPage.getTotalPages());
             mav.addObject("totalItems", carPage.getTotalElements());
@@ -211,7 +211,7 @@ public class CarController {
             carPage.getContent().forEach(car -> car.getImages().size());
             
             ModelAndView mav = new ModelAndView("cars/search-results");
-            mav.addObject("cars", carPage.getContent());
+            mav.addObject("cars", carPage);
             mav.addObject("searchTerm", brand);
             mav.addObject("currentPage", page);
             mav.addObject("totalPages", carPage.getTotalPages());
@@ -235,7 +235,7 @@ public class CarController {
             carPage.getContent().forEach(car -> car.getImages().size());
             
             ModelAndView mav = new ModelAndView("cars/category");
-            mav.addObject("cars", carPage.getContent());
+            mav.addObject("cars", carPage);
             mav.addObject("categoryName", category);
             mav.addObject("currentPage", page);
             mav.addObject("totalPages", carPage.getTotalPages());

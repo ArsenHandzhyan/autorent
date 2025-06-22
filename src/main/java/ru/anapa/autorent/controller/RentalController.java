@@ -21,6 +21,7 @@ import ru.anapa.autorent.dto.RentalPeriodDto;
 import ru.anapa.autorent.model.*;
 import ru.anapa.autorent.service.AccountService;
 import ru.anapa.autorent.service.CarService;
+import ru.anapa.autorent.service.DailyPaymentService;
 import ru.anapa.autorent.service.RentalService;
 import ru.anapa.autorent.service.UserService;
 
@@ -43,22 +44,31 @@ public class RentalController {
     private final UserService userService;
     private final CarService carService;
     private final AccountService accountService;
+    private final DailyPaymentService dailyPaymentService;
 
     @Autowired
     public RentalController(@Lazy RentalService rentalService, 
                           @Lazy UserService userService, 
                           @Lazy CarService carService, 
-                          @Lazy AccountService accountService) {
+                          @Lazy AccountService accountService,
+                          @Lazy DailyPaymentService dailyPaymentService) {
         this.rentalService = rentalService;
         this.userService = userService;
         this.carService = carService;
         this.accountService = accountService;
+        this.dailyPaymentService = dailyPaymentService;
         logger.info("RentalController initialized");
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping
     public String myRentals(Model model) {
+        return myRentalsPage(model);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/my-rentals")
+    public String myRentalsPage(Model model) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.findByEmail(authentication.getName());
@@ -272,19 +282,27 @@ public class RentalController {
         try {
             Rental rental = rentalService.findById(id);
             if (rental == null) {
-                return "redirect:/rentals";
+                model.addAttribute("error", "Аренда не найдена");
+                return "error";
             }
 
-            User user = userService.findByEmail(principal.getName());
-            if (!rental.getUser().getId().equals(user.getId()) && !user.hasRole("ADMIN")) {
-                return "redirect:/rentals";
+            // Проверка прав доступа
+            User currentUser = userService.findByEmail(principal.getName());
+            boolean isAdmin = currentUser.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
+            if (!isAdmin && !rental.getUser().getId().equals(currentUser.getId())) {
+                model.addAttribute("error", "У вас нет прав для просмотра этой аренды");
+                return "error";
             }
+
+            List<DailyPayment> payments = dailyPaymentService.getPaymentsByRental(rental);
 
             model.addAttribute("rental", rental);
+            model.addAttribute("payments", payments);
             return "rentals/rental-details";
         } catch (Exception e) {
-            logger.error("Ошибка при получении деталей аренды", e);
-            return "redirect:/rentals";
+            logger.error("Ошибка при получении деталей аренды с ID {}: {}", id, e.getMessage(), e);
+            model.addAttribute("error", "Не удалось загрузить детали аренды");
+            return "error";
         }
     }
 }

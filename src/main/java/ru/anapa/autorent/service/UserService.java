@@ -223,6 +223,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    public long countUsers() {
+        return userRepository.count();
+    }
+
     /**
      * Возвращает список отключенных пользователей
      */

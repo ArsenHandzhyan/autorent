@@ -15,6 +15,10 @@ import java.util.List;
 @Repository
 public interface RentalRepository extends JpaRepository<Rental, Long> {
 
+    long countByStatus(RentalStatus status);
+
+    List<Rental> findFirst5ByOrderByCreatedAtDesc();
+
     List<Rental> findByUserOrderByCreatedAtDesc(User user);
 
     List<Rental> findByStatusOrderByCreatedAtDesc(RentalStatus status);
