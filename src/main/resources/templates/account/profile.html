@@ -64,48 +64,48 @@
                 </div>
             </div>
 
-            <!-- Последние транзакции -->
+            <!-- История счета -->
             <div class="card shadow-sm">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
-                        <i class="fas fa-history text-primary"></i> Последние транзакции
+                        <i class="fas fa-history text-primary"></i> История счета
                     </h5>
                     <a th:href="@{/account/transactions}" class="btn btn-outline-primary btn-sm">
-                        <i class="fas fa-list"></i> Все транзакции
+                        <i class="fas fa-list"></i> Вся история
                     </a>
                 </div>
                 <div class="card-body">
-                    <div th:if="${#lists.isEmpty(transactions)}" class="text-center py-4">
+                    <div th:if="${#lists.isEmpty(accountEvents)}" class="text-center py-4">
                         <i class="fas fa-inbox text-muted" style="font-size: 3rem;"></i>
-                        <p class="text-muted mt-2">Транзакций пока нет</p>
+                        <p class="text-muted mt-2">Событий по счету пока нет</p>
                     </div>
                     
-                    <div th:if="${not #lists.isEmpty(transactions)}" class="table-responsive">
+                    <div th:if="${not #lists.isEmpty(accountEvents)}" class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>Дата</th>
-                                    <th>Описание</th>
-                                    <th>Сумма</th>
                                     <th>Тип</th>
+                                    <th>Описание</th>
+                                    <th>Детали</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="transaction : ${#lists.subList(transactions, 0, 5)}">
-                                    <td th:text="${#temporals.format(transaction.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2023</td>
-                                    <td th:text="${transaction.description}">Описание транзакции</td>
+                                <tr th:each="event : ${accountEvents.size() > 5 ? accountEvents.subList(0, 5) : accountEvents}">
+                                    <td th:text="${#temporals.format(event.eventDate, 'dd.MM.yyyy HH:mm')}"></td>
                                     <td>
-                                        <span th:class="${transaction.amount.compareTo(java.math.BigDecimal.ZERO) > 0 ? 'text-success' : 'text-danger'}"
-                                              th:text="${transaction.amount + ' ₽'}">1000 ₽</span>
+                                        <span class="badge"
+                                              th:classappend="${event.eventType == 'Транзакция' ? 'bg-primary' : 'bg-secondary'}"
+                                              th:text="${event.eventType}"></span>
                                     </td>
+                                    <td th:text="${event.description}"></td>
                                     <td>
-                                        <span class="badge" 
-                                              th:classappend="${transaction.type == 'DEPOSIT' ? 'bg-success' : 
-                                                              (transaction.type == 'WITHDRAWAL' ? 'bg-danger' : 'bg-info')}"
-                                              th:text="${transaction.type == 'DEPOSIT' ? 'Пополнение' : 
-                                                        (transaction.type == 'WITHDRAWAL' ? 'Списание' : 'Перевод')}">
-                                            Тип
-                                        </span>
+                                        <div th:if="${event.eventType == 'Транзакция'}">
+                                            Сумма: <strong th:text="${event.amount}" th:classappend="${event.amount.startsWith('-') ? 'text-danger' : 'text-success'}"></strong>
+                                        </div>
+                                        <div th:if="${event.eventType == 'Изменение'}">
+                                            <span th:text="${event.fieldName + ': ' + event.newValue}"></span>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>

@@ -16,8 +16,13 @@ import ru.anapa.autorent.model.Transaction;
 import ru.anapa.autorent.model.User;
 import ru.anapa.autorent.service.AccountService;
 import ru.anapa.autorent.service.UserService;
+import ru.anapa.autorent.dto.AccountEventDto;
+import ru.anapa.autorent.model.AccountHistory;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -38,11 +43,11 @@ public class AccountController {
         
         User currentUser = getCurrentUser();
         Account userAccount = accountService.getAccountByUserId(currentUser.getId());
-        List<Transaction> transactions = accountService.getAccountTransactions(currentUser.getId());
+        List<AccountEventDto> accountEvents = getAccountEvents(currentUser.getId());
         
         model.addAttribute("user", currentUser);
         model.addAttribute("account", userAccount);
-        model.addAttribute("transactions", transactions);
+        model.addAttribute("accountEvents", accountEvents);
         model.addAttribute("pageTitle", "Мой профиль");
         
         return "account/profile";
@@ -64,20 +69,78 @@ public class AccountController {
     }
 
     /**
-     * Страница истории транзакций
+     * Страница истории счета
      */
     @GetMapping("/transactions")
     @PreAuthorize("isAuthenticated()")
     public String transactions(Model model) {
-        logger.info("Отображение страницы истории транзакций");
+        logger.info("Отображение страницы истории счета");
         
         User currentUser = getCurrentUser();
-        List<Transaction> transactions = accountService.getAccountTransactions(currentUser.getId());
+        List<AccountEventDto> accountEvents = getAccountEvents(currentUser.getId());
         
-        model.addAttribute("transactions", transactions);
-        model.addAttribute("pageTitle", "История транзакций");
+        model.addAttribute("accountEvents", accountEvents);
+        model.addAttribute("pageTitle", "История счета");
         
-        return "account/transactions";
+        return "account/account-history";
+    }
+
+    private List<AccountEventDto> getAccountEvents(Long userId) {
+        Account userAccount = accountService.getAccountByUserId(userId);
+        List<Transaction> transactions = accountService.getAccountTransactions(userId);
+        List<AccountHistory> accountHistory = accountService.getAccountHistory(userAccount.getId());
+
+        List<AccountEventDto> accountEvents = new ArrayList<>();
+        DecimalFormat df = new DecimalFormat("#,##0.00 '₽'");
+
+        for (Transaction t : transactions) {
+            AccountEventDto event = new AccountEventDto();
+            event.setEventDate(t.getCreatedAt());
+            event.setEventType("Транзакция");
+            event.setDescription(t.getDescription());
+            event.setAmount(df.format(t.getAmount()));
+            event.setBalanceAfter(t.getType().toString());
+            accountEvents.add(event);
+        }
+
+        for (AccountHistory h : accountHistory) {
+            AccountEventDto event = new AccountEventDto();
+            event.setEventDate(h.getChangeDate());
+            event.setEventType("Изменение");
+
+            String translatedFieldName = translateFieldName(h.getFieldName());
+            String translatedNewValue = "allowNegativeBalance".equalsIgnoreCase(h.getFieldName())
+                    ? translateBooleanValue(h.getNewValue())
+                    : h.getNewValue();
+
+            event.setDescription("Изменение: " + translatedFieldName);
+            event.setFieldName(translatedFieldName);
+            event.setNewValue(translatedNewValue);
+            event.setOldValue("allowNegativeBalance".equalsIgnoreCase(h.getFieldName())
+                    ? translateBooleanValue(h.getOldValue())
+                    : h.getOldValue());
+            event.setChangedBy(h.getChangedBy());
+            accountEvents.add(event);
+        }
+
+        accountEvents.sort(Comparator.comparing(AccountEventDto::getEventDate).reversed());
+        return accountEvents;
+    }
+
+    private String translateFieldName(String fieldName) {
+        return switch (fieldName) {
+            case "balance" -> "Баланс";
+            case "creditLimit" -> "Кредитный лимит";
+            case "allowNegativeBalance" -> "Минусовый баланс";
+            case "initialBalance" -> "Начальный баланс";
+            default -> fieldName;
+        };
+    }
+
+    private String translateBooleanValue(String value) {
+        if ("true".equalsIgnoreCase(value)) return "Да";
+        if ("false".equalsIgnoreCase(value)) return "Нет";
+        return value;
     }
 
     /**
