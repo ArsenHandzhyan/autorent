@@ -17,8 +17,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.anapa.autorent.dto.ForgotPasswordDto;
+import ru.anapa.autorent.dto.ResetPasswordDto;
 import ru.anapa.autorent.dto.UserRegistrationDto;
 import ru.anapa.autorent.model.User;
+import ru.anapa.autorent.service.PasswordResetService;
 import ru.anapa.autorent.service.UserService;
 import ru.anapa.autorent.service.SmsService;
 import ru.anapa.autorent.service.VerificationTokenService;
@@ -44,6 +47,7 @@ public class AuthController {
     private final SmsService smsService;
     private final VerificationTokenService verificationTokenService;
     private final CallAuthService callAuthService;
+    private final PasswordResetService passwordResetService;
 
     // Регулярное выражение для проверки телефонного номера
     private static final Pattern PHONE_PATTERN = Pattern.compile("^\\+7\\([0-9]{3}\\)[0-9]{3}-[0-9]{2}-[0-9]{2}$");
@@ -56,13 +60,15 @@ public class AuthController {
                           UserDetailsService userDetailsService,
                           SmsService smsService,
                           VerificationTokenService verificationTokenService,
-                          CallAuthService callAuthService) {
+                          CallAuthService callAuthService,
+                          PasswordResetService passwordResetService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.smsService = smsService;
         this.verificationTokenService = verificationTokenService;
         this.callAuthService = callAuthService;
+        this.passwordResetService = passwordResetService;
         logger.info("AuthController initialized");
     }
 
@@ -636,6 +642,151 @@ public class AuthController {
             response.put("success", false);
             response.put("message", "Ошибка при проверке статуса звонка: " + e.getMessage());
         }
+        return response;
+    }
+
+    /**
+     * Страница "Забыли пароль"
+     */
+    @GetMapping("auth/forgot-password")
+    public String showForgotPasswordForm(Model model) {
+        logger.info("Страница восстановления пароля запрошена");
+        model.addAttribute("forgotPasswordDto", new ForgotPasswordDto());
+        return "auth/forgot-password";
+    }
+
+    /**
+     * Обработка запроса на восстановление пароля
+     */
+    @PostMapping("auth/forgot-password")
+    public String processForgotPassword(@Valid @ModelAttribute("forgotPasswordDto") ForgotPasswordDto forgotPasswordDto,
+                                       BindingResult result, Model model, HttpServletRequest request) {
+        logger.info("Запрос на восстановление пароля для email: {}", forgotPasswordDto.getEmail());
+
+        if (result.hasErrors()) {
+            logger.warn("Ошибки валидации в форме восстановления пароля");
+            return "auth/forgot-password";
+        }
+
+        try {
+            boolean success = passwordResetService.initiatePasswordReset(forgotPasswordDto.getEmail(), request);
+            
+            if (success) {
+                model.addAttribute("success", true);
+                model.addAttribute("message", "Если указанный email зарегистрирован в системе, " +
+                        "на него будет отправлено письмо с инструкциями по восстановлению пароля.");
+                logger.info("Запрос на восстановление пароля обработан для email: {}", forgotPasswordDto.getEmail());
+            } else {
+                model.addAttribute("error", "Превышен лимит попыток восстановления пароля. " +
+                        "Пожалуйста, попробуйте позже.");
+                logger.warn("Превышен лимит попыток восстановления пароля для email: {}", forgotPasswordDto.getEmail());
+            }
+        } catch (Exception e) {
+            logger.error("Ошибка при обработке запроса восстановления пароля", e);
+            model.addAttribute("error", "Произошла ошибка при обработке запроса. Пожалуйста, попробуйте позже.");
+        }
+
+        return "auth/forgot-password";
+    }
+
+    /**
+     * Страница сброса пароля по токену
+     */
+    @GetMapping("auth/reset-password")
+    public String showResetPasswordForm(@RequestParam("token") String token, Model model, HttpServletRequest request) {
+        logger.info("Страница сброса пароля запрошена с токеном: {}", token);
+
+        try {
+            boolean isValid = passwordResetService.validateResetToken(token, request);
+            
+            if (isValid) {
+                ResetPasswordDto resetPasswordDto = new ResetPasswordDto();
+                resetPasswordDto.setToken(token);
+                model.addAttribute("resetPasswordDto", resetPasswordDto);
+                model.addAttribute("token", token);
+                logger.info("Токен восстановления пароля валиден: {}", token);
+                return "auth/reset-password";
+            } else {
+                model.addAttribute("error", "Ссылка для восстановления пароля недействительна или истекла.");
+                logger.warn("Недействительный токен восстановления пароля: {}", token);
+                return "auth/reset-password-error";
+            }
+        } catch (Exception e) {
+            logger.error("Ошибка при проверке токена восстановления пароля", e);
+            model.addAttribute("error", "Произошла ошибка при проверке ссылки восстановления.");
+            return "auth/reset-password-error";
+        }
+    }
+
+    /**
+     * Обработка сброса пароля
+     */
+    @PostMapping("auth/reset-password")
+    public String processResetPassword(@Valid @ModelAttribute("resetPasswordDto") ResetPasswordDto resetPasswordDto,
+                                      BindingResult result, Model model, HttpServletRequest request) {
+        logger.info("Обработка сброса пароля для токена: {}", resetPasswordDto.getToken());
+
+        if (result.hasErrors()) {
+            logger.warn("Ошибки валидации в форме сброса пароля");
+            model.addAttribute("token", resetPasswordDto.getToken());
+            return "auth/reset-password";
+        }
+
+        // Проверяем совпадение паролей
+        if (!resetPasswordDto.getNewPassword().equals(resetPasswordDto.getConfirmPassword())) {
+            result.addError(new FieldError("resetPasswordDto", "confirmPassword", 
+                    resetPasswordDto.getConfirmPassword(), false, null, null, "Пароли не совпадают"));
+            model.addAttribute("token", resetPasswordDto.getToken());
+            return "auth/reset-password";
+        }
+
+        try {
+            boolean success = passwordResetService.resetPassword(
+                    resetPasswordDto.getToken(), 
+                    resetPasswordDto.getNewPassword(), 
+                    request
+            );
+
+            if (success) {
+                model.addAttribute("success", true);
+                model.addAttribute("message", "Пароль успешно изменен. Теперь вы можете войти в систему с новым паролем.");
+                logger.info("Пароль успешно сброшен для токена: {}", resetPasswordDto.getToken());
+                return "auth/reset-password-success";
+            } else {
+                model.addAttribute("error", "Не удалось сбросить пароль. Возможно, ссылка истекла или недействительна.");
+                logger.warn("Не удалось сбросить пароль для токена: {}", resetPasswordDto.getToken());
+                return "auth/reset-password-error";
+            }
+        } catch (Exception e) {
+            logger.error("Ошибка при сбросе пароля", e);
+            model.addAttribute("error", "Произошла ошибка при сбросе пароля. Пожалуйста, попробуйте позже.");
+            return "auth/reset-password-error";
+        }
+    }
+
+    /**
+     * API endpoint для проверки валидности токена
+     */
+    @PostMapping("/api/auth/validate-reset-token")
+    @ResponseBody
+    public Map<String, Object> validateResetToken(@RequestParam("token") String token, HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            boolean isValid = passwordResetService.validateResetToken(token, request);
+            response.put("valid", isValid);
+            
+            if (isValid) {
+                response.put("message", "Токен действителен");
+            } else {
+                response.put("message", "Токен недействителен или истек");
+            }
+        } catch (Exception e) {
+            logger.error("Ошибка при проверке токена через API", e);
+            response.put("valid", false);
+            response.put("message", "Ошибка при проверке токена");
+        }
+        
         return response;
     }
 

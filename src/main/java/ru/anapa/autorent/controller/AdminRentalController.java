@@ -11,16 +11,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.anapa.autorent.dto.PaymentHistoryDto;
+import ru.anapa.autorent.dto.PaymentStatisticsDto;
 import ru.anapa.autorent.model.Car;
 import ru.anapa.autorent.model.Rental;
 import ru.anapa.autorent.model.RentalStatus;
 import ru.anapa.autorent.service.CarService;
+import ru.anapa.autorent.service.DailyPaymentService;
 import ru.anapa.autorent.service.RentalService;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin/rentals")
@@ -29,11 +33,13 @@ public class AdminRentalController {
 
     private final RentalService rentalService;
     private final CarService carService;
+    private final DailyPaymentService dailyPaymentService;
 
     @Autowired
-    public AdminRentalController(RentalService rentalService, CarService carService) {
+    public AdminRentalController(RentalService rentalService, CarService carService, DailyPaymentService dailyPaymentService) {
         this.rentalService = rentalService;
         this.carService = carService;
+        this.dailyPaymentService = dailyPaymentService;
     }
 
     @GetMapping
@@ -68,8 +74,46 @@ public class AdminRentalController {
     @GetMapping("/{id}")
     public String getRentalDetails(@PathVariable Long id, Model model) {
         Rental rental = rentalService.getRentalById(id);
+        
+        // Получаем историю платежей для этой аренды
+        List<PaymentHistoryDto> paymentHistory = dailyPaymentService.getPaymentsByRental(rental)
+                .stream()
+                .map(PaymentHistoryDto::fromDailyPayment)
+                .collect(Collectors.toList());
+        
+        // Получаем статистику платежей
+        List<ru.anapa.autorent.model.DailyPayment> payments = dailyPaymentService.getPaymentsByRental(rental);
+        
+        long totalPayments = payments.size();
+        long processedPayments = payments.stream()
+                .filter(p -> p.getStatus() == ru.anapa.autorent.model.DailyPayment.PaymentStatus.PROCESSED)
+                .count();
+        long failedPayments = payments.stream()
+                .filter(p -> p.getStatus() == ru.anapa.autorent.model.DailyPayment.PaymentStatus.FAILED)
+                .count();
+        long pendingPayments = payments.stream()
+                .filter(p -> p.getStatus() == ru.anapa.autorent.model.DailyPayment.PaymentStatus.PENDING)
+                .count();
+        
+        java.math.BigDecimal totalAmount = payments.stream()
+                .map(ru.anapa.autorent.model.DailyPayment::getAmount)
+                .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+        
+        java.math.BigDecimal processedAmount = payments.stream()
+                .filter(p -> p.getStatus() == ru.anapa.autorent.model.DailyPayment.PaymentStatus.PROCESSED)
+                .map(ru.anapa.autorent.model.DailyPayment::getAmount)
+                .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+        
+        PaymentStatisticsDto paymentStats = new PaymentStatisticsDto(
+            totalPayments, processedPayments, failedPayments, 
+            pendingPayments, totalAmount, processedAmount
+        );
+        
         model.addAttribute("rental", rental);
-        return "rentals/admin-rental-details"; // Исправлено
+        model.addAttribute("paymentHistory", paymentHistory);
+        model.addAttribute("paymentStats", paymentStats);
+        
+        return "rentals/admin-rental-details";
     }
 
     @PostMapping("/{id}/approve")

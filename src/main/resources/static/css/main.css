@@ -1646,6 +1646,7 @@ footer hr {
 .settings-container {
     max-width: 800px;
     margin: 0 auto;
+    padding: var(--spacing-lg);
 }
 
 .settings-section {
@@ -1654,205 +1655,62 @@ footer hr {
 
 .settings-section h3 {
     color: var(--primary-color);
-    border-bottom: 2px solid var(--secondary-color);
-    padding-bottom: var(--spacing-sm);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
 }
 
 .danger-zone {
     border: 2px solid var(--danger-color);
     border-radius: var(--border-radius-lg);
-    background-color: rgba(231, 76, 60, 0.05);
 }
 
 .danger-zone .card-header {
     background-color: var(--danger-color);
     color: white;
-    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    border-bottom: none;
 }
 
-/* История транзакций */
-.transactions-container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.transaction-filters {
-    background-color: var(--bg-white);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-lg);
-    margin-bottom: var(--spacing-lg);
-    box-shadow: var(--shadow-light);
-}
-
-.transaction-filters h4 {
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-md);
-}
-
-.transaction-table {
-    background-color: var(--bg-white);
-    border-radius: var(--border-radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-light);
-}
-
-.transaction-table .table {
-    margin-bottom: 0;
-}
-
-.transaction-table th {
+/* Стили для секции восстановления пароля */
+.password-recovery-section {
     background-color: var(--bg-light);
-    border-bottom: 2px solid var(--border-color);
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
-.transaction-amount {
-    font-weight: 600;
-}
-
-.transaction-amount.positive {
-    color: var(--success-color);
-}
-
-.transaction-amount.negative {
-    color: var(--danger-color);
-}
-
-.transaction-type {
-    font-size: 0.85rem;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--border-radius);
-    font-weight: 500;
-}
-
-.transaction-type.deposit {
-    background-color: rgba(46, 204, 113, 0.1);
-    color: var(--success-color);
-}
-
-.transaction-type.withdrawal {
-    background-color: rgba(231, 76, 60, 0.1);
-    color: var(--danger-color);
-}
-
-.transaction-type.transfer {
-    background-color: rgba(52, 152, 219, 0.1);
-    color: var(--info-color);
-}
-
-/* Статистика транзакций */
-.transaction-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-lg);
-}
-
-.stat-card {
-    text-align: center;
-    padding: var(--spacing-lg);
     border-radius: var(--border-radius-lg);
-    color: white;
-    box-shadow: var(--shadow-medium);
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-md);
 }
 
-.stat-card.income {
-    background: linear-gradient(135deg, var(--success-color), #27ae60);
-}
-
-.stat-card.expenses {
-    background: linear-gradient(135deg, var(--danger-color), #c0392b);
-}
-
-.stat-card.count {
-    background: linear-gradient(135deg, var(--info-color), #2980b9);
-}
-
-.stat-number {
-    font-size: 2rem;
-    font-weight: 700;
+.password-recovery-section h6 {
+    color: var(--info-color);
+    font-weight: 600;
     margin-bottom: var(--spacing-xs);
 }
 
-.stat-label {
-    font-size: 0.9rem;
-    opacity: 0.9;
+.password-recovery-section .text-muted {
+    font-size: 0.875rem;
+    line-height: 1.4;
 }
 
-/* Адаптивность для страниц аккаунта */
+.password-recovery-section .btn-outline-info {
+    border-color: var(--info-color);
+    color: var(--info-color);
+    transition: all var(--transition-normal);
+}
+
+.password-recovery-section .btn-outline-info:hover {
+    background-color: var(--info-color);
+    border-color: var(--info-color);
+    color: white;
+}
+
+/* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
-    .profile-avatar {
-        width: 60px;
-        height: 60px;
-        font-size: 1.5rem;
+    .password-recovery-section .d-flex {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
     }
     
-    .profile-name {
-        font-size: 1.25rem;
-    }
-    
-    .balance-amount {
-        font-size: 1.5rem;
-    }
-    
-    .quick-actions-grid {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-sm);
-    }
-    
-    .quick-action-btn {
-        padding: var(--spacing-md);
-        flex-direction: row;
-        text-align: left;
-    }
-    
-    .quick-action-btn i {
-        font-size: 1.5rem;
-        margin-bottom: 0;
-        margin-right: var(--spacing-sm);
-    }
-    
-    .transaction-stats {
-        grid-template-columns: 1fr;
-    }
-    
-    .transaction-filters .row {
-        margin: 0;
-    }
-    
-    .transaction-filters .col-md-4 {
-        margin-bottom: var(--spacing-sm);
-    }
-}
-
-@media (max-width: 576px) {
-    .profile-container,
-    .settings-container,
-    .transactions-container {
-        padding: 0 var(--spacing-sm);
-    }
-    
-    .balance-card {
-        padding: var(--spacing-md);
-    }
-    
-    .transaction-table {
-        font-size: 0.9rem;
-    }
-    
-    .transaction-table th,
-    .transaction-table td {
-        padding: var(--spacing-sm);
-    }
-    
-    .stat-card {
-        padding: var(--spacing-md);
-    }
-    
-    .stat-number {
-        font-size: 1.5rem;
+    .password-recovery-section .btn {
+        width: 100%;
     }
 }
 
@@ -2107,4 +1965,584 @@ footer hr {
 .data-table .text-center { text-align: center; }
 @media (max-width: 768px) {
   .data-table th, .data-table td { padding: 0.5rem 0.4rem; font-size: 0.95em; }
+}
+
+/* ========================================
+   СТИЛИ ДЛЯ ВОССТАНОВЛЕНИЯ ПАРОЛЯ
+   ======================================== */
+
+.password-reset-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-medium);
+}
+
+.password-reset-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.password-reset-header h2 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.password-reset-header .icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.password-reset-form {
+    margin-bottom: 2rem;
+}
+
+.password-reset-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.password-reset-form label {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.password-reset-form .input-group {
+    position: relative;
+}
+
+.password-reset-form .input-group-text {
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-right: none;
+    color: var(--text-muted);
+}
+
+.password-reset-form .form-control {
+    border: 1px solid var(--border-color);
+    border-left: none;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all var(--transition-normal);
+}
+
+.password-reset-form .form-control:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.password-reset-form .form-control.is-valid {
+    border-color: var(--success-color);
+    box-shadow: 0 0 0 0.2rem rgba(46, 204, 113, 0.25);
+}
+
+.password-reset-form .form-control.is-invalid {
+    border-color: var(--danger-color);
+    box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25);
+}
+
+.password-reset-form .invalid-feedback {
+    display: block;
+    color: var(--danger-color);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.password-reset-form .valid-feedback {
+    display: block;
+    color: var(--success-color);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.password-reset-form .form-text {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.password-reset-form .btn {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    transition: all var(--transition-normal);
+}
+
+.password-reset-form .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.password-toggle-btn {
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-left: none;
+    color: var(--text-muted);
+    padding: 0.75rem 0.5rem;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+}
+
+.password-toggle-btn:hover {
+    color: var(--secondary-color);
+}
+
+.password-reset-links {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.password-reset-links a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    margin: 0 0.5rem;
+    transition: color var(--transition-fast);
+}
+
+.password-reset-links a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.password-reset-success {
+    text-align: center;
+    padding: 2rem;
+}
+
+.password-reset-success .icon {
+    font-size: 4rem;
+    color: var(--success-color);
+    margin-bottom: 1rem;
+}
+
+.password-reset-success h3 {
+    color: var(--success-color);
+    margin-bottom: 1rem;
+}
+
+.password-reset-error {
+    text-align: center;
+    padding: 2rem;
+}
+
+.password-reset-error .icon {
+    font-size: 4rem;
+    color: var(--danger-color);
+    margin-bottom: 1rem;
+}
+
+.password-reset-error h3 {
+    color: var(--danger-color);
+    margin-bottom: 1rem;
+}
+
+.password-strength-meter {
+    margin-top: 0.5rem;
+    height: 4px;
+    background-color: var(--bg-light);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.password-strength-meter .strength-bar {
+    height: 100%;
+    transition: all var(--transition-normal);
+    border-radius: 2px;
+}
+
+.password-strength-meter .strength-weak {
+    background-color: var(--danger-color);
+    width: 25%;
+}
+
+.password-strength-meter .strength-medium {
+    background-color: var(--warning-color);
+    width: 50%;
+}
+
+.password-strength-meter .strength-strong {
+    background-color: var(--success-color);
+    width: 75%;
+}
+
+.password-strength-meter .strength-very-strong {
+    background-color: var(--success-color);
+    width: 100%;
+}
+
+.password-requirements {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.password-requirements ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.password-requirements li {
+    margin-bottom: 0.25rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.password-requirements li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+.password-requirements li.requirement-not-met::before {
+    content: '✗';
+    color: var(--danger-color);
+}
+
+/* Адаптивность для форм восстановления пароля */
+@media (max-width: 768px) {
+    .password-reset-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .password-reset-header .icon {
+        font-size: 2.5rem;
+    }
+    
+    .password-reset-form .btn {
+        padding: 0.875rem 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .password-reset-container {
+        margin: 0.5rem;
+        padding: 1rem;
+    }
+    
+    .password-reset-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .password-reset-form .form-control {
+        font-size: 16px; /* Предотвращает зум на iOS */
+    }
+}
+
+/* Анимации для форм восстановления пароля */
+.password-reset-container {
+    animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.password-reset-form .form-control:focus {
+    animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Стили для индикатора загрузки */
+.btn-loading {
+    position: relative;
+    color: transparent !important;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ========================================
+   ИСТОРИЯ ПЛАТЕЖЕЙ - СТИЛИ
+   ======================================== */
+
+/* Статистика платежей */
+.payment-stats {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: var(--bg-white);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-light);
+}
+
+.stat-label {
+    font-weight: 500;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.stat-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+}
+
+.stat-value.success {
+    color: var(--success-color);
+}
+
+.stat-value.warning {
+    color: var(--warning-color);
+}
+
+.stat-value.error {
+    color: var(--danger-color);
+}
+
+/* Таблица истории платежей */
+.payment-history-table {
+    margin-top: var(--spacing-lg);
+}
+
+.payment-history-table .table {
+    background-color: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+}
+
+.payment-history-table .table th {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border: none;
+    padding: var(--spacing-md);
+}
+
+.payment-history-table .table td {
+    padding: var(--spacing-md);
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.payment-history-table .table tbody tr:hover {
+    background-color: var(--bg-light);
+    transition: background-color var(--transition-fast);
+}
+
+/* Статусы платежей */
+.payment-status {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 100px;
+    text-align: center;
+}
+
+.payment-status.status-processed {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.payment-status.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.payment-status.status-failed {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.payment-status.status-cancelled {
+    background-color: #e2e3e5;
+    color: #383d41;
+    border: 1px solid #d6d8db;
+}
+
+/* Суммы платежей */
+.payment-history-table .amount {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+/* Примечания к платежам */
+.payment-notes {
+    display: inline-block;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    cursor: help;
+}
+
+.payment-notes:hover {
+    white-space: normal;
+    overflow: visible;
+    background-color: var(--bg-white);
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    position: relative;
+    z-index: 10;
+}
+
+.no-notes {
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* Сообщение об отсутствии платежей */
+.no-payments {
+    text-align: center;
+    padding: var(--spacing-xl);
+    background-color: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    border: 2px dashed var(--border-color);
+}
+
+.no-payments p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+/* Адаптивность для истории платежей */
+@media (max-width: 992px) {
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: var(--spacing-sm);
+    }
+    
+    .stat-item {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-xs);
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+    }
+    
+    .stat-value {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .payment-stats {
+        padding: var(--spacing-md);
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .payment-history-table .table th,
+    .payment-history-table .table td {
+        padding: var(--spacing-sm);
+        font-size: 0.9rem;
+    }
+    
+    .payment-history-table .table th {
+        font-size: 0.8rem;
+    }
+    
+    .payment-status {
+        min-width: 80px;
+        font-size: 0.8rem;
+        padding: 2px 6px;
+    }
+    
+    .payment-notes {
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 576px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-history-table .table-responsive {
+        font-size: 0.85rem;
+    }
+    
+    .payment-history-table .table th,
+    .payment-history-table .table td {
+        padding: 6px 8px;
+    }
+    
+    .payment-history-table .table th:nth-child(4),
+    .payment-history-table .table th:nth-child(5),
+    .payment-history-table .table td:nth-child(4),
+    .payment-history-table .table td:nth-child(5) {
+        display: none;
+    }
 } 

@@ -104,6 +104,23 @@
                             </button>
                         </div>
                     </form>
+                    
+                    <!-- Ссылка на восстановление пароля -->
+                    <div class="mt-3 pt-3 border-top password-recovery-section">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">
+                                    <i class="fas fa-question-circle text-info"></i> Забыли пароль?
+                                </h6>
+                                <p class="text-muted small mb-0">
+                                    Если вы забыли свой пароль, вы можете восстановить его через email
+                                </p>
+                            </div>
+                            <a th:href="@{/auth/forgot-password}" class="btn btn-outline-info">
+                                <i class="fas fa-unlock-alt"></i> Восстановить пароль
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
 

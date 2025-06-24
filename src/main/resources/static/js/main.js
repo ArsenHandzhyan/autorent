@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initRejectCancellationForm();
     initUserStatusToggle();
     initCarEditPage();
+    initPasswordReset();
     
     console.log('AutoRent: Приложение инициализировано');
 });
@@ -1593,4 +1594,185 @@ function rotateImage(imageId, direction) {
         console.error('Ошибка:', error);
         showNotification('Произошла ошибка при повороте изображения', 'error');
     });
+}
+
+/**
+ * Инициализация функционала восстановления пароля
+ */
+function initPasswordReset() {
+    // Проверяем, что мы на странице восстановления пароля
+    const forgotPasswordForm = document.querySelector('form[action*="forgot-password"]');
+    const resetPasswordForm = document.querySelector('form[action*="reset-password"]');
+    
+    if (forgotPasswordForm) {
+        initForgotPasswordForm();
+    }
+    
+    if (resetPasswordForm) {
+        initResetPasswordForm();
+    }
+}
+
+/**
+ * Инициализация формы "Забыли пароль"
+ */
+function initForgotPasswordForm() {
+    const form = document.querySelector('form[action*="forgot-password"]');
+    const emailInput = document.getElementById('email');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    if (!form || !emailInput || !submitBtn) return;
+    
+    // Валидация email в реальном времени
+    emailInput.addEventListener('input', function() {
+        const email = this.value.trim();
+        const isValid = validateEmail(email);
+        
+        if (email && !isValid) {
+            this.classList.add('is-invalid');
+            this.classList.remove('is-valid');
+        } else if (email && isValid) {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        } else {
+            this.classList.remove('is-invalid', 'is-valid');
+        }
+        
+        updateSubmitButton();
+    });
+    
+    // Обработка отправки формы
+    form.addEventListener('submit', function(e) {
+        const email = emailInput.value.trim();
+        
+        if (!validateEmail(email)) {
+            e.preventDefault();
+            showNotification('Пожалуйста, введите корректный email', 'error');
+            return;
+        }
+        
+        // Показываем индикатор загрузки
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+    });
+    
+    function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    function updateSubmitButton() {
+        const email = emailInput.value.trim();
+        const isValid = validateEmail(email);
+        submitBtn.disabled = !isValid;
+    }
+}
+
+/**
+ * Инициализация формы сброса пароля
+ */
+function initResetPasswordForm() {
+    const form = document.querySelector('form[action*="reset-password"]');
+    const newPasswordInput = document.getElementById('newPassword');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const tokenInput = form.querySelector('input[name="token"]');
+    
+    if (!form || !newPasswordInput || !confirmPasswordInput || !submitBtn) return;
+    
+    // Валидация пароля в реальном времени
+    newPasswordInput.addEventListener('input', function() {
+        validatePassword(this.value);
+        validatePasswordMatch();
+        updateSubmitButton();
+    });
+    
+    confirmPasswordInput.addEventListener('input', function() {
+        validatePasswordMatch();
+        updateSubmitButton();
+    });
+    
+    // Обработка отправки формы
+    form.addEventListener('submit', function(e) {
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        
+        if (!validatePassword(newPassword)) {
+            e.preventDefault();
+            showNotification('Пароль не соответствует требованиям безопасности', 'error');
+            return;
+        }
+        
+        if (newPassword !== confirmPassword) {
+            e.preventDefault();
+            showNotification('Пароли не совпадают', 'error');
+            return;
+        }
+        
+        // Показываем индикатор загрузки
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Сохранение...';
+    });
+    
+    function validatePassword(password) {
+        const minLength = 8;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /\d/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        
+        const isValid = password.length >= minLength && 
+                       (hasUpperCase || hasLowerCase) && 
+                       (hasNumbers || hasSpecialChar);
+        
+        // Обновляем визуальные индикаторы
+        const strengthMeter = document.querySelector('.password-strength-meter');
+        if (strengthMeter) {
+            const strengthBar = strengthMeter.querySelector('.strength-bar');
+            if (strengthBar) {
+                let strength = 0;
+                if (password.length >= minLength) strength++;
+                if (hasUpperCase && hasLowerCase) strength++;
+                if (hasNumbers) strength++;
+                if (hasSpecialChar) strength++;
+                
+                strengthBar.className = 'strength-bar';
+                if (strength >= 4) {
+                    strengthBar.classList.add('strength-very-strong');
+                } else if (strength >= 3) {
+                    strengthBar.classList.add('strength-strong');
+                } else if (strength >= 2) {
+                    strengthBar.classList.add('strength-medium');
+                } else if (strength >= 1) {
+                    strengthBar.classList.add('strength-weak');
+                }
+            }
+        }
+        
+        return isValid;
+    }
+    
+    function validatePasswordMatch() {
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        
+        if (confirmPassword && newPassword !== confirmPassword) {
+            confirmPasswordInput.classList.add('is-invalid');
+            confirmPasswordInput.classList.remove('is-valid');
+        } else if (confirmPassword && newPassword === confirmPassword) {
+            confirmPasswordInput.classList.remove('is-invalid');
+            confirmPasswordInput.classList.add('is-valid');
+        } else {
+            confirmPasswordInput.classList.remove('is-invalid', 'is-valid');
+        }
+    }
+    
+    function updateSubmitButton() {
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        const isPasswordValid = validatePassword(newPassword);
+        const doPasswordsMatch = newPassword === confirmPassword;
+        
+        submitBtn.disabled = !(isPasswordValid && doPasswordsMatch);
+    }
 } 

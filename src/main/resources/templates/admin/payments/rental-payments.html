@@ -13,9 +13,14 @@
                     <h1 class="h2">
                         <i class="fas fa-credit-card"></i> Платежи по аренде #<span th:text="${rental.id}">1</span>
                     </h1>
-                    <a href="/admin/payments" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left"></i> Назад к списку
-                    </a>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <a th:href="@{/admin/dashboard}" class="btn btn-outline-primary me-2">
+                            <i class="fas fa-arrow-left"></i> Вернуться в админ-панель
+                        </a>
+                        <a href="/admin/payments" class="btn btn-outline-secondary">
+                            <i class="fas fa-list"></i> Назад к списку
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Информация об аренде -->
