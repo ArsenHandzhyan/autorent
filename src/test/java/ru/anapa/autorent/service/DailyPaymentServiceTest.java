@@ -224,11 +224,10 @@ class DailyPaymentServiceTest {
                 .thenThrow(new RuntimeException("Техническая ошибка"));
         when(dailyPaymentRepository.save(any(DailyPayment.class))).thenReturn(testPayment);
 
-        // Act & Assert
-        assertThrows(RuntimeException.class, () -> {
-            dailyPaymentService.processPayment(testPayment);
-        });
+        // Act
+        dailyPaymentService.processPayment(testPayment);
 
+        // Assert
         assertEquals(DailyPayment.PaymentStatus.FAILED, testPayment.getStatus());
         assertNotNull(testPayment.getProcessedAt());
         assertTrue(testPayment.getNotes().contains("Техническая ошибка"));

@@ -22111,3 +22111,48 @@ org.springframework.transaction.UnexpectedRollbackException: Transaction silentl
 21:30:42.155 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 21:30:42.159 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 21:30:42.685 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+21:32:26.915 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:32:27.001 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:32:27.012 [main] INFO  r.a.a.service.DailyPaymentService - Платеж для аренды 1 на дату 2025-06-24 уже существует
+21:32:27.020 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:32:27.036 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:32:27.040 [main] INFO  r.a.a.service.DailyPaymentService - Создан ежедневный платеж ID 1 для аренды 1 на сумму 0.00
+21:32:27.051 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:32:27.054 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:32:27.054 [main] ERROR r.a.a.service.DailyPaymentService - Ошибка при обработке платежа ID 1: Техническая ошибка
+21:32:41.580 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:32:41.653 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:32:41.657 [main] INFO  r.a.a.service.DailyPaymentService - Платеж для аренды 1 на дату 2025-06-24 уже существует
+21:32:41.665 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:32:41.678 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:32:41.690 [main] INFO  r.a.a.service.DailyPaymentService - Создан ежедневный платеж ID 1 для аренды 1 на сумму 0.00
+21:32:41.697 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:32:41.701 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:32:41.701 [main] ERROR r.a.a.service.DailyPaymentService - Ошибка при обработке платежа ID 1: Техническая ошибка
+21:33:54.738 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:33:54.802 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:33:54.818 [main] INFO  r.a.a.service.DailyPaymentService - Платеж для аренды 1 на дату 2025-06-24 уже существует
+21:33:54.826 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:33:54.834 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:33:54.839 [main] INFO  r.a.a.service.DailyPaymentService - Создан ежедневный платеж ID 1 для аренды 1 на сумму 0.00
+21:33:54.851 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:33:54.851 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+21:33:54.851 [main] ERROR r.a.a.service.DailyPaymentService - Ошибка при обработке платежа ID 1: Техническая ошибка
+21:34:03.689 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+21:34:03.759 [main] INFO  r.anapa.autorent.AutorentApplication - Starting AutorentApplication using Java 17.0.14 with PID 9600 (C:\Users\РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ\IdeaProjects\autorent\target\classes started by РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ in C:\Users\РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ\IdeaProjects\autorent)
+21:34:03.759 [main] DEBUG r.anapa.autorent.AutorentApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+21:34:03.759 [main] INFO  r.anapa.autorent.AutorentApplication - The following 1 profile is active: "dev"
+21:34:05.153 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+21:34:05.269 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 112 ms. Found 14 JPA repository interfaces.
+21:34:07.138 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+21:34:07.158 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+21:34:07.163 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+21:34:07.163 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+21:34:07.246 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+21:34:07.246 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3437 ms
+21:34:07.602 [main] DEBUG r.a.autorent.config.JwtRequestFilter - Filter 'jwtRequestFilter' configured for use
+21:34:07.837 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+21:34:07.918 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+21:34:07.973 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+21:34:08.268 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+21:34:08.302 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
