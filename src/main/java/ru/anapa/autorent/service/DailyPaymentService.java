@@ -112,60 +112,49 @@ public class DailyPaymentService {
     @Transactional
     public void processPayment(DailyPayment payment) {
         logger.info("Обработка платежа ID {} на сумму {}", payment.getId(), payment.getAmount());
-        
+        boolean processed = false;
+        String errorMsg = null;
         try {
             Account account = payment.getAccount();
             BigDecimal paymentAmount = payment.getAmount();
             BigDecimal currentBalance = account.getBalance();
             BigDecimal newBalance = currentBalance.subtract(paymentAmount);
-            
             // Проверяем возможность списания
             PaymentValidationResult validation = validatePayment(account, paymentAmount);
-            
             if (validation.isValid()) {
                 // Списываем средства со счета
                 accountService.updateBalance(account.getUser().getId(), paymentAmount.negate());
-                
                 // Отмечаем платеж как обработанный
                 payment.setStatus(DailyPayment.PaymentStatus.PROCESSED);
                 payment.setProcessedAt(LocalDateTime.now());
                 payment.setNotes("Платеж успешно обработан. Новый баланс: " + newBalance + " ₽");
-                
                 dailyPaymentRepository.save(payment);
-                
-                logger.info("Платеж ID {} успешно обработан. Новый баланс: {}", payment.getId(), newBalance);
-                
-                // Отправляем уведомление пользователю о списании
-                notificationService.sendPaymentProcessedNotification(payment);
-                
+                processed = true;
             } else {
-                // Платеж не может быть обработан
                 payment.setStatus(DailyPayment.PaymentStatus.FAILED);
                 payment.setProcessedAt(LocalDateTime.now());
                 payment.setNotes("Ошибка: " + validation.getErrorMessage());
-                
                 dailyPaymentRepository.save(payment);
-                
-                logger.warn("Платеж ID {} не обработан: {}", payment.getId(), validation.getErrorMessage());
-                
-                // Отправляем уведомления
-                notificationService.sendPaymentFailedNotification(payment, validation.getErrorMessage());
-                notificationService.sendAdminPaymentFailureNotification(payment, validation.getErrorMessage());
+                errorMsg = validation.getErrorMessage();
             }
-            
         } catch (Exception e) {
             logger.error("Ошибка при обработке платежа ID {}: {}", payment.getId(), e.getMessage());
-            
-            // Отмечаем платеж как неудачный
             payment.setStatus(DailyPayment.PaymentStatus.FAILED);
             payment.setProcessedAt(LocalDateTime.now());
             payment.setNotes("Техническая ошибка: " + e.getMessage());
             dailyPaymentRepository.save(payment);
-            
-            // Отправляем уведомления об ошибке
-            notificationService.sendPaymentFailedNotification(payment, "Техническая ошибка: " + e.getMessage());
-            notificationService.sendAdminPaymentFailureNotification(payment, "Техническая ошибка: " + e.getMessage());
-            throw e;
+            errorMsg = "Техническая ошибка: " + e.getMessage();
+        }
+        // ВЫЗЫВАЕМ УВЕДОМЛЕНИЯ ВНЕ ТРАНЗАКЦИИ
+        try {
+            if (processed) {
+                notificationService.sendPaymentProcessedNotification(payment);
+            } else {
+                notificationService.sendPaymentFailedNotification(payment, errorMsg);
+                notificationService.sendAdminPaymentFailureNotification(payment, errorMsg);
+            }
+        } catch (Exception notifyEx) {
+            logger.error("Ошибка при отправке уведомлений: {}", notifyEx.getMessage());
         }
     }
 
