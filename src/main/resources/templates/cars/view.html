@@ -55,18 +55,19 @@
             <!-- Блок статуса автомобиля -->
             <div class="car-status mb-3">
                 <span class="badge fs-5"
-                      th:classappend="${car.status.name() == 'AVAILABLE'} ? 'bg-success' :
-                                     (car.status.name() == 'RENTED' ? 'bg-danger' :
-                                     (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
-                                     (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))">
-                    <span th:switch="${car.status.name()}">
-                        <span th:case="'AVAILABLE'">Доступен</span>
-                        <span th:case="'RENTED'">Арендован</span>
-                        <span th:case="'RESERVED'">Забронирован</span>
-                        <span th:case="'MAINTENANCE'">На обслуживании</span>
-                        <span th:case="*">Неизвестно</span>
-                    </span>
-                </span>
+                      th:classappend="${car.status.name() == 'AVAILABLE' ? 'bg-success' : ''}"
+                      th:if="${car.status.name() == 'AVAILABLE'}">Доступен</span>
+                <span class="badge fs-5"
+                      th:classappend="${car.status.name() == 'RENTED' ? 'bg-danger' : ''}"
+                      th:if="${car.status.name() == 'RENTED'}">Арендован</span>
+                <span class="badge fs-5"
+                      th:classappend="${car.status.name() == 'RESERVED' ? 'bg-warning text-dark' : ''}"
+                      th:if="${car.status.name() == 'RESERVED'}">Забронирован</span>
+                <span class="badge fs-5"
+                      th:classappend="${car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : ''}"
+                      th:if="${car.status.name() == 'MAINTENANCE'}">На обслуживании</span>
+                <span class="badge fs-5 bg-light text-dark"
+                      th:if="${car.status.name() != 'AVAILABLE' and car.status.name() != 'RENTED' and car.status.name() != 'RESERVED' and car.status.name() != 'MAINTENANCE'}">Неизвестно</span>
                 <span th:if="${car.status.name() == 'RENTED' || car.status.name() == 'RESERVED'}">
                     <span class="ms-2">до
                         <span th:text="${nextDate != null ? #temporals.format(nextDate, 'dd.MM.yyyy HH:mm') : ''}"></span>

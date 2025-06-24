@@ -10175,3 +10175,2428 @@ org.thymeleaf.exceptions.TemplateProcessingException: Could not parse as express
 20:49:45.968 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
 20:49:45.973 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
 20:49:45.973 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:51:18.167 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+20:51:18.167 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+20:51:18.704 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+20:51:19.104 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+20:51:19.104 [main] INFO  r.a.a.service.DailyPaymentService - Платеж ID 1 успешно обработан. Новый баланс: -1000.00
+20:51:19.172 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+20:51:19.174 [main] INFO  r.a.a.service.DailyPaymentService - Платеж ID 1 успешно обработан. Новый баланс: -1000.00
+20:51:19.192 [main] INFO  r.a.a.service.DailyPaymentService - Платеж для аренды 1 на дату 2025-06-24 уже существует
+20:51:19.201 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+20:51:19.201 [main] WARN  r.a.a.service.DailyPaymentService - Платеж ID 1 не обработан: Недостаточно средств на счете. Баланс: 2000.00 ?, требуется: 3000.00 ?. Обратитесь к администратору для пополнения счета или разрешения отрицательного баланса.
+20:51:19.210 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+20:51:19.210 [main] INFO  r.a.a.service.DailyPaymentService - Платеж ID 1 успешно обработан. Новый баланс: 2000.00
+20:51:19.242 [main] INFO  r.a.a.service.DailyPaymentService - Создан ежедневный платеж ID 1 для аренды 1 на сумму 0.00
+20:51:19.251 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+20:51:19.253 [main] WARN  r.a.a.service.DailyPaymentService - Платеж ID 1 не обработан: Превышен кредитный лимит. Доступно: 2000.00 ?, требуется: 3000.00 ?
+20:51:19.267 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 1 на сумму 3000.00
+20:51:19.267 [main] ERROR r.a.a.service.DailyPaymentService - Ошибка при обработке платежа ID 1: Техническая ошибка
+20:51:24.374 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+20:51:24.442 [main] INFO  r.anapa.autorent.AutorentApplication - Starting AutorentApplication using Java 17.0.14 with PID 10700 (C:\Users\РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ\IdeaProjects\autorent\target\classes started by РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ in C:\Users\РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ\IdeaProjects\autorent)
+20:51:24.442 [main] DEBUG r.anapa.autorent.AutorentApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+20:51:24.442 [main] INFO  r.anapa.autorent.AutorentApplication - The following 1 profile is active: "dev"
+20:51:26.185 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20:51:26.328 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 129 ms. Found 14 JPA repository interfaces.
+20:51:28.098 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+20:51:28.107 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+20:51:28.107 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+20:51:28.107 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+20:51:28.219 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+20:51:28.219 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3698 ms
+20:51:28.662 [main] DEBUG r.a.autorent.config.JwtRequestFilter - Filter 'jwtRequestFilter' configured for use
+20:51:28.966 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+20:51:29.058 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+20:51:29.121 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+20:51:29.433 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+20:51:29.477 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+20:51:31.167 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3921e96f
+20:51:31.169 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+20:51:31.354 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+20:51:31.354 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+20:51:34.185 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+20:51:37.960 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+20:51:39.474 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+20:51:42.095 [main] WARN  o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.OncePerRequestFilter.doFilter(jakarta.servlet.ServletRequest,jakarta.servlet.ServletResponse,jakarta.servlet.FilterChain) throws jakarta.servlet.ServletException,java.io.IOException] because it is marked as final, consider using interface-based JDK proxies instead.
+20:51:42.098 [main] WARN  o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+20:51:42.823 [main] INFO  r.anapa.autorent.service.SmsService - SmsService РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј SMS.ru API
+20:51:43.279 [main] INFO  r.a.a.controller.AuthController - AuthController initialized
+20:51:43.379 [main] INFO  r.a.a.controller.RentalController - RentalController initialized
+20:51:44.978 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+20:51:45.234 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@413ebdd2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@382a0846, org.springframework.security.web.context.SecurityContextHolderFilter@4ee80d4c, org.springframework.security.web.header.HeaderWriterFilter@6e37943b, org.springframework.web.filter.CorsFilter@329aaf26, org.springframework.security.web.csrf.CsrfFilter@3c81b47e, org.springframework.security.web.authentication.logout.LogoutFilter@707993c6, ru.anapa.autorent.config.JwtRequestFilter@16c5b50a, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1dafed7b, org.springframework.security.web.session.ConcurrentSessionFilter@17d96a31, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@39dde2a3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@65b1321f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@31525ed3, org.springframework.security.web.session.SessionManagementFilter@52eed0c4, org.springframework.security.web.access.ExceptionTranslationFilter@15a75f79, org.springframework.security.web.access.intercept.AuthorizationFilter@5c4890f8]
+20:51:46.359 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+20:51:46.387 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+20:51:46.463 [main] INFO  r.anapa.autorent.AutorentApplication - Started AutorentApplication in 22.464 seconds (process running for 23.091)
+20:51:46.705 [scheduling-1] INFO  r.a.autorent.config.DataInitializer - Р—Р°РїСѓСЃРє РїСЂРѕРІРµСЂРєРё СЃС‚Р°С‚СѓСЃРѕРІ Р°РІС‚РѕРјРѕР±РёР»РµР№
+20:51:47.041 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        roles r1_0
+20:51:47.049 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+20:51:47.166 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:51:47.314 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+20:51:47.394 [main] INFO  r.a.autorent.config.DataInitializer - DataInitializer: РїСЂРѕРІРµСЂРєР° РЅР°Р»РёС‡РёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
+20:51:47.465 [main] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+20:51:47.478 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+20:51:47.573 [main] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+20:51:47.584 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+20:51:47.669 [main] INFO  r.a.autorent.config.DataInitializer - DataInitializer: admin@example.com СЃСѓС‰РµСЃС‚РІСѓРµС‚: true
+20:51:47.687 [scheduling-1] INFO  r.a.autorent.config.DataInitializer - РћР±РЅРѕРІР»РµРЅС‹ СЃС‚Р°С‚СѓСЃС‹ 0 Р°РІС‚РѕРјРѕР±РёР»РµР№
+20:51:47.765 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+        and r1_0.end_date<?
+20:51:47.877 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+        and r1_0.start_date between ? and ?
+20:51:47.968 [main] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+20:51:48.072 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status in (?, ?)
+20:51:48.160 [main] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+20:51:48.280 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+20:51:48.280 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+20:51:48.280 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+20:51:48.318 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /admin/dashboard
+20:51:48.372 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:51:48.389 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /admin/dashboard
+20:51:48.422 [main] INFO  r.a.autorent.config.DataInitializer - РЎС‚Р°С‚СѓСЃС‹ Р°РІС‚РѕРјРѕР±РёР»РµР№ СЃРёРЅС…СЂРѕРЅРёР·РёСЂРѕРІР°РЅС‹ РїСЂРё Р·Р°РїСѓСЃРєРµ РїСЂРёР»РѕР¶РµРЅРёСЏ
+20:51:48.460 [http-nio-8080-exec-1] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public java.lang.String ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.ui.Model); target is of class [ru.anapa.autorent.controller.AdminController]
+20:51:48.555 [http-nio-8080-exec-1] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public java.lang.String ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.ui.Model); target is of class [ru.anapa.autorent.controller.AdminController]
+20:51:48.830 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        users u1_0
+20:51:49.382 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        cars c1_0
+20:51:49.780 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        count(c1_0.id) 
+    from
+        cars c1_0 
+    where
+        c1_0.status=?
+20:51:49.881 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        count(r1_0.id) 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+20:51:49.981 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        count(r1_0.id) 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+20:51:50.271 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0
+20:51:50.367 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:51:50.463 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+20:51:50.879 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    order by
+        r1_0.created_at desc 
+    limit
+        ?
+20:51:50.963 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:51:51.063 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+20:51:51.163 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.status=?
+20:51:52.191 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+20:51:52.196 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+20:51:52.198 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+20:51:52.201 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+20:51:52.224 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:51:52.224 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:51:54.559 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /admin/cars
+20:51:54.571 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:51:54.572 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /admin/cars
+20:51:54.576 [http-nio-8080-exec-4] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+20:51:54.610 [http-nio-8080-exec-4] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+20:51:54.894 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    limit
+        ?, ?
+20:51:55.027 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id in (?) 
+    order by
+        ci1_0.display_order
+20:51:55.538 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+20:51:55.538 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+20:51:55.543 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg
+20:51:55.545 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+20:51:55.545 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+20:51:55.547 [http-nio-8080-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:51:55.549 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg
+20:51:55.551 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:51:55.551 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:04.313 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /cars/11
+20:52:04.317 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /cars/11
+20:52:04.606 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:04.982 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+20:52:05.080 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:05.368 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:05.745 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+20:52:05.837 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:05.937 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status=? 
+    order by
+        r1_0.end_date
+20:52:06.035 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:06.121 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+20:52:06.235 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status=? 
+    order by
+        r1_0.end_date
+20:52:06.504 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:06.887 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+20:52:06.987 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:07.086 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status in (?, ?) 
+    order by
+        r1_0.start_date
+20:52:07.183 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:07.286 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+20:52:07.389 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Loading car details for ID: 11
+20:52:07.389 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Car images count: 5
+20:52:07.389 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Image: id=6, url=/uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg, main=true
+20:52:07.389 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Image: id=7, url=/uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg, main=false
+20:52:07.389 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Image: id=8, url=/uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg, main=false
+20:52:07.389 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Image: id=9, url=/uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg, main=false
+20:52:07.389 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Image: id=10, url=/uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg, main=false
+20:52:07.420 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:07.447 [http-nio-8080-exec-8] ERROR org.thymeleaf.TemplateEngine - [THYMELEAF][http-nio-8080-exec-8] Exception processing template "cars/view": Could not parse as expression: "${car.status.name() == 'AVAILABLE'} ? 'bg-success' :
+                                     (car.status.name() == 'RENTED' ? 'bg-danger' :
+                                     (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
+                                     (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))" (template: "cars/view" - line 58, col 23)
+org.thymeleaf.exceptions.TemplateProcessingException: Could not parse as expression: "${car.status.name() == 'AVAILABLE'} ? 'bg-success' :
+                                     (car.status.name() == 'RENTED' ? 'bg-danger' :
+                                     (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
+                                     (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))" (template: "cars/view" - line 58, col 23)
+	at org.thymeleaf.standard.expression.StandardExpressionParser.parseExpression(StandardExpressionParser.java:131)
+	at org.thymeleaf.standard.expression.StandardExpressionParser.parseExpression(StandardExpressionParser.java:62)
+	at org.thymeleaf.standard.expression.StandardExpressionParser.parseExpression(StandardExpressionParser.java:44)
+	at org.thymeleaf.engine.EngineEventUtils.parseAttributeExpression(EngineEventUtils.java:220)
+	at org.thymeleaf.engine.EngineEventUtils.computeAttributeExpression(EngineEventUtils.java:207)
+	at org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor.doProcess(AbstractStandardExpressionAttributeTagProcessor.java:125)
+	at org.thymeleaf.processor.element.AbstractAttributeTagProcessor.doProcess(AbstractAttributeTagProcessor.java:74)
+	at org.thymeleaf.processor.element.AbstractElementTagProcessor.process(AbstractElementTagProcessor.java:95)
+	at org.thymeleaf.util.ProcessorConfigurationUtils$ElementTagProcessorWrapper.process(ProcessorConfigurationUtils.java:633)
+	at org.thymeleaf.engine.ProcessorTemplateHandler.handleOpenElement(ProcessorTemplateHandler.java:1314)
+	at org.thymeleaf.engine.OpenElementTag.beHandled(OpenElementTag.java:205)
+	at org.thymeleaf.engine.TemplateModel.process(TemplateModel.java:136)
+	at org.thymeleaf.engine.TemplateManager.parseAndProcess(TemplateManager.java:661)
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1103)
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1077)
+	at org.thymeleaf.spring6.view.ThymeleafView.renderFragment(ThymeleafView.java:372)
+	at org.thymeleaf.spring6.view.ThymeleafView.render(ThymeleafView.java:192)
+	at org.springframework.web.servlet.DispatcherServlet.render(DispatcherServlet.java:1431)
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1167)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1106)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.ObservationFilterChainDecorator$FilterObservation$SimpleFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:479)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:340)
+	at org.springframework.security.web.ObservationFilterChainDecorator.lambda$wrapSecured$0(ObservationFilterChainDecorator.java:82)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:128)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:151)
+	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:129)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at ru.anapa.autorent.config.JwtRequestFilter.doFilterInternal(JwtRequestFilter.java:49)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:351)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:713)
+	at ru.anapa.autorent.config.JwtRequestFilter$$SpringCGLIB$$0.doFilterInternal(<generated>)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:117)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+20:52:07.462 [http-nio-8080-exec-8] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.thymeleaf.exceptions.TemplateProcessingException: Could not parse as expression: "${car.status.name() == 'AVAILABLE'} ? 'bg-success' :
+                                     (car.status.name() == 'RENTED' ? 'bg-danger' :
+                                     (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
+                                     (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))" (template: "cars/view" - line 58, col 23)] with root cause
+org.thymeleaf.exceptions.TemplateProcessingException: Could not parse as expression: "${car.status.name() == 'AVAILABLE'} ? 'bg-success' :
+                                     (car.status.name() == 'RENTED' ? 'bg-danger' :
+                                     (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
+                                     (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))" (template: "cars/view" - line 58, col 23)
+	at org.thymeleaf.standard.expression.StandardExpressionParser.parseExpression(StandardExpressionParser.java:131)
+	at org.thymeleaf.standard.expression.StandardExpressionParser.parseExpression(StandardExpressionParser.java:62)
+	at org.thymeleaf.standard.expression.StandardExpressionParser.parseExpression(StandardExpressionParser.java:44)
+	at org.thymeleaf.engine.EngineEventUtils.parseAttributeExpression(EngineEventUtils.java:220)
+	at org.thymeleaf.engine.EngineEventUtils.computeAttributeExpression(EngineEventUtils.java:207)
+	at org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor.doProcess(AbstractStandardExpressionAttributeTagProcessor.java:125)
+	at org.thymeleaf.processor.element.AbstractAttributeTagProcessor.doProcess(AbstractAttributeTagProcessor.java:74)
+	at org.thymeleaf.processor.element.AbstractElementTagProcessor.process(AbstractElementTagProcessor.java:95)
+	at org.thymeleaf.util.ProcessorConfigurationUtils$ElementTagProcessorWrapper.process(ProcessorConfigurationUtils.java:633)
+	at org.thymeleaf.engine.ProcessorTemplateHandler.handleOpenElement(ProcessorTemplateHandler.java:1314)
+	at org.thymeleaf.engine.OpenElementTag.beHandled(OpenElementTag.java:205)
+	at org.thymeleaf.engine.TemplateModel.process(TemplateModel.java:136)
+	at org.thymeleaf.engine.TemplateManager.parseAndProcess(TemplateManager.java:661)
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1103)
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1077)
+	at org.thymeleaf.spring6.view.ThymeleafView.renderFragment(ThymeleafView.java:372)
+	at org.thymeleaf.spring6.view.ThymeleafView.render(ThymeleafView.java:192)
+	at org.springframework.web.servlet.DispatcherServlet.render(DispatcherServlet.java:1431)
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1167)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1106)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.ObservationFilterChainDecorator$FilterObservation$SimpleFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:479)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:340)
+	at org.springframework.security.web.ObservationFilterChainDecorator.lambda$wrapSecured$0(ObservationFilterChainDecorator.java:82)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:128)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:151)
+	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:129)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at ru.anapa.autorent.config.JwtRequestFilter.doFilterInternal(JwtRequestFilter.java:49)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:351)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:713)
+	at ru.anapa.autorent.config.JwtRequestFilter$$SpringCGLIB$$0.doFilterInternal(<generated>)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:117)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+20:52:07.477 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /error
+20:52:07.479 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:07.479 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /error
+20:52:07.542 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+20:52:07.542 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+20:52:07.544 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+20:52:07.545 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+20:52:07.552 [http-nio-8080-exec-10] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:07.555 [http-nio-8080-exec-9] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:12.028 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /admin/cars
+20:52:12.028 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:12.028 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /admin/cars
+20:52:12.028 [http-nio-8080-exec-1] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+20:52:12.032 [http-nio-8080-exec-1] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+20:52:12.305 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    limit
+        ?, ?
+20:52:12.412 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id in (?) 
+    order by
+        ci1_0.display_order
+20:52:12.820 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+20:52:12.820 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+20:52:12.824 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+20:52:12.824 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+20:52:12.834 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:12.834 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:16.624 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /cars/11/edit
+20:52:16.624 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:16.624 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /cars/11/edit
+20:52:16.631 [http-nio-8080-exec-4] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.showEditCarForm(java.lang.Long); target is of class [ru.anapa.autorent.controller.CarController]
+20:52:16.634 [http-nio-8080-exec-4] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.showEditCarForm(java.lang.Long); target is of class [ru.anapa.autorent.controller.CarController]
+20:52:16.915 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:17.296 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+20:52:17.392 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:17.479 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Car ID: 11
+20:52:17.479 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Car DTO: CarDto(id=11, brand=Р›Р°РґР°, model=Р“СЂР°РЅС‚Р°, year=2023, licensePlate=Р 699РўРќ193, dailyRate=1500.00, newImages=null, existingImages=[CarImageDto(id=6, imageUrl=/uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg, description=null, displayOrder=0, main=true, rotation=0), CarImageDto(id=7, imageUrl=/uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg, description=null, displayOrder=1, main=false, rotation=0), CarImageDto(id=8, imageUrl=/uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg, description=null, displayOrder=2, main=false, rotation=0), CarImageDto(id=9, imageUrl=/uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg, description=null, displayOrder=3, main=false, rotation=0), CarImageDto(id=10, imageUrl=/uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg, description=null, displayOrder=4, main=false, rotation=180)], description=, available=false, transmission=MANUAL, fuelType=PETROL, seats=5, color=Р‘РµР»С‹Р№, category=COMFORT, schedule=7/0)
+20:52:17.513 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Existing images: [CarImageDto(id=6, imageUrl=/uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg, description=null, displayOrder=0, main=true, rotation=0), CarImageDto(id=7, imageUrl=/uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg, description=null, displayOrder=1, main=false, rotation=0), CarImageDto(id=8, imageUrl=/uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg, description=null, displayOrder=2, main=false, rotation=0), CarImageDto(id=9, imageUrl=/uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg, description=null, displayOrder=3, main=false, rotation=0), CarImageDto(id=10, imageUrl=/uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg, description=null, displayOrder=4, main=false, rotation=180)]
+20:52:17.670 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+20:52:17.670 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+20:52:17.674 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+20:52:17.678 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+20:52:17.678 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg
+20:52:17.681 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg
+20:52:17.681 [http-nio-8080-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:17.685 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:17.685 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg
+20:52:17.687 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg
+20:52:17.689 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:17.689 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:17.701 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg
+20:52:17.701 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg
+20:52:17.703 [http-nio-8080-exec-10] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:17.703 [http-nio-8080-exec-9] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:17.704 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg
+20:52:17.704 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg
+20:52:17.721 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg
+20:52:17.725 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:17.726 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg
+20:52:24.473 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing POST /cars/images/10/rotate?direction=right
+20:52:24.493 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:24.493 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured POST /cars/images/10/rotate?direction=right
+20:52:24.493 [http-nio-8080-exec-2] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public java.util.Map ru.anapa.autorent.controller.CarController.rotateCarImage(java.lang.Long,java.lang.String); target is of class [ru.anapa.autorent.controller.CarController]
+20:52:24.493 [http-nio-8080-exec-2] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public java.util.Map ru.anapa.autorent.controller.CarController.rotateCarImage(java.lang.Long,java.lang.String); target is of class [ru.anapa.autorent.controller.CarController]
+20:52:24.688 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+20:52:24.825 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        description=?,
+        display_order=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+20:52:25.895 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing POST /cars/images/10/rotate?direction=right
+20:52:25.904 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:25.904 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured POST /cars/images/10/rotate?direction=right
+20:52:25.908 [http-nio-8080-exec-3] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public java.util.Map ru.anapa.autorent.controller.CarController.rotateCarImage(java.lang.Long,java.lang.String); target is of class [ru.anapa.autorent.controller.CarController]
+20:52:25.908 [http-nio-8080-exec-3] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public java.util.Map ru.anapa.autorent.controller.CarController.rotateCarImage(java.lang.Long,java.lang.String); target is of class [ru.anapa.autorent.controller.CarController]
+20:52:26.087 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+20:52:26.197 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        description=?,
+        display_order=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+20:52:26.975 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing POST /cars/images/10/rotate?direction=right
+20:52:26.983 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:26.985 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured POST /cars/images/10/rotate?direction=right
+20:52:26.987 [http-nio-8080-exec-5] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public java.util.Map ru.anapa.autorent.controller.CarController.rotateCarImage(java.lang.Long,java.lang.String); target is of class [ru.anapa.autorent.controller.CarController]
+20:52:26.989 [http-nio-8080-exec-5] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public java.util.Map ru.anapa.autorent.controller.CarController.rotateCarImage(java.lang.Long,java.lang.String); target is of class [ru.anapa.autorent.controller.CarController]
+20:52:27.169 [http-nio-8080-exec-5] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+20:52:27.275 [http-nio-8080-exec-5] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        description=?,
+        display_order=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+20:52:28.459 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing POST /cars/images/10/rotate?direction=right
+20:52:28.459 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:28.459 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured POST /cars/images/10/rotate?direction=right
+20:52:28.459 [http-nio-8080-exec-6] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public java.util.Map ru.anapa.autorent.controller.CarController.rotateCarImage(java.lang.Long,java.lang.String); target is of class [ru.anapa.autorent.controller.CarController]
+20:52:28.459 [http-nio-8080-exec-6] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public java.util.Map ru.anapa.autorent.controller.CarController.rotateCarImage(java.lang.Long,java.lang.String); target is of class [ru.anapa.autorent.controller.CarController]
+20:52:28.650 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+20:52:28.760 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        description=?,
+        display_order=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+20:52:32.148 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing POST /cars/11/edit
+20:52:32.223 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:32.223 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured POST /cars/11/edit
+20:52:32.332 [http-nio-8080-exec-8] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.updateCar(java.lang.Long,ru.anapa.autorent.dto.CarDto,java.lang.Long,java.util.Map,org.springframework.validation.BindingResult); target is of class [ru.anapa.autorent.controller.CarController]
+20:52:32.334 [http-nio-8080-exec-8] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.updateCar(java.lang.Long,ru.anapa.autorent.dto.CarDto,java.lang.Long,java.util.Map,org.springframework.validation.BindingResult); target is of class [ru.anapa.autorent.controller.CarController]
+20:52:32.612 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:32.987 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+20:52:33.087 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:33.284 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:33.386 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+20:52:33.751 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /cars/11?success=%D0%90%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D1%8C+%D1%83%D1%81%D0%BF%D0%B5%D1%88%D0%BD%D0%BE+%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD
+20:52:33.751 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /cars/11?success=%D0%90%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D1%8C+%D1%83%D1%81%D0%BF%D0%B5%D1%88%D0%BD%D0%BE+%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD
+20:52:33.935 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:34.324 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+20:52:34.413 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:34.702 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:35.084 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+20:52:35.169 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:35.280 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status in (?, ?) 
+    order by
+        r1_0.start_date
+20:52:35.375 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+20:52:35.472 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+20:52:35.572 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Loading car details for ID: 11
+20:52:35.572 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Car images count: 5
+20:52:35.572 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Image: id=6, url=/uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg, main=true
+20:52:35.573 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Image: id=7, url=/uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg, main=false
+20:52:35.573 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Image: id=8, url=/uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg, main=false
+20:52:35.573 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Image: id=9, url=/uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg, main=false
+20:52:35.573 [http-nio-8080-exec-8] DEBUG r.a.a.controller.CarController - Image: id=10, url=/uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg, main=false
+20:52:35.577 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:35.585 [http-nio-8080-exec-8] ERROR org.thymeleaf.TemplateEngine - [THYMELEAF][http-nio-8080-exec-8] Exception processing template "cars/view": Could not parse as expression: "${car.status.name() == 'AVAILABLE'} ? 'bg-success' :
+                                     (car.status.name() == 'RENTED' ? 'bg-danger' :
+                                     (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
+                                     (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))" (template: "cars/view" - line 58, col 23)
+org.thymeleaf.exceptions.TemplateProcessingException: Could not parse as expression: "${car.status.name() == 'AVAILABLE'} ? 'bg-success' :
+                                     (car.status.name() == 'RENTED' ? 'bg-danger' :
+                                     (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
+                                     (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))" (template: "cars/view" - line 58, col 23)
+	at org.thymeleaf.standard.expression.StandardExpressionParser.parseExpression(StandardExpressionParser.java:131)
+	at org.thymeleaf.standard.expression.StandardExpressionParser.parseExpression(StandardExpressionParser.java:62)
+	at org.thymeleaf.standard.expression.StandardExpressionParser.parseExpression(StandardExpressionParser.java:44)
+	at org.thymeleaf.engine.EngineEventUtils.parseAttributeExpression(EngineEventUtils.java:220)
+	at org.thymeleaf.engine.EngineEventUtils.computeAttributeExpression(EngineEventUtils.java:207)
+	at org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor.doProcess(AbstractStandardExpressionAttributeTagProcessor.java:125)
+	at org.thymeleaf.processor.element.AbstractAttributeTagProcessor.doProcess(AbstractAttributeTagProcessor.java:74)
+	at org.thymeleaf.processor.element.AbstractElementTagProcessor.process(AbstractElementTagProcessor.java:95)
+	at org.thymeleaf.util.ProcessorConfigurationUtils$ElementTagProcessorWrapper.process(ProcessorConfigurationUtils.java:633)
+	at org.thymeleaf.engine.ProcessorTemplateHandler.handleOpenElement(ProcessorTemplateHandler.java:1314)
+	at org.thymeleaf.engine.OpenElementTag.beHandled(OpenElementTag.java:205)
+	at org.thymeleaf.engine.TemplateModel.process(TemplateModel.java:136)
+	at org.thymeleaf.engine.TemplateManager.parseAndProcess(TemplateManager.java:592)
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1103)
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1077)
+	at org.thymeleaf.spring6.view.ThymeleafView.renderFragment(ThymeleafView.java:372)
+	at org.thymeleaf.spring6.view.ThymeleafView.render(ThymeleafView.java:192)
+	at org.springframework.web.servlet.DispatcherServlet.render(DispatcherServlet.java:1431)
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1167)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1106)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.ObservationFilterChainDecorator$FilterObservation$SimpleFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:479)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:340)
+	at org.springframework.security.web.ObservationFilterChainDecorator.lambda$wrapSecured$0(ObservationFilterChainDecorator.java:82)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:128)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:151)
+	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:129)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at ru.anapa.autorent.config.JwtRequestFilter.doFilterInternal(JwtRequestFilter.java:49)
+	at jdk.internal.reflect.GeneratedMethodAccessor52.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:351)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:713)
+	at ru.anapa.autorent.config.JwtRequestFilter$$SpringCGLIB$$0.doFilterInternal(<generated>)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:117)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+20:52:35.585 [http-nio-8080-exec-8] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.thymeleaf.exceptions.TemplateProcessingException: Could not parse as expression: "${car.status.name() == 'AVAILABLE'} ? 'bg-success' :
+                                     (car.status.name() == 'RENTED' ? 'bg-danger' :
+                                     (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
+                                     (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))" (template: "cars/view" - line 58, col 23)] with root cause
+org.thymeleaf.exceptions.TemplateProcessingException: Could not parse as expression: "${car.status.name() == 'AVAILABLE'} ? 'bg-success' :
+                                     (car.status.name() == 'RENTED' ? 'bg-danger' :
+                                     (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
+                                     (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))" (template: "cars/view" - line 58, col 23)
+	at org.thymeleaf.standard.expression.StandardExpressionParser.parseExpression(StandardExpressionParser.java:131)
+	at org.thymeleaf.standard.expression.StandardExpressionParser.parseExpression(StandardExpressionParser.java:62)
+	at org.thymeleaf.standard.expression.StandardExpressionParser.parseExpression(StandardExpressionParser.java:44)
+	at org.thymeleaf.engine.EngineEventUtils.parseAttributeExpression(EngineEventUtils.java:220)
+	at org.thymeleaf.engine.EngineEventUtils.computeAttributeExpression(EngineEventUtils.java:207)
+	at org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor.doProcess(AbstractStandardExpressionAttributeTagProcessor.java:125)
+	at org.thymeleaf.processor.element.AbstractAttributeTagProcessor.doProcess(AbstractAttributeTagProcessor.java:74)
+	at org.thymeleaf.processor.element.AbstractElementTagProcessor.process(AbstractElementTagProcessor.java:95)
+	at org.thymeleaf.util.ProcessorConfigurationUtils$ElementTagProcessorWrapper.process(ProcessorConfigurationUtils.java:633)
+	at org.thymeleaf.engine.ProcessorTemplateHandler.handleOpenElement(ProcessorTemplateHandler.java:1314)
+	at org.thymeleaf.engine.OpenElementTag.beHandled(OpenElementTag.java:205)
+	at org.thymeleaf.engine.TemplateModel.process(TemplateModel.java:136)
+	at org.thymeleaf.engine.TemplateManager.parseAndProcess(TemplateManager.java:592)
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1103)
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1077)
+	at org.thymeleaf.spring6.view.ThymeleafView.renderFragment(ThymeleafView.java:372)
+	at org.thymeleaf.spring6.view.ThymeleafView.render(ThymeleafView.java:192)
+	at org.springframework.web.servlet.DispatcherServlet.render(DispatcherServlet.java:1431)
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1167)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1106)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.ObservationFilterChainDecorator$FilterObservation$SimpleFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:479)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:340)
+	at org.springframework.security.web.ObservationFilterChainDecorator.lambda$wrapSecured$0(ObservationFilterChainDecorator.java:82)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:128)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:151)
+	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:129)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at ru.anapa.autorent.config.JwtRequestFilter.doFilterInternal(JwtRequestFilter.java:49)
+	at jdk.internal.reflect.GeneratedMethodAccessor52.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:351)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:713)
+	at ru.anapa.autorent.config.JwtRequestFilter$$SpringCGLIB$$0.doFilterInternal(<generated>)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:117)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+20:52:35.585 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /error?success=%D0%90%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D1%8C+%D1%83%D1%81%D0%BF%D0%B5%D1%88%D0%BD%D0%BE+%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD
+20:52:35.601 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:35.601 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /error?success=%D0%90%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D1%8C+%D1%83%D1%81%D0%BF%D0%B5%D1%88%D0%BD%D0%BE+%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD
+20:52:35.635 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+20:52:35.635 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+20:52:35.643 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+20:52:35.643 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+20:52:35.656 [http-nio-8080-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
+20:52:35.656 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=6B9518E28F0DC95812152652070B5F6E], Granted Authorities=[ROLE_ADMIN]]]
