@@ -264,8 +264,8 @@ spring.datasource.password=password
 # Настройки email для восстановления пароля
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
-spring.mail.username=your-email@gmail.com
-spring.mail.password=your-app-password
+spring.mail.username=${MAIL_USERNAME}
+spring.mail.password=${MAIL_PASSWORD}
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 
@@ -362,3 +362,25 @@ password.reset.min-interval-minutes=5
 # Срок действия токена восстановления (часы)
 password.reset.token-expiration-hours=1
 ```
+
+### Безопасность хранения паролей и секретов
+- **Все пароли, ключи и секреты должны храниться только в переменных окружения!**
+- В файле `application.properties` используйте плейсхолдеры:
+  - `spring.mail.username=${MAIL_USERNAME}`
+  - `spring.mail.password=${MAIL_PASSWORD}`
+- Пример для Windows:
+  - `set MAIL_USERNAME=your_email@gmail.com`
+  - `set MAIL_PASSWORD=your_app_password`
+- Пример для Linux/Mac:
+  - `export MAIL_USERNAME=your_email@gmail.com`
+  - `export MAIL_PASSWORD=your_app_password`
+- Для Docker:
+  - В `docker-compose.yml`:
+    ```yaml
+    environment:
+      - MAIL_USERNAME=your_email@gmail.com
+      - MAIL_PASSWORD=your_app_password
+    ```
+- Для IntelliJ IDEA:
+  - Run/Debug Configurations → Environment variables:
+    `MAIL_USERNAME=your_email@gmail.com;MAIL_PASSWORD=your_app_password`
