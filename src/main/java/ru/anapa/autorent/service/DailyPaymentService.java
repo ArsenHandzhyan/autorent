@@ -373,7 +373,6 @@ public class DailyPaymentService {
     /**
      * Обрабатывает все платежи со статусом PENDING (для автосписания при старте приложения)
      */
-    @Transactional
     public void processAllPendingPayments() {
         List<DailyPayment> pendingPayments = dailyPaymentRepository.findAllByStatus(DailyPayment.PaymentStatus.PENDING);
         for (DailyPayment payment : pendingPayments) {

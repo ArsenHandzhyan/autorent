@@ -52,9 +52,19 @@ public class DailyPayment {
     }
 
     public enum PaymentStatus {
-        PENDING,    // Ожидает обработки
-        PROCESSED,  // Обработано успешно
-        FAILED,     // Ошибка при обработке
-        CANCELLED   // Отменено
+        PENDING("Ожидает обработки"),    // Ожидает обработки
+        PROCESSED("Обработано"),  // Обработано успешно
+        FAILED("Ошибка"),     // Ошибка при обработке
+        CANCELLED("Отменено");   // Отменено
+
+        private final String displayName;
+
+        PaymentStatus(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
     }
 } 
