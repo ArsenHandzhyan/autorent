@@ -210,6 +210,21 @@ public class CarService {
                 CarImage image = car.getImages().get(i);
                 image.setCar(car);
                 image.setDisplayOrder(i);
+                
+                // Устанавливаем imageUrl, если он не задан
+                if (image.getImageUrl() == null || image.getImageUrl().isEmpty()) {
+                    String imageUrl = "/images/car/" + System.currentTimeMillis() + "_" + 
+                                    (image.getFileName() != null ? image.getFileName() : "image.jpg");
+                    image.setImageUrl(imageUrl);
+                }
+                
+                // Устанавливаем значения по умолчанию для других полей
+                if (image.getDescription() == null) {
+                    image.setDescription("");
+                }
+                if (image.getRotation() == null) {
+                    image.setRotation(0);
+                }
             }
         }
         return carRepository.save(car);
@@ -261,6 +276,22 @@ public class CarService {
                     // Новое изображение
                     image.setCar(existingCar);
                     image.setDisplayOrder(i);
+                    
+                    // Устанавливаем imageUrl, если он не задан
+                    if (image.getImageUrl() == null || image.getImageUrl().isEmpty()) {
+                        String imageUrl = "/images/car/" + System.currentTimeMillis() + "_" + 
+                                        (image.getFileName() != null ? image.getFileName() : "image.jpg");
+                        image.setImageUrl(imageUrl);
+                    }
+                    
+                    // Устанавливаем значения по умолчанию для других полей
+                    if (image.getDescription() == null) {
+                        image.setDescription("");
+                    }
+                    if (image.getRotation() == null) {
+                        image.setRotation(0);
+                    }
+                    
                     existingCar.getImages().add(image);
                 } else {
                     // Обновляем существующее изображение
@@ -478,6 +509,16 @@ public class CarService {
             carImage.setContentType(contentType);
             carImage.setFileName(file.getOriginalFilename());
             carImage.setCar(car); // Устанавливаем связь с автомобилем
+            
+            // Генерируем URL для изображения (используется для совместимости)
+            String imageUrl = "/images/car/" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            carImage.setImageUrl(imageUrl);
+            
+            // Устанавливаем значения по умолчанию
+            carImage.setDescription("");
+            carImage.setMain(false);
+            carImage.setDisplayOrder(0);
+            carImage.setRotation(0);
             
             // Сохраняем в базу данных
             CarImage savedImage = carImageRepository.save(carImage);
