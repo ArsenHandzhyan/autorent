@@ -90,23 +90,22 @@ public class EmailService {
      *
      * @param to Email получателя
      * @param resetToken Токен для сброса пароля
+     * @return true, если письмо отправлено успешно, иначе false
      */
-    public void sendPasswordResetEmail(String to, String resetToken) {
+    public boolean sendPasswordResetEmail(String to, String resetToken) {
         String subject = "Сброс пароля в АвтоРент";
         String resetLink = appUrl + "/auth/reset-password?token=" + resetToken;
-        
         try {
             Context context = new Context(new Locale("ru"));
             context.setVariable("resetLink", resetLink);
             context.setVariable("appUrl", appUrl);
-            
             String emailContent = templateEngine.process("email/password-reset", context);
             sendEmail(to, subject, emailContent);
-            
             log.info("Password reset email sent to {}", to);
+            return true;
         } catch (Exception e) {
             log.error("Failed to send password reset email to {}: {}", to, e.getMessage());
-            throw new RuntimeException("Не удалось отправить письмо для сброса пароля: " + e.getMessage());
+            return false;
         }
     }
 

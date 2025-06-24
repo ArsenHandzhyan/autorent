@@ -74,7 +74,10 @@ public class VerificationTokenService {
         VerificationToken savedToken = tokenRepository.save(token);
         
         // Отправляем email со ссылкой для сброса пароля
-        emailService.sendPasswordResetEmail(email, token.getToken());
+        boolean emailSent = emailService.sendPasswordResetEmail(email, token.getToken());
+        if (!emailSent) {
+            log.error("Не удалось отправить письмо для сброса пароля на {}", email);
+        }
         
         return savedToken;
     }
