@@ -2,14 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="ru">
-<head>
-    <title th:text="${car.brand + ' ' + car.model} + ' - Автопрокат'">Toyota Camry - Автопрокат</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-</head>
+<head th:replace="~{fragments/head :: head(pageTitle=${car.brand + ' ' + car.model + ' - Автопрокат'})}"></head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
@@ -24,16 +17,15 @@
                          id="mainCarImage"
                          class="img-fluid rounded shadow"
                          alt="Основное фото автомобиля"
-                         th:style="'transform: rotate(' + (${car.images[0].rotation} != null ? ${car.images[0].rotation} : 0) + 'deg);'"/>
+                         th:classappend="${car.images[0].rotation != null ? 'rotate-img' : ''}"/>
                     <img th:if="${#lists.isEmpty(car.images)}" th:src="@{/images/default-car.jpg}" class="img-fluid rounded shadow" alt="Фото отсутствует"/>
                 </div>
                 <div th:if="${!#lists.isEmpty(car.images) && #lists.size(car.images) > 1}" class="thumbnails row g-2">
                     <div class="col-3" th:each="image, iter : ${car.images}">
                         <img th:src="@{${image.imageUrl}}"
                              class="img-fluid rounded thumbnail"
-                             th:classappend="${iter.index == 0} ? 'active' : ''"
+                             th:classappend="${iter.index == 0 ? 'active' : ''} ${image.rotation != null ? 'rotate-img' : ''}"
                              alt="Миниатюра"
-                             th:style="'transform: rotate(' + (${image.rotation} != null ? ${image.rotation} : 0) + 'deg);'"
                              onclick="changeMainImage(this.src)"/>
                     </div>
                 </div>
@@ -62,13 +54,23 @@
 
             <!-- Блок статуса автомобиля -->
             <div class="car-status mb-3">
-                <span class="badge fs-5 bg-success" th:if="${car.status.name() == 'AVAILABLE'}">Доступен</span>
-                <span class="badge fs-5 bg-danger" th:if="${car.status.name() == 'RENTED'}">Арендован</span>
-                <span class="badge fs-5 bg-warning text-dark" th:if="${car.status.name() == 'RESERVED'}">Забронирован</span>
-                <span class="badge fs-5 bg-secondary" th:if="${car.status.name() == 'MAINTENANCE'}">На обслуживании</span>
-                <span class="badge fs-5 bg-light text-dark" th:if="${car.status.name() != 'AVAILABLE' and car.status.name() != 'RENTED' and car.status.name() != 'RESERVED' and car.status.name() != 'MAINTENANCE'}">Неизвестно</span>
-                <span th:if="${car.status.name() == 'RENTED' || car.status.name() == 'RESERVED'}" class="ms-2">
-                    до <span th:text="${nextDate != null ? #temporals.format(nextDate, 'dd.MM.yyyy HH:mm') : ''}"></span>
+                <span class="badge fs-5"
+                      th:classappend="${car.status.name() == 'AVAILABLE'} ? 'bg-success' :
+                                     (car.status.name() == 'RENTED' ? 'bg-danger' :
+                                     (car.status.name() == 'RESERVED' ? 'bg-warning text-dark' :
+                                     (car.status.name() == 'MAINTENANCE' ? 'bg-secondary' : 'bg-light text-dark')))">
+                    <span th:switch="${car.status.name()}">
+                        <span th:case="'AVAILABLE'">Доступен</span>
+                        <span th:case="'RENTED'">Арендован</span>
+                        <span th:case="'RESERVED'">Забронирован</span>
+                        <span th:case="'MAINTENANCE'">На обслуживании</span>
+                        <span th:case="*">Неизвестно</span>
+                    </span>
+                </span>
+                <span th:if="${car.status.name() == 'RENTED' || car.status.name() == 'RESERVED'}">
+                    <span class="ms-2">до
+                        <span th:text="${nextDate != null ? #temporals.format(nextDate, 'dd.MM.yyyy HH:mm') : ''}"></span>
+                    </span>
                 </span>
             </div>
 
@@ -100,7 +102,7 @@
                         <i class="fas fa-calendar-plus"></i> Забронировать
                     </button>
                 </div>
-                <div class="form-text mt-2" id="dateWarning" style="display:none;color:red;">Выбранные даты пересекаются с уже забронированными!</div>
+                <div class="form-text mt-2 is-hidden" id="dateWarning">Выбранные даты пересекаются с уже забронированными!</div>
             </form>
         </div>
     </div>

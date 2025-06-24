@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Детали аренды</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-
-    <!-- CSRF токены -->
-    <meta name="_csrf" th:content="${_csrf.token}" />
-    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
-</head>
+<head th:replace="~{fragments/head :: head(pageTitle='Детали аренды - Автопрокат')}"></head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
@@ -113,7 +102,7 @@
 
                 <button type="button" class="btn btn-secondary" onclick="showNotesForm()">Редактировать примечания</button>
 
-                <div id="notesForm" class="notes-form" style="display: none;">
+                <div id="notesForm" class="notes-form is-hidden">
                     <form id="update-notes-form" th:action="@{/admin/rentals/{id}/update-notes(id=${rental.id})}" method="post">
                         <div class="form-group">
                             <label for="notes">Примечания:</label>
@@ -132,13 +121,13 @@
 
             <!-- Кнопки для ожидающих аренд -->
             <div id="pending-actions" th:if="${rental.status == 'PENDING'}" class="action-buttons">
-                <form id="approve-form" th:action="@{/admin/rentals/{id}/approve(id=${rental.id})}" method="post" style="display: inline;">
+                <form id="approve-form" th:action="@{/admin/rentals/{id}/approve(id=${rental.id})}" method="post" class="inline-form">
                     <button type="submit" class="btn btn-success">Подтвердить</button>
                 </form>
 
                 <button type="button" class="btn btn-danger" th:onclick="'showCancelForm(' + ${rental.id} + ')'">Отменить</button>
 
-                <div th:id="'cancelForm-' + ${rental.id}" class="cancel-form" style="display: none;">
+                <div th:id="'cancelForm-' + ${rental.id}" class="cancel-form is-hidden">
                     <form id="cancel-form" th:action="@{/admin/rentals/{id}/cancel(id=${rental.id})}" method="post">
                         <div class="form-group">
                             <label for="cancelNotes">Причина отмены:</label>
@@ -152,13 +141,13 @@
 
             <!-- Кнопки для активных аренд -->
             <div id="active-actions" th:if="${rental.status == 'ACTIVE'}" class="action-buttons">
-                <form id="complete-form" th:action="@{/admin/rentals/{id}/complete(id=${rental.id})}" method="post" style="display: inline;">
+                <form id="complete-form" th:action="@{/admin/rentals/{id}/complete(id=${rental.id})}" method="post" class="inline-form">
                     <button type="submit" class="btn btn-success">Завершить</button>
                 </form>
 
                 <button type="button" class="btn btn-danger" th:onclick="'showCancelForm(' + ${rental.id} + ')'">Отменить</button>
 
-                <div th:id="'cancelForm-' + ${rental.id}" class="cancel-form" style="display: none;">
+                <div th:id="'cancelForm-' + ${rental.id}" class="cancel-form is-hidden">
                     <form id="cancel-form-active" th:action="@{/admin/rentals/{id}/cancel(id=${rental.id})}" method="post">
                         <div class="form-group">
                             <label for="cancelNotesActive">Причина отмены:</label>
@@ -178,8 +167,8 @@
 
                 <button type="button" class="btn btn-danger" th:onclick="'showRejectForm(' + ${rental.id} + ')'">Отклонить</button>
 
-                <div th:id="'rejectForm-' + ${rental.id}" class="reject-form" style="display: none;">
-                    <form id="reject-cancellation-form" th:action="@{/admin/rentals/{id}/reject-cancellation(id=${rental.id})}" method="post">
+                <div th:id="'rejectForm-' + ${rental.id}" class="reject-form is-hidden">
+                    <form th:action="@{/admin/rentals/{id}/reject-cancellation(id=${rental.id})}" method="post" class="inline-form">
                         <div class="form-group">
                             <label for="adminNotes">Причина отказа:</label>
                             <textarea id="adminNotes" name="adminNotes" rows="3" class="form-control" required></textarea>
@@ -192,315 +181,6 @@
         </div>
     </div>
 </div>
-
-<script th:inline="javascript">// Получение CSRF-токена
-const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-const rentalId = /*[[${rental.id}]]*/ 0;
-
-// Функции для показа/скрытия форм
-function showNotesForm() {
-  document.getElementById('notesForm').style.display = 'block';
-}
-
-function hideNotesForm() {
-  document.getElementById('notesForm').style.display = 'none';
-}
-
-function showCancelForm(id) {
-  document.getElementById('cancelForm-' + id).style.display = 'block';
-}
-
-function hideCancelForm(id) {
-  document.getElementById('cancelForm-' + id).style.display = 'none';
-}
-
-function showRejectForm(id) {
-  document.getElementById('rejectForm-' + id).style.display = 'block';
-}
-
-function hideRejectForm(id) {
-  document.getElementById('rejectForm-' + id).style.display = 'none';
-}
-
-// Функция для отображения сообщений
-function showMessage(type, message) {
-  const messageContainer = document.getElementById('message-container');
-  messageContainer.innerHTML = '';
-
-  const messageElement = document.createElement('div');
-  messageElement.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
-  messageElement.innerHTML = `
-      ${message}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  `;
-
-  messageContainer.appendChild(messageElement);
-
-  // Автоматически скрываем сообщение через 5 секунд
-  setTimeout(() => {
-    messageElement.classList.remove('show');
-    setTimeout(() => {
-      messageElement.remove();
-    }, 300);
-  }, 5000);
-}
-
-// Функция для получения текстового представления статуса
-function getStatusText(status) {
-  switch (status) {
-    case 'PENDING': return 'Ожидает подтверждения';
-    case 'ACTIVE': return 'Активна';
-    case 'COMPLETED': return 'Завершена';
-    case 'CANCELLED': return 'Отменена';
-    case 'PENDING_CANCELLATION': return 'Запрос на отмену';
-    default: return status;
-  }
-}
-
-// Функция для форматирования даты
-function formatDate(dateString, withTime = false) {
-  const date = new Date(dateString);
-
-  if (!date || isNaN(date.getTime())) {
-    return 'Не указана';
-  }
-
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-
-  if (withTime) {
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    return `${day}.${month}.${year} ${hours}:${minutes}`;
-  }
-
-  return `${day}.${month}.${year}`;
-}
-
-// Функция для обновления информации об аренде
-function updateRentalInfo(rentalData) {
-  if (!rentalData) return;
-
-  // Обновляем информацию о клиенте
-  const user = rentalData.user;
-  if (user) {
-    document.getElementById('client-name').textContent = user.firstName + ' ' + user.lastName;
-    document.getElementById('client-email').textContent = user.email;
-    document.getElementById('client-phone').textContent = user.phone || 'Не указан';
-  }
-
-  // Обновляем информацию об аренде
-  document.getElementById('rental-cost').textContent = parseFloat(rentalData.totalCost).toFixed(2) + ' ₽';
-
-
-  // Форматируем даты
-  if (rentalData.createdAt) {
-    document.getElementById('rental-created-at').textContent = formatDate(rentalData.createdAt, true);
-  }
-  if (rentalData.startDate) {
-    document.getElementById('rental-start-date').textContent = formatDate(rentalData.startDate);
-  }
-  if (rentalData.endDate) {
-    document.getElementById('rental-end-date').textContent = formatDate(rentalData.endDate);
-  }
-  document.getElementById('rental-cost').textContent = rentalData.totalCost + ' ₽';
-
-  // Обновляем информацию об автомобиле
-  const car = rentalData.car;
-  if (car) {
-    document.getElementById('car-model').textContent = car.brand + ' ' + car.model;
-    document.getElementById('car-year').textContent = car.year;
-    document.getElementById('car-registration').textContent = car.registrationNumber;
-    document.getElementById('car-price').textContent = parseFloat(car.dailyRate).toFixed(2) + ' ₽';
-  }
-
-  // Обновляем статус
-  if (rentalData.status) {
-    updateStatusDisplay(rentalData.status);
-    updateActions(rentalData.status, rentalData.cancelReason);
-  }
-}
-
-// Функция для обновления отображения статуса
-function updateStatusDisplay(status) {
-  const statusBadge = document.getElementById('status-badge');
-  if (statusBadge) {
-    statusBadge.textContent = status;
-
-    // Удаляем все предыдущие классы статуса
-    statusBadge.classList.remove('status-active', 'status-pending', 'status-completed',
-      'status-cancelled', 'status-pending-cancellation');
-
-    // Добавляем новый класс в зависимости от статуса
-    switch (status) {
-      case 'ACTIVE':
-        statusBadge.classList.add('status-active');
-        break;
-      case 'PENDING':
-        statusBadge.classList.add('status-pending');
-        break;
-      case 'COMPLETED':
-        statusBadge.classList.add('status-completed');
-        break;
-      case 'CANCELLED':
-        statusBadge.classList.add('status-cancelled');
-        break;
-      case 'PENDING_CANCELLATION':
-      case 'CANCELLATION_REQUESTED':
-        statusBadge.classList.add('status-pending-cancellation');
-        break;
-    }
-  }
-}
-
-// Функция для обновления действий в зависимости от статуса
-function updateActions(newStatus, cancelReason) {
-  // Скрываем все блоки действий
-  const pendingActions = document.getElementById('pending-actions');
-  const activeActions = document.getElementById('active-actions');
-  const pendingCancellationActions = document.getElementById('pending-cancellation-actions');
-
-  if (pendingActions) pendingActions.style.display = 'none';
-  if (activeActions) activeActions.style.display = 'none';
-  if (pendingCancellationActions) pendingCancellationActions.style.display = 'none';
-
-  // Показываем нужный блок в зависимости от статуса
-  switch(newStatus) {
-    case 'PENDING':
-      if (pendingActions) pendingActions.style.display = 'block';
-      break;
-    case 'ACTIVE':
-      if (activeActions) activeActions.style.display = 'block';
-      break;
-    case 'PENDING_CANCELLATION':
-      if (pendingCancellationActions) pendingCancellationActions.style.display = 'block';
-      break;
-  }
-
-  // Обновляем секцию причины отмены, если она есть
-  const cancelReasonSection = document.getElementById('cancel-reason-section');
-  if (cancelReason && cancelReason.trim() !== '') {
-    if (!cancelReasonSection) {
-      // Создаем секцию, если ее нет
-      const newSection = document.createElement('div');
-      newSection.id = 'cancel-reason-section';
-      newSection.className = 'info-section';
-      newSection.innerHTML = `
-        <h3>Причина отмены</h3>
-        <p>${cancelReason}</p>
-      `;
-
-      // Вставляем новую секцию перед секцией примечаний
-      const notesSection = document.querySelector('.info-section:last-of-type');
-      if (notesSection && notesSection.parentNode) {
-        notesSection.parentNode.insertBefore(newSection, notesSection);
-      }
-    } else {
-      // Обновляем существующую секцию
-      cancelReasonSection.innerHTML = `
-        <h3>Причина отмены</h3>
-        <p>${cancelReason}</p>
-      `;
-      cancelReasonSection.style.display = 'block';
-    }
-  } else if (cancelReasonSection) {
-    cancelReasonSection.style.display = 'none';
-  }
-}
-
-// Инициализация при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
-  // Добавляем обработчики форм для AJAX-запросов
-  document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const formData = new FormData(this);
-
-      // Создаем объект заголовков
-      const headers = {
-        'X-Requested-With': 'XMLHttpRequest'
-      };
-
-      // Добавляем CSRF-токен в заголовки, если он существует
-      if (csrfHeader && csrfToken) {
-        headers[csrfHeader] = csrfToken;
-      }
-
-      fetch(this.action, {
-        method: this.method,
-        body: formData,
-        headers: headers
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Ошибка сервера: ' + response.status);
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.success) {
-          // Показываем сообщение об успехе
-          showMessage('success', data.message);
-
-          // Обновляем статус, если он изменился
-          if (data.newStatus) {
-            updateStatusDisplay(data.newStatus);
-            updateActions(data.newStatus, data.cancelReason);
-          }
-
-          // Если есть обновленные данные аренды, обновляем информацию
-          if (data.rental) {
-            updateRentalInfo(data.rental);
-          }
-
-          // Обновляем отображаемые примечания, если это форма обновления примечаний
-          if (this.id === 'update-notes-form' && data.notes !== undefined) {
-            const notesContent = document.getElementById('notes-content');
-            const notesText = document.getElementById('notes-text');
-
-            if (data.notes && data.notes.trim() !== '') {
-              if (notesContent) notesContent.style.display = 'none';
-              if (notesText) {
-                notesText.style.display = 'block';
-                notesText.querySelector('p').textContent = data.notes;
-              } else {
-                // Создаем элемент, если его нет
-                const newNotesText = document.createElement('div');
-                newNotesText.id = 'notes-text';
-                newNotesText.className = 'notes-content';
-                newNotesText.innerHTML = `<p>${data.notes}</p>`;
-
-                if (notesContent) {
-                  notesContent.parentNode.insertBefore(newNotesText, notesContent.nextSibling);
-                  notesContent.style.display = 'none';
-                }
-              }
-            } else {
-              if (notesText) notesText.style.display = 'none';
-              if (notesContent) notesContent.style.display = 'block';
-            }
-          }
-
-          // Скрываем формы
-          hideNotesForm();
-          hideCancelForm(rentalId);
-          hideRejectForm(rentalId);
-        } else {
-          // Показываем сообщение об ошибке
-          showMessage('error', data.message || 'Произошла ошибка');
-        }
-      })
-      .catch(error => {
-        console.error('Ошибка:', error);
-        showMessage('error', 'Произошла ошибка при отправке запроса: ' + error.message);
-      });
-    });
-  });
-});
-</script>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

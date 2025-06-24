@@ -46,7 +46,7 @@
                          th:src="${rental.car.images[0].imageUrl}"
                          alt="Car Image"
                          class="card-img-top rental-card-img"
-                         th:style="'transform: rotate(' + (${rental.car.images[0].rotation} != null ? ${rental.car.images[0].rotation} : 0) + 'deg);'">
+                         th:classappend="'rotate-img'">
                     <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}"
                          th:src="@{/images/default-car.jpg}"
                          alt="Default Car Image"
@@ -114,7 +114,7 @@
                          th:src="${rental.car.images[0].imageUrl}"
                          alt="Car Image"
                          class="card-img-top rental-card-img"
-                         th:style="'transform: rotate(' + (${rental.car.images[0].rotation} != null ? ${rental.car.images[0].rotation} : 0) + 'deg);'">
+                         th:classappend="'rotate-img'">
                     <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}"
                          th:src="@{/images/default-car.jpg}"
                          alt="Default Car Image"
@@ -181,7 +181,7 @@
                          th:src="${rental.car.images[0].imageUrl}"
                          alt="Car Image"
                          class="card-img-top rental-card-img"
-                         th:style="'transform: rotate(' + (${rental.car.images[0].rotation} != null ? ${rental.car.images[0].rotation} : 0) + 'deg);'">
+                         th:classappend="'rotate-img'">
                     <img th:unless="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}"
                          th:src="@{/images/default-car.jpg}"
                          alt="Default Car Image"

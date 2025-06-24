@@ -1854,4 +1854,129 @@ footer hr {
     .stat-number {
         font-size: 1.5rem;
     }
-} 
+}
+
+/* ========================================
+   ДЕТАЛИ АРЕНДЫ (АДМИН)
+   ======================================== */
+.rental-details-card {
+    background-color: var(--bg-white);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-medium);
+    padding: var(--spacing-xl);
+    margin: var(--spacing-xl) 0;
+    transition: box-shadow var(--transition-normal);
+    animation: fadeIn var(--transition-normal);
+}
+
+.rental-details-card .rental-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--spacing-md);
+}
+
+.rental-details-card .rental-header h2 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.rental-details-card .status {
+    margin-left: var(--spacing-md);
+    font-size: 1rem;
+}
+
+.rental-details-card .rental-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+}
+
+.rental-details-card .info-section {
+    flex: 1 1 280px;
+    background: var(--bg-light);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    min-width: 260px;
+}
+
+.rental-details-card .info-section h3 {
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+}
+
+.rental-details-card .info-section p {
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.rental-details-card .notes-form {
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+
+.rental-details-card .empty-notes {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.rental-details-card .rental-actions {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.rental-details-card .action-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.rental-details-card .cancel-form,
+.rental-details-card .reject-form {
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+
+@media (max-width: 992px) {
+    .rental-details-card .rental-info {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+}
+
+/* =============================
+   УНИВЕРСАЛЬНЫЕ КЛАССЫ ДЛЯ ШАБЛОНОВ
+   ============================= */
+.is-hidden { display: none !important; }
+.icon-large { font-size: 3rem !important; }
+.sticky-top-20 { position: sticky; top: 20px; z-index: 10; }
+.inline-form { display: inline !important; }
+.border-0 { border: 0 !important; }
+.shadow-sm { box-shadow: var(--shadow-small); }
+.mb-4 { margin-bottom: var(--spacing-lg) !important; }
+.mt-2 { margin-top: var(--spacing-md) !important; }
+.mt-4 { margin-top: var(--spacing-lg) !important; }
+.mb-30 { margin-bottom: 30px !important; }
+.py-5 { padding-top: var(--spacing-xl); padding-bottom: var(--spacing-xl); }
+.form-inline { display: inline-flex; align-items: center; gap: var(--spacing-sm); }
+/* sticky-top уже есть в Bootstrap, но добавим для совместимости */
+.sticky-top { position: sticky; top: 0; z-index: 1020; } 

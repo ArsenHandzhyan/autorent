@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Управление ежедневными платежами</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-</head>
+<head th:replace="~{fragments/head :: head(pageTitle='Список платежей - Автопрокат')}"></head>
 <body>
     <div th:replace="~{fragments/header :: header}"></div>
 
@@ -142,104 +135,6 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script th:src="@{/js/main.js}"></script>
-    <script th:inline="javascript">
-        function createPayments() {
-            const paymentDate = document.getElementById('paymentDate').value;
-            if (!paymentDate) {
-                alert('Пожалуйста, выберите дату');
-                return;
-            }
-
-            fetch('/admin/payments/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'paymentDate=' + encodeURIComponent(paymentDate)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Платежи успешно созданы');
-                    location.reload();
-                } else {
-                    alert('Ошибка: ' + data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-                alert('Произошла ошибка при создании платежей');
-            });
-        }
-
-        function processPayments() {
-            const processDate = document.getElementById('processDate').value;
-            if (!processDate) {
-                alert('Пожалуйста, выберите дату');
-                return;
-            }
-
-            fetch('/admin/payments/process', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'paymentDate=' + encodeURIComponent(processDate)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Платежи успешно обработаны');
-                    location.reload();
-                } else {
-                    alert('Ошибка: ' + data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-                alert('Произошла ошибка при обработке платежей');
-            });
-        }
-
-        function getPaymentStatistics(rentalId) {
-            fetch('/admin/payments/statistics/' + rentalId)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const statistics = data.statistics;
-                    const content = `
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h6>Количество платежей:</h6>
-                                <ul class="list-unstyled">
-                                    <li>Всего: ${statistics.totalPayments}</li>
-                                    <li>Обработано: ${statistics.processedPayments}</li>
-                                    <li>Ожидает: ${statistics.pendingPayments}</li>
-                                    <li>Ошибки: ${statistics.failedPayments}</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-6">
-                                <h6>Суммы:</h6>
-                                <ul class="list-unstyled">
-                                    <li>Общая сумма: ${statistics.totalAmount} ₽</li>
-                                    <li>Обработано: ${statistics.processedAmount} ₽</li>
-                                </ul>
-                            </div>
-                        </div>
-                    `;
-                    document.getElementById('statisticsContent').innerHTML = content;
-                    new bootstrap.Modal(document.getElementById('statisticsModal')).show();
-                } else {
-                    alert('Ошибка при получении статистики: ' + data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-                alert('Произошла ошибка при получении статистики');
-            });
-        }
-    </script>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html> 

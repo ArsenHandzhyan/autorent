@@ -1,3 +1,5 @@
+<head th:replace="~{fragments/head :: head(pageTitle='Список аккаунтов - Автопрокат')}"></head>
+
 <div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -5,7 +7,7 @@
                 <h5 class="modal-title" id="editAccountModalLabel">Редактирование счета</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form th:action="@{/admin/accounts/update}" method="post" id="editAccountForm">
+            <form th:action="@{/admin/accounts/update}" method="post" id="editAccountForm" class="inline-form">
                 <div class="modal-body">
                     <input type="hidden" id="accountId" name="id">
                     
@@ -100,4 +102,8 @@ document.addEventListener('DOMContentLoaded', function() {
             </td>
         </tr>
     </tbody>
-</table> 
+</table>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html> 

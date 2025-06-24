@@ -1343,4 +1343,185 @@ function toggleUserStatus(userId, action) {
         console.error('Error:', error);
         alert('Произошла ошибка.');
     });
-} 
+}
+
+/* =============================
+   МОДУЛЬ: Все аренды (admin-rentals)
+   ============================= */
+(function() {
+    // Получаем CSRF-токен из мета-тегов
+    const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+
+    // Функция для отображения сообщений
+    function showMessage(type, message) {
+        const container = document.getElementById('message-container');
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type} alert-dismissible fade show`;
+        alert.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        container.appendChild(alert);
+        setTimeout(() => { alert.remove(); }, 5000);
+    }
+
+    // Функция для обновления статуса аренды на странице
+    function updateRentalStatus(rentalId, newStatus, message) {
+        const rentalCard = document.querySelector(`[data-rental-id="${rentalId}"]`);
+        if (rentalCard) {
+            const statusBadge = rentalCard.querySelector('.status-badge');
+            if (statusBadge) {
+                statusBadge.className = `status-badge status-${newStatus.toLowerCase()}`;
+                statusBadge.textContent = message;
+            }
+        }
+    }
+
+    // Функции для показа/скрытия форм
+    window.showCancelForm = function(rentalId) {
+        const form = document.getElementById(`cancelForm-${rentalId}`);
+        if (form) form.style.display = 'block';
+    };
+    window.hideCancelForm = function(rentalId) {
+        const form = document.getElementById(`cancelForm-${rentalId}`);
+        if (form) form.style.display = 'none';
+    };
+    window.showRejectForm = function(rentalId) {
+        const form = document.getElementById(`rejectForm-${rentalId}`);
+        if (form) form.style.display = 'block';
+    };
+    window.hideRejectForm = function(rentalId) {
+        const form = document.getElementById(`rejectForm-${rentalId}`);
+        if (form) form.style.display = 'none';
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Создаем контейнер для сообщений, если его нет
+        if (!document.getElementById('message-container')) {
+            const container = document.createElement('div');
+            container.id = 'message-container';
+            container.style.position = 'fixed';
+            container.style.top = '20px';
+            container.style.right = '20px';
+            container.style.zIndex = '1000';
+            document.body.appendChild(container);
+        }
+        // Преобразуем все формы в AJAX-запросы
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', async function(e) {
+                if (!form.closest('.rentals-list')) return; // Только для форм на странице all-rentals
+                e.preventDefault();
+                const formData = new FormData(form);
+                const url = form.action;
+                const method = form.method;
+                try {
+                    const response = await fetch(url, {
+                        method: method,
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            [csrfHeader]: csrfToken
+                        }
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        showMessage('success', data.message);
+                        if (data.newStatus) {
+                            updateRentalStatus(formData.get('id'), data.newStatus, data.message);
+                        }
+                        // Скрываем форму отмены/отклонения
+                        const rentalId = url.split('/').pop();
+                        hideCancelForm(rentalId);
+                        hideRejectForm(rentalId);
+                        if (url.includes('/cancel') || url.includes('/reject-cancellation')) {
+                            setTimeout(() => { window.location.reload(); }, 2000);
+                        }
+                    } else {
+                        showMessage('danger', data.message || 'Произошла ошибка');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage('danger', 'Произошла ошибка при обработке запроса');
+                }
+            });
+        });
+    });
+})();
+
+/* =============================
+   УНИВЕРСАЛЬНЫЕ JS-ФУНКЦИИ ДЛЯ ШАБЛОНОВ
+   ============================= */
+(function() {
+    // Универсальное скрытие/отображение по классу
+    window.toggleVisibility = function(selector) {
+        document.querySelectorAll(selector).forEach(el => {
+            el.classList.toggle('is-hidden');
+        });
+    };
+    // Показать элемент
+    window.showElement = function(selector) {
+        document.querySelectorAll(selector).forEach(el => {
+            el.classList.remove('is-hidden');
+        });
+    };
+    // Скрыть элемент
+    window.hideElement = function(selector) {
+        document.querySelectorAll(selector).forEach(el => {
+            el.classList.add('is-hidden');
+        });
+    };
+    // Универсальный обработчик для форм с классом .ajax-form
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('form.ajax-form').forEach(form => {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const url = form.action;
+                const method = form.method;
+                const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+                const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+                try {
+                    const response = await fetch(url, {
+                        method: method,
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            [csrfHeader]: csrfToken
+                        }
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        window.showMessage && window.showMessage('success', data.message);
+                        if (data.reload) setTimeout(() => window.location.reload(), 1500);
+                    } else {
+                        window.showMessage && window.showMessage('danger', data.message || 'Ошибка');
+                    }
+                } catch (error) {
+                    window.showMessage && window.showMessage('danger', 'Ошибка при отправке формы');
+                }
+            });
+        });
+    });
+    // Универсальная функция для всплывающих сообщений
+    window.showMessage = function(type, message) {
+        let container = document.getElementById('message-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'message-container';
+            container.style.position = 'fixed';
+            container.style.top = '20px';
+            container.style.right = '20px';
+            container.style.zIndex = '1000';
+            document.body.appendChild(container);
+        }
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type} alert-dismissible fade show`;
+        alert.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        container.appendChild(alert);
+        setTimeout(() => { alert.remove(); }, 5000);
+    };
+})(); 

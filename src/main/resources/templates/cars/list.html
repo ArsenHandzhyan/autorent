@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
-<head>
-    <title>Все автомобили - Автопрокат</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-</head>
+<head th:replace="~{fragments/head :: head(pageTitle='Каталог автомобилей')}"></head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
@@ -63,7 +56,7 @@
                 <a th:href="@{/cars/{id}(id=${car.id})}">
                     <img th:if="${car.images != null && !car.images.empty}"
                          th:src="@{${car.images[0].imageUrl}}"
-                         class="card-img-top"
+                         class="card-img-top rotate-img"
                          alt="Фото автомобиля"
                          th:style="'transform: rotate(' + (${car.images[0].rotation} != null ? ${car.images[0].rotation} : 0) + 'deg);'"
                          onerror="this.src='/images/default-car.jpg';"/>
@@ -108,8 +101,5 @@
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script th:src="@{/js/main.js}"></script>
 </body>
 </html>

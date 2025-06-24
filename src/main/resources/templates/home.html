@@ -72,7 +72,7 @@
                                  th:src="${car.images[0].imageUrl}" 
                                  th:alt="${car.brand + ' ' + car.model}" 
                                  class="img-fluid"
-                                 th:style="'transform: rotate(' + (${car.images[0].rotation} != null ? ${car.images[0].rotation} : 0) + 'deg);'">
+                                 th:classappend="'rotate-img'">
                             <img th:unless="${car.images != null && !car.images.empty}" 
                                  th:src="@{/images/car-placeholder.jpg}" 
                                  th:alt="${car.brand + ' ' + car.model}" 
