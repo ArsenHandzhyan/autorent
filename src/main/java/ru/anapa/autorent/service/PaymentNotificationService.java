@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.anapa.autorent.model.DailyPayment;
 import ru.anapa.autorent.model.Role;
 import ru.anapa.autorent.model.User;
+import ru.anapa.autorent.repository.RoleRepository;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
@@ -21,12 +22,14 @@ public class PaymentNotificationService {
     private final EmailService emailService;
     private final SmsService smsService;
     private final UserService userService;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public PaymentNotificationService(EmailService emailService, SmsService smsService, @Lazy UserService userService) {
+    public PaymentNotificationService(EmailService emailService, SmsService smsService, @Lazy UserService userService, RoleRepository roleRepository) {
         this.emailService = emailService;
         this.smsService = smsService;
         this.userService = userService;
+        this.roleRepository = roleRepository;
     }
 
     /**
@@ -84,20 +87,19 @@ public class PaymentNotificationService {
      */
     public void sendAdminPaymentFailureNotification(DailyPayment payment, String errorMessage) {
         try {
-            // Получаем роль ADMIN
-            Role adminRole = new Role("ROLE_ADMIN");
+            // Получаем роль ADMIN через репозиторий
+            Role adminRole = roleRepository.findByName("ROLE_ADMIN");
+            if (adminRole == null) {
+                logger.error("Роль ROLE_ADMIN не найдена в базе данных!");
+                return;
+            }
             List<User> admins = userService.findUsersByRole(adminRole);
-            
             String subject = "ТРЕВОГА: Неудачный платеж по аренде";
             String message = createAdminPaymentFailureMessage(payment, errorMessage);
-            
-            // Отправляем уведомления всем администраторам
             for (User admin : admins) {
                 sendEmailNotification(admin.getEmail(), subject, message);
             }
-            
             logger.info("Уведомление о неудачном платеже отправлено {} администраторам", admins.size());
-            
         } catch (Exception e) {
             logger.error("Ошибка при отправке уведомления администратору: {}", e.getMessage());
         }
