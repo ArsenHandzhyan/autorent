@@ -97,7 +97,7 @@
                 <div class="image-grid">
                     <div th:each="image : ${car.existingImages}" class="image-item">
                         <div class="image-container">
-                            <img th:src="${image.imageUrl}" 
+                            <img th:src="@{/images/car/{imageId}(imageId=${image.id})}" 
                                  th:alt="${'Фото ' + car.brand + ' ' + car.model}" 
                                  th:data-rotation="${image.rotation}"
                                  th:attr="data-image-id=${image.id}"

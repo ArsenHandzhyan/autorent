@@ -456,6 +456,42 @@ public class CarService {
     }
 
     @Transactional
+    public CarImage saveCarImageToDatabase(MultipartFile file) {
+        try {
+            // Проверяем, что файл не пустой
+            if (file.isEmpty()) {
+                throw new IllegalArgumentException("Файл изображения не может быть пустым");
+            }
+
+            // Проверяем тип файла
+            String contentType = file.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                throw new IllegalArgumentException("Файл должен быть изображением");
+            }
+
+            // Читаем данные файла
+            byte[] imageData = file.getBytes();
+            
+            // Создаем объект CarImage
+            CarImage carImage = new CarImage();
+            carImage.setImageData(imageData);
+            carImage.setContentType(contentType);
+            carImage.setFileName(file.getOriginalFilename());
+            
+            // Сохраняем в базу данных
+            CarImage savedImage = carImageRepository.save(carImage);
+            
+            logger.info("Изображение сохранено в БД с ID: {}, размер: {} байт", 
+                       savedImage.getId(), imageData.length);
+            
+            return savedImage;
+        } catch (Exception e) {
+            logger.error("Ошибка при сохранении изображения в БД: {}", e.getMessage());
+            throw new RuntimeException("Не удалось сохранить изображение в базу данных: " + e.getMessage(), e);
+        }
+    }
+
+    @Transactional
     public String saveCarImage(MultipartFile file) {
         try {
             // Генерируем уникальное имя файла

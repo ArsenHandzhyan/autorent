@@ -3,7 +3,6 @@ package ru.anapa.autorent.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.format.DateTimeFormatter;
@@ -19,9 +18,6 @@ public class WebConfig implements WebMvcConfigurer {
         registrar.registerFormatters(registry);
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:uploads/");
-    }
+    // Убираем обработчик статических ресурсов для uploads,
+    // так как теперь изображения отдаются через контроллер /images/car/{imageId}
 }

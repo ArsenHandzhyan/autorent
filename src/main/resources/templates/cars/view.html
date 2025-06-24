@@ -13,7 +13,7 @@
             <div class="car-gallery">
                 <div class="main-image mb-3">
                     <img th:if="${!#lists.isEmpty(car.images)}"
-                         th:src="@{${car.images[0].imageUrl}}"
+                         th:src="@{/images/car/{imageId}(imageId=${car.images[0].id})}"
                          id="mainCarImage"
                          class="img-fluid rounded shadow"
                          alt="Основное фото автомобиля"
@@ -22,7 +22,7 @@
                 </div>
                 <div th:if="${!#lists.isEmpty(car.images) && #lists.size(car.images) > 1}" class="thumbnails row g-2">
                     <div class="col-3" th:each="image, iter : ${car.images}">
-                        <img th:src="@{${image.imageUrl}}"
+                        <img th:src="@{/images/car/{imageId}(imageId=${image.id})}"
                              class="img-fluid rounded thumbnail"
                              th:classappend="${(iter.index == 0 ? 'active' : '') + (image.rotation != null && image.rotation != 0 ? ' rotated-' + image.rotation : '')}"
                              alt="Миниатюра"

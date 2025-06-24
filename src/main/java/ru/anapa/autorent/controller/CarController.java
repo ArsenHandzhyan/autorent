@@ -107,12 +107,11 @@ public class CarController {
                 for (int i = 0; i < carDto.getNewImages().size(); i++) {
                     MultipartFile file = carDto.getNewImages().get(i);
                     if (!file.isEmpty()) {
-                        CarImage image = new CarImage();
-                        String imageUrl = carService.saveCarImage(file);
-                        image.setImageUrl(imageUrl);
-                        image.setMain(i == 0); // Первое изображение - основное
-                        image.setCar(car);
-                        images.add(image);
+                        // Сохраняем изображение в базу данных
+                        CarImage savedImage = carService.saveCarImageToDatabase(file);
+                        savedImage.setMain(i == 0); // Первое изображение - основное
+                        savedImage.setCar(car);
+                        images.add(savedImage);
                     }
                 }
                 car.setImages(images);
@@ -375,12 +374,11 @@ public class CarController {
                 
                 for (MultipartFile file : carDto.getNewImages()) {
                     if (!file.isEmpty()) {
-                        CarImage image = new CarImage();
-                        String imageUrl = carService.saveCarImage(file);
-                        image.setImageUrl(imageUrl);
-                        image.setMain(isFirstImage);
-                        image.setCar(car);
-                        newImages.add(image);
+                        // Сохраняем изображение в базу данных
+                        CarImage savedImage = carService.saveCarImageToDatabase(file);
+                        savedImage.setMain(isFirstImage);
+                        savedImage.setCar(car);
+                        newImages.add(savedImage);
                         isFirstImage = false;
                     }
                 }

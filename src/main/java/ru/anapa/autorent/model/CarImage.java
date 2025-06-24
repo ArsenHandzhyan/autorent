@@ -21,7 +21,16 @@ public class CarImage {
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @Column(name = "image_url", nullable = false)
+    @Column(name = "image_data", columnDefinition = "LONGBLOB")
+    private byte[] imageData;
+
+    @Column(name = "content_type")
+    private String contentType;
+
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Column(name = "image_url")
     private String imageUrl;
 
     @Column(name = "description")
