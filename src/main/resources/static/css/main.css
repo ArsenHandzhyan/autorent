@@ -1985,4 +1985,126 @@ footer hr {
 .rotated-90 { transform: rotate(90deg) !important; }
 .rotated-180 { transform: rotate(180deg) !important; }
 .rotated-270 { transform: rotate(270deg) !important; }
-.rotated-360 { transform: rotate(360deg) !important; } 
+.rotated-360 { transform: rotate(360deg) !important; }
+
+/* === Миниатюра авто для админки === */
+.car-thumb {
+  width: 64px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  background: #fff;
+  display: block;
+}
+
+.car-title {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.1;
+}
+.car-brand {
+  font-weight: 700;
+}
+.car-model {
+  color: var(--secondary-color);
+}
+.car-year {
+  color: var(--text-muted);
+  font-size: 0.85em;
+}
+.license-plate {
+  font-family: monospace;
+  background: #f8f9fa;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 1em;
+  letter-spacing: 1px;
+  color: #222;
+  border: 1px solid #e0e0e0;
+}
+.car-price {
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  background: #ccc;
+}
+.status-dot.available { background: #2ecc71; }
+.status-dot.rented { background: #e74c3c; }
+.status-dot.reserved { background: #f1c40f; }
+.status-dot.maintenance { background: #7f8c8d; }
+.status-dot.pending { background: #f39c12; }
+.status-select {
+  min-width: 90px;
+  font-size: 0.95em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+  background: #fff;
+  margin-left: 2px;
+}
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .car-thumb { width: 48px; height: 30px; }
+  .car-title { font-size: 0.95rem; }
+  .car-year { font-size: 0.8em; }
+  .car-price { font-size: 1em; }
+  .license-plate { font-size: 0.95em; padding: 2px 4px; }
+  .action-buttons .btn span { display: none; }
+}
+
+/* === Современная таблица для админки === */
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+  overflow: hidden;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+.data-table th, .data-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: middle;
+}
+.data-table th {
+  background: var(--bg-light);
+  color: var(--primary-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.95em;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #dee2e6;
+}
+.data-table tbody tr:hover {
+  background: #f8fafc;
+}
+.data-table td {
+  background: #fff;
+}
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+.data-table .text-center { text-align: center; }
+@media (max-width: 768px) {
+  .data-table th, .data-table td { padding: 0.5rem 0.4rem; font-size: 0.95em; }
+} 

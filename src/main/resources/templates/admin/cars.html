@@ -25,9 +25,7 @@
             <tr>
                 <th>ID</th>
                 <th>Фото</th>
-                <th>Марка</th>
-                <th>Модель</th>
-                <th>Год</th>
+                <th>Автомобиль</th>
                 <th>Гос. номер</th>
                 <th>Цена/день</th>
                 <th>Статус</th>
@@ -37,23 +35,28 @@
             <tbody>
             <tr th:each="car : ${cars}">
                 <td th:text="${car.id}">1</td>
-                <td>
-                    <img th:if="${car.images != null && !car.images.empty}" 
-                         th:src="${car.images[0].imageUrl}" 
-                         class="car-image"
-                         alt="Фото автомобиля"
-                         th:style="'transform: rotate(' + (${car.images[0].rotation} != null ? ${car.images[0].rotation} : 0) + 'deg);'">
-                    <div th:unless="${car.images != null && !car.images.empty}" 
-                         class="car-image d-flex align-items-center justify-content-center bg-light">
+                <td class="text-center">
+                    <img th:if="${car.images != null && !car.images.empty}"
+                         th:src="${car.images[0].imageUrl}"
+                         class="car-thumb"
+                         alt="Фото автомобиля">
+                    <div th:unless="${car.images != null && !car.images.empty}"
+                         class="car-thumb d-flex align-items-center justify-content-center bg-light">
                         <i class="fas fa-car"></i>
                     </div>
                 </td>
-                <td th:text="${car.brand}">Toyota</td>
-                <td th:text="${car.model}">Camry</td>
-                <td th:text="${car.year}">2023</td>
-                <td th:text="${car.licensePlate}">А123БВ777</td>
-                <td th:text="${car.dailyRate + ' ₽'}">3000 ₽</td>
                 <td>
+                    <div class="car-title">
+                        <span class="car-brand" th:text="${car.brand}"></span>
+                        <span class="car-model ms-1" th:text="${car.model}"></span>
+                    </div>
+                    <div class="car-year text-muted small" th:text="${car.year}"></div>
+                </td>
+                <td><span class="license-plate" th:text="${car.licensePlate}"></span></td>
+                <td><span class="car-price"><i class="fas fa-ruble-sign"></i> <span th:text="${car.dailyRate}"></span></span></td>
+                <td class="text-center">
+                    <span class="status-dot"
+                          th:classappend="${car.status.name().toLowerCase()}"></span>
                     <select class="status-select"
                             th:data-car-id="${car.id}"
                             th:data-previous-status="${car.status.name()}"
@@ -65,8 +68,8 @@
                     </select>
                 </td>
                 <td>
-                    <div class="action-buttons">
-                         <a th:href="@{/cars/{id}/status-history(id=${car.id})}" class="btn btn-info btn-sm" title="История статусов">
+                    <div class="action-buttons d-flex gap-1 flex-wrap">
+                        <a th:href="@{/cars/{id}/status-history(id=${car.id})}" class="btn btn-info btn-sm" title="История статусов">
                             <i class="fas fa-history"></i>
                         </a>
                         <button class="btn btn-warning btn-sm toggle-maintenance-btn maintenance-on"
