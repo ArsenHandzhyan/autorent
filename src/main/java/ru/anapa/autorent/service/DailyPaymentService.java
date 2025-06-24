@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.anapa.autorent.model.*;
@@ -25,16 +26,19 @@ public class DailyPaymentService {
     private final RentalRepository rentalRepository;
     private final AccountService accountService;
     private final PaymentNotificationService notificationService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
     public DailyPaymentService(DailyPaymentRepository dailyPaymentRepository,
                               RentalRepository rentalRepository,
                               AccountService accountService,
-                              @Lazy PaymentNotificationService notificationService) {
+                              @Lazy PaymentNotificationService notificationService,
+                              ApplicationEventPublisher eventPublisher) {
         this.dailyPaymentRepository = dailyPaymentRepository;
         this.rentalRepository = rentalRepository;
         this.accountService = accountService;
         this.notificationService = notificationService;
+        this.eventPublisher = eventPublisher;
     }
 
     /**
@@ -119,12 +123,9 @@ public class DailyPaymentService {
             BigDecimal paymentAmount = payment.getAmount();
             BigDecimal currentBalance = account.getBalance();
             BigDecimal newBalance = currentBalance.subtract(paymentAmount);
-            // Проверяем возможность списания
             PaymentValidationResult validation = validatePayment(account, paymentAmount);
             if (validation.isValid()) {
-                // Списываем средства со счета
                 accountService.updateBalance(account.getUser().getId(), paymentAmount.negate());
-                // Отмечаем платеж как обработанный
                 payment.setStatus(DailyPayment.PaymentStatus.PROCESSED);
                 payment.setProcessedAt(LocalDateTime.now());
                 payment.setNotes("Платеж успешно обработан. Новый баланс: " + newBalance + " ₽");
@@ -145,17 +146,8 @@ public class DailyPaymentService {
             dailyPaymentRepository.save(payment);
             errorMsg = "Техническая ошибка: " + e.getMessage();
         }
-        // ВЫЗЫВАЕМ УВЕДОМЛЕНИЯ ВНЕ ТРАНЗАКЦИИ
-        try {
-            if (processed) {
-                notificationService.sendPaymentProcessedNotification(payment);
-            } else {
-                notificationService.sendPaymentFailedNotification(payment, errorMsg);
-                notificationService.sendAdminPaymentFailureNotification(payment, errorMsg);
-            }
-        } catch (Exception notifyEx) {
-            logger.error("Ошибка при отправке уведомлений: {}", notifyEx.getMessage());
-        }
+        // Публикуем событие для уведомлений после завершения транзакции
+        eventPublisher.publishEvent(new PaymentNotificationEvent(payment, processed, errorMsg));
     }
 
     /**
