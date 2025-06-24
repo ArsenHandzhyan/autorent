@@ -456,7 +456,7 @@ public class CarService {
     }
 
     @Transactional
-    public CarImage saveCarImageToDatabase(MultipartFile file) {
+    public CarImage saveCarImageToDatabase(MultipartFile file, Car car) {
         try {
             // Проверяем, что файл не пустой
             if (file.isEmpty()) {
@@ -477,6 +477,7 @@ public class CarService {
             carImage.setImageData(imageData);
             carImage.setContentType(contentType);
             carImage.setFileName(file.getOriginalFilename());
+            carImage.setCar(car); // Устанавливаем связь с автомобилем
             
             // Сохраняем в базу данных
             CarImage savedImage = carImageRepository.save(carImage);

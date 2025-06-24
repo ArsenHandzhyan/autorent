@@ -108,7 +108,7 @@ public class CarController {
                     MultipartFile file = carDto.getNewImages().get(i);
                     if (!file.isEmpty()) {
                         // Сохраняем изображение в базу данных
-                        CarImage savedImage = carService.saveCarImageToDatabase(file);
+                        CarImage savedImage = carService.saveCarImageToDatabase(file, car);
                         savedImage.setMain(i == 0); // Первое изображение - основное
                         savedImage.setCar(car);
                         images.add(savedImage);
@@ -375,7 +375,7 @@ public class CarController {
                 for (MultipartFile file : carDto.getNewImages()) {
                     if (!file.isEmpty()) {
                         // Сохраняем изображение в базу данных
-                        CarImage savedImage = carService.saveCarImageToDatabase(file);
+                        CarImage savedImage = carService.saveCarImageToDatabase(file, car);
                         savedImage.setMain(isFirstImage);
                         savedImage.setCar(car);
                         newImages.add(savedImage);
