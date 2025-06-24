@@ -550,4 +550,16 @@ public class CarService {
         return carRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Автомобиль не найден: " + id));
     }
+
+    @Transactional
+    public int rotateCarImage(Long imageId, int delta) {
+        CarImage image = carImageRepository.findById(imageId)
+                .orElseThrow(() -> new RuntimeException("Изображение не найдено"));
+        int current = image.getRotation() != null ? image.getRotation() : 0;
+        int newRotation = (current + delta) % 360;
+        if (newRotation < 0) newRotation += 360;
+        image.setRotation(newRotation);
+        carImageRepository.save(image);
+        return newRotation;
+    }
 }

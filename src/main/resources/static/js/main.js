@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initCarDeletionConfirmation();
     initRejectCancellationForm();
     initUserStatusToggle();
+    initCarEditPage();
     
     console.log('AutoRent: Приложение инициализировано');
 });
@@ -244,7 +245,14 @@ function rotateImage(imageId, direction) {
             // Обновляем изображение на странице
             const image = document.querySelector(`img[data-image-id="${imageId}"]`);
             if (image) {
+                image.setAttribute('data-rotation', data.rotation);
+                image.className = 'img-thumbnail rotated-' + data.rotation;
                 image.style.transform = `rotate(${data.rotation}deg)`;
+            }
+            // Обновляем скрытое поле с углом
+            const hiddenInput = document.querySelector(`input[name='imageRotation_${imageId}']`);
+            if (hiddenInput) {
+                hiddenInput.value = data.rotation;
             }
             showNotification('Изображение повернуто', 'success');
         } else {
@@ -1524,4 +1532,65 @@ function toggleUserStatus(userId, action) {
         container.appendChild(alert);
         setTimeout(() => { alert.remove(); }, 5000);
     };
-})(); 
+})();
+
+/**
+ * Инициализация страницы редактирования автомобиля
+ */
+function initCarEditPage() {
+    // Проверяем, что мы на странице редактирования автомобиля
+    const carForm = document.querySelector('.car-form');
+    if (!carForm) return;
+
+    // Обработчики для кнопок поворота
+    document.querySelectorAll('.rotate-left, .rotate-right').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const imageId = this.getAttribute('data-image-id');
+            const direction = this.classList.contains('rotate-left') ? 'left' : 'right';
+            rotateImage(imageId, direction);
+        });
+    });
+
+    // После успешного поворота обновляем угол и класс
+    // (доработка функции rotateImage ниже)
+}
+
+// Доработка функции rotateImage для обновления data-rotation и класса
+function rotateImage(imageId, direction) {
+    const token = document.querySelector("meta[name='_csrf']")?.getAttribute("content");
+    const header = document.querySelector("meta[name='_csrf_header']")?.getAttribute("content");
+    if (!token || !header) {
+        showNotification('Ошибка: CSRF токен не найден', 'error');
+        return;
+    }
+    fetch(`/cars/images/${imageId}/rotate?direction=${direction}`, {
+        method: 'POST',
+        headers: {
+            [header]: token
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Обновляем изображение на странице
+            const image = document.querySelector(`img[data-image-id="${imageId}"]`);
+            if (image) {
+                image.setAttribute('data-rotation', data.rotation);
+                image.className = 'img-thumbnail rotated-' + data.rotation;
+                image.style.transform = `rotate(${data.rotation}deg)`;
+            }
+            // Обновляем скрытое поле с углом
+            const hiddenInput = document.querySelector(`input[name='imageRotation_${imageId}']`);
+            if (hiddenInput) {
+                hiddenInput.value = data.rotation;
+            }
+            showNotification('Изображение повернуто', 'success');
+        } else {
+            showNotification(data.error || 'Ошибка при повороте изображения', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        showNotification('Произошла ошибка при повороте изображения', 'error');
+    });
+} 

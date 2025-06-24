@@ -60,7 +60,7 @@
                             th:classappend="${'status-' + car.status.name().toLowerCase()}">
                         <option th:each="st : ${T(ru.anapa.autorent.model.CarStatus).values()}"
                                 th:value="${st.name()}"
-                                th:text="${st.displayName}"
+                                th:text="${st.getDisplayName()}"
                                 th:selected="${st == car.status}"></option>
                     </select>
                 </td>

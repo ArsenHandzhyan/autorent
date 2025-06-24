@@ -606,4 +606,23 @@ public class CarController {
             return mav;
         }
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/images/{imageId}/rotate")
+    @ResponseBody
+    public Map<String, Object> rotateCarImage(
+            @PathVariable Long imageId,
+            @RequestParam String direction) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            int delta = "left".equals(direction) ? -90 : 90;
+            int newRotation = carService.rotateCarImage(imageId, delta); // реализовать в сервисе
+            response.put("success", true);
+            response.put("rotation", newRotation);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", "Ошибка при повороте изображения: " + e.getMessage());
+        }
+        return response;
+    }
 }
