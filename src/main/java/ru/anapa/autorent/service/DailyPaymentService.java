@@ -388,4 +388,19 @@ public class DailyPaymentService {
             return errorMessage;
         }
     }
+
+    /**
+     * Обрабатывает все платежи со статусом PENDING (для автосписания при старте приложения)
+     */
+    @Transactional
+    public void processAllPendingPayments() {
+        List<DailyPayment> pendingPayments = dailyPaymentRepository.findAllByStatus(DailyPayment.PaymentStatus.PENDING);
+        for (DailyPayment payment : pendingPayments) {
+            try {
+                processPayment(payment);
+            } catch (Exception e) {
+                logger.error("Ошибка при автосписании платежа ID {}: {}", payment.getId(), e.getMessage());
+            }
+        }
+    }
 } 

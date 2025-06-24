@@ -43,4 +43,6 @@ public interface DailyPaymentRepository extends JpaRepository<DailyPayment, Long
            "WHERE dp.account.user.id = :userId " +
            "ORDER BY dp.paymentDate DESC")
     List<DailyPayment> findPaymentsByUserWithCarData(@Param("userId") Long userId);
+
+    List<DailyPayment> findAllByStatus(DailyPayment.PaymentStatus status);
 } 
