@@ -15931,3 +15931,3244 @@
 01:54:01.770 [http-nio-8080-exec-8] INFO  r.a.a.controller.AuthController - Login page requested
 01:54:01.770 [http-nio-8080-exec-8] INFO  r.a.a.controller.AuthController - Admin login required message detected in session
 01:54:01.781 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=D8B9E2C86443F299EBB413A0E9615D10], Granted Authorities=[ROLE_ADMIN]]]
+01:58:51.980 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+01:58:51.993 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+01:58:52.459 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+01:58:54.194 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+01:58:54.254 [main] INFO  r.anapa.autorent.AutorentApplication - Starting AutorentApplication using Java 17.0.14 with PID 1312 (C:\Users\Администратор\IdeaProjects\autorent\target\classes started by Администратор in C:\Users\Администратор\IdeaProjects\autorent)
+01:58:54.255 [main] DEBUG r.anapa.autorent.AutorentApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+01:58:54.256 [main] INFO  r.anapa.autorent.AutorentApplication - The following 1 profile is active: "dev"
+01:58:55.389 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+01:58:55.562 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 160 ms. Found 15 JPA repository interfaces.
+01:58:56.832 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+01:58:56.846 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+01:58:56.849 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+01:58:56.849 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+01:58:56.945 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+01:58:56.946 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2623 ms
+01:58:57.131 [main] DEBUG r.a.autorent.config.JwtRequestFilter - Filter 'jwtRequestFilter' configured for use
+01:58:57.243 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+01:58:57.290 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+01:58:57.315 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+01:58:57.496 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+01:58:57.524 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+01:58:59.064 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@15ee8861
+01:58:59.074 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+01:59:00.510 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+01:59:04.352 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+01:59:04.701 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+01:59:05.499 [main] WARN  o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.OncePerRequestFilter.doFilter(jakarta.servlet.ServletRequest,jakarta.servlet.ServletResponse,jakarta.servlet.FilterChain) throws jakarta.servlet.ServletException,java.io.IOException] because it is marked as final, consider using interface-based JDK proxies instead.
+01:59:05.499 [main] WARN  o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+01:59:05.779 [main] INFO  r.anapa.autorent.service.SmsService - SmsService инициализирован с использованием SMS.ru API
+01:59:05.900 [main] INFO  r.a.a.controller.AuthController - AuthController initialized
+01:59:05.933 [main] INFO  r.a.a.controller.RentalController - RentalController initialized
+01:59:06.502 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+01:59:06.658 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@fcc981a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4da18e2c, org.springframework.security.web.context.SecurityContextHolderFilter@358720a0, org.springframework.security.web.header.HeaderWriterFilter@11d0a25e, org.springframework.web.filter.CorsFilter@2d5580f6, org.springframework.security.web.csrf.CsrfFilter@2d751681, org.springframework.security.web.authentication.logout.LogoutFilter@765a09fc, ru.anapa.autorent.config.JwtRequestFilter@278fe428, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@678f4876, org.springframework.security.web.session.ConcurrentSessionFilter@30b32799, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@70f15b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4ab8b70e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@638a98d7, org.springframework.security.web.session.SessionManagementFilter@40f5b4ad, org.springframework.security.web.access.ExceptionTranslationFilter@1ec6b7b6, org.springframework.security.web.access.intercept.AuthorizationFilter@1b7440c3]
+01:59:07.095 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+01:59:07.105 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+01:59:07.120 [main] INFO  r.anapa.autorent.AutorentApplication - Started AutorentApplication in 13.168 seconds (process running for 13.59)
+01:59:07.315 [scheduling-1] INFO  r.a.autorent.config.DataInitializer - Запуск проверки статусов автомобилей
+01:59:07.390 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+01:59:07.429 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        roles r1_0
+01:59:07.496 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+01:59:07.601 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+01:59:07.718 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+01:59:07.781 [main] INFO  r.a.autorent.config.DataInitializer - DataInitializer: проверка наличия пользователей
+01:59:07.811 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+01:59:07.812 [main] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+01:59:07.901 [scheduling-1] INFO  r.a.autorent.config.DataInitializer - Обновлены статусы 0 автомобилей
+01:59:07.909 [main] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:08.004 [main] INFO  r.a.autorent.config.DataInitializer - DataInitializer: admin@example.com существует: true
+01:59:08.004 [main] INFO  r.a.a.config.ImageTestInitializer - === ТЕСТИРОВАНИЕ СИСТЕМЫ ИЗОБРАЖЕНИЙ ===
+01:59:08.005 [main] INFO  r.a.a.config.ImageTestInitializer - Проверка статуса миграции изображений...
+01:59:08.180 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        car_images ci1_0
+01:59:08.710 [main] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0
+01:59:09.549 [main] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+01:59:10.080 [main] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0
+01:59:10.533 [main] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+01:59:10.883 [main] INFO  r.a.a.service.ImageMigrationService - Статус миграции изображений:
+01:59:10.883 [main] INFO  r.a.a.service.ImageMigrationService - - Всего изображений: 5
+01:59:10.883 [main] INFO  r.a.a.service.ImageMigrationService - - В БД (BLOB): 5
+01:59:10.883 [main] INFO  r.a.a.service.ImageMigrationService - - С URL: 5
+01:59:10.883 [main] INFO  r.a.a.service.ImageMigrationService - - Требуют миграции: 0
+01:59:10.883 [main] INFO  r.a.a.config.ImageTestInitializer - === ТЕСТИРОВАНИЕ ЗАВЕРШЕНО ===
+01:59:10.883 [main] INFO  r.a.a.config.ImageTestInitializer - Для миграции изображений используйте: POST /admin/images/migrate
+01:59:10.883 [main] INFO  r.a.a.config.ImageTestInitializer - Для проверки статуса используйте: GET /admin/images/migration-status
+01:59:10.981 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+        and r1_0.end_date<?
+01:59:11.080 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+        and r1_0.start_date between ? and ?
+01:59:11.171 [main] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+01:59:11.269 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status in (?, ?)
+01:59:11.371 [main] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+01:59:11.664 [main] INFO  r.a.autorent.config.DataInitializer - Статусы автомобилей синхронизированы при запуске приложения
+01:59:11.664 [main] DEBUG org.hibernate.SQL - 
+    select
+        dp1_0.id,
+        dp1_0.account_id,
+        dp1_0.amount,
+        dp1_0.created_at,
+        dp1_0.notes,
+        dp1_0.payment_date,
+        dp1_0.processed_at,
+        dp1_0.rental_id,
+        dp1_0.status 
+    from
+        daily_payments dp1_0 
+    where
+        dp1_0.status=?
+01:59:11.769 [main] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.id=?
+01:59:11.882 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r2_0.user_id,
+        r2_1.id,
+        r2_1.name 
+    from
+        rentals r1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=r1_0.car_id 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r2_0 
+            on u1_0.id=r2_0.user_id 
+    left join
+        roles r2_1 
+            on r2_1.id=r2_0.role_id 
+    where
+        r1_0.id=?
+01:59:11.997 [main] DEBUG org.hibernate.SQL - 
+    select
+        dp1_0.id,
+        dp1_0.account_id,
+        dp1_0.amount,
+        dp1_0.created_at,
+        dp1_0.notes,
+        dp1_0.payment_date,
+        dp1_0.processed_at,
+        dp1_0.rental_id,
+        dp1_0.status 
+    from
+        daily_payments dp1_0 
+    where
+        dp1_0.status=?
+01:59:12.095 [main] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.id=?
+01:59:12.201 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r2_0.user_id,
+        r2_1.id,
+        r2_1.name 
+    from
+        rentals r1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=r1_0.car_id 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r2_0 
+            on u1_0.id=r2_0.user_id 
+    left join
+        roles r2_1 
+            on r2_1.id=r2_0.role_id 
+    where
+        r1_0.id=?
+01:59:12.292 [main] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 3 на сумму 1500.00
+01:59:12.386 [main] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id 
+    from
+        accounts a1_0 
+    left join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    where
+        u1_0.id=?
+01:59:12.477 [main] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+01:59:12.746 [main] ERROR r.a.a.service.DailyPaymentService - Ошибка при обработке платежа ID 3: Credit limit exceeded
+01:59:12.844 [main] DEBUG org.hibernate.SQL - 
+    select
+        dp1_0.id,
+        dp1_0.account_id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        dp1_0.amount,
+        dp1_0.created_at,
+        dp1_0.notes,
+        dp1_0.payment_date,
+        dp1_0.processed_at,
+        dp1_0.rental_id,
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        ri1_0.category_id,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u2_0.id,
+        u2_0.email,
+        u2_0.enabled,
+        u2_0.first_name,
+        u2_0.last_login_date,
+        u2_0.last_name,
+        u2_0.password,
+        u2_0.phone,
+        u2_0.registration_date,
+        dp1_0.status 
+    from
+        daily_payments dp1_0 
+    join
+        accounts a1_0 
+            on a1_0.id=dp1_0.account_id 
+    left join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    join
+        rentals r1_0 
+            on r1_0.id=dp1_0.rental_id 
+    left join
+        cars c1_0 
+            on c1_0.id=r1_0.car_id 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        users u2_0 
+            on u2_0.id=r1_0.user_id 
+    where
+        dp1_0.id=?
+01:59:12.941 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.car_id,
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        rentals r1_0 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    where
+        r1_0.car_id=?
+01:59:13.035 [main] DEBUG org.hibernate.SQL - 
+    select
+        i1_0.car_id,
+        i1_0.id,
+        i1_0.content_type,
+        i1_0.description,
+        i1_0.display_order,
+        i1_0.file_name,
+        i1_0.image_data,
+        i1_0.image_url,
+        i1_0.is_main,
+        i1_0.rotation 
+    from
+        car_images i1_0 
+    where
+        i1_0.car_id=?
+01:59:13.484 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+01:59:13.574 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.user_id,
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at 
+    from
+        rentals r1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=r1_0.car_id 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    where
+        r1_0.user_id=?
+01:59:13.682 [main] DEBUG org.hibernate.SQL - 
+    update
+        daily_payments 
+    set
+        account_id=?,
+        amount=?,
+        created_at=?,
+        notes=?,
+        payment_date=?,
+        processed_at=?,
+        rental_id=?,
+        status=? 
+    where
+        id=?
+01:59:40.531 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+01:59:40.531 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+01:59:40.531 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+01:59:40.554 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /
+01:59:40.567 [http-nio-8080-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+01:59:40.567 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /
+01:59:40.611 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.description,
+        c1_0.image,
+        c1_0.name,
+        c1_0.updated_at 
+    from
+        categories c1_0 
+    left join
+        rental_items ri1_0 
+            on c1_0.id=ri1_0.category_id 
+    group by
+        c1_0.id 
+    order by
+        count(ri1_0.id) desc
+01:59:40.792 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ri1_0.id,
+        ri1_0.available_quantity,
+        ri1_0.category_id,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at 
+    from
+        rental_items ri1_0 
+    where
+        ri1_0.available_quantity>0 
+    order by
+        (select
+            count(1) 
+        from
+            rentals r1_0 
+        where
+            ri1_0.id=r1_0.item_id) desc
+01:59:40.898 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ri1_0.id,
+        ri1_0.available_quantity,
+        ri1_0.category_id,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at 
+    from
+        rental_items ri1_0 
+    where
+        ri1_0.available_quantity>0 
+    order by
+        ri1_0.created_at desc
+01:59:40.997 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ri1_0.id,
+        ri1_0.available_quantity,
+        ri1_0.category_id,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at 
+    from
+        rental_items ri1_0 
+    where
+        ri1_0.available_quantity>0 
+        and ri1_0.is_promotional=1
+01:59:41.088 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        distinct c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        i1_0.car_id,
+        i1_0.id,
+        i1_0.content_type,
+        i1_0.description,
+        i1_0.display_order,
+        i1_0.file_name,
+        i1_0.image_data,
+        i1_0.image_url,
+        i1_0.is_main,
+        i1_0.rotation,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    left join
+        car_images i1_0 
+            on c1_0.id=i1_0.car_id
+01:59:41.841 [http-nio-8080-exec-1] DEBUG r.anapa.autorent.service.UserService - Получение списка всех пользователей
+01:59:42.033 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0
+01:59:42.126 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:42.219 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:42.315 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:42.409 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:42.491 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:42.593 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:42.695 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:42.792 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:42.887 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:42.983 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:43.074 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:43.172 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:43.259 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+01:59:43.813 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0
+01:59:43.907 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+01:59:43.991 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+02:00:00.015 [scheduling-1] INFO  r.a.a.service.DailyPaymentService - [Scheduler] Актуализация всех не обработанных платежей (PENDING/FAILED)
+02:00:00.019 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        dp1_0.id,
+        dp1_0.account_id,
+        dp1_0.amount,
+        dp1_0.created_at,
+        dp1_0.notes,
+        dp1_0.payment_date,
+        dp1_0.processed_at,
+        dp1_0.rental_id,
+        dp1_0.status 
+    from
+        daily_payments dp1_0 
+    where
+        dp1_0.status=?
+02:00:00.196 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.id=?
+02:00:00.302 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r2_0.user_id,
+        r2_1.id,
+        r2_1.name 
+    from
+        rentals r1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=r1_0.car_id 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r2_0 
+            on u1_0.id=r2_0.user_id 
+    left join
+        roles r2_1 
+            on r2_1.id=r2_0.role_id 
+    where
+        r1_0.id=?
+02:00:00.401 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        dp1_0.id,
+        dp1_0.account_id,
+        dp1_0.amount,
+        dp1_0.created_at,
+        dp1_0.notes,
+        dp1_0.payment_date,
+        dp1_0.processed_at,
+        dp1_0.rental_id,
+        dp1_0.status 
+    from
+        daily_payments dp1_0 
+    where
+        dp1_0.status=?
+02:00:00.478 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.id=?
+02:00:00.582 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r2_0.user_id,
+        r2_1.id,
+        r2_1.name 
+    from
+        rentals r1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=r1_0.car_id 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r2_0 
+            on u1_0.id=r2_0.user_id 
+    left join
+        roles r2_1 
+            on r2_1.id=r2_0.role_id 
+    where
+        r1_0.id=?
+02:00:00.681 [scheduling-1] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 3 на сумму 1500.00
+02:00:00.776 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id 
+    from
+        accounts a1_0 
+    left join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    where
+        u1_0.id=?
+02:00:00.869 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+02:00:01.138 [scheduling-1] ERROR r.a.a.service.DailyPaymentService - Ошибка при обработке платежа ID 3: Credit limit exceeded
+02:00:01.228 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        dp1_0.id,
+        dp1_0.account_id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        dp1_0.amount,
+        dp1_0.created_at,
+        dp1_0.notes,
+        dp1_0.payment_date,
+        dp1_0.processed_at,
+        dp1_0.rental_id,
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        ri1_0.category_id,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u2_0.id,
+        u2_0.email,
+        u2_0.enabled,
+        u2_0.first_name,
+        u2_0.last_login_date,
+        u2_0.last_name,
+        u2_0.password,
+        u2_0.phone,
+        u2_0.registration_date,
+        dp1_0.status 
+    from
+        daily_payments dp1_0 
+    join
+        accounts a1_0 
+            on a1_0.id=dp1_0.account_id 
+    left join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    join
+        rentals r1_0 
+            on r1_0.id=dp1_0.rental_id 
+    left join
+        cars c1_0 
+            on c1_0.id=r1_0.car_id 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        users u2_0 
+            on u2_0.id=r1_0.user_id 
+    where
+        dp1_0.id=?
+02:00:01.329 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.car_id,
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        rentals r1_0 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    where
+        r1_0.car_id=?
+02:00:01.423 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        i1_0.car_id,
+        i1_0.id,
+        i1_0.content_type,
+        i1_0.description,
+        i1_0.display_order,
+        i1_0.file_name,
+        i1_0.image_data,
+        i1_0.image_url,
+        i1_0.is_main,
+        i1_0.rotation 
+    from
+        car_images i1_0 
+    where
+        i1_0.car_id=?
+02:00:02.076 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+02:00:02.169 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.user_id,
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at 
+    from
+        rentals r1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=r1_0.car_id 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    where
+        r1_0.user_id=?
+02:00:02.270 [scheduling-1] DEBUG org.hibernate.SQL - 
+    update
+        daily_payments 
+    set
+        account_id=?,
+        amount=?,
+        created_at=?,
+        notes=?,
+        payment_date=?,
+        processed_at=?,
+        rental_id=?,
+        status=? 
+    where
+        id=?
+02:00:02.546 [scheduling-1] INFO  r.a.autorent.config.ScheduledTasks - Запуск синхронизации статусов автомобилей
+02:00:02.638 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+        and r1_0.end_date<?
+02:00:02.739 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+        and r1_0.start_date between ? and ?
+02:00:02.832 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+02:00:02.929 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status in (?, ?)
+02:00:03.016 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+02:00:03.291 [scheduling-1] INFO  r.a.autorent.config.ScheduledTasks - Синхронизация статусов автомобилей завершена успешно
+02:00:03.382 [scheduling-1] INFO  r.a.a.service.PasswordResetService - Начинаем очистку старых логов восстановления пароля
+02:00:03.389 [scheduling-1] ERROR r.a.a.service.PasswordResetService - Ошибка при очистке старых логов восстановления пароля
+org.springframework.dao.InvalidDataAccessApiUsageException: Expecting a SELECT query : `DELETE FROM PasswordResetLog p WHERE p.createdAt < :cutoffDate`
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:368)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:550)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:335)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:152)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:135)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:220)
+	at jdk.proxy2/jdk.proxy2.$Proxy181.deleteOldLogs(Unknown Source)
+	at ru.anapa.autorent.service.PasswordResetService.cleanupOldPasswordResetLogs(PasswordResetService.java:332)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:351)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:765)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:385)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:765)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:717)
+	at ru.anapa.autorent.service.PasswordResetService$$SpringCGLIB$$0.cleanupOldPasswordResetLogs(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.runInternal(ScheduledMethodRunnable.java:130)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.lambda$run$2(ScheduledMethodRunnable.java:124)
+	at io.micrometer.observation.Observation.observe(Observation.java:499)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:124)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:96)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.lang.IllegalStateException: Expecting a SELECT query : `DELETE FROM PasswordResetLog p WHERE p.createdAt < :cutoffDate`
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.verifySelect(QuerySqmImpl.java:493)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:498)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:427)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:564)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:223)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:92)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:149)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:137)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:164)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:143)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:70)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:385)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:137)
+	... 39 common frames omitted
+Caused by: org.hibernate.query.IllegalSelectQueryException: Expecting a SELECT Query [org.hibernate.query.sqm.tree.select.SqmSelectStatement], but found org.hibernate.query.sqm.tree.delete.SqmDeleteStatement [DELETE FROM PasswordResetLog p WHERE p.createdAt < :cutoffDate]
+	at org.hibernate.query.sqm.internal.SqmUtil.verifyIsSelectStatement(SqmUtil.java:98)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.verifySelect(QuerySqmImpl.java:489)
+	... 58 common frames omitted
+02:00:04.956 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /admin/payments
+02:00:04.958 [http-nio-8080-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+02:00:05.003 [http-nio-8080-exec-2] DEBUG o.s.s.w.s.HttpSessionRequestCache - Saved request http://localhost:8080/admin/payments?continue to session
+02:00:05.004 [http-nio-8080-exec-2] DEBUG o.s.s.web.DefaultRedirectStrategy - Redirecting to http://localhost:8080/auth/login
+02:00:05.015 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /auth/login
+02:00:05.018 [http-nio-8080-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+02:00:05.018 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /auth/login
+02:00:05.018 [http-nio-8080-exec-7] INFO  r.a.a.controller.AuthController - Login page requested
+02:00:24.338 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing POST /admin/payments/process-all
+02:00:24.342 [http-nio-8080-exec-4] DEBUG o.s.security.web.csrf.CsrfFilter - Invalid CSRF token found for http://localhost:8080/admin/payments/process-all
+02:00:24.351 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /auth/login
+02:00:24.352 [http-nio-8080-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+02:00:24.353 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /auth/login
+02:00:24.353 [http-nio-8080-exec-5] INFO  r.a.a.controller.AuthController - Login page requested
+02:00:24.353 [http-nio-8080-exec-5] INFO  r.a.a.controller.AuthController - Admin login required message detected in session
+02:00:27.238 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /admin/payments
+02:00:27.243 [http-nio-8080-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+02:00:27.249 [http-nio-8080-exec-3] DEBUG o.s.s.w.s.HttpSessionRequestCache - Saved request http://localhost:8080/admin/payments?continue to session
+02:00:27.250 [http-nio-8080-exec-3] DEBUG o.s.s.web.DefaultRedirectStrategy - Redirecting to http://localhost:8080/auth/login
+02:00:27.262 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /auth/login
+02:00:27.268 [http-nio-8080-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+02:00:27.273 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /auth/login
+02:00:27.276 [http-nio-8080-exec-6] INFO  r.a.a.controller.AuthController - Login page requested
+02:00:27.335 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+02:00:27.336 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+02:00:27.340 [http-nio-8080-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+02:00:27.340 [http-nio-8080-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+02:00:27.345 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+02:00:27.345 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+02:00:29.358 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing POST /auth/login
+02:00:29.717 [http-nio-8080-exec-10] DEBUG r.anapa.autorent.service.UserService - Загрузка пользователя по email: admin@example.com
+02:00:29.721 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+02:00:29.814 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+02:00:29.920 [http-nio-8080-exec-10] DEBUG r.anapa.autorent.service.UserService - Пользователь найден: admin@example.com, роли: [ROLE_ADMIN], enabled: true
+02:00:29.924 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    update
+        users 
+    set
+        email=?,
+        enabled=?,
+        first_name=?,
+        last_login_date=?,
+        last_name=?,
+        password=?,
+        phone=?,
+        registration_date=? 
+    where
+        id=?
+02:00:30.387 [http-nio-8080-exec-10] DEBUG o.s.s.a.d.DaoAuthenticationProvider - Authenticated user
+02:00:30.389 [http-nio-8080-exec-10] DEBUG o.s.s.w.a.s.ChangeSessionIdAuthenticationStrategy - Changed session id from 8E3710B961517C756412C1AA8009654C
+02:00:30.390 [http-nio-8080-exec-10] DEBUG o.s.s.c.session.SessionRegistryImpl - Registering session 6A5094E4F4AD5B6516F1C735F58E097F, for principal org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]]
+02:00:30.391 [http-nio-8080-exec-10] DEBUG o.s.s.w.c.CsrfAuthenticationStrategy - Replaced CSRF Token
+02:00:30.393 [http-nio-8080-exec-10] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Stored SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=8E3710B961517C756412C1AA8009654C], Granted Authorities=[ROLE_ADMIN]]] to HttpSession [org.apache.catalina.session.StandardSessionFacade@67f16198]
+02:00:30.396 [http-nio-8080-exec-10] DEBUG o.s.s.w.a.UsernamePasswordAuthenticationFilter - Set SecurityContextHolder to UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=8E3710B961517C756412C1AA8009654C], Granted Authorities=[ROLE_ADMIN]]
+02:00:30.404 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /admin/dashboard
+02:00:30.410 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=8E3710B961517C756412C1AA8009654C], Granted Authorities=[ROLE_ADMIN]]]
+02:00:30.413 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /admin/dashboard
+02:00:30.424 [http-nio-8080-exec-1] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public java.lang.String ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.ui.Model); target is of class [ru.anapa.autorent.controller.AdminController]
+02:00:30.437 [http-nio-8080-exec-1] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public java.lang.String ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.ui.Model); target is of class [ru.anapa.autorent.controller.AdminController]
+02:00:30.619 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        users u1_0
+02:00:31.171 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        cars c1_0
+02:00:31.544 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        count(c1_0.id) 
+    from
+        cars c1_0 
+    where
+        c1_0.status=?
+02:00:31.637 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        count(r1_0.id) 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+02:00:31.730 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        count(r1_0.id) 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+02:00:32.008 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0
+02:00:32.104 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:00:32.203 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+02:00:32.575 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    order by
+        r1_0.created_at desc 
+    limit
+        ?
+02:00:32.671 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:00:32.771 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+02:00:32.873 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.status=?
+02:00:33.028 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+02:00:33.028 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+02:00:33.033 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+02:00:33.033 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+02:00:33.041 [http-nio-8080-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=8E3710B961517C756412C1AA8009654C], Granted Authorities=[ROLE_ADMIN]]]
+02:00:33.047 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=8E3710B961517C756412C1AA8009654C], Granted Authorities=[ROLE_ADMIN]]]
+02:00:36.316 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /admin/payments
+02:00:36.320 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=8E3710B961517C756412C1AA8009654C], Granted Authorities=[ROLE_ADMIN]]]
+02:00:36.322 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /admin/payments
+02:00:36.327 [http-nio-8080-exec-4] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public java.lang.String ru.anapa.autorent.controller.DailyPaymentController.listPayments(org.springframework.ui.Model); target is of class [ru.anapa.autorent.controller.DailyPaymentController]
+02:00:36.330 [http-nio-8080-exec-4] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public java.lang.String ru.anapa.autorent.controller.DailyPaymentController.listPayments(org.springframework.ui.Model); target is of class [ru.anapa.autorent.controller.DailyPaymentController]
+02:00:36.338 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+    order by
+        r1_0.created_at desc
+02:00:36.527 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:00:36.624 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+02:00:36.766 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+02:00:36.766 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+02:00:36.770 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+02:00:36.770 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+02:00:36.779 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=8E3710B961517C756412C1AA8009654C], Granted Authorities=[ROLE_ADMIN]]]
+02:00:36.780 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=8E3710B961517C756412C1AA8009654C], Granted Authorities=[ROLE_ADMIN]]]
+02:00:38.763 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing POST /admin/payments/process-all
+02:00:38.768 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=8E3710B961517C756412C1AA8009654C], Granted Authorities=[ROLE_ADMIN]]]
+02:00:38.771 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured POST /admin/payments/process-all
+02:00:38.773 [http-nio-8080-exec-6] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity ru.anapa.autorent.controller.DailyPaymentController.processAllUnprocessedPayments(); target is of class [ru.anapa.autorent.controller.DailyPaymentController]
+02:00:38.776 [http-nio-8080-exec-6] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity ru.anapa.autorent.controller.DailyPaymentController.processAllUnprocessedPayments(); target is of class [ru.anapa.autorent.controller.DailyPaymentController]
+02:00:38.962 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        dp1_0.id,
+        dp1_0.account_id,
+        dp1_0.amount,
+        dp1_0.created_at,
+        dp1_0.notes,
+        dp1_0.payment_date,
+        dp1_0.processed_at,
+        dp1_0.rental_id,
+        dp1_0.status 
+    from
+        daily_payments dp1_0 
+    where
+        dp1_0.status=?
+02:00:39.057 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.id=?
+02:00:39.151 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r2_0.user_id,
+        r2_1.id,
+        r2_1.name 
+    from
+        rentals r1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=r1_0.car_id 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r2_0 
+            on u1_0.id=r2_0.user_id 
+    left join
+        roles r2_1 
+            on r2_1.id=r2_0.role_id 
+    where
+        r1_0.id=?
+02:00:39.248 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        dp1_0.id,
+        dp1_0.account_id,
+        dp1_0.amount,
+        dp1_0.created_at,
+        dp1_0.notes,
+        dp1_0.payment_date,
+        dp1_0.processed_at,
+        dp1_0.rental_id,
+        dp1_0.status 
+    from
+        daily_payments dp1_0 
+    where
+        dp1_0.status=?
+02:00:39.341 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        ri1_0.id,
+        ri1_0.available_quantity,
+        c2_0.id,
+        c2_0.created_at,
+        c2_0.description,
+        c2_0.image,
+        c2_0.name,
+        c2_0.updated_at,
+        ri1_0.created_at,
+        ri1_0.deposit,
+        ri1_0.description,
+        ri1_0.image,
+        ri1_0.is_promotional,
+        ri1_0.name,
+        ri1_0.price_per_day,
+        ri1_0.updated_at,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id,
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r2_0.user_id,
+        r2_1.id,
+        r2_1.name 
+    from
+        rentals r1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=r1_0.car_id 
+    left join
+        rental_items ri1_0 
+            on ri1_0.id=r1_0.item_id 
+    left join
+        categories c2_0 
+            on c2_0.id=ri1_0.category_id 
+    join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r2_0 
+            on u1_0.id=r2_0.user_id 
+    left join
+        roles r2_1 
+            on r2_1.id=r2_0.role_id 
+    where
+        r1_0.id=?
+02:00:39.438 [http-nio-8080-exec-6] INFO  r.a.a.service.DailyPaymentService - Обработка платежа ID 3 на сумму 1500.00
+02:00:39.444 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id 
+    from
+        accounts a1_0 
+    left join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    where
+        u1_0.id=?
+02:00:39.535 [http-nio-8080-exec-6] ERROR r.a.a.service.DailyPaymentService - Ошибка при обработке платежа ID 3: Credit limit exceeded

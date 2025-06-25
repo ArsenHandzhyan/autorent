@@ -116,38 +116,55 @@ public class DailyPaymentService {
     @Transactional
     public void processPayment(DailyPayment payment) {
         logger.info("Обработка платежа ID {} на сумму {}", payment.getId(), payment.getAmount());
-        boolean processed = false;
-        String errorMsg = null;
+        
         try {
             Account account = payment.getAccount();
             BigDecimal paymentAmount = payment.getAmount();
             BigDecimal currentBalance = account.getBalance();
             BigDecimal newBalance = currentBalance.subtract(paymentAmount);
+            
+            // Валидируем платеж
             PaymentValidationResult validation = validatePayment(account, paymentAmount);
+            
             if (validation.isValid()) {
+                // Платеж валиден - списываем средства
                 accountService.updateBalance(account.getUser().getId(), paymentAmount.negate());
                 payment.setStatus(DailyPayment.PaymentStatus.PROCESSED);
                 payment.setProcessedAt(LocalDateTime.now());
                 payment.setNotes("Платеж успешно обработан. Новый баланс: " + newBalance + " ₽");
                 dailyPaymentRepository.save(payment);
-                processed = true;
+                
+                logger.info("Платеж ID {} успешно обработан. Списано: {}, новый баланс: {}", 
+                           payment.getId(), paymentAmount, newBalance);
+                
+                // Публикуем событие успешного платежа
+                eventPublisher.publishEvent(new PaymentNotificationEvent(payment, true, null));
+                
             } else {
+                // Платеж не прошел валидацию - отмечаем как неудачный
                 payment.setStatus(DailyPayment.PaymentStatus.FAILED);
                 payment.setProcessedAt(LocalDateTime.now());
-                payment.setNotes("Ошибка: " + validation.getErrorMessage());
+                payment.setNotes("Ошибка валидации: " + validation.getErrorMessage());
                 dailyPaymentRepository.save(payment);
-                errorMsg = validation.getErrorMessage();
+                
+                logger.warn("Платеж ID {} не прошел валидацию: {}", payment.getId(), validation.getErrorMessage());
+                
+                // Публикуем событие неудачного платежа
+                eventPublisher.publishEvent(new PaymentNotificationEvent(payment, false, validation.getErrorMessage()));
             }
+            
         } catch (Exception e) {
-            logger.error("Ошибка при обработке платежа ID {}: {}", payment.getId(), e.getMessage());
+            logger.error("Техническая ошибка при обработке платежа ID {}: {}", payment.getId(), e.getMessage());
+            
+            // Отмечаем платеж как неудачный из-за технической ошибки
             payment.setStatus(DailyPayment.PaymentStatus.FAILED);
             payment.setProcessedAt(LocalDateTime.now());
             payment.setNotes("Техническая ошибка: " + e.getMessage());
             dailyPaymentRepository.save(payment);
-            errorMsg = "Техническая ошибка: " + e.getMessage();
+            
+            // Публикуем событие технической ошибки
+            eventPublisher.publishEvent(new PaymentNotificationEvent(payment, false, "Техническая ошибка: " + e.getMessage()));
         }
-        // Публикуем событие для уведомлений после завершения транзакции
-        eventPublisher.publishEvent(new PaymentNotificationEvent(payment, processed, errorMsg));
     }
 
     /**
@@ -375,19 +392,66 @@ public class DailyPaymentService {
      */
     @Transactional
     public void processAllUnprocessedPayments() {
+        logger.info("Начинаем актуализацию всех не обработанных платежей");
+        
         List<DailyPayment> pending = dailyPaymentRepository.findAllByStatus(DailyPayment.PaymentStatus.PENDING);
         List<DailyPayment> failed = dailyPaymentRepository.findAllByStatus(DailyPayment.PaymentStatus.FAILED);
         List<DailyPayment> all = new java.util.ArrayList<>();
         java.time.LocalDate today = java.time.LocalDate.now();
-        for (DailyPayment p : pending) if (!p.getPaymentDate().isAfter(today)) all.add(p);
-        for (DailyPayment p : failed) if (!p.getPaymentDate().isAfter(today)) all.add(p);
-        for (DailyPayment payment : all) {
-            try {
-                processPayment(payment);
-            } catch (Exception e) {
-                logger.error("Ошибка при автосписании платежа ID {}: {}", payment.getId(), e.getMessage());
+        
+        // Фильтруем платежи по дате (только те, которые должны быть обработаны сегодня или раньше)
+        for (DailyPayment p : pending) {
+            if (!p.getPaymentDate().isAfter(today)) {
+                all.add(p);
             }
         }
+        for (DailyPayment p : failed) {
+            if (!p.getPaymentDate().isAfter(today)) {
+                all.add(p);
+            }
+        }
+        
+        logger.info("Найдено {} платежей для обработки (PENDING: {}, FAILED: {})", 
+                   all.size(), pending.size(), failed.size());
+        
+        int processedCount = 0;
+        int failedCount = 0;
+        
+        for (DailyPayment payment : all) {
+            try {
+                // Обрабатываем каждый платеж в отдельной транзакции
+                processPaymentInNewTransaction(payment);
+                processedCount++;
+                logger.info("Платеж ID {} успешно обработан", payment.getId());
+            } catch (Exception e) {
+                failedCount++;
+                logger.error("Ошибка при автосписании платежа ID {}: {}", payment.getId(), e.getMessage());
+                // Отмечаем платеж как неудачный, но не прерываем обработку остальных
+                try {
+                    markPaymentAsFailedInNewTransaction(payment, e.getMessage());
+                } catch (Exception markError) {
+                    logger.error("Не удалось отметить платеж ID {} как неудачный: {}", payment.getId(), markError.getMessage());
+                }
+            }
+        }
+        
+        logger.info("Актуализация завершена. Обработано: {}, Ошибок: {}", processedCount, failedCount);
+    }
+
+    /**
+     * Обрабатывает платеж в новой транзакции
+     */
+    @Transactional(propagation = org.springframework.transaction.annotation.Propagation.REQUIRES_NEW)
+    public void processPaymentInNewTransaction(DailyPayment payment) {
+        processPayment(payment);
+    }
+
+    /**
+     * Отмечает платеж как неудачный в новой транзакции
+     */
+    @Transactional(propagation = org.springframework.transaction.annotation.Propagation.REQUIRES_NEW)
+    public void markPaymentAsFailedInNewTransaction(DailyPayment payment, String errorMessage) {
+        markPaymentAsFailed(payment, errorMessage);
     }
 
     // Старый метод теперь вызывает новый
