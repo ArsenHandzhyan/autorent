@@ -54,7 +54,7 @@ public class JwtTokenUtil {
 
     // Получение всех данных из токена
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parserBuilder()
+        return Jwts.parser()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
@@ -132,7 +132,7 @@ public class JwtTokenUtil {
     public Boolean validateTokenOnly(String token) {
         try {
             // Проверяем, что токен можно распарсить и подпись валидна
-            Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
+            Jwts.parser().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
             // Проверяем срок действия
             return !isTokenExpired(token);
         } catch (Exception e) {
