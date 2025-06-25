@@ -693,6 +693,57 @@ function retryPayment(paymentId) {
     });
 }
 
+function processAllUnprocessedPayments() {
+    const statusDiv = document.getElementById('allPaymentsStatus');
+    if (statusDiv) {
+        statusDiv.innerHTML = '<span class="text-info">Запрос отправлен...</span>';
+    }
+    
+    if (!csrfToken) {
+        if (statusDiv) {
+            statusDiv.innerHTML = '<span class="text-danger">CSRF-токен не найден. Пожалуйста, обновите страницу.</span>';
+        }
+        return;
+    }
+    
+    fetch('/admin/payments/process-all', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            [csrfHeader]: csrfToken
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            if (statusDiv) {
+                statusDiv.innerHTML = '<span class="text-success">' + data.message + '</span>';
+            }
+            showNotification(data.message, 'success');
+            setTimeout(() => window.location.reload(), 1500);
+        } else {
+            if (statusDiv) {
+                statusDiv.innerHTML = '<span class="text-danger">' + (data.error || 'Ошибка') + '</span>';
+            }
+            showNotification('Ошибка: ' + (data.error || 'Неизвестная ошибка'), 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        const errorMessage = 'Ошибка соединения с сервером: ' + error.message;
+        if (statusDiv) {
+            statusDiv.innerHTML = '<span class="text-danger">' + errorMessage + '</span>';
+        }
+        showNotification(errorMessage, 'error');
+    });
+}
+
 // ========================================
 // СИСТЕМА УВЕДОМЛЕНИЙ
 // ========================================
@@ -1811,4 +1862,22 @@ function initResetPasswordForm() {
         
         submitBtn.disabled = !(isPasswordValid && doPasswordsMatch);
     }
-} 
+}
+
+// ========================================
+// ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ HTML
+// ========================================
+
+// Делаем функции доступными глобально для использования в HTML
+window.processPayment = processPayment;
+window.retryPayment = retryPayment;
+window.processAllUnprocessedPayments = processAllUnprocessedPayments;
+window.showCancelForm = showCancelForm;
+window.hideCancelForm = hideCancelForm;
+window.showRejectForm = showRejectForm;
+window.hideRejectForm = hideRejectForm;
+window.updateCarStatus = updateCarStatus;
+window.toggleMaintenance = toggleMaintenance;
+window.toggleUserStatus = toggleUserStatus;
+window.rotateImage = rotateImage;
+window.deleteImage = deleteImage; 

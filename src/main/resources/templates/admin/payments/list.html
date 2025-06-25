@@ -149,25 +149,39 @@
     <div th:replace="~{fragments/footer :: footer}"></div>
 
     <script>
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    
     function processAllUnprocessedPayments() {
         const statusDiv = document.getElementById('allPaymentsStatus');
         statusDiv.innerHTML = '<span class="text-info">Запрос отправлен...</span>';
-        // Получаем CSRF-токен
-        const csrfInput = document.getElementById('csrf');
-        if (!csrfInput) {
-            statusDiv.innerHTML = '<span class="text-danger">CSRF-токен не найден на странице. Пожалуйста, обновите страницу.</span>';
+        
+        // Получаем CSRF токен из скрытого поля
+        const csrfHeader = document.getElementById('csrf').name;
+        const csrfToken = document.getElementById('csrf').value;
+        
+        if (!csrfToken) {
+            statusDiv.innerHTML = '<span class="text-danger">CSRF-токен не найден. Пожалуйста, обновите страницу.</span>';
             return;
         }
-        const csrfHeader = csrfInput.name;
-        const csrfToken = csrfInput.value;
+        
         fetch('/admin/payments/process-all', {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 [csrfHeader]: csrfToken
             },
             credentials: 'same-origin'
         })
-        .then(r => r.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 statusDiv.innerHTML = '<span class="text-success">' + data.message + '</span>';
@@ -176,8 +190,9 @@
                 statusDiv.innerHTML = '<span class="text-danger">' + (data.error || 'Ошибка') + '</span>';
             }
         })
-        .catch(() => {
-            statusDiv.innerHTML = '<span class="text-danger">Ошибка соединения с сервером</span>';
+        .catch(error => {
+            console.error('Ошибка:', error);
+            statusDiv.innerHTML = '<span class="text-danger">Ошибка соединения с сервером: ' + error.message + '</span>';
         });
     }
     </script>
