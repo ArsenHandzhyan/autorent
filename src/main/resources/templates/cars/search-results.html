@@ -65,9 +65,15 @@
     <div class="cars-grid">
         <div th:each="car : ${cars}" class="car-card">
             <div class="car-image">
-                <img th:if="${car.imageUrl}" th:src="${car.imageUrl}" alt="Фото автомобиля"
-                     th:classappend="'rotate-img'">
-                <img th:unless="${car.imageUrl}" th:src="@{/images/car-placeholder.jpg}" alt="Фото автомобиля">
+                <img th:if="${car.images != null && !car.images.empty}" 
+                     th:src="@{${car.images[0].imageUrl}}" 
+                     alt="Фото автомобиля"
+                     class="rotate-img"
+                     th:style="'transform: rotate(' + (${car.images[0].rotation} != null ? ${car.images[0].rotation} : 0) + 'deg);'"
+                     onerror="this.src='/images/default-car.jpg';">
+                <img th:unless="${car.images != null && !car.images.empty}" 
+                     th:src="@{/images/default-car.jpg}" 
+                     alt="Фото автомобиля">
 
                 <!-- Блок статуса -->
                 <div th:if="${car.available}" class="status available">Доступен для аренды</div>
