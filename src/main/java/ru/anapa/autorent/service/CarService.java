@@ -640,4 +640,23 @@ public class CarService {
         carImageRepository.save(image);
         return newRotation;
     }
+
+    @Transactional
+    public void deleteCarImage(Long imageId) {
+        CarImage image = carImageRepository.findById(imageId)
+                .orElseThrow(() -> new RuntimeException("Изображение не найдено"));
+        
+        // Проверяем, не является ли это единственным изображением автомобиля
+        Car car = image.getCar();
+        if (car != null) {
+            List<CarImage> carImages = carImageRepository.findByCarIdOrderByDisplayOrderAsc(car.getId());
+            if (carImages.size() <= 1) {
+                throw new RuntimeException("Нельзя удалить единственное изображение автомобиля");
+            }
+        }
+        
+        // Удаляем изображение
+        carImageRepository.deleteById(imageId);
+        logger.info("Изображение с ID {} удалено", imageId);
+    }
 }

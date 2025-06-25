@@ -266,6 +266,74 @@ function rotateImage(imageId, direction) {
     });
 }
 
+// Функция удаления изображения
+function deleteImage(imageId) {
+    // Подтверждение удаления
+    if (!confirm('Вы уверены, что хотите удалить это изображение?')) {
+        return;
+    }
+
+    const token = document.querySelector("meta[name='_csrf']")?.getAttribute("content");
+    const header = document.querySelector("meta[name='_csrf_header']")?.getAttribute("content");
+    
+    if (!token || !header) {
+        showNotification('Ошибка: CSRF токен не найден', 'error');
+        return;
+    }
+
+    // Показываем индикатор загрузки
+    const deleteBtn = document.querySelector(`.delete-image[data-image-id="${imageId}"]`);
+    const originalText = deleteBtn.innerHTML;
+    deleteBtn.disabled = true;
+    deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Удаление...';
+
+    fetch(`/cars/images/${imageId}/delete`, {
+        method: 'POST',
+        headers: {
+            [header]: token,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Удаляем элемент изображения со страницы
+            const imageItem = document.querySelector(`.image-item:has(img[data-image-id="${imageId}"])`);
+            if (imageItem) {
+                imageItem.remove();
+                showNotification('Изображение успешно удалено', 'success');
+            } else {
+                // Альтернативный способ удаления, если :has() не поддерживается
+                const image = document.querySelector(`img[data-image-id="${imageId}"]`);
+                if (image) {
+                    const imageContainer = image.closest('.image-item');
+                    if (imageContainer) {
+                        imageContainer.remove();
+                        showNotification('Изображение успешно удалено', 'success');
+                    }
+                }
+            }
+        } else {
+            showNotification(data.error || 'Ошибка при удалении изображения', 'error');
+            // Восстанавливаем кнопку
+            deleteBtn.disabled = false;
+            deleteBtn.innerHTML = originalText;
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        showNotification('Произошла ошибка при удалении изображения', 'error');
+        // Восстанавливаем кнопку
+        deleteBtn.disabled = false;
+        deleteBtn.innerHTML = originalText;
+    });
+}
+
 // ========================================
 // АДМИН ПАНЕЛЬ
 // ========================================
@@ -1552,48 +1620,16 @@ function initCarEditPage() {
         });
     });
 
+    // Обработчики для кнопок удаления изображений
+    document.querySelectorAll('.delete-image').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const imageId = this.getAttribute('data-image-id');
+            deleteImage(imageId);
+        });
+    });
+
     // После успешного поворота обновляем угол и класс
     // (доработка функции rotateImage ниже)
-}
-
-// Доработка функции rotateImage для обновления data-rotation и класса
-function rotateImage(imageId, direction) {
-    const token = document.querySelector("meta[name='_csrf']")?.getAttribute("content");
-    const header = document.querySelector("meta[name='_csrf_header']")?.getAttribute("content");
-    if (!token || !header) {
-        showNotification('Ошибка: CSRF токен не найден', 'error');
-        return;
-    }
-    fetch(`/cars/images/${imageId}/rotate?direction=${direction}`, {
-        method: 'POST',
-        headers: {
-            [header]: token
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Обновляем изображение на странице
-            const image = document.querySelector(`img[data-image-id="${imageId}"]`);
-            if (image) {
-                image.setAttribute('data-rotation', data.rotation);
-                image.className = 'img-thumbnail rotated-' + data.rotation;
-                image.style.transform = `rotate(${data.rotation}deg)`;
-            }
-            // Обновляем скрытое поле с углом
-            const hiddenInput = document.querySelector(`input[name='imageRotation_${imageId}']`);
-            if (hiddenInput) {
-                hiddenInput.value = data.rotation;
-            }
-            showNotification('Изображение повернуто', 'success');
-        } else {
-            showNotification(data.error || 'Ошибка при повороте изображения', 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Ошибка:', error);
-        showNotification('Произошла ошибка при повороте изображения', 'error');
-    });
 }
 
 /**

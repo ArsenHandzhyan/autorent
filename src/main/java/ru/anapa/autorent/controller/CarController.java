@@ -623,4 +623,18 @@ public class CarController {
         }
         return response;
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/images/{imageId}/delete")
+    @ResponseBody
+    public ResponseEntity<?> deleteCarImage(@PathVariable Long imageId) {
+        try {
+            carService.deleteCarImage(imageId);
+            return ResponseEntity.ok(Map.of("success", true, "message", "Изображение успешно удалено"));
+        } catch (Exception e) {
+            logger.error("Ошибка при удалении изображения {}: {}", imageId, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("success", false, "error", "Ошибка при удалении изображения: " + e.getMessage()));
+        }
+    }
 }

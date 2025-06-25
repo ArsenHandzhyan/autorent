@@ -22577,3 +22577,4066 @@ Caused by: java.sql.SQLIntegrityConstraintViolationException: Column 'image_url'
 02:56:48.916 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
 02:56:48.935 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
 02:56:48.944 [http-nio-8080-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:58:43.354 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+02:58:43.357 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+02:58:43.906 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+02:58:51.608 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+02:58:51.708 [main] INFO  r.anapa.autorent.AutorentApplication - Starting AutorentApplication using Java 17.0.14 with PID 11352 (C:\Users\Администратор\IdeaProjects\autorent\target\classes started by Администратор in C:\Users\Администратор\IdeaProjects\autorent)
+02:58:51.709 [main] DEBUG r.anapa.autorent.AutorentApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+02:58:51.710 [main] INFO  r.anapa.autorent.AutorentApplication - The following 1 profile is active: "dev"
+02:58:54.074 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+02:58:54.287 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 199 ms. Found 15 JPA repository interfaces.
+02:58:56.131 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+02:58:56.150 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+02:58:56.155 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+02:58:56.156 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+02:58:56.283 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+02:58:56.284 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4456 ms
+02:58:56.765 [main] DEBUG r.a.autorent.config.JwtRequestFilter - Filter 'jwtRequestFilter' configured for use
+02:58:57.090 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+02:58:57.191 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+02:58:57.270 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+02:58:57.687 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+02:58:57.746 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+02:58:59.609 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@690677de
+02:58:59.615 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+02:58:59.812 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+02:58:59.814 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+02:59:01.926 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+02:59:05.514 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+02:59:06.341 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+02:59:07.978 [main] WARN  o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.OncePerRequestFilter.doFilter(jakarta.servlet.ServletRequest,jakarta.servlet.ServletResponse,jakarta.servlet.FilterChain) throws jakarta.servlet.ServletException,java.io.IOException] because it is marked as final, consider using interface-based JDK proxies instead.
+02:59:07.979 [main] WARN  o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+02:59:08.501 [main] INFO  r.anapa.autorent.service.SmsService - SmsService инициализирован с использованием SMS.ru API
+02:59:08.708 [main] INFO  r.a.a.controller.AuthController - AuthController initialized
+02:59:08.780 [main] INFO  r.a.a.controller.RentalController - RentalController initialized
+02:59:09.594 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+02:59:09.736 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2a810e7, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1b4f6b6d, org.springframework.security.web.context.SecurityContextHolderFilter@358720a0, org.springframework.security.web.header.HeaderWriterFilter@11d0a25e, org.springframework.web.filter.CorsFilter@7d7337d0, org.springframework.security.web.csrf.CsrfFilter@2d751681, org.springframework.security.web.authentication.logout.LogoutFilter@765a09fc, ru.anapa.autorent.config.JwtRequestFilter@5b4954b2, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@678f4876, org.springframework.security.web.session.ConcurrentSessionFilter@30b32799, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@70f15b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4ab8b70e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2d5580f6, org.springframework.security.web.session.SessionManagementFilter@40f5b4ad, org.springframework.security.web.access.ExceptionTranslationFilter@1ec6b7b6, org.springframework.security.web.access.intercept.AuthorizationFilter@1b7440c3]
+02:59:10.535 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+02:59:10.556 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+02:59:10.582 [main] INFO  r.anapa.autorent.AutorentApplication - Started AutorentApplication in 19.607 seconds (process running for 20.673)
+02:59:10.792 [scheduling-1] INFO  r.a.autorent.config.DataInitializer - Запуск проверки статусов автомобилей
+02:59:10.899 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+02:59:10.900 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+        and r1_0.end_date<?
+02:59:11.010 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+        and r1_0.start_date between ? and ?
+02:59:11.015 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:11.115 [main] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+02:59:11.132 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+02:59:11.223 [main] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status in (?, ?)
+02:59:11.235 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+02:59:11.314 [main] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+02:59:11.326 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+02:59:11.413 [scheduling-1] INFO  r.a.autorent.config.DataInitializer - Обновлены статусы 0 автомобилей
+02:59:11.585 [main] INFO  r.a.autorent.config.DataInitializer - Статусы автомобилей синхронизированы при запуске приложения
+02:59:11.587 [main] INFO  r.a.a.config.ImageTestInitializer - === ТЕСТИРОВАНИЕ СИСТЕМЫ ИЗОБРАЖЕНИЙ ===
+02:59:11.587 [main] INFO  r.a.a.config.ImageTestInitializer - Проверка статуса миграции изображений...
+02:59:11.777 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        car_images ci1_0
+02:59:12.306 [main] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0
+02:59:12.396 [main] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:12.930 [main] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0
+02:59:13.019 [main] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:13.379 [main] INFO  r.a.a.service.ImageMigrationService - Статус миграции изображений:
+02:59:13.380 [main] INFO  r.a.a.service.ImageMigrationService - - Всего изображений: 5
+02:59:13.382 [main] INFO  r.a.a.service.ImageMigrationService - - В БД (BLOB): 0
+02:59:13.382 [main] INFO  r.a.a.service.ImageMigrationService - - С URL: 5
+02:59:13.382 [main] INFO  r.a.a.service.ImageMigrationService - - Требуют миграции: 5
+02:59:13.382 [main] INFO  r.a.a.config.ImageTestInitializer - === ТЕСТИРОВАНИЕ ЗАВЕРШЕНО ===
+02:59:13.383 [main] INFO  r.a.a.config.ImageTestInitializer - Для миграции изображений используйте: POST /admin/images/migrate
+02:59:13.383 [main] INFO  r.a.a.config.ImageTestInitializer - Для проверки статуса используйте: GET /admin/images/migration-status
+02:59:13.559 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        roles r1_0
+02:59:13.910 [main] INFO  r.a.autorent.config.DataInitializer - DataInitializer: проверка наличия пользователей
+02:59:13.956 [main] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+02:59:14.051 [main] DEBUG org.hibernate.SQL - 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        accounts a1_0 
+    join
+        users u1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        a1_0.user_id=?
+02:59:14.143 [main] INFO  r.a.autorent.config.DataInitializer - DataInitializer: admin@example.com существует: true
+02:59:14.147 [main] DEBUG org.hibernate.SQL - 
+    select
+        dp1_0.id,
+        dp1_0.account_id,
+        dp1_0.amount,
+        dp1_0.created_at,
+        dp1_0.notes,
+        dp1_0.payment_date,
+        dp1_0.processed_at,
+        dp1_0.rental_id,
+        dp1_0.status 
+    from
+        daily_payments dp1_0 
+    where
+        dp1_0.status=?
+02:59:28.467 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+02:59:28.467 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+02:59:28.467 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+02:59:28.595 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing POST /cars/11/edit
+02:59:28.964 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:28.967 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured POST /cars/11/edit
+02:59:29.590 [http-nio-8080-exec-1] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.updateCar(java.lang.Long,ru.anapa.autorent.dto.CarDto,java.lang.Long,java.util.Map,org.springframework.validation.BindingResult); target is of class [ru.anapa.autorent.controller.CarController]
+02:59:29.979 [http-nio-8080-exec-1] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.updateCar(java.lang.Long,ru.anapa.autorent.dto.CarDto,java.lang.Long,java.util.Map,org.springframework.validation.BindingResult); target is of class [ru.anapa.autorent.controller.CarController]
+02:59:30.259 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:30.649 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+02:59:30.739 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:31.053 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        car_images
+        (car_id, content_type, description, display_order, file_name, image_data, image_url, is_main, rotation) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+02:59:31.849 [http-nio-8080-exec-1] INFO  r.a.autorent.config.DataInitializer - Изображение сохранено в БД с ID: 11, размер: 326297 байт
+02:59:32.141 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        car_images
+        (car_id, content_type, description, display_order, file_name, image_data, image_url, is_main, rotation) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+02:59:32.463 [http-nio-8080-exec-1] INFO  r.a.autorent.config.DataInitializer - Изображение сохранено в БД с ID: 12, размер: 306166 байт
+02:59:32.743 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        car_images
+        (car_id, content_type, description, display_order, file_name, image_data, image_url, is_main, rotation) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+02:59:32.946 [http-nio-8080-exec-1] INFO  r.a.autorent.config.DataInitializer - Изображение сохранено в БД с ID: 13, размер: 287300 байт
+02:59:33.226 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        car_images
+        (car_id, content_type, description, display_order, file_name, image_data, image_url, is_main, rotation) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+02:59:33.442 [http-nio-8080-exec-1] INFO  r.a.autorent.config.DataInitializer - Изображение сохранено в БД с ID: 14, размер: 284740 байт
+02:59:33.728 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        car_images
+        (car_id, content_type, description, display_order, file_name, image_data, image_url, is_main, rotation) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+02:59:33.873 [http-nio-8080-exec-1] INFO  r.a.autorent.config.DataInitializer - Изображение сохранено в БД с ID: 15, размер: 229222 байт
+02:59:34.148 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:34.235 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+02:59:34.994 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        content_type=?,
+        description=?,
+        display_order=?,
+        file_name=?,
+        image_data=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+02:59:35.182 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        content_type=?,
+        description=?,
+        display_order=?,
+        file_name=?,
+        image_data=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+02:59:35.345 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        content_type=?,
+        description=?,
+        display_order=?,
+        file_name=?,
+        image_data=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+02:59:35.511 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        content_type=?,
+        description=?,
+        display_order=?,
+        file_name=?,
+        image_data=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+02:59:35.677 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        content_type=?,
+        description=?,
+        display_order=?,
+        file_name=?,
+        image_data=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+02:59:36.333 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /cars/11?success=%D0%90%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D1%8C+%D1%83%D1%81%D0%BF%D0%B5%D1%88%D0%BD%D0%BE+%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD
+02:59:36.358 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /cars/11?success=%D0%90%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D1%8C+%D1%83%D1%81%D0%BF%D0%B5%D1%88%D0%BD%D0%BE+%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD
+02:59:36.542 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:36.891 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+02:59:37.657 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:37.943 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:38.325 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+02:59:39.991 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:40.109 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status=? 
+    order by
+        r1_0.end_date
+02:59:40.197 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:40.304 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+02:59:40.441 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status=? 
+    order by
+        r1_0.end_date
+02:59:40.736 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:41.138 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+02:59:42.887 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:42.997 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status in (?, ?) 
+    order by
+        r1_0.start_date
+02:59:43.112 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+02:59:43.213 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+02:59:43.312 [http-nio-8080-exec-1] DEBUG r.a.a.controller.CarController - Loading car details for ID: 11
+02:59:43.315 [http-nio-8080-exec-1] DEBUG r.a.a.controller.CarController - Car images count: 10
+02:59:43.319 [http-nio-8080-exec-1] DEBUG r.a.a.controller.CarController - Image: id=6, url=/uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg, main=true
+02:59:43.319 [http-nio-8080-exec-1] DEBUG r.a.a.controller.CarController - Image: id=7, url=/uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg, main=false
+02:59:43.321 [http-nio-8080-exec-1] DEBUG r.a.a.controller.CarController - Image: id=8, url=/uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg, main=false
+02:59:43.321 [http-nio-8080-exec-1] DEBUG r.a.a.controller.CarController - Image: id=9, url=/uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg, main=false
+02:59:43.321 [http-nio-8080-exec-1] DEBUG r.a.a.controller.CarController - Image: id=10, url=/uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg, main=false
+02:59:43.321 [http-nio-8080-exec-1] DEBUG r.a.a.controller.CarController - Image: id=11, url=/images/car/1750809570975_photo_2025-05-19_21-50-48.jpg, main=false
+02:59:43.323 [http-nio-8080-exec-1] DEBUG r.a.a.controller.CarController - Image: id=12, url=/images/car/1750809572139_photo_2025-05-19_20-35-10.jpg, main=false
+02:59:43.323 [http-nio-8080-exec-1] DEBUG r.a.a.controller.CarController - Image: id=13, url=/images/car/1750809572743_photo_2025-05-19_21-50-34.jpg, main=false
+02:59:43.323 [http-nio-8080-exec-1] DEBUG r.a.a.controller.CarController - Image: id=14, url=/images/car/1750809573226_photo_2025-05-19_21-50-29.jpg, main=false
+02:59:43.325 [http-nio-8080-exec-1] DEBUG r.a.a.controller.CarController - Image: id=15, url=/images/car/1750809573728_photo_2025-05-19_21-50-19.jpg, main=false
+02:59:44.634 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:44.794 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/7
+02:59:44.794 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/6
+02:59:44.801 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/7
+02:59:44.803 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/6
+02:59:44.805 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+02:59:44.805 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+02:59:44.811 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+02:59:44.811 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+02:59:44.882 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:44.882 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:44.902 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/9
+02:59:44.902 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/8
+02:59:44.902 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/10
+02:59:44.912 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/8
+02:59:44.914 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/9
+02:59:44.916 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/10
+02:59:45.059 [http-nio-8080-exec-5] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+02:59:45.059 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+02:59:45.161 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/11
+02:59:45.176 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+02:59:45.180 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/11
+02:59:45.188 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+02:59:45.188 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+02:59:45.448 [http-nio-8080-exec-9] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+02:59:45.448 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:45.455 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:45.469 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/12
+02:59:45.471 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/13
+02:59:45.480 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/12
+02:59:45.482 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/13
+02:59:45.523 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:45.536 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/14
+02:59:45.536 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/14
+02:59:45.546 [http-nio-8080-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:45.561 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:45.563 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/15
+02:59:45.563 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/15
+02:59:45.657 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+02:59:45.657 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+02:59:45.707 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+02:59:45.747 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+02:59:46.212 [http-nio-8080-exec-9] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:46.401 [http-nio-8080-exec-10] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:46.414 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:46.464 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+02:59:46.495 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:00.010 [scheduling-1] INFO  r.a.autorent.config.ScheduledTasks - Запуск синхронизации статусов автомобилей
+03:00:00.187 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+        and r1_0.end_date<?
+03:00:00.291 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=? 
+        and r1_0.start_date between ? and ?
+03:00:00.377 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0
+03:00:00.473 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status in (?, ?)
+03:00:00.568 [scheduling-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+03:00:00.825 [scheduling-1] INFO  r.a.autorent.config.ScheduledTasks - Синхронизация статусов автомобилей завершена успешно
+03:00:02.850 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /admin/dashboard
+03:00:02.850 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:02.850 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /admin/dashboard
+03:00:02.850 [http-nio-8080-exec-3] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public java.lang.String ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.ui.Model); target is of class [ru.anapa.autorent.controller.AdminController]
+03:00:02.850 [http-nio-8080-exec-3] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public java.lang.String ru.anapa.autorent.controller.AdminController.adminDashboard(org.springframework.ui.Model); target is of class [ru.anapa.autorent.controller.AdminController]
+03:00:03.135 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        users u1_0
+03:00:03.671 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        cars c1_0
+03:00:04.036 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        count(c1_0.id) 
+    from
+        cars c1_0 
+    where
+        c1_0.status=?
+03:00:04.134 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        count(r1_0.id) 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+03:00:04.226 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        count(r1_0.id) 
+    from
+        rentals r1_0 
+    where
+        r1_0.status=?
+03:00:04.486 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0
+03:00:04.585 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:00:04.667 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+03:00:05.055 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    order by
+        r1_0.created_at desc 
+    limit
+        ?
+03:00:05.142 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:00:05.242 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+03:00:05.356 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.status=?
+03:00:05.621 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+03:00:05.621 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+03:00:05.626 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+03:00:05.628 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+03:00:05.641 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:05.641 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:08.782 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /admin/cars
+03:00:08.782 [http-nio-8080-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:08.782 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /admin/cars
+03:00:08.782 [http-nio-8080-exec-7] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+03:00:08.796 [http-nio-8080-exec-7] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.AdminController.adminCars(); target is of class [ru.anapa.autorent.controller.AdminController]
+03:00:09.062 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    limit
+        ?, ?
+03:00:09.191 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id in (?) 
+    order by
+        ci1_0.display_order
+03:00:10.424 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+03:00:10.424 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+03:00:10.422 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg
+03:00:10.426 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+03:00:10.426 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+03:00:10.426 [http-nio-8080-exec-10] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:10.454 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg
+03:00:10.462 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:10.462 [http-nio-8080-exec-9] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:10.470 [http-nio-8080-exec-10] ERROR r.a.a.config.GlobalExceptionHandler - Unexpected error occurred
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.ObservationFilterChainDecorator$FilterObservation$SimpleFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:479)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:340)
+	at org.springframework.security.web.ObservationFilterChainDecorator.lambda$wrapSecured$0(ObservationFilterChainDecorator.java:82)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:128)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:151)
+	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:129)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at ru.anapa.autorent.config.JwtRequestFilter.doFilterInternal(JwtRequestFilter.java:49)
+	at jdk.internal.reflect.GeneratedMethodAccessor50.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:351)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:713)
+	at ru.anapa.autorent.config.JwtRequestFilter$$SpringCGLIB$$0.doFilterInternal(<generated>)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:117)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+03:00:13.621 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /cars/11/edit
+03:00:13.621 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:13.621 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /cars/11/edit
+03:00:13.631 [http-nio-8080-exec-2] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.showEditCarForm(java.lang.Long); target is of class [ru.anapa.autorent.controller.CarController]
+03:00:13.631 [http-nio-8080-exec-2] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.showEditCarForm(java.lang.Long); target is of class [ru.anapa.autorent.controller.CarController]
+03:00:13.894 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:00:14.254 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+03:00:14.941 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:00:15.041 [http-nio-8080-exec-2] DEBUG r.a.a.controller.CarController - Car ID: 11
+03:00:15.041 [http-nio-8080-exec-2] DEBUG r.a.a.controller.CarController - Car DTO: CarDto(id=11, brand=Лада, model=Гранта, year=2023, licensePlate=Р699ТН193, dailyRate=1500.00, newImages=null, existingImages=[CarImageDto(id=6, imageUrl=/uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg, description=null, displayOrder=0, main=true, rotation=0), CarImageDto(id=7, imageUrl=/uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg, description=null, displayOrder=1, main=false, rotation=0), CarImageDto(id=8, imageUrl=/uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg, description=null, displayOrder=2, main=false, rotation=0), CarImageDto(id=9, imageUrl=/uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg, description=null, displayOrder=3, main=false, rotation=0), CarImageDto(id=10, imageUrl=/uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg, description=null, displayOrder=4, main=false, rotation=180), CarImageDto(id=11, imageUrl=/images/car/1750809570975_photo_2025-05-19_21-50-48.jpg, description=, displayOrder=5, main=false, rotation=0), CarImageDto(id=12, imageUrl=/images/car/1750809572139_photo_2025-05-19_20-35-10.jpg, description=, displayOrder=6, main=false, rotation=0), CarImageDto(id=13, imageUrl=/images/car/1750809572743_photo_2025-05-19_21-50-34.jpg, description=, displayOrder=7, main=false, rotation=0), CarImageDto(id=14, imageUrl=/images/car/1750809573226_photo_2025-05-19_21-50-29.jpg, description=, displayOrder=8, main=false, rotation=0), CarImageDto(id=15, imageUrl=/images/car/1750809573728_photo_2025-05-19_21-50-19.jpg, description=, displayOrder=9, main=false, rotation=0)], description=, available=false, transmission=MANUAL, fuelType=PETROL, seats=5, color=Белый, category=COMFORT, schedule=7/0)
+03:00:15.082 [http-nio-8080-exec-2] DEBUG r.a.a.controller.CarController - Existing images: [CarImageDto(id=6, imageUrl=/uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg, description=null, displayOrder=0, main=true, rotation=0), CarImageDto(id=7, imageUrl=/uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg, description=null, displayOrder=1, main=false, rotation=0), CarImageDto(id=8, imageUrl=/uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg, description=null, displayOrder=2, main=false, rotation=0), CarImageDto(id=9, imageUrl=/uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg, description=null, displayOrder=3, main=false, rotation=0), CarImageDto(id=10, imageUrl=/uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg, description=null, displayOrder=4, main=false, rotation=180), CarImageDto(id=11, imageUrl=/images/car/1750809570975_photo_2025-05-19_21-50-48.jpg, description=, displayOrder=5, main=false, rotation=0), CarImageDto(id=12, imageUrl=/images/car/1750809572139_photo_2025-05-19_20-35-10.jpg, description=, displayOrder=6, main=false, rotation=0), CarImageDto(id=13, imageUrl=/images/car/1750809572743_photo_2025-05-19_21-50-34.jpg, description=, displayOrder=7, main=false, rotation=0), CarImageDto(id=14, imageUrl=/images/car/1750809573226_photo_2025-05-19_21-50-29.jpg, description=, displayOrder=8, main=false, rotation=0), CarImageDto(id=15, imageUrl=/images/car/1750809573728_photo_2025-05-19_21-50-19.jpg, description=, displayOrder=9, main=false, rotation=0)]
+03:00:15.313 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+03:00:15.313 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+03:00:15.317 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+03:00:15.317 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+03:00:15.327 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:15.327 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/6
+03:00:15.327 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:15.327 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/7
+03:00:15.334 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/6
+03:00:15.336 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/7
+03:00:15.342 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/10
+03:00:15.342 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/8
+03:00:15.342 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/9
+03:00:15.345 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/9
+03:00:15.345 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/10
+03:00:15.345 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/8
+03:00:15.381 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/11
+03:00:15.393 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/11
+03:00:15.519 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:00:15.592 [http-nio-8080-exec-5] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:00:15.592 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:00:15.592 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:00:15.612 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:00:15.658 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:00:15.868 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:15.887 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/12
+03:00:15.887 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/12
+03:00:15.938 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:15.938 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:15.949 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/14
+03:00:15.949 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/13
+03:00:15.955 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/13
+03:00:15.955 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/14
+03:00:15.961 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:15.966 [http-nio-8080-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:15.966 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/15
+03:00:15.966 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/15
+03:00:16.067 [http-nio-8080-exec-9] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:00:16.127 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:00:16.127 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:00:16.152 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:00:16.389 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:16.630 [http-nio-8080-exec-9] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:16.843 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:16.847 [http-nio-8080-exec-10] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:16.876 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:49.409 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing POST /cars/images/15/rotate?direction=right
+03:00:49.424 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:49.424 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured POST /cars/images/15/rotate?direction=right
+03:00:49.441 [http-nio-8080-exec-3] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public java.util.Map ru.anapa.autorent.controller.CarController.rotateCarImage(java.lang.Long,java.lang.String); target is of class [ru.anapa.autorent.controller.CarController]
+03:00:49.441 [http-nio-8080-exec-3] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public java.util.Map ru.anapa.autorent.controller.CarController.rotateCarImage(java.lang.Long,java.lang.String); target is of class [ru.anapa.autorent.controller.CarController]
+03:00:49.630 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:00:50.090 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        content_type=?,
+        description=?,
+        display_order=?,
+        file_name=?,
+        image_data=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+03:00:52.060 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing POST /cars/images/15/rotate?direction=right
+03:00:52.062 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:52.064 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured POST /cars/images/15/rotate?direction=right
+03:00:52.064 [http-nio-8080-exec-5] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public java.util.Map ru.anapa.autorent.controller.CarController.rotateCarImage(java.lang.Long,java.lang.String); target is of class [ru.anapa.autorent.controller.CarController]
+03:00:52.064 [http-nio-8080-exec-5] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public java.util.Map ru.anapa.autorent.controller.CarController.rotateCarImage(java.lang.Long,java.lang.String); target is of class [ru.anapa.autorent.controller.CarController]
+03:00:52.237 [http-nio-8080-exec-5] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:00:52.672 [http-nio-8080-exec-5] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        content_type=?,
+        description=?,
+        display_order=?,
+        file_name=?,
+        image_data=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+03:00:57.662 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing POST /cars/11/edit
+03:00:57.766 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:00:57.766 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured POST /cars/11/edit
+03:00:57.775 [http-nio-8080-exec-4] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.updateCar(java.lang.Long,ru.anapa.autorent.dto.CarDto,java.lang.Long,java.util.Map,org.springframework.validation.BindingResult); target is of class [ru.anapa.autorent.controller.CarController]
+03:00:57.783 [http-nio-8080-exec-4] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.updateCar(java.lang.Long,ru.anapa.autorent.dto.CarDto,java.lang.Long,java.util.Map,org.springframework.validation.BindingResult); target is of class [ru.anapa.autorent.controller.CarController]
+03:00:58.030 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:00:58.384 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+03:00:59.040 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:00:59.217 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:00:59.302 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+03:01:01.362 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        content_type=?,
+        description=?,
+        display_order=?,
+        file_name=?,
+        image_data=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+03:01:01.451 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    update
+        car_images 
+    set
+        car_id=?,
+        content_type=?,
+        description=?,
+        display_order=?,
+        file_name=?,
+        image_data=?,
+        image_url=?,
+        is_main=?,
+        rotation=? 
+    where
+        id=?
+03:01:02.230 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /cars/11?success=%D0%90%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D1%8C+%D1%83%D1%81%D0%BF%D0%B5%D1%88%D0%BD%D0%BE+%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD
+03:01:02.247 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /cars/11?success=%D0%90%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D1%8C+%D1%83%D1%81%D0%BF%D0%B5%D1%88%D0%BD%D0%BE+%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD
+03:01:02.423 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:01:02.765 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+03:01:03.125 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:01:03.419 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:01:03.796 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+03:01:05.379 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:01:05.480 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.actual_return_date,
+        r1_0.cancel_reason,
+        r1_0.car_id,
+        r1_0.comment,
+        r1_0.created_at,
+        r1_0.end_date,
+        r1_0.notes,
+        r1_0.rating,
+        r1_0.item_id,
+        r1_0.start_date,
+        r1_0.status,
+        r1_0.total_cost,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        rentals r1_0 
+    where
+        r1_0.car_id=? 
+        and r1_0.status in (?, ?) 
+    order by
+        r1_0.start_date
+03:01:05.588 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:01:05.683 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.allow_negative_balance,
+        a1_0.balance,
+        a1_0.credit_limit,
+        a1_0.initial_balance,
+        a1_0.max_rental_amount,
+        a1_0.max_rental_duration,
+        a1_0.user_id,
+        u1_0.email,
+        u1_0.enabled,
+        u1_0.first_name,
+        u1_0.last_login_date,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.registration_date,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users u1_0 
+    left join
+        accounts a1_0 
+            on u1_0.id=a1_0.user_id 
+    left join
+        user_roles r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+03:01:05.780 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Loading car details for ID: 11
+03:01:05.780 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Car images count: 10
+03:01:05.780 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Image: id=6, url=/uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg, main=false
+03:01:05.780 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Image: id=7, url=/uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg, main=false
+03:01:05.780 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Image: id=8, url=/uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg, main=false
+03:01:05.780 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Image: id=9, url=/uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg, main=false
+03:01:05.780 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Image: id=10, url=/uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg, main=false
+03:01:05.780 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Image: id=11, url=/images/car/1750809570975_photo_2025-05-19_21-50-48.jpg, main=true
+03:01:05.780 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Image: id=12, url=/images/car/1750809572139_photo_2025-05-19_20-35-10.jpg, main=false
+03:01:05.780 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Image: id=13, url=/images/car/1750809572743_photo_2025-05-19_21-50-34.jpg, main=false
+03:01:05.780 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Image: id=14, url=/images/car/1750809573226_photo_2025-05-19_21-50-29.jpg, main=false
+03:01:05.780 [http-nio-8080-exec-4] DEBUG r.a.a.controller.CarController - Image: id=15, url=/images/car/1750809573728_photo_2025-05-19_21-50-19.jpg, main=false
+03:01:05.780 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:05.846 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/6
+03:01:05.846 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/7
+03:01:05.846 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+03:01:05.846 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+03:01:05.851 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/6
+03:01:05.851 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/7
+03:01:05.851 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+03:01:05.851 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+03:01:05.867 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:05.867 [http-nio-8080-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:05.891 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/11
+03:01:05.891 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/9
+03:01:05.891 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/10
+03:01:05.891 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/8
+03:01:05.891 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/10
+03:01:05.891 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/11
+03:01:05.898 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/8
+03:01:05.898 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/9
+03:01:06.072 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:06.121 [http-nio-8080-exec-9] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:06.121 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:06.162 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:06.162 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:06.178 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:06.420 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:06.435 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/12
+03:01:06.435 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/12
+03:01:06.478 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:06.478 [http-nio-8080-exec-9] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:06.478 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/13
+03:01:06.478 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/14
+03:01:06.478 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/14
+03:01:06.478 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/13
+03:01:06.528 [http-nio-8080-exec-10] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:06.545 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/15
+03:01:06.545 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/15
+03:01:06.549 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:06.624 [http-nio-8080-exec-5] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:06.675 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:06.675 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:06.733 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:06.886 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:07.433 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:07.433 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:07.476 [http-nio-8080-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:07.487 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:22.962 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /cars/11/edit
+03:01:22.968 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:22.968 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /cars/11/edit
+03:01:22.968 [http-nio-8080-exec-6] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.showEditCarForm(java.lang.Long); target is of class [ru.anapa.autorent.controller.CarController]
+03:01:22.968 [http-nio-8080-exec-6] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.showEditCarForm(java.lang.Long); target is of class [ru.anapa.autorent.controller.CarController]
+03:01:23.219 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:01:23.588 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+03:01:24.321 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:01:24.409 [http-nio-8080-exec-6] DEBUG r.a.a.controller.CarController - Car ID: 11
+03:01:24.409 [http-nio-8080-exec-6] DEBUG r.a.a.controller.CarController - Car DTO: CarDto(id=11, brand=Лада, model=Гранта, year=2023, licensePlate=Р699ТН193, dailyRate=1500.00, newImages=null, existingImages=[CarImageDto(id=6, imageUrl=/uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg, description=null, displayOrder=0, main=false, rotation=0), CarImageDto(id=7, imageUrl=/uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg, description=null, displayOrder=1, main=false, rotation=0), CarImageDto(id=8, imageUrl=/uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg, description=null, displayOrder=2, main=false, rotation=0), CarImageDto(id=9, imageUrl=/uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg, description=null, displayOrder=3, main=false, rotation=0), CarImageDto(id=10, imageUrl=/uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg, description=null, displayOrder=4, main=false, rotation=180), CarImageDto(id=11, imageUrl=/images/car/1750809570975_photo_2025-05-19_21-50-48.jpg, description=, displayOrder=5, main=true, rotation=0), CarImageDto(id=12, imageUrl=/images/car/1750809572139_photo_2025-05-19_20-35-10.jpg, description=, displayOrder=6, main=false, rotation=0), CarImageDto(id=13, imageUrl=/images/car/1750809572743_photo_2025-05-19_21-50-34.jpg, description=, displayOrder=7, main=false, rotation=0), CarImageDto(id=14, imageUrl=/images/car/1750809573226_photo_2025-05-19_21-50-29.jpg, description=, displayOrder=8, main=false, rotation=0), CarImageDto(id=15, imageUrl=/images/car/1750809573728_photo_2025-05-19_21-50-19.jpg, description=, displayOrder=9, main=false, rotation=180)], description=, available=false, transmission=MANUAL, fuelType=PETROL, seats=5, color=Белый, category=COMFORT, schedule=7/0)
+03:01:24.409 [http-nio-8080-exec-6] DEBUG r.a.a.controller.CarController - Existing images: [CarImageDto(id=6, imageUrl=/uploads/cars/17a8cad6-b69f-41d2-9798-c453e071f9d7_photo_2025-05-19_21-50-48.jpg, description=null, displayOrder=0, main=false, rotation=0), CarImageDto(id=7, imageUrl=/uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg, description=null, displayOrder=1, main=false, rotation=0), CarImageDto(id=8, imageUrl=/uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg, description=null, displayOrder=2, main=false, rotation=0), CarImageDto(id=9, imageUrl=/uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg, description=null, displayOrder=3, main=false, rotation=0), CarImageDto(id=10, imageUrl=/uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg, description=null, displayOrder=4, main=false, rotation=180), CarImageDto(id=11, imageUrl=/images/car/1750809570975_photo_2025-05-19_21-50-48.jpg, description=, displayOrder=5, main=true, rotation=0), CarImageDto(id=12, imageUrl=/images/car/1750809572139_photo_2025-05-19_20-35-10.jpg, description=, displayOrder=6, main=false, rotation=0), CarImageDto(id=13, imageUrl=/images/car/1750809572743_photo_2025-05-19_21-50-34.jpg, description=, displayOrder=7, main=false, rotation=0), CarImageDto(id=14, imageUrl=/images/car/1750809573226_photo_2025-05-19_21-50-29.jpg, description=, displayOrder=8, main=false, rotation=0), CarImageDto(id=15, imageUrl=/images/car/1750809573728_photo_2025-05-19_21-50-19.jpg, description=, displayOrder=9, main=false, rotation=180)]
+03:01:24.465 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+03:01:24.466 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+03:01:24.469 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+03:01:24.469 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+03:01:24.476 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:24.479 [http-nio-8080-exec-9] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:24.492 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/7
+03:01:24.492 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/6
+03:01:24.496 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/6
+03:01:24.496 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/7
+03:01:24.500 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/9
+03:01:24.501 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/10
+03:01:24.503 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/8
+03:01:24.504 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/9
+03:01:24.504 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/10
+03:01:24.505 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/8
+03:01:24.761 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:24.761 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:24.761 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:24.761 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:24.761 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:01:25.109 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:25.114 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:25.114 [http-nio-8080-exec-10] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:25.119 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:01:25.119 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:02:47.402 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /cars/11/edit
+03:02:47.402 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:02:47.402 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /cars/11/edit
+03:02:47.402 [http-nio-8080-exec-2] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.showEditCarForm(java.lang.Long); target is of class [ru.anapa.autorent.controller.CarController]
+03:02:47.419 [http-nio-8080-exec-2] DEBUG o.s.s.a.m.AuthorizationManagerBeforeMethodInterceptor - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.web.servlet.ModelAndView ru.anapa.autorent.controller.CarController.showEditCarForm(java.lang.Long); target is of class [ru.anapa.autorent.controller.CarController]
+03:02:47.672 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:02:48.040 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        ci1_0.car_id,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        c1_0.id=? 
+    order by
+        ci1_0.display_order
+03:02:49.654 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+03:02:49.748 [http-nio-8080-exec-2] DEBUG r.a.a.controller.CarController - Car ID: 11
+03:02:49.748 [http-nio-8080-exec-2] DEBUG r.a.a.controller.CarController - Car DTO: CarDto(id=11, brand=Лада, model=Гранта, year=2023, licensePlate=Р699ТН193, dailyRate=1500.00, newImages=null, existingImages=[CarImageDto(id=7, imageUrl=/uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg, description=null, displayOrder=1, main=false, rotation=0), CarImageDto(id=8, imageUrl=/uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg, description=null, displayOrder=2, main=false, rotation=0), CarImageDto(id=9, imageUrl=/uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg, description=null, displayOrder=3, main=false, rotation=0), CarImageDto(id=10, imageUrl=/uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg, description=null, displayOrder=4, main=false, rotation=180), CarImageDto(id=11, imageUrl=/images/car/1750809570975_photo_2025-05-19_21-50-48.jpg, description=, displayOrder=5, main=true, rotation=0), CarImageDto(id=12, imageUrl=/images/car/1750809572139_photo_2025-05-19_20-35-10.jpg, description=, displayOrder=6, main=false, rotation=0), CarImageDto(id=13, imageUrl=/images/car/1750809572743_photo_2025-05-19_21-50-34.jpg, description=, displayOrder=7, main=false, rotation=0), CarImageDto(id=14, imageUrl=/images/car/1750809573226_photo_2025-05-19_21-50-29.jpg, description=, displayOrder=8, main=false, rotation=0), CarImageDto(id=15, imageUrl=/images/car/1750809573728_photo_2025-05-19_21-50-19.jpg, description=, displayOrder=9, main=false, rotation=180)], description=, available=false, transmission=MANUAL, fuelType=PETROL, seats=5, color=Белый, category=COMFORT, schedule=7/0)
+03:02:49.748 [http-nio-8080-exec-2] DEBUG r.a.a.controller.CarController - Existing images: [CarImageDto(id=7, imageUrl=/uploads/cars/1d735a54-44c2-41ca-a4ca-fd389b508757_photo_2025-05-19_20-35-10.jpg, description=null, displayOrder=1, main=false, rotation=0), CarImageDto(id=8, imageUrl=/uploads/cars/44b07f79-55e1-4796-bd5a-86756f285e6d_photo_2025-05-19_21-50-34.jpg, description=null, displayOrder=2, main=false, rotation=0), CarImageDto(id=9, imageUrl=/uploads/cars/b760c6cb-4e65-4dae-9f23-fbc1453ea530_photo_2025-05-19_21-50-29.jpg, description=null, displayOrder=3, main=false, rotation=0), CarImageDto(id=10, imageUrl=/uploads/cars/5b0fee82-e47b-49ca-aba0-7a77a4492638_photo_2025-05-19_21-50-19.jpg, description=null, displayOrder=4, main=false, rotation=180), CarImageDto(id=11, imageUrl=/images/car/1750809570975_photo_2025-05-19_21-50-48.jpg, description=, displayOrder=5, main=true, rotation=0), CarImageDto(id=12, imageUrl=/images/car/1750809572139_photo_2025-05-19_20-35-10.jpg, description=, displayOrder=6, main=false, rotation=0), CarImageDto(id=13, imageUrl=/images/car/1750809572743_photo_2025-05-19_21-50-34.jpg, description=, displayOrder=7, main=false, rotation=0), CarImageDto(id=14, imageUrl=/images/car/1750809573226_photo_2025-05-19_21-50-29.jpg, description=, displayOrder=8, main=false, rotation=0), CarImageDto(id=15, imageUrl=/images/car/1750809573728_photo_2025-05-19_21-50-19.jpg, description=, displayOrder=9, main=false, rotation=180)]
+03:02:49.823 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /css/main.css
+03:02:49.823 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/8
+03:02:49.823 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/7
+03:02:49.823 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/main.js
+03:02:49.823 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /css/main.css
+03:02:49.823 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/7
+03:02:49.823 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/main.js
+03:02:49.823 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/8
+03:02:49.837 [http-nio-8080-exec-9] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:02:49.837 [http-nio-8080-exec-10] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:02:49.856 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/10
+03:02:49.856 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/9
+03:02:49.856 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/11
+03:02:49.856 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/12
+03:02:49.867 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/12
+03:02:49.867 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/11
+03:02:49.867 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/10
+03:02:49.869 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/9
+03:02:50.049 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:02:50.094 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:02:50.094 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:02:50.125 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:02:50.125 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:02:50.125 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:02:50.392 [http-nio-8080-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:02:50.412 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/13
+03:02:50.420 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/13
+03:02:50.447 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:02:50.447 [http-nio-8080-exec-1] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:02:50.462 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/14
+03:02:50.462 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /images/car/15
+03:02:50.462 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/14
+03:02:50.462 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /images/car/15
+03:02:50.462 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:02:50.600 [http-nio-8080-exec-5] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:02:50.642 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:02:50.642 [http-nio-8080-exec-9] DEBUG org.hibernate.SQL - 
+    select
+        ci1_0.id,
+        c1_0.id,
+        c1_0.available,
+        c1_0.brand,
+        c1_0.category,
+        c1_0.color,
+        c1_0.daily_rate,
+        c1_0.description,
+        c1_0.fuel_type,
+        c1_0.license_plate,
+        c1_0.model,
+        c1_0.price_per_day,
+        c1_0.registration_number,
+        c1_0.schedule,
+        c1_0.seats,
+        c1_0.status,
+        c1_0.transmission,
+        c1_0.year,
+        ci1_0.content_type,
+        ci1_0.description,
+        ci1_0.display_order,
+        ci1_0.file_name,
+        ci1_0.image_data,
+        ci1_0.image_url,
+        ci1_0.is_main,
+        ci1_0.rotation 
+    from
+        car_images ci1_0 
+    left join
+        cars c1_0 
+            on c1_0.id=ci1_0.car_id 
+    where
+        ci1_0.id=?
+03:02:50.831 [http-nio-8080-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:02:50.862 [http-nio-8080-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:02:51.156 [http-nio-8080-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:02:51.390 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
+03:02:51.418 [http-nio-8080-exec-9] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin@example.com, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ADMIN]]]
