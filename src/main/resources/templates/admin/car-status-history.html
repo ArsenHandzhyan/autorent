@@ -4,62 +4,67 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
-<main class="container py-5">
-    <div class="page-header">
-        <h1>История статусов автомобиля</h1>
-        <div class="d-flex gap-2">
-            <a th:href="@{/admin/dashboard}" class="btn btn-outline-primary">
-                <i class="fas fa-arrow-left"></i> Вернуться в админ-панель
-            </a>
-            <a th:href="@{/admin/cars}" class="btn btn-outline-secondary">
-                <i class="fas fa-list"></i> Назад к списку автомобилей
-            </a>
-        </div>
-    </div>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="page-header">
+                <h1>История статусов автомобиля</h1>
+                <div class="d-flex gap-2">
+                    <a th:href="@{/admin/dashboard}" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left"></i> Вернуться в админ-панель
+                    </a>
+                    <a th:href="@{/admin/cars}" class="btn btn-outline-secondary">
+                        <i class="fas fa-list"></i> Назад к списку автомобилей
+                    </a>
+                </div>
+            </div>
 
-    <div class="car-info mb-4">
-        <h2 th:text="${car.brand + ' ' + car.model + ' (' + car.licensePlate + ')'}">Toyota Camry (А123БВ777)</h2>
-    </div>
+            <div class="car-info mb-4">
+                <h2 th:text="${car.brand + ' ' + car.model + ' (' + car.licensePlate + ')'}">Toyota Camry (А123БВ777)</h2>
+            </div>
 
-    <div class="table-responsive">
-        <table class="data-table">
-            <thead>
-            <tr>
-                <th>Дата изменения</th>
-                <th>Предыдущий статус</th>
-                <th>Новый статус</th>
-                <th>Изменил</th>
-                <th>Причина</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="record : ${history}">
-                <td th:text="${#temporals.format(record.changeDate, 'dd.MM.yyyy HH:mm')}">01.01.2024 12:00</td>
-                <td>
-                    <span class="status-badge" th:classappend="${'status-' + record.oldStatus.name().toLowerCase()}"
-                          th:text="${record.oldStatus == T(ru.anapa.autorent.model.CarStatus).AVAILABLE ? 'Доступен' : 
-                                  record.oldStatus == T(ru.anapa.autorent.model.CarStatus).RENTED ? 'Арендован' :
-                                  record.oldStatus == T(ru.anapa.autorent.model.CarStatus).MAINTENANCE ? 'На обслуживании' :
-                                  record.oldStatus == T(ru.anapa.autorent.model.CarStatus).RESERVED ? 'Забронирован' :
-                                  record.oldStatus == T(ru.anapa.autorent.model.CarStatus).PENDING ? 'Ожидает подтверждения' :
-                                  record.oldStatus.name()}">AVAILABLE</span>
-                </td>
-                <td>
-                    <span class="status-badge" th:classappend="${'status-' + record.newStatus.name().toLowerCase()}"
-                          th:text="${record.newStatus == T(ru.anapa.autorent.model.CarStatus).AVAILABLE ? 'Доступен' : 
-                                  record.newStatus == T(ru.anapa.autorent.model.CarStatus).RENTED ? 'Арендован' :
-                                  record.newStatus == T(ru.anapa.autorent.model.CarStatus).MAINTENANCE ? 'На обслуживании' :
-                                  record.newStatus == T(ru.anapa.autorent.model.CarStatus).RESERVED ? 'Забронирован' :
-                                  record.newStatus == T(ru.anapa.autorent.model.CarStatus).PENDING ? 'Ожидает подтверждения' :
-                                  record.newStatus.name()}">RENTED</span>
-                </td>
-                <td th:text="${record.changedBy}">admin</td>
-                <td th:text="${record.reason ?: '-'}">-</td>
-            </tr>
-            </tbody>
-        </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>Дата изменения</th>
+                        <th>Предыдущий статус</th>
+                        <th>Новый статус</th>
+                        <th>Изменил</th>
+                        <th>Причина</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="record : ${history}">
+                        <td th:text="${#temporals.format(record.changeDate, 'dd.MM.yyyy HH:mm')}">01.01.2024 12:00</td>
+                        <td>
+                            <span class="status-badge" th:classappend="${'status-' + record.oldStatus.name().toLowerCase()}"
+                                  th:text="${record.oldStatus == T(ru.anapa.autorent.model.CarStatus).AVAILABLE ? 'Доступен' : 
+                                          record.oldStatus == T(ru.anapa.autorent.model.CarStatus).RENTED ? 'Арендован' :
+                                          record.oldStatus == T(ru.anapa.autorent.model.CarStatus).MAINTENANCE ? 'На обслуживании' :
+                                          record.oldStatus == T(ru.anapa.autorent.model.CarStatus).RESERVED ? 'Забронирован' :
+                                          record.oldStatus == T(ru.anapa.autorent.model.CarStatus).PENDING ? 'Ожидает подтверждения' :
+                                          record.oldStatus.name()}">AVAILABLE</span>
+                        </td>
+                        <td>
+                            <span class="status-badge" th:classappend="${'status-' + record.newStatus.name().toLowerCase()}"
+                                  th:text="${record.newStatus == T(ru.anapa.autorent.model.CarStatus).AVAILABLE ? 'Доступен' : 
+                                          record.newStatus == T(ru.anapa.autorent.model.CarStatus).RENTED ? 'Арендован' :
+                                          record.newStatus == T(ru.anapa.autorent.model.CarStatus).MAINTENANCE ? 'На обслуживании' :
+                                          record.newStatus == T(ru.anapa.autorent.model.CarStatus).RESERVED ? 'Забронирован' :
+                                          record.newStatus == T(ru.anapa.autorent.model.CarStatus).PENDING ? 'Ожидает подтверждения' :
+                                          record.newStatus.name()}">RENTED</span>
+                        </td>
+                        <td th:text="${record.changedBy}">admin</td>
+                        <td th:text="${record.reason ?: '-'}">-</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
     </div>
-</main>
+</div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 

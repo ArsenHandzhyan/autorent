@@ -6,105 +6,110 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
-<main class="container py-5">
-    <div class="page-header">
-        <h1>Управление автомобилями</h1>
-        <div class="d-flex gap-2">
-            <a th:href="@{/admin/dashboard}" class="btn btn-outline-primary">
-                <i class="fas fa-arrow-left"></i> Назад к панели
-            </a>
-            <a th:href="@{/cars/add}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Добавить автомобиль
-            </a>
-        </div>
-    </div>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="page-header">
+                <h1>Управление автомобилями</h1>
+                <div class="d-flex gap-2">
+                    <a th:href="@{/admin/dashboard}" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left"></i> Назад к панели
+                    </a>
+                    <a th:href="@{/cars/add}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Добавить автомобиль
+                    </a>
+                </div>
+            </div>
 
-    <div class="table-responsive">
-        <table class="data-table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Фото</th>
-                <th>Автомобиль</th>
-                <th>Гос. номер</th>
-                <th>Цена/день</th>
-                <th>Статус</th>
-                <th>Действия</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="car : ${cars}">
-                <td th:text="${car.id}">1</td>
-                <td class="text-center">
-                    <img th:if="${car.images != null && !car.images.empty}"
-                         th:src="${car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].imageUrl : car.images[0].imageUrl}"
-                         class="car-thumb"
-                         alt="Фото автомобиля">
-                    <div th:unless="${car.images != null && !car.images.empty}"
-                         class="car-thumb d-flex align-items-center justify-content-center bg-light">
-                        <i class="fas fa-car"></i>
-                    </div>
-                </td>
-                <td>
-                    <div class="car-title">
-                        <span class="car-brand" th:text="${car.brand}"></span>
-                        <span class="car-model ms-1" th:text="${car.model}"></span>
-                    </div>
-                    <div class="car-year text-muted small" th:text="${car.year}"></div>
-                </td>
-                <td><span class="license-plate" th:text="${car.licensePlate}"></span></td>
-                <td><span class="car-price"><i class="fas fa-ruble-sign"></i> <span th:text="${car.dailyRate}"></span></span></td>
-                <td class="text-center">
-                    <span class="status-dot"
-                          th:classappend="${car.status.name().toLowerCase()}"></span>
-                    <select class="status-select"
-                            th:data-car-id="${car.id}"
-                            th:data-previous-status="${car.status.name()}"
-                            th:classappend="${'status-' + car.status.name().toLowerCase()}">
-                        <option th:each="st : ${T(ru.anapa.autorent.model.CarStatus).values()}"
-                                th:value="${st.name()}"
-                                th:text="${st.getDisplayName()}"
-                                th:selected="${st == car.status}"></option>
-                    </select>
-                </td>
-                <td>
-                    <div class="action-buttons d-flex gap-1 flex-wrap">
-                        <a th:href="@{/cars/{id}/status-history(id=${car.id})}" class="btn btn-info btn-sm" title="История статусов">
-                            <i class="fas fa-history"></i>
-                        </a>
-                        <button class="btn btn-warning btn-sm toggle-maintenance-btn maintenance-on"
-                                th:data-car-id="${car.id}"
-                                data-in-maintenance="true"
-                                th:classappend="${car.status == T(ru.anapa.autorent.model.CarStatus).MAINTENANCE ? 'd-none' : ''}"
-                                title="На обслуживание">
-                            <i class="fas fa-tools"></i>
-                        </button>
-                        <button class="btn btn-success btn-sm toggle-maintenance-btn maintenance-off"
-                                th:data-car-id="${car.id}"
-                                data-in-maintenance="false"
-                                th:classappend="${car.status != T(ru.anapa.autorent.model.CarStatus).MAINTENANCE ? 'd-none' : ''}"
-                                title="Снять с обслуживания">
-                            <i class="fas fa-check"></i>
-                        </button>
-                        <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-outline-primary btn-sm" title="Просмотр">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                        <a th:href="@{/cars/{id}/edit(id=${car.id})}" class="btn btn-outline-warning btn-sm" title="Редактировать">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <form th:action="@{/cars/{id}/delete(id=${car.id})}" method="post" class="d-inline delete-car-form">
-                            <button type="submit" class="btn btn-outline-danger btn-sm"
-                                    title="Удалить">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Фото</th>
+                        <th>Автомобиль</th>
+                        <th>Гос. номер</th>
+                        <th>Цена/день</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="car : ${cars}">
+                        <td th:text="${car.id}">1</td>
+                        <td class="text-center">
+                            <img th:if="${car.images != null && !car.images.empty}"
+                                 th:src="${car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].imageUrl : car.images[0].imageUrl}"
+                                 class="car-thumb"
+                                 alt="Фото автомобиля">
+                            <div th:unless="${car.images != null && !car.images.empty}"
+                                 class="car-thumb d-flex align-items-center justify-content-center bg-light">
+                                <i class="fas fa-car"></i>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="car-title">
+                                <span class="car-brand" th:text="${car.brand}"></span>
+                                <span class="car-model ms-1" th:text="${car.model}"></span>
+                            </div>
+                            <div class="car-year text-muted small" th:text="${car.year}"></div>
+                        </td>
+                        <td><span class="license-plate" th:text="${car.licensePlate}"></span></td>
+                        <td><span class="car-price"><i class="fas fa-ruble-sign"></i> <span th:text="${car.dailyRate}"></span></span></td>
+                        <td class="text-center">
+                            <span class="status-dot"
+                                  th:classappend="${car.status.name().toLowerCase()}"></span>
+                            <select class="status-select"
+                                    th:data-car-id="${car.id}"
+                                    th:data-previous-status="${car.status.name()}"
+                                    th:classappend="${'status-' + car.status.name().toLowerCase()}">
+                                <option th:each="st : ${T(ru.anapa.autorent.model.CarStatus).values()}"
+                                        th:value="${st.name()}"
+                                        th:text="${st.getDisplayName()}"
+                                        th:selected="${st == car.status}"></option>
+                            </select>
+                        </td>
+                        <td>
+                            <div class="action-buttons d-flex gap-1 flex-wrap">
+                                <a th:href="@{/cars/{id}/status-history(id=${car.id})}" class="btn btn-info btn-sm" title="История статусов">
+                                    <i class="fas fa-history"></i>
+                                </a>
+                                <button class="btn btn-warning btn-sm toggle-maintenance-btn maintenance-on"
+                                        th:data-car-id="${car.id}"
+                                        data-in-maintenance="true"
+                                        th:classappend="${car.status == T(ru.anapa.autorent.model.CarStatus).MAINTENANCE ? 'd-none' : ''}"
+                                        title="На обслуживание">
+                                    <i class="fas fa-tools"></i>
+                                </button>
+                                <button class="btn btn-success btn-sm toggle-maintenance-btn maintenance-off"
+                                        th:data-car-id="${car.id}"
+                                        data-in-maintenance="false"
+                                        th:classappend="${car.status != T(ru.anapa.autorent.model.CarStatus).MAINTENANCE ? 'd-none' : ''}"
+                                        title="Снять с обслуживания">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-outline-primary btn-sm" title="Просмотр">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a th:href="@{/cars/{id}/edit(id=${car.id})}" class="btn btn-outline-warning btn-sm" title="Редактировать">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form th:action="@{/cars/{id}/delete(id=${car.id})}" method="post" class="d-inline delete-car-form">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm"
+                                            title="Удалить">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
     </div>
-</main>
+</div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 

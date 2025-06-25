@@ -4,56 +4,63 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Запросы на отмену аренды</h1>
-        <a th:href="@{/admin/dashboard}" class="btn btn-outline-primary">
-            <i class="fas fa-arrow-left"></i> Вернуться в админ-панель
-        </a>
-    </div>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1>Запросы на отмену аренды</h1>
+                    <a th:href="@{/admin/dashboard}" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left"></i> Вернуться в админ-панель
+                    </a>
+                </div>
 
-    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+                <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <div th:if="${#lists.isEmpty(rentals)}" class="empty-state">
-        <p>Нет запросов на отмену аренды.</p>
-        <a th:href="@{/admin/dashboard}" class="btn btn-primary">Вернуться на панель управления</a>
-    </div>
+                <div th:if="${#lists.isEmpty(rentals)}" class="empty-state">
+                    <p>Нет запросов на отмену аренды.</p>
+                    <a th:href="@{/admin/dashboard}" class="btn btn-primary">Вернуться на панель управления</a>
+                </div>
 
-    <div th:unless="${#lists.isEmpty(rentals)}" class="rentals-list">
-        <div class="rental-card" th:each="rental : ${rentals}">
-            <div class="rental-header">
-                <h3 th:text="${rental.car.brand + ' ' + rental.car.model}">Автомобиль</h3>
-                <span class="status status-pending-cancellation">Запрос на отмену</span>
-            </div>
-
-            <div class="rental-details">
-                <p><strong>Клиент:</strong> <span th:text="${rental.user.firstName + ' ' + rental.user.lastName}">Иван Иванов</span></p>
-                <p><strong>Дата начала:</strong> <span th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2023</span></p>
-                <p><strong>Дата окончания:</strong> <span th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2023</span></p>
-                <p><strong>Стоимость:</strong> <span th:text="${rental.totalCost + ' ₽'}">10000 ₽</span></p>
-                <p><strong>Причина отмены:</strong> <span th:text="${rental.cancelReason ?: 'Не указана'}">Причина отмены</span></p>
-            </div>
-
-            <div class="rental-actions">
-                <form th:action="@{/admin/rentals/{id}/confirm-cancellation(id=${rental.id})}" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-success">Подтвердить отмену</button>
-                </form>
-
-                <button type="button" class="btn btn-danger reject-cancellation-btn"
-                        th:data-rental-id="${rental.id}">Отклонить</button>
-
-                <div th:id="'rejectForm-' + ${rental.id}" class="reject-form d-none mt-2">
-                    <form th:action="@{/admin/rentals/{id}/reject-cancellation(id=${rental.id})}" method="post">
-                        <div class="form-group">
-                            <label for="adminNotes">Причина отказа:</label>
-                            <textarea id="adminNotes" name="adminNotes" rows="3" class="form-control" required></textarea>
+                <div th:unless="${#lists.isEmpty(rentals)}" class="rentals-list">
+                    <div class="rental-card" th:each="rental : ${rentals}">
+                        <div class="rental-header">
+                            <h3 th:text="${rental.car.brand + ' ' + rental.car.model}">Автомобиль</h3>
+                            <span class="status status-pending-cancellation">Запрос на отмену</span>
                         </div>
-                        <button type="submit" class="btn btn-danger">Отклонить запрос</button>
-                    </form>
+
+                        <div class="rental-details">
+                            <p><strong>Клиент:</strong> <span th:text="${rental.user.firstName + ' ' + rental.user.lastName}">Иван Иванов</span></p>
+                            <p><strong>Дата начала:</strong> <span th:text="${#temporals.format(rental.startDate, 'dd.MM.yyyy')}">01.01.2023</span></p>
+                            <p><strong>Дата окончания:</strong> <span th:text="${#temporals.format(rental.endDate, 'dd.MM.yyyy')}">10.01.2023</span></p>
+                            <p><strong>Стоимость:</strong> <span th:text="${rental.totalCost + ' ₽'}">10000 ₽</span></p>
+                            <p><strong>Причина отмены:</strong> <span th:text="${rental.cancelReason ?: 'Не указана'}">Причина отмены</span></p>
+                        </div>
+
+                        <div class="rental-actions">
+                            <form th:action="@{/admin/rentals/{id}/confirm-cancellation(id=${rental.id})}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-success">Подтвердить отмену</button>
+                            </form>
+
+                            <button type="button" class="btn btn-danger reject-cancellation-btn"
+                                    th:data-rental-id="${rental.id}">Отклонить</button>
+
+                            <div th:id="'rejectForm-' + ${rental.id}" class="reject-form d-none mt-2">
+                                <form th:action="@{/admin/rentals/{id}/reject-cancellation(id=${rental.id})}" method="post">
+                                    <div class="form-group">
+                                        <label for="adminNotes">Причина отказа:</label>
+                                        <textarea id="adminNotes" name="adminNotes" rows="3" class="form-control" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger">Отклонить запрос</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 </div>
 

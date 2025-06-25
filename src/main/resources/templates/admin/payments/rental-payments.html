@@ -164,5 +164,65 @@
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+    <script>
+    function refreshPayments() {
+        window.location.reload();
+    }
+
+    function processPayment(paymentId) {
+        if (!confirm('Обработать этот платёж?')) return;
+        
+        const csrfHeader = document.getElementById('csrf').name;
+        const csrfToken = document.getElementById('csrf').value;
+        
+        fetch('/admin/payments/process/' + paymentId, {
+            method: 'POST',
+            headers: {
+                [csrfHeader]: csrfToken
+            }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                alert('Платёж успешно обработан');
+                window.location.reload();
+            } else {
+                alert('Ошибка: ' + (data.error || 'Неизвестная ошибка'));
+            }
+        })
+        .catch(() => {
+            alert('Ошибка соединения с сервером');
+        });
+    }
+
+    function retryPayment(paymentId) {
+        if (!confirm('Повторить обработку этого платежа?')) return;
+        
+        const csrfHeader = document.getElementById('csrf').name;
+        const csrfToken = document.getElementById('csrf').value;
+        
+        fetch('/admin/payments/process/' + paymentId, {
+            method: 'POST',
+            headers: {
+                [csrfHeader]: csrfToken
+            }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                alert('Платёж успешно обработан');
+                window.location.reload();
+            } else {
+                alert('Ошибка: ' + (data.error || 'Неизвестная ошибка'));
+            }
+        })
+        .catch(() => {
+            alert('Ошибка соединения с сервером');
+        });
+    }
+    </script>
 </body>
 </html> 

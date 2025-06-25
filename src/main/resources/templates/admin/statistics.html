@@ -4,166 +4,171 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
-<main class="container py-5">
-    <div class="section-header">
-        <h1>Статистика сервиса</h1>
-        <a th:href="@{/admin/dashboard}" class="btn btn-outline-primary">
-            <i class="fas fa-arrow-left"></i> Назад к панели
-        </a>
-    </div>
-
-    <!-- Общая статистика -->
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-3">
-            <div class="stat-card">
-                <div class="stat-label">
-                    <i class="fas fa-users"></i> Всего пользователей
-                </div>
-                <div class="stat-number" th:text="${userCount}">0</div>
-                <div class="trend-indicator trend-up">
-                    <i class="fas fa-arrow-up"></i> +5% за месяц
-                </div>
+        <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="section-header">
+                <h1>Статистика сервиса</h1>
+                <a th:href="@{/admin/dashboard}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left"></i> Назад к панели
+                </a>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stat-card">
-                <div class="stat-label">
-                    <i class="fas fa-car"></i> Всего автомобилей
-                </div>
-                <div class="stat-number" th:text="${carCount}">0</div>
-                <div class="trend-indicator trend-up">
-                    <i class="fas fa-arrow-up"></i> +2% за месяц
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stat-card">
-                <div class="stat-label">
-                    <i class="fas fa-wallet"></i> Всего счетов
-                </div>
-                <div class="stat-number" th:text="${accountsCount}">0</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stat-card">
-                <div class="stat-label">
-                    <i class="fas fa-coins"></i> Суммарный баланс счетов
-                </div>
-                <div class="stat-number" th:text="${totalAccountsBalance + ' ₽'}">0 ₽</div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Графики -->
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="stat-card">
-                <h3>Статистика аренд по месяцам</h3>
-                <div class="chart-container">
-                    <canvas id="rentalsChart"></canvas>
+            <!-- Общая статистика -->
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <i class="fas fa-users"></i> Всего пользователей
+                        </div>
+                        <div class="stat-number" th:text="${userCount}">0</div>
+                        <div class="trend-indicator trend-up">
+                            <i class="fas fa-arrow-up"></i> +5% за месяц
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <i class="fas fa-car"></i> Всего автомобилей
+                        </div>
+                        <div class="stat-number" th:text="${carCount}">0</div>
+                        <div class="trend-indicator trend-up">
+                            <i class="fas fa-arrow-up"></i> +2% за месяц
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <i class="fas fa-wallet"></i> Всего счетов
+                        </div>
+                        <div class="stat-number" th:text="${accountsCount}">0</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <i class="fas fa-coins"></i> Суммарный баланс счетов
+                        </div>
+                        <div class="stat-number" th:text="${totalAccountsBalance + ' ₽'}">0 ₽</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="stat-card">
-                <h3>Распределение статусов аренд</h3>
-                <div class="chart-container">
-                    <canvas id="rentalStatusChart"></canvas>
+
+            <!-- Графики -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="stat-card">
+                        <h3>Статистика аренд по месяцам</h3>
+                        <div class="chart-container">
+                            <canvas id="rentalsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="stat-card">
+                        <h3>Распределение статусов аренд</h3>
+                        <div class="chart-container">
+                            <canvas id="rentalStatusChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Статистика по автомобилям -->
-    <div class="stat-card mt-4">
-        <h3>Популярные автомобили</h3>
-        <div class="table-responsive">
-            <table class="data-table">
-                <thead>
-                <tr>
-                    <th>Модель</th>
-                    <th>Количество аренд</th>
-                    <th>Доход</th>
-                    <th>Средняя оценка</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="car : ${popularCars}">
-                    <td th:text="${car.brand + ' ' + car.model}">Toyota Camry</td>
-                    <td th:text="${car.rentalCount}">10</td>
-                    <td th:text="${car.revenue + ' ₽'}">100000 ₽</td>
-                    <td th:text="${car.averageRating + '/5'}">4.5/5</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+            <!-- Статистика по автомобилям -->
+            <div class="stat-card mt-4">
+                <h3>Популярные автомобили</h3>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th>Модель</th>
+                            <th>Количество аренд</th>
+                            <th>Доход</th>
+                            <th>Средняя оценка</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="car : ${popularCars}">
+                            <td th:text="${car.brand + ' ' + car.model}">Toyota Camry</td>
+                            <td th:text="${car.rentalCount}">10</td>
+                            <td th:text="${car.revenue + ' ₽'}">100000 ₽</td>
+                            <td th:text="${car.averageRating + '/5'}">4.5/5</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-    <!-- Статистика по пользователям -->
-    <div class="stat-card mt-4">
-        <h3>Активные пользователи</h3>
-        <div class="table-responsive">
-            <table class="data-table">
-                <thead>
-                <tr>
-                    <th>Пользователь</th>
-                    <th>Количество аренд</th>
-                    <th>Общая сумма</th>
-                    <th>Последняя активность</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user : ${activeUsers}">
-                    <td th:text="${user.firstName + ' ' + user.lastName}">Иван Иванов</td>
-                    <td th:text="${user.rentalCount}">5</td>
-                    <td th:text="${user.totalSpent + ' ₽'}">50000 ₽</td>
-                    <td th:text="${#temporals.format(user.lastActivity, 'dd.MM.yyyy')}">01.01.2025</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+            <!-- Статистика по пользователям -->
+            <div class="stat-card mt-4">
+                <h3>Активные пользователи</h3>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th>Пользователь</th>
+                            <th>Количество аренд</th>
+                            <th>Общая сумма</th>
+                            <th>Последняя активность</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${activeUsers}">
+                            <td th:text="${user.firstName + ' ' + user.lastName}">Иван Иванов</td>
+                            <td th:text="${user.rentalCount}">5</td>
+                            <td th:text="${user.totalSpent + ' ₽'}">50000 ₽</td>
+                            <td th:text="${#temporals.format(user.lastActivity, 'dd.MM.yyyy')}">01.01.2025</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-    <!-- Статистика по счетам пользователей -->
-    <div class="stat-card mt-4">
-        <h3>Счета пользователей</h3>
-        <div class="table-responsive">
-            <table class="data-table">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Пользователь</th>
-                    <th>Email</th>
-                    <th>Баланс</th>
-                    <th>Кредитный лимит</th>
-                    <th>Разрешен минусовой баланс</th>
-                    <th>Действия</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user : ${allUsers}">
-                    <td th:text="${user.id}"></td>
-                    <td th:text="${user.firstName + ' ' + user.lastName}"></td>
-                    <td th:text="${user.email}"></td>
-                    <td th:text="${user.account != null ? user.account.balance + ' ₽' : '—'}"></td>
-                    <td th:text="${user.account != null ? user.account.creditLimit + ' ₽' : '—'}"></td>
-                    <td>
-                        <span th:if="${user.account != null && user.account.allowNegativeBalance}" class="badge bg-success">Да</span>
-                        <span th:if="${user.account != null && !user.account.allowNegativeBalance}" class="badge bg-danger">Нет</span>
-                        <span th:if="${user.account == null}">—</span>
-                    </td>
-                    <td>
-                        <a th:if="${user.account != null}" th:href="@{/admin/accounts/{id}/edit(id=${user.account.id})}" class="btn btn-sm btn-primary">
-                            <i class="fas fa-wallet"></i> Просмотр/Редактирование
-                        </a>
-                        <span th:if="${user.account == null}" class="text-muted">Нет счета</span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+            <!-- Статистика по счетам пользователей -->
+            <div class="stat-card mt-4">
+                <h3>Счета пользователей</h3>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Пользователь</th>
+                            <th>Email</th>
+                            <th>Баланс</th>
+                            <th>Кредитный лимит</th>
+                            <th>Разрешен минусовой баланс</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${allUsers}">
+                            <td th:text="${user.id}"></td>
+                            <td th:text="${user.firstName + ' ' + user.lastName}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td th:text="${user.account != null ? user.account.balance + ' ₽' : '—'}"></td>
+                            <td th:text="${user.account != null ? user.account.creditLimit + ' ₽' : '—'}"></td>
+                            <td>
+                                <span th:if="${user.account != null && user.account.allowNegativeBalance}" class="badge bg-success">Да</span>
+                                <span th:if="${user.account != null && !user.account.allowNegativeBalance}" class="badge bg-danger">Нет</span>
+                                <span th:if="${user.account == null}">—</span>
+                            </td>
+                            <td>
+                                <a th:if="${user.account != null}" th:href="@{/admin/accounts/{id}/edit(id=${user.account.id})}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-wallet"></i> Просмотр/Редактирование
+                                </a>
+                                <span th:if="${user.account == null}" class="text-muted">Нет счета</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     </div>
-</main>
+</div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

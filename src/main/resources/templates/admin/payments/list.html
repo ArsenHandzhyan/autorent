@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head th:replace="~{fragments/head :: head(pageTitle='Список платежей - Автопрокат')}"></head>
 <body>
+    <input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     <div th:replace="~{fragments/header :: header}"></div>
 
     <div class="container-fluid">
@@ -151,19 +152,33 @@
     function processAllUnprocessedPayments() {
         const statusDiv = document.getElementById('allPaymentsStatus');
         statusDiv.innerHTML = '<span class="text-info">Запрос отправлен...</span>';
-        fetch('/admin/payments/process-all', {method: 'POST'})
-            .then(r => r.json())
-            .then(data => {
-                if (data.success) {
-                    statusDiv.innerHTML = '<span class="text-success">' + data.message + '</span>';
-                    setTimeout(() => window.location.reload(), 1500);
-                } else {
-                    statusDiv.innerHTML = '<span class="text-danger">' + (data.error || 'Ошибка') + '</span>';
-                }
-            })
-            .catch(() => {
-                statusDiv.innerHTML = '<span class="text-danger">Ошибка соединения с сервером</span>';
-            });
+        // Получаем CSRF-токен
+        const csrfInput = document.getElementById('csrf');
+        if (!csrfInput) {
+            statusDiv.innerHTML = '<span class="text-danger">CSRF-токен не найден на странице. Пожалуйста, обновите страницу.</span>';
+            return;
+        }
+        const csrfHeader = csrfInput.name;
+        const csrfToken = csrfInput.value;
+        fetch('/admin/payments/process-all', {
+            method: 'POST',
+            headers: {
+                [csrfHeader]: csrfToken
+            },
+            credentials: 'same-origin'
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                statusDiv.innerHTML = '<span class="text-success">' + data.message + '</span>';
+                setTimeout(() => window.location.reload(), 1500);
+            } else {
+                statusDiv.innerHTML = '<span class="text-danger">' + (data.error || 'Ошибка') + '</span>';
+            }
+        })
+        .catch(() => {
+            statusDiv.innerHTML = '<span class="text-danger">Ошибка соединения с сервером</span>';
+        });
     }
     </script>
 </body>
