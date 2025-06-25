@@ -395,3 +395,56 @@ password.reset.token-expiration-hours=1
 - Для IntelliJ IDEA:
   - Run/Debug Configurations → Environment variables:
     `MAIL_USERNAME=your_email@gmail.com;MAIL_PASSWORD=your_app_password`
+
+## 🔧 Настройка переменных окружения
+
+### Email настройки (обязательно для восстановления пароля):
+
+Для корректной работы системы восстановления пароля необходимо настроить переменные окружения:
+
+#### Windows (PowerShell):
+```powershell
+$env:MAIL_USERNAME="your-email@gmail.com"
+$env:MAIL_PASSWORD="your-app-password"
+```
+
+#### Windows (CMD):
+```cmd
+set MAIL_USERNAME=your-email@gmail.com
+set MAIL_PASSWORD=your-app-password
+```
+
+#### Linux/Mac:
+```bash
+export MAIL_USERNAME="your-email@gmail.com"
+export MAIL_PASSWORD="your-app-password"
+```
+
+#### IntelliJ IDEA:
+1. Откройте Run/Debug Configurations
+2. Выберите вашу конфигурацию
+3. В разделе Environment variables добавьте:
+   - `MAIL_USERNAME=your-email@gmail.com`
+   - `MAIL_PASSWORD=your-app-password`
+
+#### Docker:
+```bash
+docker run -e MAIL_USERNAME=your-email@gmail.com -e MAIL_PASSWORD=your-app-password autorent
+```
+
+### Создание пароля приложения Gmail:
+
+1. Включите двухфакторную аутентификацию в Google аккаунте
+2. Перейдите в "Безопасность" → "Пароли приложений"
+3. Создайте новый пароль для приложения "AutoRent"
+4. Используйте этот пароль в переменной `MAIL_PASSWORD`
+
+### Временное решение:
+
+Если переменные окружения не настроены, в `application.properties` можно временно указать значения напрямую:
+```properties
+spring.mail.username=your-email@gmail.com
+spring.mail.password=your-app-password
+```
+
+**⚠️ Внимание:** Не коммитьте реальные пароли в репозиторий!
