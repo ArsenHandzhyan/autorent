@@ -55,10 +55,10 @@
             <div class="card h-100 car-card shadow-sm">
                 <a th:href="@{/cars/{id}(id=${car.id})}">
                     <img th:if="${car.images != null && !car.images.empty}"
-                         th:src="@{${car.images[0].imageUrl}}"
+                         th:src="@{${car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].imageUrl : car.images[0].imageUrl}}"
                          class="card-img-top rotate-img"
                          alt="Фото автомобиля"
-                         th:style="'transform: rotate(' + (${car.images[0].rotation} != null ? ${car.images[0].rotation} : 0) + 'deg);'"
+                         th:style="'transform: rotate(' + (${car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].rotation : car.images[0].rotation} != null ? ${car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].rotation : car.images[0].rotation} : 0) + 'deg);'"
                          onerror="this.src='/images/default-car.jpg';"/>
                     <img th:if="${car.images == null || car.images.empty}"
                          th:src="@{/images/default-car.jpg}"

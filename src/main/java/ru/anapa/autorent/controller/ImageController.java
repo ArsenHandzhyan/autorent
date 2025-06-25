@@ -21,29 +21,19 @@ public class ImageController {
     @Autowired
     private CarImageRepository carImageRepository;
 
-    @GetMapping("/car/{imageId}")
-    public ResponseEntity<byte[]> getCarImage(@PathVariable Long imageId) {
-        Optional<CarImage> imageOpt = carImageRepository.findById(imageId);
-        
+    @GetMapping("/car/{fileName:.+}")
+    public ResponseEntity<byte[]> getCarImage(@PathVariable String fileName) {
+        Optional<CarImage> imageOpt = carImageRepository.findByImageUrl("/images/car/" + fileName);
         if (imageOpt.isPresent()) {
             CarImage image = imageOpt.get();
-            
-            // Если есть данные изображения в БД
             if (image.getImageData() != null && image.getImageData().length > 0) {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.parseMediaType(image.getContentType()));
                 headers.setContentLength(image.getImageData().length);
-                
                 return new ResponseEntity<>(image.getImageData(), headers, HttpStatus.OK);
             }
-            
-            // Если нет данных в БД, но есть URL (для обратной совместимости)
-            if (image.getImageUrl() != null && !image.getImageUrl().isEmpty()) {
-                // Возвращаем ошибку, так как файл не найден
-                return ResponseEntity.notFound().build();
-            }
+            return ResponseEntity.notFound().build();
         }
-        
         return ResponseEntity.notFound().build();
     }
 } 

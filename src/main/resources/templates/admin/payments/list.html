@@ -53,6 +53,11 @@
                                 <button type="button" class="btn btn-success" onclick="processPayments()">
                                     <i class="fas fa-play"></i> Обработать платежи
                                 </button>
+                                <hr/>
+                                <button type="button" class="btn btn-warning mt-2" onclick="processAllUnprocessedPayments()">
+                                    <i class="fas fa-sync-alt"></i> Актуализировать все не обработанные платежи
+                                </button>
+                                <div id="allPaymentsStatus" class="mt-2"></div>
                             </div>
                         </div>
                     </div>
@@ -141,5 +146,25 @@
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script>
+    function processAllUnprocessedPayments() {
+        const statusDiv = document.getElementById('allPaymentsStatus');
+        statusDiv.innerHTML = '<span class="text-info">Запрос отправлен...</span>';
+        fetch('/admin/payments/process-all', {method: 'POST'})
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    statusDiv.innerHTML = '<span class="text-success">' + data.message + '</span>';
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    statusDiv.innerHTML = '<span class="text-danger">' + (data.error || 'Ошибка') + '</span>';
+                }
+            })
+            .catch(() => {
+                statusDiv.innerHTML = '<span class="text-danger">Ошибка соединения с сервером</span>';
+            });
+    }
+    </script>
 </body>
 </html> 

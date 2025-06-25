@@ -37,7 +37,7 @@
                 <td th:text="${car.id}">1</td>
                 <td class="text-center">
                     <img th:if="${car.images != null && !car.images.empty}"
-                         th:src="${car.images[0].imageUrl}"
+                         th:src="${car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].imageUrl : car.images[0].imageUrl}"
                          class="car-thumb"
                          alt="Фото автомобиля">
                     <div th:unless="${car.images != null && !car.images.empty}"

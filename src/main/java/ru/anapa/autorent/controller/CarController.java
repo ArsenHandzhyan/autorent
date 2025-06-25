@@ -104,23 +104,25 @@ public class CarController {
                 car.setSchedule(carDto.getSchedule());
             }
 
-            // Обработка загруженных изображений
+            // Сначала сохраняем автомобиль без изображений
+            Car savedCar = carService.saveCar(car);
+
+            // Затем добавляем изображения, если они есть
             if (carDto.getNewImages() != null && !carDto.getNewImages().isEmpty()) {
                 List<CarImage> images = new ArrayList<>();
                 for (int i = 0; i < carDto.getNewImages().size(); i++) {
                     MultipartFile file = carDto.getNewImages().get(i);
                     if (!file.isEmpty()) {
-                        // Сохраняем изображение в базу данных
-                        CarImage savedImage = carService.saveCarImageToDatabase(file, car);
+                        CarImage savedImage = carService.saveCarImageToDatabase(file, savedCar);
                         savedImage.setMain(i == 0); // Первое изображение - основное
-                        savedImage.setCar(car);
+                        savedImage.setCar(savedCar);
                         images.add(savedImage);
                     }
                 }
-                car.setImages(images);
+                savedCar.setImages(images);
+                carService.saveCar(savedCar); // Обновляем автомобиль с изображениями
             }
 
-            Car savedCar = carService.saveCar(car);
             ModelAndView mav = new ModelAndView("redirect:/cars/" + savedCar.getId());
             mav.addObject("success", "Автомобиль успешно добавлен");
             return mav;

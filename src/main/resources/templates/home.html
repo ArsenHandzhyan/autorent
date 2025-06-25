@@ -72,9 +72,9 @@
                 <div class="col" th:each="car : ${popularCars}">
                     <div class="card h-100 car-card shadow-sm">
                         <div class="car-image">
-                            <img th:if="${car.images != null && !car.images.empty}" 
-                                 th:src="${car.images[0].imageUrl}" 
-                                 th:alt="${car.brand + ' ' + car.model}" 
+                            <img th:if="${car.images != null && !car.images.empty}"
+                                 th:src="${car.images.?[main == true].size() > 0 ? car.images.?[main == true][0].imageUrl : car.images[0].imageUrl}"
+                                 th:alt="${car.brand + ' ' + car.model}"
                                  class="img-fluid"
                                  th:classappend="'rotate-img'">
                             <img th:unless="${car.images != null && !car.images.empty}" 

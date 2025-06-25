@@ -151,4 +151,22 @@ public class DailyPaymentController {
         
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * API для ручной актуализации всех не обработанных платежей (PENDING/FAILED)
+     */
+    @PostMapping("/process-all")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> processAllUnprocessedPayments() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            dailyPaymentService.processAllUnprocessedPayments();
+            response.put("success", true);
+            response.put("message", "Все не обработанные платежи успешно актуализированы");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", "Ошибка при актуализации: " + e.getMessage());
+        }
+        return ResponseEntity.ok(response);
+    }
 } 

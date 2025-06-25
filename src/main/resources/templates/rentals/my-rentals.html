@@ -43,7 +43,7 @@
                     </div>
 
                     <img th:if="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}"
-                         th:src="${rental.car.images[0].imageUrl}"
+                         th:src="${rental.car.images.?[main == true].size() > 0 ? rental.car.images.?[main == true][0].imageUrl : rental.car.images[0].imageUrl}"
                          alt="Car Image"
                          class="card-img-top rental-card-img"
                          th:classappend="'rotate-img'">
@@ -111,7 +111,7 @@
                     </div>
 
                     <img th:if="${rental.car != null and rental.car.images != null and not #lists.isEmpty(rental.car.images)}"
-                         th:src="${rental.car.images[0].imageUrl}"
+                         th:src="${rental.car.images.?[main == true].size() > 0 ? rental.car.images.?[main == true][0].imageUrl : rental.car.images[0].imageUrl}"
                          alt="Car Image"
                          class="card-img-top rental-card-img"
                          th:classappend="'rotate-img'">

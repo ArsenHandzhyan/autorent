@@ -371,16 +371,34 @@ public class DailyPaymentService {
     }
 
     /**
-     * Обрабатывает все платежи со статусом PENDING (для автосписания при старте приложения)
+     * Обрабатывает все платежи со статусом PENDING и FAILED (для автосписания при старте приложения и по расписанию)
      */
-    public void processAllPendingPayments() {
-        List<DailyPayment> pendingPayments = dailyPaymentRepository.findAllByStatus(DailyPayment.PaymentStatus.PENDING);
-        for (DailyPayment payment : pendingPayments) {
+    @Transactional
+    public void processAllUnprocessedPayments() {
+        List<DailyPayment> pending = dailyPaymentRepository.findAllByStatus(DailyPayment.PaymentStatus.PENDING);
+        List<DailyPayment> failed = dailyPaymentRepository.findAllByStatus(DailyPayment.PaymentStatus.FAILED);
+        List<DailyPayment> all = new java.util.ArrayList<>();
+        java.time.LocalDate today = java.time.LocalDate.now();
+        for (DailyPayment p : pending) if (!p.getPaymentDate().isAfter(today)) all.add(p);
+        for (DailyPayment p : failed) if (!p.getPaymentDate().isAfter(today)) all.add(p);
+        for (DailyPayment payment : all) {
             try {
                 processPayment(payment);
             } catch (Exception e) {
                 logger.error("Ошибка при автосписании платежа ID {}: {}", payment.getId(), e.getMessage());
             }
         }
+    }
+
+    // Старый метод теперь вызывает новый
+    public void processAllPendingPayments() {
+        processAllUnprocessedPayments();
+    }
+
+    // Планировщик для регулярной актуализации (раз в час)
+    @org.springframework.scheduling.annotation.Scheduled(cron = "0 0 * * * *")
+    public void scheduledUnprocessedPayments() {
+        logger.info("[Scheduler] Актуализация всех не обработанных платежей (PENDING/FAILED)");
+        processAllUnprocessedPayments();
     }
 } 

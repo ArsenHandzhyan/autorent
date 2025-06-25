@@ -448,3 +448,38 @@ spring.mail.password=your-app-password
 ```
 
 **⚠️ Внимание:** Не коммитьте реальные пароли в репозиторий!
+
+### Конфигурация базы данных
+
+В файле `src/main/resources/application.properties` больше не требуется явно указывать диалект Hibernate для MySQL 8. Hibernate автоматически определяет нужный диалект на основе используемого драйвера. Если ранее была строка:
+
+```
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+```
+её следует удалить или закомментировать.
+
+## Особенности интеграции Thymeleaf + Spring Security
+
+- Для управления доступом к элементам интерфейса используйте только `<th:block sec:authorize="...">` вместо `<div sec:authorize>` или других тегов, чтобы избежать ошибок Thymeleaf.
+- В проекте уже добавлен диалект Spring Security Extras (см. `ThymeleafConfig.java`).
+- Пример корректного использования:
+
+```html
+<th:block sec:authorize="hasRole('ADMIN')">
+    <a class="dropdown-item" th:href="@{/admin/dashboard}">Панель администратора</a>
+</th:block>
+```
+
+## Конфигурация JPA и Hibernate
+
+- Для повышения безопасности и предсказуемости транзакций рекомендуется явно отключить режим open-in-view:
+  
+  ```properties
+  spring.jpa.open-in-view=false
+  ```
+- Для MySQL 8+ используйте диалект `org.hibernate.dialect.MySQLDialect` или не указывайте его вовсе — Hibernate выберет нужный автоматически. Не используйте устаревший `MySQL8Dialect`.
+
+### Важно при добавлении/редактировании автомобиля
+- Сначала автомобиль сохраняется в базу данных **без изображений**.
+- После этого изображения добавляются к уже сохранённому автомобилю (у которого есть id).
+- Это обеспечивает корректную работу внешних ключей (car_id NOT NULL) и предотвращает ошибки при сохранении изображений.

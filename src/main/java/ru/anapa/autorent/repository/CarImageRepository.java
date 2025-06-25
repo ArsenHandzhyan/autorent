@@ -11,4 +11,5 @@ public interface CarImageRepository extends JpaRepository<CarImage, Long> {
     List<CarImage> findByCarIdOrderByDisplayOrderAsc(Long carId);
     void deleteByCarId(Long carId);
     List<CarImage> findByCarIdInOrderByDisplayOrderAsc(List<Long> carIds);
+    java.util.Optional<CarImage> findByImageUrl(String imageUrl);
 } 
