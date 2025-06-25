@@ -26,6 +26,7 @@ import ru.anapa.autorent.model.CarStatus;
 import ru.anapa.autorent.model.CarStatusHistory;
 import ru.anapa.autorent.service.CarService;
 import ru.anapa.autorent.service.RentalService;
+import ru.anapa.autorent.service.CategoryService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -43,11 +44,13 @@ public class CarController {
 
     private final CarService carService;
     private final RentalService rentalService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public CarController(CarService carService, RentalService rentalService) {
+    public CarController(CarService carService, RentalService rentalService, CategoryService categoryService) {
         this.carService = carService;
         this.rentalService = rentalService;
+        this.categoryService = categoryService;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -201,22 +204,58 @@ public class CarController {
 
     @GetMapping("/search")
     public ModelAndView searchCars(
-            @RequestParam String brand,
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String minPrice,
+            @RequestParam(required = false) String maxPrice,
+            @RequestParam(required = false) String year,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         try {
-            Page<Car> carPage = carService.searchCarsByBrandWithPagination(brand, page, size);
+            Page<Car> carPage;
+            String searchTerm = "";
+            
+            // Если указана марка, ищем по марке
+            if (brand != null && !brand.trim().isEmpty()) {
+                carPage = carService.searchCarsByBrandWithPagination(brand.trim(), page, size);
+                searchTerm = brand.trim();
+            } else {
+                // Если марка не указана, показываем все автомобили
+                carPage = carService.findAllCarsWithPagination(page, size);
+                searchTerm = "Все автомобили";
+            }
+            
             // Загружаем изображения для каждого автомобиля
             carPage.getContent().forEach(car -> car.getImages().size());
             
+            // Формируем список лет для фильтра (от 2020 до текущего года)
+            List<Integer> years = new ArrayList<>();
+            int currentYear = java.time.Year.now().getValue();
+            for (int y = currentYear; y >= 2020; y--) {
+                years.add(y);
+            }
+            
             ModelAndView mav = new ModelAndView("cars/search-results");
             mav.addObject("cars", carPage);
-            mav.addObject("searchTerm", brand);
+            mav.addObject("searchTerm", searchTerm);
             mav.addObject("currentPage", page);
             mav.addObject("totalPages", carPage.getTotalPages());
             mav.addObject("totalItems", carPage.getTotalElements());
+            
+            // Передаем параметры фильтра обратно в форму
+            mav.addObject("brand", brand);
+            mav.addObject("category", category);
+            mav.addObject("minPrice", minPrice);
+            mav.addObject("maxPrice", maxPrice);
+            mav.addObject("year", year);
+            
+            // Передаем данные для формы
+            mav.addObject("categories", categoryService.findPopularCategories(10));
+            mav.addObject("years", years);
+            
             return mav;
         } catch (Exception e) {
+            logger.error("Error searching cars: {}", e.getMessage(), e);
             ModelAndView mav = new ModelAndView("error");
             mav.addObject("error", "Ошибка при поиске автомобилей");
             return mav;
