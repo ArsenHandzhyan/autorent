@@ -42,26 +42,36 @@ public class AccountService {
         Account account = getAccountByUserId(userId);
         BigDecimal newBalance = account.getBalance().add(amount);
         
-        if (!account.isAllowNegativeBalance() && newBalance.compareTo(BigDecimal.ZERO) < 0) {
+        // Если запрещён минус и кредитный лимит = 0, выбрасываем ошибку
+        if (!account.isAllowNegativeBalance() && account.getCreditLimit().compareTo(BigDecimal.ZERO) == 0 && newBalance.compareTo(BigDecimal.ZERO) < 0) {
             throw new RuntimeException("Negative balance is not allowed for this account");
         }
         
+        boolean creditLimitExceeded = false;
         if (account.getCreditLimit().compareTo(BigDecimal.ZERO) > 0 
             && newBalance.abs().compareTo(account.getCreditLimit()) > 0) {
-            throw new RuntimeException("Credit limit exceeded");
+            creditLimitExceeded = true;
+            org.slf4j.LoggerFactory.getLogger(AccountService.class).warn(
+                "Превышен кредитный лимит для пользователя id={}: баланс после списания = {}, лимит = {}", 
+                userId, newBalance, account.getCreditLimit()
+            );
         }
         
         account.setBalance(newBalance);
         account = accountRepository.save(account);
 
-        // Создаем запись о транзакции
+        // Создаём запись о транзакции
         Transaction transaction = new Transaction();
         transaction.setAccount(account);
         transaction.setAmount(amount);
         transaction.setType(amount.compareTo(BigDecimal.ZERO) > 0 ? 
             Transaction.TransactionType.DEPOSIT : Transaction.TransactionType.RENT_PAYMENT);
-        transaction.setDescription(amount.compareTo(BigDecimal.ZERO) > 0 ? 
-            "Пополнение счета" : "Оплата аренды");
+        String description = amount.compareTo(BigDecimal.ZERO) > 0 ? 
+            "Пополнение счета" : "Оплата аренды";
+        if (creditLimitExceeded) {
+            description += " (ВНИМАНИЕ: превышен кредитный лимит)";
+        }
+        transaction.setDescription(description);
         transactionRepository.save(transaction);
 
         return account;
@@ -211,11 +221,7 @@ public class AccountService {
             if (account.getBalance().compareTo(requiredBalance) < 0) {
                 throw new RuntimeException("Недостаточно средств на счете");
             }
-        } else if (account.getCreditLimit().compareTo(BigDecimal.ZERO) > 0) {
-            BigDecimal availableBalance = account.getBalance().add(account.getCreditLimit());
-            if (availableBalance.compareTo(requiredBalance) < 0) {
-                throw new RuntimeException("Превышен кредитный лимит");
-            }
-        }
+        } // если разрешён минус — всегда разрешаем, только логируем превышение лимита
+        // (старую проверку кредитного лимита убираем)
     }
 } 

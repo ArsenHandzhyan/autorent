@@ -119,7 +119,7 @@ public class SmsService {
      * @param message     текст сообщения
      * @throws Exception если произошла ошибка при отправке
      */
-    private void sendSms(String phoneNumber, String message) {
+    public void sendSms(String phoneNumber, String message) {
         try {
             log.debug("Отправка SMS на номер {}: {}", phoneNumber, message);
 

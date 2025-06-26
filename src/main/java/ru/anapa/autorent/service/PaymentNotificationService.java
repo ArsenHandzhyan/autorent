@@ -183,13 +183,16 @@ public class PaymentNotificationService {
      * Отправка email уведомления
      */
     private void sendEmailNotification(String email, String subject, String message) {
+        if (email == null || email.trim().isEmpty()) {
+            logger.error("Не указан email для отправки уведомления. Тема: {}, Сообщение: {}", subject, message);
+            return;
+        }
         try {
-            // Используем рефлексию для вызова приватного метода sendEmail
             java.lang.reflect.Method sendEmailMethod = EmailService.class.getDeclaredMethod("sendEmail", String.class, String.class, String.class);
             sendEmailMethod.setAccessible(true);
             sendEmailMethod.invoke(emailService, email, subject, message);
         } catch (Exception e) {
-            logger.error("Ошибка при отправке email на {}: {}", email, e.getMessage());
+            logger.error("Ошибка при отправке email на {}. Тема: '{}'. Сообщение: '{}'. Причина: {}", email, subject, message, e.getMessage(), e);
         }
     }
 
@@ -197,13 +200,14 @@ public class PaymentNotificationService {
      * Отправка SMS уведомления
      */
     private void sendSmsNotification(String phone, String message) {
+        if (phone == null || phone.trim().isEmpty()) {
+            logger.error("Не указан номер телефона для отправки SMS. Сообщение: {}", message);
+            return;
+        }
         try {
-            // Используем рефлексию для вызова приватного метода sendSms
-            java.lang.reflect.Method sendSmsMethod = SmsService.class.getDeclaredMethod("sendSms", String.class, String.class);
-            sendSmsMethod.setAccessible(true);
-            sendSmsMethod.invoke(smsService, phone, message);
+            smsService.sendSms(phone, message);
         } catch (Exception e) {
-            logger.error("Ошибка при отправке SMS на {}: {}", phone, e.getMessage());
+            logger.error("Ошибка при отправке SMS на {}. Сообщение: '{}'. Причина: {}", phone, message, e.getMessage(), e);
         }
     }
 

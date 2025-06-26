@@ -136,7 +136,7 @@ public class DailyPaymentService {
             PaymentValidationResult validation = validatePayment(account, paymentAmount);
             logger.info("Результат валидации платежа ID {}: valid={}, error={}", payment.getId(), validation.isValid(), validation.getErrorMessage());
 
-            // Списываем средства всегда, независимо от результата валидации
+            // Списываем средства всегда, даже при превышении лимита
             try {
                 accountService.updateBalance(account.getUser().getId(), paymentAmount.negate());
                 logger.info("Списание средств прошло успешно для платежа ID {}. Сумма: {}. Новый баланс: {}", payment.getId(), paymentAmount, newBalance);
@@ -151,22 +151,26 @@ public class DailyPaymentService {
                 return;
             }
 
-            // Если есть бизнес-предупреждение — пишем в notes, но платеж PROCESSED
-            if (validation.isValid()) {
-                payment.setStatus(DailyPayment.PaymentStatus.PROCESSED);
-                payment.setProcessedAt(LocalDateTime.now());
-                payment.setNotes("Платеж успешно обработан. Новый баланс: " + newBalance + " ₽");
-                dailyPaymentRepository.save(payment);
-                logger.info("Платеж ID {} успешно обработан. Списано: {}, новый баланс: {}", payment.getId(), paymentAmount, newBalance);
-                eventPublisher.publishEvent(new PaymentNotificationEvent(payment, true, null));
-            } else {
-                payment.setStatus(DailyPayment.PaymentStatus.PROCESSED);
-                payment.setProcessedAt(LocalDateTime.now());
-                payment.setNotes("Платеж обработан с предупреждением: " + validation.getErrorMessage() + ". Новый баланс: " + newBalance + " ₽");
-                dailyPaymentRepository.save(payment);
-                logger.warn("Платеж ID {} обработан с предупреждением: {}. Списано: {}, новый баланс: {}", payment.getId(), validation.getErrorMessage(), paymentAmount, newBalance);
-                eventPublisher.publishEvent(new PaymentNotificationEvent(payment, true, validation.getErrorMessage()));
+            // Проверяем превышение лимита (логика теперь в AccountService, но для notes и уведомлений фиксируем явно)
+            boolean creditLimitExceeded = false;
+            if (account.getCreditLimit().compareTo(BigDecimal.ZERO) > 0 && account.getBalance().abs().compareTo(account.getCreditLimit()) > 0) {
+                creditLimitExceeded = true;
+                logger.warn("Платеж ID {} обработан с превышением кредитного лимита! Баланс: {}, лимит: {}", payment.getId(), account.getBalance(), account.getCreditLimit());
+                payment.setNotes((payment.getNotes() != null ? payment.getNotes() + "\n" : "") + "ВНИМАНИЕ: Превышен кредитный лимит! Баланс: " + account.getBalance() + ", лимит: " + account.getCreditLimit());
+                // Уведомления
+                notificationService.sendPaymentWarningNotification(payment, "Превышен кредитный лимит!");
+                notificationService.sendAdminPaymentWarningNotification(payment, "Превышен кредитный лимит!");
             }
+
+            // Если нет технической ошибки — платеж всегда PROCESSED
+            payment.setStatus(DailyPayment.PaymentStatus.PROCESSED);
+            payment.setProcessedAt(LocalDateTime.now());
+            if (!creditLimitExceeded) {
+                payment.setNotes((payment.getNotes() != null ? payment.getNotes() + "\n" : "") + "Платеж успешно обработан. Новый баланс: " + account.getBalance() + " ₽");
+            }
+            dailyPaymentRepository.save(payment);
+            logger.info("Платеж ID {} успешно обработан. Списано: {}, новый баланс: {}", payment.getId(), paymentAmount, account.getBalance());
+            eventPublisher.publishEvent(new PaymentNotificationEvent(payment, true, creditLimitExceeded ? "Превышен кредитный лимит" : null));
         } catch (Exception e) {
             logger.error("Техническая ошибка при обработке платежа ID {}: {}. Stacktrace:", payment.getId(), e.getMessage(), e);
             logger.error("Детали платежа: ID={}, amount={}, accountId={}, userId={}, status={}, notes={}", payment.getId(), payment.getAmount(), payment.getAccount() != null ? payment.getAccount().getId() : null, payment.getAccount() != null && payment.getAccount().getUser() != null ? payment.getAccount().getUser().getId() : null, payment.getStatus(), payment.getNotes());
@@ -269,9 +273,8 @@ public class DailyPaymentService {
                 if (availableCredit.compareTo(paymentAmount) < 0) {
                     // Отправляем уведомление администратору и пользователю о превышении лимита
                     sendCreditLimitExceededNotifications(account, paymentAmount, availableCredit);
-                    return PaymentValidationResult.failed(
-                        "Превышен кредитный лимит. Доступно: " + availableCredit + " ₽, требуется: " + paymentAmount + " ₽"
-                    );
+                    // НЕ возвращаем failed! Только логируем и уведомляем, но разрешаем списание
+                    return PaymentValidationResult.success();
                 }
             }
             // Если кредитный лимит не установлен или не превышен, разрешаем списание

@@ -123,8 +123,14 @@
                                             <span th:class="${'badge ' + 
                                                 (payment.status == 'PROCESSED' ? 'bg-success' : 
                                                  payment.status == 'PENDING' ? 'bg-warning' : 
-                                                 payment.status == 'FAILED' ? 'bg-danger' : 'bg-secondary')}"
-                                                  th:text="${payment.status}">PENDING</span>
+                                                 payment.status == 'FAILED' ? 'bg-danger' : 
+                                                 payment.status == 'CANCELLED' ? 'bg-secondary' : 'bg-light')}"
+                                                  th:text="${payment.status == 'PROCESSED' ? 'Успешно' : 
+                                                            payment.status == 'PENDING' ? 'Ожидает' : 
+                                                            payment.status == 'FAILED' ? 'Ошибка' : 
+                                                            payment.status == 'CANCELLED' ? 'Отменён' : payment.status}">
+                                                Статус
+                                            </span>
                                         </td>
                                         <td th:text="${payment.processedAt != null ? #temporals.format(payment.processedAt, 'dd.MM.yyyy HH:mm') : '-'}">-</td>
                                         <td>
