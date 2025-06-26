@@ -169,4 +169,86 @@ public class DailyPaymentController {
         }
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * API для диагностики всех платежей
+     */
+    @PostMapping("/diagnose")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> diagnoseAllPayments() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            dailyPaymentService.diagnoseAllPayments();
+            response.put("success", true);
+            response.put("message", "Диагностика завершена. Проверьте логи сервера.");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", "Ошибка при диагностике: " + e.getMessage());
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * API для диагностики всех платежей (GET версия для тестирования)
+     */
+    @GetMapping("/diagnose-get")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> diagnosePaymentsGet() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            dailyPaymentService.diagnoseAllPayments();
+            response.put("success", true);
+            response.put("message", "Диагностика выполнена. Проверьте логи сервера.");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", "Ошибка при диагностике: " + e.getMessage());
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * API для обработки всех платежей (GET версия для тестирования)
+     */
+    @GetMapping("/process-all-get")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> processAllPaymentsGet() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            dailyPaymentService.processAllUnprocessedPayments();
+            response.put("success", true);
+            response.put("message", "Все платежи обработаны. Проверьте логи сервера.");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", "Ошибка при обработке: " + e.getMessage());
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Простой тестовый эндпоинт для обработки всех платежей
+     */
+    @GetMapping("/test-process-all")
+    @ResponseBody
+    public String testProcessAllPayments() {
+        try {
+            dailyPaymentService.processAllUnprocessedPayments();
+            return "SUCCESS: Все платежи обработаны. Проверьте логи сервера.";
+        } catch (Exception e) {
+            return "ERROR: " + e.getMessage();
+        }
+    }
+
+    /**
+     * Тестовый эндпоинт вне админ-панели для обработки всех платежей
+     */
+    @GetMapping("/test-payments")
+    @ResponseBody
+    public String testPayments() {
+        try {
+            dailyPaymentService.processAllUnprocessedPayments();
+            return "SUCCESS: Все платежи обработаны. Проверьте логи сервера.";
+        } catch (Exception e) {
+            return "ERROR: " + e.getMessage();
+        }
+    }
 } 

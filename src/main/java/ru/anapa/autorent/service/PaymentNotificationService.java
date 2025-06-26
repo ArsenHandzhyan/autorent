@@ -83,6 +83,32 @@ public class PaymentNotificationService {
     }
 
     /**
+     * Отправка уведомления пользователю о платеже с предупреждением
+     * (например, при превышении кредитного лимита, но средства все равно списались)
+     */
+    public void sendPaymentWarningNotification(DailyPayment payment, String warningMessage) {
+        try {
+            User user = payment.getAccount().getUser();
+            String subject = "Внимание: Платеж обработан с предупреждением";
+            String message = createPaymentWarningMessage(payment, warningMessage);
+            
+            // Отправляем email
+            sendEmailNotification(user.getEmail(), subject, message);
+            
+            // Отправляем SMS (если есть номер телефона)
+            if (user.getPhone() != null && !user.getPhone().isEmpty()) {
+                String smsMessage = createPaymentWarningSmsMessage(payment, warningMessage);
+                sendSmsNotification(user.getPhone(), smsMessage);
+            }
+            
+            logger.info("Уведомление о платеже с предупреждением отправлено пользователю {}", user.getEmail());
+            
+        } catch (Exception e) {
+            logger.error("Ошибка при отправке уведомления о платеже с предупреждением: {}", e.getMessage());
+        }
+    }
+
+    /**
      * Отправка уведомления администратору о неудачном платеже
      */
     public void sendAdminPaymentFailureNotification(DailyPayment payment, String errorMessage) {
@@ -127,6 +153,29 @@ public class PaymentNotificationService {
             
         } catch (Exception e) {
             logger.error("Ошибка при отправке уведомления о низком балансе: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * Отправка уведомления администратору о платеже с предупреждением
+     */
+    public void sendAdminPaymentWarningNotification(DailyPayment payment, String warningMessage) {
+        try {
+            // Получаем роль ADMIN через репозиторий
+            Role adminRole = roleRepository.findByName("ROLE_ADMIN");
+            if (adminRole == null) {
+                logger.error("Роль ROLE_ADMIN не найдена в базе данных!");
+                return;
+            }
+            List<User> admins = userService.findUsersByRole(adminRole);
+            String subject = "ВНИМАНИЕ: Платеж обработан с предупреждением";
+            String message = createAdminPaymentWarningMessage(payment, warningMessage);
+            for (User admin : admins) {
+                sendEmailNotification(admin.getEmail(), subject, message);
+            }
+            logger.info("Уведомление о платеже с предупреждением отправлено {} администраторам", admins.size());
+        } catch (Exception e) {
+            logger.error("Ошибка при отправке уведомления администратору о предупреждении: {}", e.getMessage());
         }
     }
 
@@ -364,6 +413,106 @@ public class PaymentNotificationService {
             "ВНИМАНИЕ: Недостаточно средств. Баланс: %s ₽, требуется: %s ₽. Пополните счет или обратитесь к администратору.",
             currentBalance,
             requiredAmount
+        );
+    }
+
+    /**
+     * Создание сообщения о платеже с предупреждением
+     */
+    private String createPaymentWarningMessage(DailyPayment payment, String warningMessage) {
+        User user = payment.getAccount().getUser();
+        String carInfo = payment.getRental().getCar().getBrand() + " " + payment.getRental().getCar().getModel();
+        
+        return String.format("""
+            <html>
+            <body>
+                <h2>Внимание: Платеж обработан с предупреждением</h2>
+                <p>Уважаемый(ая) %s %s!</p>
+                <p>Платеж за аренду автомобиля <strong>%s</strong> был обработан с предупреждением.</p>
+                <p><strong>Причина:</strong> %s</p>
+                <p><strong>Детали:</strong></p>
+                <ul>
+                    <li>Дата платежа: %s</li>
+                    <li>Сумма: %s ₽</li>
+                    <li>Автомобиль: %s</li>
+                </ul>
+                <p><strong>Что делать:</strong></p>
+                <ul>
+                    <li>Проверьте платеж</li>
+                    <li>Или обратитесь к администратору для разрешения вопроса</li>
+                </ul>
+                <p>Спасибо за понимание!</p>
+                <br>
+                <p><small>Это автоматическое уведомление. Пожалуйста, не отвечайте на это письмо.</small></p>
+            </body>
+            </html>
+            """,
+            user.getFirstName(),
+            user.getLastName(),
+            carInfo,
+            warningMessage,
+            payment.getPaymentDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+            payment.getAmount(),
+            carInfo
+        );
+    }
+
+    /**
+     * Создание SMS сообщения о платеже с предупреждением
+     */
+    private String createPaymentWarningSmsMessage(DailyPayment payment, String warningMessage) {
+        String carInfo = payment.getRental().getCar().getBrand() + " " + payment.getRental().getCar().getModel();
+        return String.format(
+            "ВНИМАНИЕ: Платеж за аренду %s обработан с предупреждением. %s. Пожалуйста, проверьте платеж.",
+            carInfo,
+            warningMessage
+        );
+    }
+
+    /**
+     * Создание сообщения администратору о платеже с предупреждением
+     */
+    private String createAdminPaymentWarningMessage(DailyPayment payment, String warningMessage) {
+        User user = payment.getAccount().getUser();
+        String carInfo = payment.getRental().getCar().getBrand() + " " + payment.getRental().getCar().getModel();
+        
+        return String.format("""
+            <html>
+            <body>
+                <h2>ВНИМАНИЕ: Платеж обработан с предупреждением</h2>
+                <p><strong>Детали платежа:</strong></p>
+                <ul>
+                    <li>ID платежа: %d</li>
+                    <li>Пользователь: %s %s (%s)</li>
+                    <li>Телефон: %s</li>
+                    <li>Автомобиль: %s</li>
+                    <li>Дата платежа: %s</li>
+                    <li>Сумма: %s ₽</li>
+                    <li>Текущий баланс: %s ₽</li>
+                    <li>Причина предупреждения: %s</li>
+                </ul>
+                <p><strong>Рекомендуемые действия:</strong></p>
+                <ul>
+                    <li>Связаться с пользователем</li>
+                    <li>Пополнить счет пользователя</li>
+                    <li>Или разрешить отрицательный баланс</li>
+                    <li>Повторно обработать платеж</li>
+                </ul>
+                <p><a href="http://localhost:8080/admin/payments/rental/%d">Просмотреть детали аренды</a></p>
+            </body>
+            </html>
+            """,
+            payment.getId(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(),
+            user.getPhone() != null ? user.getPhone() : "Не указан",
+            carInfo,
+            payment.getPaymentDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+            payment.getAmount(),
+            payment.getAccount().getBalance(),
+            warningMessage,
+            payment.getRental().getId()
         );
     }
 } 

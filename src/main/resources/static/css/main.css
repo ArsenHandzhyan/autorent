@@ -1116,6 +1116,14 @@ a:hover {
     background-color: var(--danger-color);
 }
 
+.notification-warning {
+    background-color: var(--warning-color);
+}
+
+.notification-info {
+    background-color: var(--info-color);
+}
+
 @keyframes slideIn {
     from {
         transform: translateX(100%);

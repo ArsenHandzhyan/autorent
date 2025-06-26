@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 @Service
 public class DailyPaymentService {
@@ -115,8 +116,14 @@ public class DailyPaymentService {
      */
     @Transactional
     public void processPayment(DailyPayment payment) {
-        logger.info("Обработка платежа ID {} на сумму {}", payment.getId(), payment.getAmount());
-        
+        logger.info("Обработка платежа ID {} на сумму {} (текущий статус: {})", payment.getId(), payment.getAmount(), payment.getStatus());
+
+        // Разрешаем повторную обработку FAILED платежей
+        if (payment.getStatus() == DailyPayment.PaymentStatus.FAILED) {
+            logger.warn("Повторная попытка обработки платежа ID {} со статусом FAILED", payment.getId());
+            payment.setStatus(DailyPayment.PaymentStatus.PENDING);
+            dailyPaymentRepository.save(payment);
+        }
         try {
             Account account = payment.getAccount();
             BigDecimal paymentAmount = payment.getAmount();
@@ -141,16 +148,20 @@ public class DailyPaymentService {
                 eventPublisher.publishEvent(new PaymentNotificationEvent(payment, true, null));
                 
             } else {
-                // Платеж не прошел валидацию - отмечаем как неудачный
-                payment.setStatus(DailyPayment.PaymentStatus.FAILED);
+                // Платеж не прошел валидацию, но средства списываем в любом случае
+                // (это может быть превышение кредитного лимита или недостаток средств)
+                accountService.updateBalance(account.getUser().getId(), paymentAmount.negate());
+                payment.setStatus(DailyPayment.PaymentStatus.PROCESSED);
                 payment.setProcessedAt(LocalDateTime.now());
-                payment.setNotes("Ошибка валидации: " + validation.getErrorMessage());
+                payment.setNotes("Платеж обработан с предупреждением: " + validation.getErrorMessage() + 
+                               ". Новый баланс: " + newBalance + " ₽");
                 dailyPaymentRepository.save(payment);
                 
-                logger.warn("Платеж ID {} не прошел валидацию: {}", payment.getId(), validation.getErrorMessage());
+                logger.warn("Платеж ID {} обработан с предупреждением: {}. Списано: {}, новый баланс: {}", 
+                           payment.getId(), validation.getErrorMessage(), paymentAmount, newBalance);
                 
-                // Публикуем событие неудачного платежа
-                eventPublisher.publishEvent(new PaymentNotificationEvent(payment, false, validation.getErrorMessage()));
+                // Публикуем событие платежа с предупреждением
+                eventPublisher.publishEvent(new PaymentNotificationEvent(payment, true, validation.getErrorMessage()));
             }
             
         } catch (Exception e) {
@@ -390,52 +401,218 @@ public class DailyPaymentService {
     /**
      * Обрабатывает все платежи со статусом PENDING и FAILED (для автосписания при старте приложения и по расписанию)
      */
-    @Transactional
     public void processAllUnprocessedPayments() {
-        logger.info("Начинаем актуализацию всех не обработанных платежей");
+        logger.info("=== НАЧАЛО ОБРАБОТКИ ВСЕХ НЕОБРАБОТАННЫХ ПЛАТЕЖЕЙ ===");
         
-        List<DailyPayment> pending = dailyPaymentRepository.findAllByStatus(DailyPayment.PaymentStatus.PENDING);
-        List<DailyPayment> failed = dailyPaymentRepository.findAllByStatus(DailyPayment.PaymentStatus.FAILED);
-        List<DailyPayment> all = new java.util.ArrayList<>();
-        java.time.LocalDate today = java.time.LocalDate.now();
+        LocalDate today = LocalDate.now();
+        LocalDate maxProcessDate = today.minusDays(1); // Обрабатываем платежи до вчерашнего дня включительно
         
-        // Фильтруем платежи по дате (только те, которые должны быть обработаны сегодня или раньше)
-        for (DailyPayment p : pending) {
-            if (!p.getPaymentDate().isAfter(today)) {
-                all.add(p);
-            }
-        }
-        for (DailyPayment p : failed) {
-            if (!p.getPaymentDate().isAfter(today)) {
-                all.add(p);
-            }
+        // Получаем все необработанные платежи
+        List<DailyPayment> unprocessedPayments = dailyPaymentRepository.findUnprocessedPaymentsUpToDate(maxProcessDate);
+        
+        logger.info("Найдено {} необработанных платежей до даты {}", unprocessedPayments.size(), maxProcessDate);
+        
+        if (unprocessedPayments.isEmpty()) {
+            logger.info("Нет необработанных платежей для обработки");
+            return;
         }
         
-        logger.info("Найдено {} платежей для обработки (PENDING: {}, FAILED: {})", 
-                   all.size(), pending.size(), failed.size());
+        // Группируем платежи по датам для лучшего логирования
+        Map<LocalDate, List<DailyPayment>> paymentsByDate = unprocessedPayments.stream()
+                .collect(java.util.stream.Collectors.groupingBy(DailyPayment::getPaymentDate));
+        
+        logger.info("Распределение платежей по датам:");
+        paymentsByDate.forEach((date, payments) -> {
+            long pendingCount = payments.stream().filter(p -> p.getStatus() == DailyPayment.PaymentStatus.PENDING).count();
+            long failedCount = payments.stream().filter(p -> p.getStatus() == DailyPayment.PaymentStatus.FAILED).count();
+            logger.info("  {}: {} платежей (PENDING: {}, FAILED: {})", date, payments.size(), pendingCount, failedCount);
+        });
         
         int processedCount = 0;
         int failedCount = 0;
+        int skippedCount = 0;
         
-        for (DailyPayment payment : all) {
+        // Обрабатываем платежи в хронологическом порядке
+        for (DailyPayment payment : unprocessedPayments) {
             try {
+                logger.debug("Обработка платежа ID {} (дата: {}, статус: {}, сумма: {})", 
+                           payment.getId(), payment.getPaymentDate(), payment.getStatus(), payment.getAmount());
+                
+                // Проверяем, что аренда все еще активна
+                if (payment.getRental().getStatus() != RentalStatus.ACTIVE) {
+                    logger.warn("Пропускаем платеж ID {} - аренда {} не активна (статус: {})", 
+                               payment.getId(), payment.getRental().getId(), payment.getRental().getStatus());
+                    skippedCount++;
+                    continue;
+                }
+                
                 // Обрабатываем каждый платеж в отдельной транзакции
                 processPaymentInNewTransaction(payment);
                 processedCount++;
-                logger.info("Платеж ID {} успешно обработан", payment.getId());
+                logger.info("Платеж ID {} успешно обработан (дата: {}, сумма: {})", 
+                           payment.getId(), payment.getPaymentDate(), payment.getAmount());
+                
             } catch (Exception e) {
                 failedCount++;
-                logger.error("Ошибка при автосписании платежа ID {}: {}", payment.getId(), e.getMessage());
+                logger.error("Ошибка при обработке платежа ID {} (дата: {}, сумма: {}): {}", 
+                           payment.getId(), payment.getPaymentDate(), payment.getAmount(), e.getMessage());
+                
                 // Отмечаем платеж как неудачный, но не прерываем обработку остальных
                 try {
-                    markPaymentAsFailedInNewTransaction(payment, e.getMessage());
+                    markPaymentAsFailedInNewTransaction(payment, "Ошибка обработки: " + e.getMessage());
                 } catch (Exception markError) {
                     logger.error("Не удалось отметить платеж ID {} как неудачный: {}", payment.getId(), markError.getMessage());
                 }
             }
         }
         
-        logger.info("Актуализация завершена. Обработано: {}, Ошибок: {}", processedCount, failedCount);
+        logger.info("=== ЗАВЕРШЕНИЕ ОБРАБОТКИ НЕОБРАБОТАННЫХ ПЛАТЕЖЕЙ ===");
+        logger.info("Итого: обработано {}, ошибок {}, пропущено {}", processedCount, failedCount, skippedCount);
+    }
+
+    /**
+     * Обрабатывает пропущенные платежи за указанный период
+     */
+    @Transactional
+    public void processMissedPaymentsForPeriod(LocalDate startDate, LocalDate endDate) {
+        logger.info("=== ОБРАБОТКА ПРОПУЩЕННЫХ ПЛАТЕЖЕЙ ЗА ПЕРИОД {} - {} ===", startDate, endDate);
+        
+        List<DailyPayment> missedPayments = dailyPaymentRepository.findActiveRentalsUnprocessedPaymentsInPeriod(startDate, endDate);
+        
+        logger.info("Найдено {} пропущенных платежей за период", missedPayments.size());
+        
+        if (missedPayments.isEmpty()) {
+            logger.info("Нет пропущенных платежей за указанный период");
+            return;
+        }
+        
+        int processedCount = 0;
+        int failedCount = 0;
+        
+        for (DailyPayment payment : missedPayments) {
+            try {
+                logger.info("Обработка пропущенного платежа ID {} (дата: {}, сумма: {})", 
+                           payment.getId(), payment.getPaymentDate(), payment.getAmount());
+                
+                processPaymentInNewTransaction(payment);
+                processedCount++;
+                
+            } catch (Exception e) {
+                failedCount++;
+                logger.error("Ошибка при обработке пропущенного платежа ID {}: {}", payment.getId(), e.getMessage());
+                
+                try {
+                    markPaymentAsFailedInNewTransaction(payment, "Ошибка обработки пропущенного платежа: " + e.getMessage());
+                } catch (Exception markError) {
+                    logger.error("Не удалось отметить пропущенный платеж ID {} как неудачный: {}", payment.getId(), markError.getMessage());
+                }
+            }
+        }
+        
+        logger.info("Обработка пропущенных платежей завершена. Обработано: {}, ошибок: {}", processedCount, failedCount);
+    }
+
+    /**
+     * Диагностика и обработка всех пропущенных платежей при старте приложения
+     */
+    public void processAllMissedPaymentsOnStartup() {
+        logger.info("=== ОБРАБОТКА ПРОПУЩЕННЫХ ПЛАТЕЖЕЙ ПРИ СТАРТЕ ПРИЛОЖЕНИЯ ===");
+        
+        LocalDate today = LocalDate.now();
+        
+        // Получаем все даты с необработанными платежами
+        List<LocalDate> unprocessedDates = dailyPaymentRepository.findUnprocessedPaymentDates(today);
+        
+        if (unprocessedDates.isEmpty()) {
+            logger.info("Нет пропущенных платежей для обработки при старте");
+            return;
+        }
+        
+        logger.info("Найдены необработанные платежи для дат: {}", unprocessedDates);
+        
+        // Обрабатываем платежи за каждую дату
+        for (LocalDate date : unprocessedDates) {
+            logger.info("Обработка платежей за дату: {}", date);
+            processMissedPaymentsForPeriod(date, date);
+        }
+        
+        logger.info("Обработка пропущенных платежей при старте завершена");
+    }
+
+    /**
+     * Улучшенная диагностика всех платежей с детальной информацией
+     */
+    public void diagnoseAllPayments() {
+        logger.info("=== ДЕТАЛЬНАЯ ДИАГНОСТИКА ВСЕХ ПЛАТЕЖЕЙ ===");
+        
+        List<DailyPayment> allPayments = dailyPaymentRepository.findAll();
+        logger.info("Всего платежей в системе: {}", allPayments.size());
+        
+        // Статистика по статусам
+        Map<DailyPayment.PaymentStatus, Long> statusCounts = allPayments.stream()
+                .collect(java.util.stream.Collectors.groupingBy(
+                    DailyPayment::getStatus, 
+                    java.util.stream.Collectors.counting()
+                ));
+        
+        logger.info("Распределение по статусам:");
+        for (DailyPayment.PaymentStatus status : DailyPayment.PaymentStatus.values()) {
+            long count = statusCounts.getOrDefault(status, 0L);
+            logger.info("  {}: {}", status, count);
+        }
+        
+        // Статистика по датам
+        LocalDate today = LocalDate.now();
+        long overduePending = dailyPaymentRepository.countOverduePendingPayments(today);
+        long overdueFailed = dailyPaymentRepository.countOverdueFailedPayments(today);
+        
+        logger.info("Просроченные платежи (до {}):", today);
+        logger.info("  PENDING: {}", overduePending);
+        logger.info("  FAILED: {}", overdueFailed);
+        
+        // Детали платежей с превышением кредитного лимита
+        logger.info("Платежи с превышением кредитного лимита:");
+        for (DailyPayment payment : allPayments) {
+            if (payment.getNotes() != null && payment.getNotes().contains("кредитный лимит")) {
+                logger.info("  Платеж ID {}: статус={}, сумма={}, дата={}, примечания={}", 
+                           payment.getId(), payment.getStatus(), payment.getAmount(), 
+                           payment.getPaymentDate(), payment.getNotes());
+            }
+        }
+        
+        // Все FAILED платежи
+        logger.info("Все FAILED платежи:");
+        for (DailyPayment payment : allPayments) {
+            if (payment.getStatus() == DailyPayment.PaymentStatus.FAILED) {
+                logger.info("  Платеж ID {}: сумма={}, дата={}, примечания={}", 
+                           payment.getId(), payment.getAmount(), payment.getPaymentDate(), payment.getNotes());
+            }
+        }
+        
+        // Платежи по датам (последние 7 дней)
+        logger.info("Платежи за последние 7 дней:");
+        for (int i = 6; i >= 0; i--) {
+            LocalDate date = today.minusDays(i);
+            List<DailyPayment> datePayments = allPayments.stream()
+                    .filter(p -> p.getPaymentDate().equals(date))
+                    .collect(java.util.stream.Collectors.toList());
+            
+            if (!datePayments.isEmpty()) {
+                Map<DailyPayment.PaymentStatus, Long> dateStatusCounts = datePayments.stream()
+                        .collect(java.util.stream.Collectors.groupingBy(
+                            DailyPayment::getStatus, 
+                            java.util.stream.Collectors.counting()
+                        ));
+                
+                logger.info("  {}: {} платежей (PENDING: {}, PROCESSED: {}, FAILED: {})", 
+                           date, datePayments.size(),
+                           dateStatusCounts.getOrDefault(DailyPayment.PaymentStatus.PENDING, 0L),
+                           dateStatusCounts.getOrDefault(DailyPayment.PaymentStatus.PROCESSED, 0L),
+                           dateStatusCounts.getOrDefault(DailyPayment.PaymentStatus.FAILED, 0L));
+            }
+        }
+        
+        logger.info("=== КОНЕЦ ДИАГНОСТИКИ ===");
     }
 
     /**

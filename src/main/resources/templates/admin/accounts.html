@@ -3,50 +3,65 @@
 <head th:replace="~{fragments/head :: head(pageTitle='Управление счетами - Автопрокат')}"></head>
 <body>
     <div th:replace="~{fragments/header :: header}"></div>
-    <div class="container mt-4">
-        <a href="/admin/dashboard" class="btn btn-outline-primary mb-3">
-            <i class="fas fa-arrow-left"></i> Вернуться в админ-панель
-        </a>
-        <h2>Управление счетами</h2>
-        <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Номер счета</th>
-                        <th>Пользователь</th>
-                        <th>Баланс</th>
-                        <th>Начальный баланс</th>
-                        <th>Кредитный лимит</th>
-                        <th>Статус</th>
-                        <th>Действия</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="account : ${accounts}">
-                        <td th:text="${account.id}"></td>
-                        <td th:text="${account.accountNumber}"></td>
-                        <td th:text="${account.user.fullName}"></td>
-                        <td th:text="${#numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT') + ' ₽'}"></td>
-                        <td th:text="${#numbers.formatDecimal(account.initialBalance, 1, 'COMMA', 2, 'POINT') + ' ₽'}"></td>
-                        <td th:text="${#numbers.formatDecimal(account.creditLimit, 1, 'COMMA', 2, 'POINT') + ' ₽'}"></td>
-                        <td>
-                            <span th:if="${account.allowNegativeBalance}" class="badge bg-success">Активен</span>
-                            <span th:unless="${account.allowNegativeBalance}" class="badge bg-warning">Ограничен</span>
-                        </td>
-                        <td>
-                            <a th:href="@{/admin/accounts/{id}/edit(id=${account.id})}" class="btn btn-sm btn-primary">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a th:href="@{/admin/accounts/{id}(id=${account.id})}" class="btn btn-sm btn-info ms-1">
-                                <i class="fas fa-info-circle"></i>
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">
+                        <i class="fas fa-wallet"></i> Управление счетами
+                    </h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <a th:href="@{/admin/dashboard}" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left"></i> Вернуться в админ-панель
+                        </a>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Номер счета</th>
+                                <th>Пользователь</th>
+                                <th>Баланс</th>
+                                <th>Начальный баланс</th>
+                                <th>Кредитный лимит</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="account : ${accounts}">
+                                <td th:text="${account.id}"></td>
+                                <td th:text="${account.accountNumber}"></td>
+                                <td th:text="${account.user.fullName}"></td>
+                                <td th:text="${#numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT') + ' ₽'}"></td>
+                                <td th:text="${#numbers.formatDecimal(account.initialBalance, 1, 'COMMA', 2, 'POINT') + ' ₽'}"></td>
+                                <td th:text="${#numbers.formatDecimal(account.creditLimit, 1, 'COMMA', 2, 'POINT') + ' ₽'}"></td>
+                                <td>
+                                    <span th:if="${account.allowNegativeBalance}" class="badge bg-success">Активен</span>
+                                    <span th:unless="${account.allowNegativeBalance}" class="badge bg-warning">Ограничен</span>
+                                </td>
+                                <td>
+                                    <a th:href="@{/admin/accounts/{id}/edit(id=${account.id})}" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a th:href="@{/admin/accounts/{id}(id=${account.id})}" class="btn btn-sm btn-info ms-1">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
         </div>
     </div>
+
     <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html> 

@@ -45,4 +45,26 @@ public interface DailyPaymentRepository extends JpaRepository<DailyPayment, Long
     List<DailyPayment> findPaymentsByUserWithCarData(@Param("userId") Long userId);
 
     List<DailyPayment> findAllByStatus(DailyPayment.PaymentStatus status);
+
+    // Новые методы для обработки пропущенных платежей
+    @Query("SELECT dp FROM DailyPayment dp WHERE dp.status IN ('PENDING', 'FAILED') AND dp.paymentDate <= :maxDate ORDER BY dp.paymentDate ASC")
+    List<DailyPayment> findUnprocessedPaymentsUpToDate(@Param("maxDate") LocalDate maxDate);
+
+    @Query("SELECT dp FROM DailyPayment dp WHERE dp.status = 'PENDING' AND dp.paymentDate < :date ORDER BY dp.paymentDate ASC")
+    List<DailyPayment> findOverduePendingPayments(@Param("date") LocalDate date);
+
+    @Query("SELECT dp FROM DailyPayment dp WHERE dp.status = 'FAILED' AND dp.paymentDate < :date ORDER BY dp.paymentDate ASC")
+    List<DailyPayment> findOverdueFailedPayments(@Param("date") LocalDate date);
+
+    @Query("SELECT COUNT(dp) FROM DailyPayment dp WHERE dp.status = 'PENDING' AND dp.paymentDate < :date")
+    long countOverduePendingPayments(@Param("date") LocalDate date);
+
+    @Query("SELECT COUNT(dp) FROM DailyPayment dp WHERE dp.status = 'FAILED' AND dp.paymentDate < :date")
+    long countOverdueFailedPayments(@Param("date") LocalDate date);
+
+    @Query("SELECT DISTINCT dp.paymentDate FROM DailyPayment dp WHERE dp.status IN ('PENDING', 'FAILED') AND dp.paymentDate < :date ORDER BY dp.paymentDate ASC")
+    List<LocalDate> findUnprocessedPaymentDates(@Param("date") LocalDate date);
+
+    @Query("SELECT dp FROM DailyPayment dp WHERE dp.rental.status = 'ACTIVE' AND dp.paymentDate BETWEEN :startDate AND :endDate AND dp.status IN ('PENDING', 'FAILED') ORDER BY dp.paymentDate ASC")
+    List<DailyPayment> findActiveRentalsUnprocessedPaymentsInPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 } 

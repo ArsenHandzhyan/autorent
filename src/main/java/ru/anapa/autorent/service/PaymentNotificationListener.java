@@ -19,8 +19,16 @@ public class PaymentNotificationListener {
     public void handlePaymentNotification(PaymentNotificationEvent event) {
         try {
             if (event.isProcessed()) {
-                notificationService.sendPaymentProcessedNotification(event.getPayment());
+                if (event.getErrorMsg() != null && !event.getErrorMsg().isEmpty()) {
+                    // Платеж обработан, но с предупреждением (например, превышение кредитного лимита)
+                    notificationService.sendPaymentWarningNotification(event.getPayment(), event.getErrorMsg());
+                    notificationService.sendAdminPaymentWarningNotification(event.getPayment(), event.getErrorMsg());
+                } else {
+                    // Платеж обработан успешно
+                    notificationService.sendPaymentProcessedNotification(event.getPayment());
+                }
             } else {
+                // Платеж не обработан (техническая ошибка)
                 notificationService.sendPaymentFailedNotification(event.getPayment(), event.getErrorMsg());
                 notificationService.sendAdminPaymentFailureNotification(event.getPayment(), event.getErrorMsg());
             }

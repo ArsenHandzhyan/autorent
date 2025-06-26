@@ -652,7 +652,20 @@ function processPayment(paymentId) {
             [csrfHeader]: csrfToken
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        // Проверяем тип контента ответа
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('text/html')) {
+            // Если получили HTML вместо JSON, значит сессия истекла
+            throw new Error('SESSION_EXPIRED');
+        }
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             showNotification('Платеж успешно обработан', 'success');
@@ -663,7 +676,15 @@ function processPayment(paymentId) {
     })
     .catch(error => {
         console.error('Ошибка:', error);
-        showNotification('Произошла ошибка при обработке платежа', 'error');
+        
+        if (error.message === 'SESSION_EXPIRED') {
+            showNotification('Сессия истекла. Перенаправление на страницу входа...', 'warning');
+            setTimeout(() => {
+                window.location.href = '/auth/login';
+            }, 2000);
+        } else {
+            showNotification('Произошла ошибка при обработке платежа', 'error');
+        }
     });
 }
 
@@ -678,7 +699,20 @@ function retryPayment(paymentId) {
             [csrfHeader]: csrfToken
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        // Проверяем тип контента ответа
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('text/html')) {
+            // Если получили HTML вместо JSON, значит сессия истекла
+            throw new Error('SESSION_EXPIRED');
+        }
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             showNotification('Платеж успешно обработан', 'success');
@@ -689,7 +723,15 @@ function retryPayment(paymentId) {
     })
     .catch(error => {
         console.error('Ошибка:', error);
-        showNotification('Произошла ошибка при обработке платежа', 'error');
+        
+        if (error.message === 'SESSION_EXPIRED') {
+            showNotification('Сессия истекла. Перенаправление на страницу входа...', 'warning');
+            setTimeout(() => {
+                window.location.href = '/auth/login';
+            }, 2000);
+        } else {
+            showNotification('Произошла ошибка при обработке платежа', 'error');
+        }
     });
 }
 
@@ -715,9 +757,17 @@ function processAllUnprocessedPayments() {
         credentials: 'same-origin'
     })
     .then(response => {
+        // Проверяем тип контента ответа
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('text/html')) {
+            // Если получили HTML вместо JSON, значит сессия истекла
+            throw new Error('SESSION_EXPIRED');
+        }
+        
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
+        
         return response.json();
     })
     .then(data => {
@@ -735,12 +785,82 @@ function processAllUnprocessedPayments() {
         }
     })
     .catch(error => {
-        console.error('Ошибка:', error);
-        const errorMessage = 'Ошибка соединения с сервером: ' + error.message;
-        if (statusDiv) {
-            statusDiv.innerHTML = '<span class="text-danger">' + errorMessage + '</span>';
+        if (error.message === 'SESSION_EXPIRED') {
+            if (statusDiv) {
+                statusDiv.innerHTML = '<span class="text-warning">Сессия истекла. Перенаправление на страницу входа...</span>';
+            }
+            showNotification('Сессия истекла. Перенаправление на страницу входа...', 'warning');
+            setTimeout(() => window.location.href = '/login', 2000);
+        } else {
+            if (statusDiv) {
+                statusDiv.innerHTML = '<span class="text-danger">Ошибка соединения: ' + error.message + '</span>';
+            }
+            showNotification('Ошибка соединения: ' + error.message, 'error');
         }
-        showNotification(errorMessage, 'error');
+    });
+}
+
+function diagnosePayments() {
+    const statusDiv = document.getElementById('diagnoseStatus');
+    if (statusDiv) {
+        statusDiv.innerHTML = '<span class="text-info">Диагностика запущена...</span>';
+    }
+    
+    if (!csrfToken) {
+        if (statusDiv) {
+            statusDiv.innerHTML = '<span class="text-danger">CSRF-токен не найден. Пожалуйста, обновите страницу.</span>';
+        }
+        return;
+    }
+    
+    fetch('/admin/payments/diagnose', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            [csrfHeader]: csrfToken
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        // Проверяем тип контента ответа
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('text/html')) {
+            // Если получили HTML вместо JSON, значит сессия истекла
+            throw new Error('SESSION_EXPIRED');
+        }
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            if (statusDiv) {
+                statusDiv.innerHTML = '<span class="text-success">' + data.message + '</span>';
+            }
+            showNotification(data.message, 'success');
+        } else {
+            if (statusDiv) {
+                statusDiv.innerHTML = '<span class="text-danger">' + (data.error || 'Ошибка') + '</span>';
+            }
+            showNotification('Ошибка: ' + (data.error || 'Неизвестная ошибка'), 'error');
+        }
+    })
+    .catch(error => {
+        if (error.message === 'SESSION_EXPIRED') {
+            if (statusDiv) {
+                statusDiv.innerHTML = '<span class="text-warning">Сессия истекла. Перенаправление на страницу входа...</span>';
+            }
+            showNotification('Сессия истекла. Перенаправление на страницу входа...', 'warning');
+            setTimeout(() => window.location.href = '/login', 2000);
+        } else {
+            if (statusDiv) {
+                statusDiv.innerHTML = '<span class="text-danger">Ошибка соединения: ' + error.message + '</span>';
+            }
+            showNotification('Ошибка соединения: ' + error.message, 'error');
+        }
     });
 }
 
@@ -857,7 +977,20 @@ function setupAjaxForms() {
                     [csrfHeader]: csrfToken
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                // Проверяем тип контента ответа
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('text/html')) {
+                    // Если получили HTML вместо JSON, значит сессия истекла
+                    throw new Error('SESSION_EXPIRED');
+                }
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     showNotification(data.message, 'success');
@@ -870,7 +1003,15 @@ function setupAjaxForms() {
             })
             .catch(error => {
                 console.error('Ошибка:', error);
-                showNotification('Произошла ошибка при обработке запроса', 'error');
+                
+                if (error.message === 'SESSION_EXPIRED') {
+                    showNotification('Сессия истекла. Перенаправление на страницу входа...', 'warning');
+                    setTimeout(() => {
+                        window.location.href = '/auth/login';
+                    }, 2000);
+                } else {
+                    showNotification('Произошла ошибка при обработке запроса', 'error');
+                }
             });
         });
     });
@@ -975,6 +1116,8 @@ window.showRejectForm = showRejectForm;
 window.hideRejectForm = hideRejectForm;
 window.processPayment = processPayment;
 window.retryPayment = retryPayment;
+window.processAllUnprocessedPayments = processAllUnprocessedPayments;
+window.diagnosePayments = diagnosePayments;
 
 // ========================================
 // CSS АНИМАЦИИ
@@ -1872,6 +2015,7 @@ function initResetPasswordForm() {
 window.processPayment = processPayment;
 window.retryPayment = retryPayment;
 window.processAllUnprocessedPayments = processAllUnprocessedPayments;
+window.diagnosePayments = diagnosePayments;
 window.showCancelForm = showCancelForm;
 window.hideCancelForm = hideCancelForm;
 window.showRejectForm = showRejectForm;
