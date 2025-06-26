@@ -67,4 +67,9 @@ public interface DailyPaymentRepository extends JpaRepository<DailyPayment, Long
 
     @Query("SELECT dp FROM DailyPayment dp WHERE dp.rental.status = 'ACTIVE' AND dp.paymentDate BETWEEN :startDate AND :endDate AND dp.status IN ('PENDING', 'FAILED') ORDER BY dp.paymentDate ASC")
     List<DailyPayment> findActiveRentalsUnprocessedPaymentsInPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    // Методы для TestDataService
+    long countByStatus(DailyPayment.PaymentStatus status);
+    
+    List<DailyPayment> findTop10ByOrderByPaymentDateDesc();
 } 

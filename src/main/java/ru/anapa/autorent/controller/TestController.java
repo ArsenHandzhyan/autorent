@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.anapa.autorent.service.DailyPaymentService;
+import ru.anapa.autorent.model.DailyPayment;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -132,6 +133,57 @@ public class TestController {
             return result.toString();
         } catch (Exception e) {
             return "ERROR: " + e.getMessage();
+        }
+    }
+
+    /**
+     * Тестовый эндпоинт для обработки конкретного платежа по ID
+     */
+    @GetMapping("/test-process-payment/{paymentId}")
+    public String testProcessSpecificPayment(@PathVariable Long paymentId) {
+        try {
+            StringBuilder result = new StringBuilder();
+            result.append("=== ОБРАБОТКА ПЛАТЕЖА ID ").append(paymentId).append(" ===\n");
+            
+            // Получаем платеж
+            DailyPayment payment = dailyPaymentService.getPaymentById(paymentId);
+            if (payment == null) {
+                return "ERROR: Платеж с ID " + paymentId + " не найден";
+            }
+            
+            result.append("Найден платеж:\n");
+            result.append("  ID: ").append(payment.getId()).append("\n");
+            result.append("  Статус: ").append(payment.getStatus()).append("\n");
+            result.append("  Сумма: ").append(payment.getAmount()).append("\n");
+            result.append("  Дата: ").append(payment.getPaymentDate()).append("\n");
+            result.append("  Примечания: ").append(payment.getNotes()).append("\n");
+            
+            if (payment.getAccount() != null) {
+                result.append("  Счет ID: ").append(payment.getAccount().getId()).append("\n");
+                result.append("  Баланс: ").append(payment.getAccount().getBalance()).append("\n");
+                result.append("  Кредитный лимит: ").append(payment.getAccount().getCreditLimit()).append("\n");
+                result.append("  Разрешен минус: ").append(payment.getAccount().isAllowNegativeBalance()).append("\n");
+            }
+            
+            // Обрабатываем платеж
+            result.append("\nНачинаем обработку...\n");
+            dailyPaymentService.processSpecificPayment(paymentId);
+            
+            // Получаем обновленный платеж
+            DailyPayment updatedPayment = dailyPaymentService.getPaymentById(paymentId);
+            result.append("\nРезультат обработки:\n");
+            result.append("  Новый статус: ").append(updatedPayment.getStatus()).append("\n");
+            result.append("  Новые примечания: ").append(updatedPayment.getNotes()).append("\n");
+            
+            if (updatedPayment.getAccount() != null) {
+                result.append("  Новый баланс: ").append(updatedPayment.getAccount().getBalance()).append("\n");
+            }
+            
+            result.append("\nПроверьте логи сервера для детальной информации.");
+            return result.toString();
+            
+        } catch (Exception e) {
+            return "ERROR: " + e.getMessage() + "\nStacktrace: " + e.getStackTrace()[0];
         }
     }
 } 

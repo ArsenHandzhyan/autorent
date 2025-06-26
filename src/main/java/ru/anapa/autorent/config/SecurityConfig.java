@@ -51,7 +51,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                    .ignoringRequestMatchers("/api/**") // Disable CSRF for API endpoints
+                    .ignoringRequestMatchers("/api/**", "/test-data/**", "/simple-test/**") // Disable CSRF for API and test endpoints
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // Enable CSRF for web forms
                 )
                 .authorizeHttpRequests(authorize -> authorize
@@ -60,7 +60,8 @@ public class SecurityConfig {
                         .requestMatchers("/cars", "/cars/search", "/cars/{id}").permitAll()
                         .requestMatchers("/about", "/contact", "/terms").permitAll() // Разрешаем доступ к статическим страницам
                         .requestMatchers("/test-payments", "/test-diagnose", "/test-status", "/test-startup-payments", 
-                                       "/test-period-payments", "/test-date-payments/**", "/test-full-process").permitAll() // Тестовые эндпоинты
+                                       "/test-period-payments", "/test-date-payments/**", "/test-full-process", 
+                                       "/test-process-payment/**", "/test-data/**", "/simple-test/**").permitAll() // Тестовые эндпоинты
                         .requestMatchers("/admin/payments/diagnose-get", "/admin/payments/process-all-get", "/admin/payments/test-process-all").permitAll() // Тестовые эндпоинты
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Доступ только для администраторов
                         .anyRequest().authenticated()

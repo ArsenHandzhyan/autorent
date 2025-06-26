@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.anapa.autorent.model.*;
 import ru.anapa.autorent.repository.DailyPaymentRepository;
 import ru.anapa.autorent.repository.RentalRepository;
+import org.springframework.context.event.EventListener;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -132,54 +134,128 @@ public class DailyPaymentService {
             
             // Валидируем платеж
             PaymentValidationResult validation = validatePayment(account, paymentAmount);
-            
-            if (validation.isValid()) {
-                // Платеж валиден - списываем средства
+            logger.info("Результат валидации платежа ID {}: valid={}, error={}", payment.getId(), validation.isValid(), validation.getErrorMessage());
+
+            // Списываем средства всегда, независимо от результата валидации
+            try {
                 accountService.updateBalance(account.getUser().getId(), paymentAmount.negate());
+                logger.info("Списание средств прошло успешно для платежа ID {}. Сумма: {}. Новый баланс: {}", payment.getId(), paymentAmount, newBalance);
+            } catch (Exception ex) {
+                logger.error("Техническая ошибка при списании средств для платежа ID {}: {}", payment.getId(), ex.getMessage(), ex);
+                // Техническая ошибка — платеж FAILED
+                payment.setStatus(DailyPayment.PaymentStatus.FAILED);
+                payment.setProcessedAt(LocalDateTime.now());
+                payment.setNotes("Техническая ошибка при списании: " + ex.getMessage());
+                dailyPaymentRepository.save(payment);
+                eventPublisher.publishEvent(new PaymentNotificationEvent(payment, false, "Техническая ошибка: " + ex.getMessage()));
+                return;
+            }
+
+            // Если есть бизнес-предупреждение — пишем в notes, но платеж PROCESSED
+            if (validation.isValid()) {
                 payment.setStatus(DailyPayment.PaymentStatus.PROCESSED);
                 payment.setProcessedAt(LocalDateTime.now());
                 payment.setNotes("Платеж успешно обработан. Новый баланс: " + newBalance + " ₽");
                 dailyPaymentRepository.save(payment);
-                
-                logger.info("Платеж ID {} успешно обработан. Списано: {}, новый баланс: {}", 
-                           payment.getId(), paymentAmount, newBalance);
-                
-                // Публикуем событие успешного платежа
+                logger.info("Платеж ID {} успешно обработан. Списано: {}, новый баланс: {}", payment.getId(), paymentAmount, newBalance);
                 eventPublisher.publishEvent(new PaymentNotificationEvent(payment, true, null));
-                
             } else {
-                // Платеж не прошел валидацию, но средства списываем в любом случае
-                // (это может быть превышение кредитного лимита или недостаток средств)
-                accountService.updateBalance(account.getUser().getId(), paymentAmount.negate());
                 payment.setStatus(DailyPayment.PaymentStatus.PROCESSED);
                 payment.setProcessedAt(LocalDateTime.now());
-                payment.setNotes("Платеж обработан с предупреждением: " + validation.getErrorMessage() + 
-                               ". Новый баланс: " + newBalance + " ₽");
+                payment.setNotes("Платеж обработан с предупреждением: " + validation.getErrorMessage() + ". Новый баланс: " + newBalance + " ₽");
                 dailyPaymentRepository.save(payment);
-                
-                logger.warn("Платеж ID {} обработан с предупреждением: {}. Списано: {}, новый баланс: {}", 
-                           payment.getId(), validation.getErrorMessage(), paymentAmount, newBalance);
-                
-                // Публикуем событие платежа с предупреждением
+                logger.warn("Платеж ID {} обработан с предупреждением: {}. Списано: {}, новый баланс: {}", payment.getId(), validation.getErrorMessage(), paymentAmount, newBalance);
                 eventPublisher.publishEvent(new PaymentNotificationEvent(payment, true, validation.getErrorMessage()));
             }
-            
         } catch (Exception e) {
-            logger.error("Техническая ошибка при обработке платежа ID {}: {}", payment.getId(), e.getMessage());
-            
-            // Отмечаем платеж как неудачный из-за технической ошибки
+            logger.error("Техническая ошибка при обработке платежа ID {}: {}. Stacktrace:", payment.getId(), e.getMessage(), e);
+            logger.error("Детали платежа: ID={}, amount={}, accountId={}, userId={}, status={}, notes={}", payment.getId(), payment.getAmount(), payment.getAccount() != null ? payment.getAccount().getId() : null, payment.getAccount() != null && payment.getAccount().getUser() != null ? payment.getAccount().getUser().getId() : null, payment.getStatus(), payment.getNotes());
             payment.setStatus(DailyPayment.PaymentStatus.FAILED);
             payment.setProcessedAt(LocalDateTime.now());
             payment.setNotes("Техническая ошибка: " + e.getMessage());
             dailyPaymentRepository.save(payment);
-            
-            // Публикуем событие технической ошибки
             eventPublisher.publishEvent(new PaymentNotificationEvent(payment, false, "Техническая ошибка: " + e.getMessage()));
         }
     }
 
     /**
-     * Валидация платежа с учетом настроек счета
+     * Улучшенная диагностика всех платежей с детальной информацией
+     */
+    public void diagnoseAllPayments() {
+        logger.info("=== ДЕТАЛЬНАЯ ДИАГНОСТИКА ВСЕХ ПЛАТЕЖЕЙ ===");
+        
+        List<DailyPayment> allPayments = dailyPaymentRepository.findAll();
+        logger.info("Всего платежей в системе: {}", allPayments.size());
+        
+        // Статистика по статусам
+        Map<DailyPayment.PaymentStatus, Long> statusCounts = allPayments.stream()
+                .collect(java.util.stream.Collectors.groupingBy(
+                    DailyPayment::getStatus, 
+                    java.util.stream.Collectors.counting()
+                ));
+        
+        logger.info("Распределение по статусам:");
+        for (DailyPayment.PaymentStatus status : DailyPayment.PaymentStatus.values()) {
+            long count = statusCounts.getOrDefault(status, 0L);
+            logger.info("  {}: {}", status, count);
+        }
+        
+        // Статистика по датам
+        LocalDate today = LocalDate.now();
+        long overduePending = dailyPaymentRepository.countOverduePendingPayments(today);
+        long overdueFailed = dailyPaymentRepository.countOverdueFailedPayments(today);
+        
+        logger.info("Просроченные платежи (до {}):", today);
+        logger.info("  PENDING: {}", overduePending);
+        logger.info("  FAILED: {}", overdueFailed);
+        
+        // Детали платежей с превышением кредитного лимита
+        logger.info("Платежи с превышением кредитного лимита:");
+        for (DailyPayment payment : allPayments) {
+            if (payment.getNotes() != null && payment.getNotes().contains("кредитный лимит")) {
+                logger.info("  Платеж ID {}: статус={}, сумма={}, дата={}, примечания={}", 
+                           payment.getId(), payment.getStatus(), payment.getAmount(), 
+                           payment.getPaymentDate(), payment.getNotes());
+            }
+        }
+        
+        // Все FAILED платежи
+        logger.info("Все FAILED платежи:");
+        for (DailyPayment payment : allPayments) {
+            if (payment.getStatus() == DailyPayment.PaymentStatus.FAILED) {
+                logger.info("  Платеж ID {}: сумма={}, дата={}, примечания={}", 
+                           payment.getId(), payment.getAmount(), payment.getPaymentDate(), payment.getNotes());
+            }
+        }
+        
+        // Платежи по датам (последние 7 дней)
+        logger.info("Платежи за последние 7 дней:");
+        for (int i = 6; i >= 0; i--) {
+            LocalDate date = today.minusDays(i);
+            List<DailyPayment> datePayments = allPayments.stream()
+                    .filter(p -> p.getPaymentDate().equals(date))
+                    .collect(java.util.stream.Collectors.toList());
+            
+            if (!datePayments.isEmpty()) {
+                Map<DailyPayment.PaymentStatus, Long> dateStatusCounts = datePayments.stream()
+                        .collect(java.util.stream.Collectors.groupingBy(
+                            DailyPayment::getStatus, 
+                            java.util.stream.Collectors.counting()
+                        ));
+                
+                logger.info("  {}: {} платежей (PENDING: {}, PROCESSED: {}, FAILED: {})", 
+                           date, datePayments.size(),
+                           dateStatusCounts.getOrDefault(DailyPayment.PaymentStatus.PENDING, 0L),
+                           dateStatusCounts.getOrDefault(DailyPayment.PaymentStatus.PROCESSED, 0L),
+                           dateStatusCounts.getOrDefault(DailyPayment.PaymentStatus.FAILED, 0L));
+            }
+        }
+        
+        logger.info("=== КОНЕЦ ДИАГНОСТИКИ ===");
+    }
+
+    /**
+     * Валидация платежа с учетом настроек счета и уведомлений
      */
     private PaymentValidationResult validatePayment(Account account, BigDecimal paymentAmount) {
         BigDecimal currentBalance = account.getBalance();
@@ -191,6 +267,8 @@ public class DailyPaymentService {
             if (account.getCreditLimit().compareTo(BigDecimal.ZERO) > 0) {
                 BigDecimal availableCredit = account.getBalance().add(account.getCreditLimit());
                 if (availableCredit.compareTo(paymentAmount) < 0) {
+                    // Отправляем уведомление администратору и пользователю о превышении лимита
+                    sendCreditLimitExceededNotifications(account, paymentAmount, availableCredit);
                     return PaymentValidationResult.failed(
                         "Превышен кредитный лимит. Доступно: " + availableCredit + " ₽, требуется: " + paymentAmount + " ₽"
                     );
@@ -201,12 +279,68 @@ public class DailyPaymentService {
         } else {
             // Отрицательный баланс не разрешен
             if (currentBalance.compareTo(paymentAmount) < 0) {
+                // Отправляем уведомление о недостатке средств
+                sendInsufficientFundsNotifications(account, paymentAmount, currentBalance);
                 return PaymentValidationResult.failed(
                     "Недостаточно средств на счете. Баланс: " + currentBalance + " ₽, требуется: " + paymentAmount + " ₽. " +
                     "Обратитесь к администратору для пополнения счета или разрешения отрицательного баланса."
                 );
             }
             return PaymentValidationResult.success();
+        }
+    }
+
+    /**
+     * Отправляет уведомления о превышении кредитного лимита
+     */
+    private void sendCreditLimitExceededNotifications(Account account, BigDecimal paymentAmount, BigDecimal availableCredit) {
+        try {
+            User user = account.getUser();
+            String message = String.format(
+                "Превышен кредитный лимит для пользователя %s %s (ID: %d). " +
+                "Требуется: %s ₽, доступно: %s ₽. " +
+                "Средства будут списаны, но необходимо пополнить счет.",
+                user.getFirstName(), user.getLastName(), user.getId(),
+                paymentAmount, availableCredit
+            );
+            
+            // Уведомление администратора через существующий метод
+            notificationService.sendAdminPaymentWarningNotification(null, message);
+            
+            // Уведомление пользователя через email
+            notificationService.sendPaymentWarningNotification(null, 
+                "Ваш кредитный лимит превышен. Средства будут списаны, но необходимо пополнить счет.");
+            
+            logger.warn("Отправлены уведомления о превышении кредитного лимита для пользователя ID {}", user.getId());
+        } catch (Exception e) {
+            logger.error("Ошибка при отправке уведомлений о превышении кредитного лимита: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * Отправляет уведомления о недостатке средств
+     */
+    private void sendInsufficientFundsNotifications(Account account, BigDecimal paymentAmount, BigDecimal currentBalance) {
+        try {
+            User user = account.getUser();
+            String message = String.format(
+                "Недостаточно средств для пользователя %s %s (ID: %d). " +
+                "Баланс: %s ₽, требуется: %s ₽. " +
+                "Средства будут списаны, но необходимо пополнить счет.",
+                user.getFirstName(), user.getLastName(), user.getId(),
+                currentBalance, paymentAmount
+            );
+            
+            // Уведомление администратора через существующий метод
+            notificationService.sendAdminPaymentWarningNotification(null, message);
+            
+            // Уведомление пользователя через email
+            notificationService.sendPaymentWarningNotification(null, 
+                "На вашем счете недостаточно средств. Средства будут списаны, но необходимо пополнить счет.");
+            
+            logger.warn("Отправлены уведомления о недостатке средств для пользователя ID {}", user.getId());
+        } catch (Exception e) {
+            logger.error("Ошибка при отправке уведомлений о недостатке средств: {}", e.getMessage());
         }
     }
 
@@ -306,15 +440,35 @@ public class DailyPaymentService {
      */
     @Transactional
     public void processSpecificPayment(Long paymentId) {
+        logger.info("=== ОБРАБОТКА КОНКРЕТНОГО ПЛАТЕЖА ID {} ===", paymentId);
+        
         DailyPayment payment = dailyPaymentRepository.findById(paymentId)
                 .orElseThrow(() -> new RuntimeException("Платеж с ID " + paymentId + " не найден"));
         
-        if (payment.getStatus() != DailyPayment.PaymentStatus.PENDING && 
-            payment.getStatus() != DailyPayment.PaymentStatus.FAILED) {
-            throw new RuntimeException("Можно обработать только ожидающий или неудачный платеж");
+        logger.info("Найден платеж: ID={}, статус={}, сумма={}, дата={}", 
+                   payment.getId(), payment.getStatus(), payment.getAmount(), payment.getPaymentDate());
+        
+        if (payment.getStatus() == DailyPayment.PaymentStatus.PROCESSED) {
+            logger.warn("Платеж ID {} уже обработан, пропускаем", paymentId);
+            return;
         }
         
-        processPayment(payment);
+        if (payment.getStatus() != DailyPayment.PaymentStatus.PENDING && 
+            payment.getStatus() != DailyPayment.PaymentStatus.FAILED) {
+            logger.warn("Платеж ID {} имеет статус {}, который не подлежит обработке", 
+                       paymentId, payment.getStatus());
+            return;
+        }
+        
+        try {
+            // Обрабатываем платеж в отдельной транзакции
+            processPaymentInNewTransaction(payment);
+            logger.info("Платеж ID {} успешно обработан", paymentId);
+            
+        } catch (Exception e) {
+            logger.error("Ошибка при обработке платежа ID {}: {}", paymentId, e.getMessage(), e);
+            throw new RuntimeException("Не удалось обработать платеж ID " + paymentId + ": " + e.getMessage(), e);
+        }
     }
 
     /**
@@ -438,12 +592,10 @@ public class DailyPaymentService {
                 logger.debug("Обработка платежа ID {} (дата: {}, статус: {}, сумма: {})", 
                            payment.getId(), payment.getPaymentDate(), payment.getStatus(), payment.getAmount());
                 
-                // Проверяем, что аренда все еще активна
+                // Логируем статус аренды, но не пропускаем платежи
                 if (payment.getRental().getStatus() != RentalStatus.ACTIVE) {
-                    logger.warn("Пропускаем платеж ID {} - аренда {} не активна (статус: {})", 
+                    logger.warn("Обрабатываем платеж ID {} для неактивной аренды {} (статус: {})", 
                                payment.getId(), payment.getRental().getId(), payment.getRental().getStatus());
-                    skippedCount++;
-                    continue;
                 }
                 
                 // Обрабатываем каждый платеж в отдельной транзакции
@@ -477,7 +629,14 @@ public class DailyPaymentService {
     public void processMissedPaymentsForPeriod(LocalDate startDate, LocalDate endDate) {
         logger.info("=== ОБРАБОТКА ПРОПУЩЕННЫХ ПЛАТЕЖЕЙ ЗА ПЕРИОД {} - {} ===", startDate, endDate);
         
-        List<DailyPayment> missedPayments = dailyPaymentRepository.findActiveRentalsUnprocessedPaymentsInPeriod(startDate, endDate);
+        // Получаем все необработанные платежи за период, независимо от статуса аренды
+        List<DailyPayment> allPayments = dailyPaymentRepository.findAll();
+        List<DailyPayment> missedPayments = allPayments.stream()
+                .filter(p -> p.getPaymentDate().compareTo(startDate) >= 0 && 
+                           p.getPaymentDate().compareTo(endDate) <= 0 &&
+                           (p.getStatus() == DailyPayment.PaymentStatus.PENDING || 
+                            p.getStatus() == DailyPayment.PaymentStatus.FAILED))
+                .collect(java.util.stream.Collectors.toList());
         
         logger.info("Найдено {} пропущенных платежей за период", missedPayments.size());
         
@@ -491,8 +650,9 @@ public class DailyPaymentService {
         
         for (DailyPayment payment : missedPayments) {
             try {
-                logger.info("Обработка пропущенного платежа ID {} (дата: {}, сумма: {})", 
-                           payment.getId(), payment.getPaymentDate(), payment.getAmount());
+                logger.info("Обработка пропущенного платежа ID {} (дата: {}, сумма: {}, статус аренды: {})", 
+                           payment.getId(), payment.getPaymentDate(), payment.getAmount(), 
+                           payment.getRental().getStatus());
                 
                 processPaymentInNewTransaction(payment);
                 processedCount++;
@@ -513,10 +673,41 @@ public class DailyPaymentService {
     }
 
     /**
-     * Диагностика и обработка всех пропущенных платежей при старте приложения
+     * Создает платежи на день вперед при создании новой аренды
      */
+    @Transactional
+    public void createAdvancePaymentForRental(Rental rental) {
+        logger.info("Создание авансового платежа для аренды ID {}", rental.getId());
+        
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        
+        // Проверяем, не создан ли уже платеж на завтра
+        Optional<DailyPayment> existingPayment = dailyPaymentRepository.findByRentalAndPaymentDate(rental, tomorrow);
+        if (existingPayment.isPresent()) {
+            logger.info("Платеж на {} для аренды {} уже существует", tomorrow, rental.getId());
+            return;
+        }
+        
+        // Создаем платеж на завтра
+        DailyPayment advancePayment = createDailyPayment(rental, tomorrow);
+        logger.info("Создан авансовый платеж ID {} на сумму {} для аренды {} на дату {}", 
+                   advancePayment.getId(), advancePayment.getAmount(), rental.getId(), tomorrow);
+        
+        // Сразу обрабатываем авансовый платеж
+        try {
+            processPayment(advancePayment);
+            logger.info("Авансовый платеж ID {} успешно обработан", advancePayment.getId());
+        } catch (Exception e) {
+            logger.error("Ошибка при обработке авансового платежа ID {}: {}", advancePayment.getId(), e.getMessage());
+        }
+    }
+
+    /**
+     * Обрабатывает все пропущенные платежи при запуске сервиса
+     */
+    @EventListener(ApplicationReadyEvent.class)
     public void processAllMissedPaymentsOnStartup() {
-        logger.info("=== ОБРАБОТКА ПРОПУЩЕННЫХ ПЛАТЕЖЕЙ ПРИ СТАРТЕ ПРИЛОЖЕНИЯ ===");
+        logger.info("=== ОБРАБОТКА ПРОПУЩЕННЫХ ПЛАТЕЖЕЙ ПРИ СТАРТЕ СЕРВИСА ===");
         
         LocalDate today = LocalDate.now();
         
@@ -536,83 +727,11 @@ public class DailyPaymentService {
             processMissedPaymentsForPeriod(date, date);
         }
         
+        // Обрабатываем все текущие необработанные платежи
+        logger.info("Обработка всех текущих необработанных платежей");
+        processAllUnprocessedPayments();
+        
         logger.info("Обработка пропущенных платежей при старте завершена");
-    }
-
-    /**
-     * Улучшенная диагностика всех платежей с детальной информацией
-     */
-    public void diagnoseAllPayments() {
-        logger.info("=== ДЕТАЛЬНАЯ ДИАГНОСТИКА ВСЕХ ПЛАТЕЖЕЙ ===");
-        
-        List<DailyPayment> allPayments = dailyPaymentRepository.findAll();
-        logger.info("Всего платежей в системе: {}", allPayments.size());
-        
-        // Статистика по статусам
-        Map<DailyPayment.PaymentStatus, Long> statusCounts = allPayments.stream()
-                .collect(java.util.stream.Collectors.groupingBy(
-                    DailyPayment::getStatus, 
-                    java.util.stream.Collectors.counting()
-                ));
-        
-        logger.info("Распределение по статусам:");
-        for (DailyPayment.PaymentStatus status : DailyPayment.PaymentStatus.values()) {
-            long count = statusCounts.getOrDefault(status, 0L);
-            logger.info("  {}: {}", status, count);
-        }
-        
-        // Статистика по датам
-        LocalDate today = LocalDate.now();
-        long overduePending = dailyPaymentRepository.countOverduePendingPayments(today);
-        long overdueFailed = dailyPaymentRepository.countOverdueFailedPayments(today);
-        
-        logger.info("Просроченные платежи (до {}):", today);
-        logger.info("  PENDING: {}", overduePending);
-        logger.info("  FAILED: {}", overdueFailed);
-        
-        // Детали платежей с превышением кредитного лимита
-        logger.info("Платежи с превышением кредитного лимита:");
-        for (DailyPayment payment : allPayments) {
-            if (payment.getNotes() != null && payment.getNotes().contains("кредитный лимит")) {
-                logger.info("  Платеж ID {}: статус={}, сумма={}, дата={}, примечания={}", 
-                           payment.getId(), payment.getStatus(), payment.getAmount(), 
-                           payment.getPaymentDate(), payment.getNotes());
-            }
-        }
-        
-        // Все FAILED платежи
-        logger.info("Все FAILED платежи:");
-        for (DailyPayment payment : allPayments) {
-            if (payment.getStatus() == DailyPayment.PaymentStatus.FAILED) {
-                logger.info("  Платеж ID {}: сумма={}, дата={}, примечания={}", 
-                           payment.getId(), payment.getAmount(), payment.getPaymentDate(), payment.getNotes());
-            }
-        }
-        
-        // Платежи по датам (последние 7 дней)
-        logger.info("Платежи за последние 7 дней:");
-        for (int i = 6; i >= 0; i--) {
-            LocalDate date = today.minusDays(i);
-            List<DailyPayment> datePayments = allPayments.stream()
-                    .filter(p -> p.getPaymentDate().equals(date))
-                    .collect(java.util.stream.Collectors.toList());
-            
-            if (!datePayments.isEmpty()) {
-                Map<DailyPayment.PaymentStatus, Long> dateStatusCounts = datePayments.stream()
-                        .collect(java.util.stream.Collectors.groupingBy(
-                            DailyPayment::getStatus, 
-                            java.util.stream.Collectors.counting()
-                        ));
-                
-                logger.info("  {}: {} платежей (PENDING: {}, PROCESSED: {}, FAILED: {})", 
-                           date, datePayments.size(),
-                           dateStatusCounts.getOrDefault(DailyPayment.PaymentStatus.PENDING, 0L),
-                           dateStatusCounts.getOrDefault(DailyPayment.PaymentStatus.PROCESSED, 0L),
-                           dateStatusCounts.getOrDefault(DailyPayment.PaymentStatus.FAILED, 0L));
-            }
-        }
-        
-        logger.info("=== КОНЕЦ ДИАГНОСТИКИ ===");
     }
 
     /**
