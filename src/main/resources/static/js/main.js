@@ -57,6 +57,11 @@ document.addEventListener('DOMContentLoaded', function() {
     initCarEditPage();
     initPasswordReset();
     
+    // Новые функции для автомобилей
+    initCarImageUpload();
+    initCarFormValidation();
+    initCarImageManagement();
+    
     console.log('AutoRent: Приложение инициализировано');
 });
 
@@ -2024,4 +2029,211 @@ window.updateCarStatus = updateCarStatus;
 window.toggleMaintenance = toggleMaintenance;
 window.toggleUserStatus = toggleUserStatus;
 window.rotateImage = rotateImage;
-window.deleteImage = deleteImage; 
+window.deleteImage = deleteImage;
+
+// ========================================
+// ЗАГРУЗКА ИЗОБРАЖЕНИЙ АВТОМОБИЛЕЙ
+// ========================================
+
+function initCarImageUpload() {
+    const imageInput = document.getElementById('newImages');
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    
+    if (!imageInput || !previewContainer) return;
+    
+    imageInput.addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        
+        // Очищаем предыдущие превью
+        previewContainer.innerHTML = '';
+        
+        files.forEach((file, index) => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'image-preview-item';
+                
+                reader.onload = function(e) {
+                    previewDiv.innerHTML = `
+                        <img src="${e.target.result}" alt="Превью ${index + 1}" class="img-thumbnail">
+                        <div class="image-preview-info">
+                            <span class="file-name">${file.name}</span>
+                            <span class="file-size">${formatFileSize(file.size)}</span>
+                            ${index === 0 ? '<span class="main-indicator">Основное фото</span>' : ''}
+                        </div>
+                        <button type="button" class="btn-remove-image" onclick="removeImagePreview(this)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                };
+                
+                reader.readAsDataURL(file);
+                previewContainer.appendChild(previewDiv);
+            }
+        });
+    });
+}
+
+function removeImagePreview(button) {
+    const previewItem = button.closest('.image-preview-item');
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    
+    if (previewItem) {
+        previewItem.remove();
+        
+        // Обновляем индикаторы основного фото
+        const remainingPreviews = previewContainer.querySelectorAll('.image-preview-item');
+        remainingPreviews.forEach((preview, index) => {
+            const mainIndicator = preview.querySelector('.main-indicator');
+            if (index === 0) {
+                if (!mainIndicator) {
+                    const info = preview.querySelector('.image-preview-info');
+                    const indicator = document.createElement('span');
+                    indicator.className = 'main-indicator';
+                    indicator.textContent = 'Основное фото';
+                    info.appendChild(indicator);
+                }
+            } else {
+                if (mainIndicator) {
+                    mainIndicator.remove();
+                }
+            }
+        });
+    }
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// ========================================
+// ВАЛИДАЦИЯ ФОРМ АВТОМОБИЛЕЙ
+// ========================================
+
+function initCarFormValidation() {
+    const carForm = document.querySelector('.car-form');
+    if (!carForm) return;
+    
+    const dailyRateInput = document.getElementById('dailyRate');
+    const licensePlateInput = document.getElementById('licensePlate');
+    const yearInput = document.getElementById('year');
+    
+    // Валидация стоимости аренды
+    if (dailyRateInput) {
+        dailyRateInput.addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            if (value <= 0) {
+                this.setCustomValidity('Стоимость аренды должна быть больше нуля');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    }
+    
+    // Валидация номера автомобиля
+    if (licensePlateInput) {
+        licensePlateInput.addEventListener('input', function() {
+            const value = this.value.toUpperCase();
+            this.value = value;
+            
+            // Проверяем формат номера
+            const plateRegex = /^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\d{2,3}$/;
+            if (value && !plateRegex.test(value)) {
+                this.setCustomValidity('Неверный формат номера. Пример: А000АА000');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    }
+    
+    // Валидация года выпуска
+    if (yearInput) {
+        yearInput.addEventListener('input', function() {
+            const value = parseInt(this.value);
+            const currentYear = new Date().getFullYear();
+            
+            if (value < 1900 || value > currentYear + 1) {
+                this.setCustomValidity(`Год должен быть между 1900 и ${currentYear + 1}`);
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    }
+    
+    // Валидация при отправке формы
+    carForm.addEventListener('submit', function(e) {
+        if (!this.checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Показываем ошибки
+            showNotification('Пожалуйста, исправьте ошибки в форме', 'error');
+        }
+        
+        this.classList.add('was-validated');
+    });
+}
+
+// ========================================
+// УПРАВЛЕНИЕ ИЗОБРАЖЕНИЯМИ В РЕДАКТИРОВАНИИ
+// ========================================
+
+function initCarImageManagement() {
+    // Поворот изображений
+    const rotateButtons = document.querySelectorAll('.rotate-left, .rotate-right');
+    rotateButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const imageId = this.getAttribute('data-image-id');
+            const direction = this.classList.contains('rotate-left') ? 'left' : 'right';
+            rotateCarImage(imageId, direction);
+        });
+    });
+    
+    // Удаление изображений
+    const deleteButtons = document.querySelectorAll('.delete-image');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const imageId = this.getAttribute('data-image-id');
+            if (confirm('Вы уверены, что хотите удалить это изображение?')) {
+                deleteCarImage(imageId);
+            }
+        });
+    });
+}
+
+// ========================================
+// ОБНОВЛЕНИЕ ИНИЦИАЛИЗАЦИИ
+// ========================================
+
+// Обновляем основную функцию инициализации
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('AutoRent: Инициализация приложения...');
+    
+    // Инициализация всех компонентов
+    initCSRF();
+    initNavigation();
+    initAnimations();
+    initFormValidation();
+    initCarGallery();
+    initAdminDashboard();
+    initRentalManagement();
+    initPaymentSystem();
+    initNotificationSystem();
+    initAccountPages();
+    initCarDeletionConfirmation();
+    initRejectCancellationForm();
+    initUserStatusToggle();
+    initCarEditPage();
+    initPasswordReset();
+    
+    // Новые функции для автомобилей
+    initCarImageUpload();
+    initCarFormValidation();
+    initCarImageManagement();
+    
+    console.log('AutoRent: Приложение инициализировано');
+}); 

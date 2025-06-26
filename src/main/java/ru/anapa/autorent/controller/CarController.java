@@ -72,15 +72,21 @@ public class CarController {
         }
 
         try {
-            if (carDto.getDailyRate() == null) {
-                carDto.setDailyRate(BigDecimal.ZERO);
+            // Валидация обязательных полей
+            if (carDto.getDailyRate() == null || carDto.getDailyRate().compareTo(BigDecimal.ZERO) <= 0) {
+                ModelAndView mav = new ModelAndView("cars/add");
+                mav.addObject("car", carDto);
+                mav.addObject("error", "Стоимость аренды должна быть больше нуля");
+                return mav;
             }
+
             Car car = new Car();
             car.setBrand(carDto.getBrand());
             car.setModel(carDto.getModel());
             car.setYear(carDto.getYear());
             car.setLicensePlate(carDto.getLicensePlate());
             car.setDailyRate(carDto.getDailyRate());
+            car.setPricePerDay(carDto.getDailyRate()); // Устанавливаем pricePerDay равным dailyRate
             car.setDescription(carDto.getDescription());
             car.setRegistrationNumber(carDto.getLicensePlate());
             car.setAvailable(true);
@@ -127,6 +133,7 @@ public class CarController {
             mav.addObject("success", "Автомобиль успешно добавлен");
             return mav;
         } catch (Exception e) {
+            logger.error("Ошибка при добавлении автомобиля: {}", e.getMessage(), e);
             ModelAndView mav = new ModelAndView("cars/add");
             mav.addObject("car", carDto);
             mav.addObject("error", "Ошибка при добавлении автомобиля: " + e.getMessage());
@@ -358,8 +365,13 @@ public class CarController {
         }
 
         try {
-            if (carDto.getDailyRate() == null) {
-                carDto.setDailyRate(BigDecimal.ZERO);
+            // Валидация обязательных полей
+            if (carDto.getDailyRate() == null || carDto.getDailyRate().compareTo(BigDecimal.ZERO) <= 0) {
+                ModelAndView mav = new ModelAndView("cars/edit");
+                mav.addObject("car", carDto);
+                mav.addObject("carId", id);
+                mav.addObject("error", "Стоимость аренды должна быть больше нуля");
+                return mav;
             }
 
             // Нормализация номера автомобиля
@@ -375,6 +387,7 @@ public class CarController {
             car.setYear(carDto.getYear());
             car.setLicensePlate(normalizedLicensePlate);
             car.setDailyRate(carDto.getDailyRate());
+            car.setPricePerDay(carDto.getDailyRate()); // Устанавливаем pricePerDay равным dailyRate
             car.setDescription(carDto.getDescription());
             car.setTransmission(carDto.getTransmission());
             car.setFuelType(carDto.getFuelType());
