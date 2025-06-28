@@ -118,10 +118,7 @@
                                             <td class="amount" th:text="${#numbers.formatDecimal(payment.amount, 1, 'WHITESPACE', 2, 'POINT') + ' ₽'}">1000 ₽</td>
                                             <td>
                                                 <span class="payment-status"
-                                                      th:text="${payment.status == 'PROCESSED' ? 'Обработано' :
-                                                                   (payment.status == 'PENDING' ? 'Ожидает' :
-                                                                   (payment.status == 'FAILED' ? 'Ошибка' :
-                                                                   (payment.status == 'CANCELLED' ? 'Отменён' : payment.status)))}"
+                                                      th:text="${payment.statusDisplayName}"
                                                       th:classappend="${payment.status == 'PROCESSED' ? 'status-processed' :
                                                                        (payment.status == 'PENDING' ? 'status-pending' :
                                                                        (payment.status == 'FAILED' ? 'status-failed' :

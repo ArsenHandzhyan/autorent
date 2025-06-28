@@ -153,13 +153,31 @@ public class DailyPaymentService {
 
             // Проверяем превышение лимита (логика теперь в AccountService, но для notes и уведомлений фиксируем явно)
             boolean creditLimitExceeded = false;
-            if (account.getCreditLimit().compareTo(BigDecimal.ZERO) > 0 && account.getBalance().abs().compareTo(account.getCreditLimit()) > 0) {
-                creditLimitExceeded = true;
-                logger.warn("Платеж ID {} обработан с превышением кредитного лимита! Баланс: {}, лимит: {}", payment.getId(), account.getBalance(), account.getCreditLimit());
-                payment.setNotes((payment.getNotes() != null ? payment.getNotes() + "\n" : "") + "ВНИМАНИЕ: Превышен кредитный лимит! Баланс: " + account.getBalance() + ", лимит: " + account.getCreditLimit());
-                // Уведомления
-                notificationService.sendPaymentWarningNotification(payment, "Превышен кредитный лимит!");
-                notificationService.sendAdminPaymentWarningNotification(payment, "Превышен кредитный лимит!");
+            boolean creditLimitWarning = false;
+            BigDecimal creditLimit = account.getCreditLimit();
+            BigDecimal balance = account.getBalance();
+            if (creditLimit.compareTo(BigDecimal.ZERO) > 0) {
+                // Превышение лимита: баланс отрицательный и модуль больше лимита
+                if (balance.compareTo(BigDecimal.ZERO) < 0 && balance.abs().compareTo(creditLimit) > 0) {
+                    creditLimitExceeded = true;
+                    logger.warn("Платеж ID {} обработан с превышением кредитного лимита! Баланс: {}, лимит: {}", payment.getId(), balance, creditLimit);
+                    payment.setNotes((payment.getNotes() != null ? payment.getNotes() + "\n" : "") +
+                        "ВНИМАНИЕ: Превышен кредитный лимит! Баланс: " + balance + ", лимит: " + creditLimit);
+                    // Уведомления
+                    notificationService.sendPaymentWarningNotification(payment, "Превышен кредитный лимит!");
+                    notificationService.sendAdminPaymentWarningNotification(payment, "Превышен кредитный лимит!");
+                } else if (balance.compareTo(BigDecimal.ZERO) < 0) {
+                    // Предупреждение: если осталось менее 10% лимита
+                    BigDecimal limitThreshold = creditLimit.multiply(new BigDecimal("0.1"));
+                    BigDecimal available = creditLimit.subtract(balance.abs());
+                    if (available.compareTo(limitThreshold) <= 0 && available.compareTo(BigDecimal.ZERO) > 0) {
+                        creditLimitWarning = true;
+                        String warnMsg = "ВНИМАНИЕ: Баланс близок к кредитному лимиту! Осталось: " + available + " ₽ из " + creditLimit + " ₽.";
+                        payment.setNotes((payment.getNotes() != null ? payment.getNotes() + "\n" : "") + warnMsg);
+                        notificationService.sendPaymentWarningNotification(payment, warnMsg);
+                        notificationService.sendAdminPaymentWarningNotification(payment, warnMsg);
+                    }
+                }
             }
 
             // Если нет технической ошибки — платеж всегда PROCESSED

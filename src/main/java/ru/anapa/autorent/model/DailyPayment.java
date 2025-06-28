@@ -51,6 +51,13 @@ public class DailyPayment {
         }
     }
 
+    /**
+     * Возвращает русское название статуса для отображения в шаблонах
+     */
+    public String getStatusDisplayName() {
+        return status != null ? status.getDisplayName() : "Неизвестно";
+    }
+
     public enum PaymentStatus {
         PENDING("Ожидает обработки"),    // Ожидает обработки
         PROCESSED("Обработано"),  // Обработано успешно
