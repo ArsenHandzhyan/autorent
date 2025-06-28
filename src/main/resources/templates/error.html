@@ -9,9 +9,19 @@
         <div class="error-icon">
             <i class="fas fa-exclamation-triangle"></i>
         </div>
-        <h1 class="error-title">Произошла ошибка</h1>
-        <div class="error-message" th:text="${errorMessage}">Произошла ошибка при обработке запроса</div>
+        <h1 class="error-title" th:text="${errorMessage}">Произошла ошибка</h1>
         <div class="error-details" th:if="${errorDetails}" th:text="${errorDetails}">Дополнительная информация об ошибке</div>
+        
+        <!-- Показываем код ошибки и URL только для разработчиков -->
+        <div class="error-debug" th:if="${statusCode != null}">
+            <div class="error-code">
+                <strong>Код ошибки:</strong> <span th:text="${statusCode}">500</span>
+            </div>
+            <div class="error-path" th:if="${requestUri != null}">
+                <strong>Запрошенный URL:</strong> <span th:text="${requestUri}">/unknown</span>
+            </div>
+        </div>
+        
         <div class="error-actions">
             <a th:href="@{/}" class="btn btn-primary">
                 <i class="fas fa-home"></i> Вернуться на главную
@@ -19,6 +29,9 @@
             <button onclick="history.back()" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Назад
             </button>
+            <a th:href="@{/cars}" class="btn btn-outline-primary">
+                <i class="fas fa-car"></i> Каталог автомобилей
+            </a>
         </div>
     </div>
 </div>
@@ -29,10 +42,10 @@
 <script>
 // Показываем уведомление об ошибке при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    const errorMessage = document.querySelector('.error-message').textContent;
+    const errorMessage = document.querySelector('.error-title').textContent;
     const errorDetails = document.querySelector('.error-details')?.textContent;
     
-    if (errorMessage) {
+    if (errorMessage && errorMessage !== 'Произошла ошибка') {
         showNotification(errorMessage, 'error');
     }
     

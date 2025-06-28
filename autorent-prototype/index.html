@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoRent - Система аренды автомобилей</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .car-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .car-image {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1;
+        }
+
+        .search-section {
+            background-color: #f8f9fa;
+            padding: 50px 0;
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 40px 0 20px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--success-color);
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .features-list i {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+
+        /* API Testing Section */
+        .api-test-section {
+            background-color: #e9ecef;
+            padding: 30px 0;
+            margin: 20px 0;
+        }
+
+        .api-response {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .error {
+            color: var(--danger-color);
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .success {
+            color: var(--success-color);
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-car"></i> AutoRent
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#cars">Автомобили</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">О нас</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Контакты</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="loginBtn">
+                            <i class="fas fa-sign-in-alt"></i> Войти
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="registerBtn">
+                            <i class="fas fa-user-plus"></i> Регистрация
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <h1 class="display-4 mb-4">Аренда автомобилей</h1>
+            <p class="lead mb-4">Найдите идеальный автомобиль для вашего путешествия</p>
+            <a href="#cars" class="btn btn-light btn-lg">Начать поиск</a>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section" id="search">
+        <div class="container">
+            <h2 class="text-center mb-4">Поиск автомобилей</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="searchForm">
+                                <div class="row">
+                                    <div class="col-md-3 mb-3">
+                                        <label for="brand" class="form-label">Марка</label>
+                                        <select class="form-select" id="brand">
+                                            <option value="">Все марки</option>
+                                            <option value="BMW">BMW</option>
+                                            <option value="Mercedes">Mercedes</option>
+                                            <option value="Audi">Audi</option>
+                                            <option value="Toyota">Toyota</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="category" class="form-label">Категория</label>
+                                        <select class="form-select" id="category">
+                                            <option value="">Все категории</option>
+                                            <option value="ECONOMY">Эконом</option>
+                                            <option value="COMFORT">Комфорт</option>
+                                            <option value="BUSINESS">Бизнес</option>
+                                            <option value="LUXURY">Люкс</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="startDate" class="form-label">Дата начала</label>
+                                        <input type="date" class="form-control" id="startDate">
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="endDate" class="form-label">Дата окончания</label>
+                                        <input type="date" class="form-control" id="endDate">
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-search"></i> Найти автомобили
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Testing Section -->
+    <section class="api-test-section">
+        <div class="container">
+            <h3 class="text-center mb-4">Тестирование API</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Получить список автомобилей</h5>
+                        </div>
+                        <div class="card-body">
+                            <button class="btn btn-primary" onclick="testGetCars()">
+                                <i class="fas fa-car"></i> Получить автомобили
+                            </button>
+                            <div class="loading" id="carsLoading">
+                                <i class="fas fa-spinner fa-spin"></i> Загрузка...
+                            </div>
+                            <div class="api-response" id="carsResponse"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Получить информацию о пользователе</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="userId" class="form-label">ID пользователя</label>
+                                <input type="number" class="form-control" id="userId" value="1">
+                            </div>
+                            <button class="btn btn-primary" onclick="testGetUser()">
+                                <i class="fas fa-user"></i> Получить пользователя
+                            </button>
+                            <div class="loading" id="userLoading">
+                                <i class="fas fa-spinner fa-spin"></i> Загрузка...
+                            </div>
+                            <div class="api-response" id="userResponse"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cars Section -->
+    <section class="py-5" id="cars">
+        <div class="container">
+            <h2 class="text-center mb-5">Доступные автомобили</h2>
+            <div class="row" id="carsContainer">
+                <!-- Cars will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-5 bg-light" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>О компании AutoRent</h2>
+                    <p class="lead">Мы предоставляем качественные услуги аренды автомобилей с 2010 года.</p>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Большой выбор автомобилей</li>
+                        <li><i class="fas fa-check"></i> Конкурентные цены</li>
+                        <li><i class="fas fa-check"></i> Круглосуточная поддержка</li>
+                        <li><i class="fas fa-check"></i> Простая система бронирования</li>
+                        <li><i class="fas fa-check"></i> Страхование включено</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <img src="https://via.placeholder.com/500x300/007bff/ffffff?text=AutoRent" 
+                         alt="AutoRent" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-5" id="contact">
+        <div class="container">
+            <h2 class="text-center mb-5">Свяжитесь с нами</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="contactForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="contactName" class="form-label">Имя</label>
+                                        <input type="text" class="form-control" id="contactName" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="contactEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="contactEmail" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="contactMessage" class="form-label">Сообщение</label>
+                                    <textarea class="form-control" id="contactMessage" rows="5" required></textarea>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-paper-plane"></i> Отправить
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>AutoRent</h5>
+                    <p>Качественные услуги аренды автомобилей</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Контакты</h5>
+                    <p>
+                        <i class="fas fa-phone"></i> +7 (999) 123-45-67<br>
+                        <i class="fas fa-envelope"></i> info@autorent.ru<br>
+                        <i class="fas fa-map-marker-alt"></i> г. Москва, ул. Примерная, 1
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Социальные сети</h5>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p>&copy; 2024 AutoRent. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:8080/api';
+        
+        // Sample car data
+        const sampleCars = [
+            {
+                id: 1,
+                brand: 'BMW',
+                model: 'X5',
+                year: 2022,
+                pricePerDay: 5000,
+                category: 'LUXURY',
+                status: 'AVAILABLE',
+                image: 'https://via.placeholder.com/300x200/007bff/ffffff?text=BMW+X5'
+            },
+            {
+                id: 2,
+                brand: 'Mercedes',
+                model: 'C-Class',
+                year: 2021,
+                pricePerDay: 3500,
+                category: 'BUSINESS',
+                status: 'AVAILABLE',
+                image: 'https://via.placeholder.com/300x200/28a745/ffffff?text=Mercedes+C-Class'
+            },
+            {
+                id: 3,
+                brand: 'Toyota',
+                model: 'Camry',
+                year: 2023,
+                pricePerDay: 2500,
+                category: 'COMFORT',
+                status: 'RENTED',
+                image: 'https://via.placeholder.com/300x200/ffc107/ffffff?text=Toyota+Camry'
+            }
+        ];
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCars();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Search form
+            document.getElementById('searchForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                searchCars();
+            });
+
+            // Contact form
+            document.getElementById('contactForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitContact();
+            });
+
+            // Login/Register buttons
+            document.getElementById('loginBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                showLoginModal();
+            });
+
+            document.getElementById('registerBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                showRegisterModal();
+            });
+        }
+
+        function loadCars() {
+            const container = document.getElementById('carsContainer');
+            container.innerHTML = '';
+
+            sampleCars.forEach(car => {
+                const carCard = createCarCard(car);
+                container.appendChild(carCard);
+            });
+        }
+
+        function createCarCard(car) {
+            const col = document.createElement('div');
+            col.className = 'col-md-4 mb-4';
+            
+            const statusClass = car.status === 'AVAILABLE' ? 'success' : 'warning';
+            const statusText = car.status === 'AVAILABLE' ? 'Доступен' : 'Арендован';
+            
+            col.innerHTML = `
+                <div class="card car-card">
+                    <div class="position-relative">
+                        <img src="${car.image}" class="card-img-top car-image" alt="${car.brand} ${car.model}">
+                        <span class="badge bg-${statusClass} status-badge">${statusText}</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">${car.brand} ${car.model}</h5>
+                        <p class="card-text">
+                            <strong>Год:</strong> ${car.year}<br>
+                            <strong>Категория:</strong> ${getCategoryName(car.category)}<br>
+                            <strong>Статус:</strong> ${statusText}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="price">${car.pricePerDay} ₽/день</span>
+                            <button class="btn btn-primary" onclick="rentCar(${car.id})" 
+                                    ${car.status !== 'AVAILABLE' ? 'disabled' : ''}>
+                                <i class="fas fa-car"></i> Арендовать
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return col;
+        }
+
+        function getCategoryName(category) {
+            const categories = {
+                'ECONOMY': 'Эконом',
+                'COMFORT': 'Комфорт',
+                'BUSINESS': 'Бизнес',
+                'LUXURY': 'Люкс'
+            };
+            return categories[category] || category;
+        }
+
+        function searchCars() {
+            const brand = document.getElementById('brand').value;
+            const category = document.getElementById('category').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            // Filter cars based on search criteria
+            let filteredCars = sampleCars;
+
+            if (brand) {
+                filteredCars = filteredCars.filter(car => car.brand === brand);
+            }
+
+            if (category) {
+                filteredCars = filteredCars.filter(car => car.category === category);
+            }
+
+            // Update display
+            const container = document.getElementById('carsContainer');
+            container.innerHTML = '';
+
+            if (filteredCars.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center">
+                        <h4>Автомобили не найдены</h4>
+                        <p>Попробуйте изменить критерии поиска</p>
+                    </div>
+                `;
+            } else {
+                filteredCars.forEach(car => {
+                    const carCard = createCarCard(car);
+                    container.appendChild(carCard);
+                });
+            }
+        }
+
+        // API Testing Functions
+        async function testGetCars() {
+            const loading = document.getElementById('carsLoading');
+            const response = document.getElementById('carsResponse');
+            
+            loading.style.display = 'block';
+            response.innerHTML = '';
+
+            try {
+                const result = await fetch(`${API_BASE_URL}/cars`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await result.json();
+                
+                if (result.ok) {
+                    response.innerHTML = `<div class="success">Успешно получены данные!</div>
+                                        <pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    response.innerHTML = `<div class="error">Ошибка: ${data.message || 'Неизвестная ошибка'}</div>`;
+                }
+            } catch (error) {
+                response.innerHTML = `<div class="error">Ошибка подключения: ${error.message}</div>
+                                    <p>Убедитесь, что Spring Boot приложение запущено на порту 8080</p>`;
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        async function testGetUser() {
+            const userId = document.getElementById('userId').value;
+            const loading = document.getElementById('userLoading');
+            const response = document.getElementById('userResponse');
+            
+            loading.style.display = 'block';
+            response.innerHTML = '';
+
+            try {
+                const result = await fetch(`${API_BASE_URL}/users/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await result.json();
+                
+                if (result.ok) {
+                    response.innerHTML = `<div class="success">Успешно получены данные пользователя!</div>
+                                        <pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    response.innerHTML = `<div class="error">Ошибка: ${data.message || 'Неизвестная ошибка'}</div>`;
+                }
+            } catch (error) {
+                response.innerHTML = `<div class="error">Ошибка подключения: ${error.message}</div>
+                                    <p>Убедитесь, что Spring Boot приложение запущено на порту 8080</p>`;
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        function rentCar(carId) {
+            alert(`Запрос на аренду автомобиля ID: ${carId}\n\nЭто демо-версия. В реальном приложении здесь будет форма аренды.`);
+        }
+
+        function submitContact() {
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+
+            alert(`Сообщение отправлено!\n\nИмя: ${name}\nEmail: ${email}\nСообщение: ${message}\n\nЭто демо-версия. В реальном приложении сообщение будет отправлено на сервер.`);
+            
+            document.getElementById('contactForm').reset();
+        }
+
+        function showLoginModal() {
+            alert('Форма входа\n\nЭто демо-версия. В реальном приложении здесь будет модальное окно входа.');
+        }
+
+        function showRegisterModal() {
+            alert('Форма регистрации\n\nЭто демо-версия. В реальном приложении здесь будет модальное окно регистрации.');
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -55,7 +55,7 @@ public class SecurityConfig {
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // Enable CSRF for web forms
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/auth/**", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                        .requestMatchers("/", "/auth/**", "/css/**", "/js/**", "/images/**", "/webjars/**", "/error").permitAll()
                         .requestMatchers("/api/auth/**").permitAll() // Эндпоинты для JWT аутентификации
                         .requestMatchers("/cars", "/cars/search", "/cars/{id}").permitAll()
                         .requestMatchers("/about", "/contact", "/terms").permitAll() // Разрешаем доступ к статическим страницам
@@ -81,6 +81,17 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(exceptions -> exceptions
                         .accessDeniedHandler(accessDeniedHandler())
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            // Для API запросов возвращаем JSON ошибку
+                            if (request.getRequestURI().startsWith("/api/")) {
+                                response.setContentType("application/json");
+                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                response.getWriter().write("{\"error\":\"Unauthorized\",\"message\":\"Требуется аутентификация\"}");
+                            } else {
+                                // Для веб-запросов перенаправляем на страницу входа
+                                response.sendRedirect(request.getContextPath() + "/auth/login");
+                            }
+                        })
                 )
                 // Настройки сессии для веб-интерфейса
                 .sessionManagement(session -> session
@@ -115,13 +126,20 @@ public class SecurityConfig {
                            org.springframework.security.access.AccessDeniedException accessDeniedException)
                 throws IOException, ServletException {
 
-            // Сохраняем сообщение об ошибке в сессии
-            request.getSession().setAttribute("adminLoginRequired", true);
-            request.getSession().setAttribute("error",
-                    "У вас недостаточно прав для доступа к админ-панели. Пожалуйста, войдите как администратор.");
+            // Для API запросов возвращаем JSON ошибку
+            if (request.getRequestURI().startsWith("/api/")) {
+                response.setContentType("application/json");
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().write("{\"error\":\"Forbidden\",\"message\":\"У вас нет прав для доступа к этому ресурсу\"}");
+            } else {
+                // Сохраняем сообщение об ошибке в сессии
+                request.getSession().setAttribute("adminLoginRequired", true);
+                request.getSession().setAttribute("error",
+                        "У вас недостаточно прав для доступа к админ-панели. Пожалуйста, войдите как администратор.");
 
-            // Перенаправляем на страницу входа
-            response.sendRedirect(request.getContextPath() + "/auth/login");
+                // Перенаправляем на страницу входа
+                response.sendRedirect(request.getContextPath() + "/auth/login");
+            }
         }
     }
 }
