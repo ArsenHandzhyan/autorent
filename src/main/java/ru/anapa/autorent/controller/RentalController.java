@@ -162,7 +162,7 @@ public class RentalController {
 
     @PostMapping("/new")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> createRental(@RequestParam Long carId,
+    public String createRental(@RequestParam Long carId,
                                @Valid @ModelAttribute("rental") RentalDto rentalDto,
                                BindingResult bindingResult,
                                Model model,
@@ -170,33 +170,29 @@ public class RentalController {
                                HttpServletRequest request) {
         logger.info("Создание новой аренды для автомобиля с ID: {}", carId);
 
+        Car car = carService.findCarById(carId);
+        if (car == null) {
+            model.addAttribute("error", "Автомобиль не найден");
+            return "error";
+        }
+
+        // Добавляем car и bookedPeriods в модель для корректного отображения формы при ошибках
+        model.addAttribute("car", car);
+        List<RentalPeriodDto> bookedPeriods = carService.getBookedPeriods(carId);
+        model.addAttribute("bookedPeriods", bookedPeriods != null ? bookedPeriods : new ArrayList<>());
+
         if (bindingResult.hasErrors()) {
             logger.warn("Ошибки валидации при создании аренды: {}", bindingResult.getAllErrors());
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("errors", bindingResult.getAllErrors().stream()
-                    .map(error -> error.getDefaultMessage())
-                    .collect(Collectors.toList()));
-            return ResponseEntity.badRequest().body(response);
+            return "rentals/new";
         }
 
         try {
             User user = userService.findByEmail(authentication.getName());
-            Car car = carService.findCarById(carId);
-            if (car == null) {
-                logger.error("Автомобиль с ID {} не найден", carId);
-                Map<String, Object> response = new HashMap<>();
-                response.put("success", false);
-                response.put("error", "Автомобиль не найден");
-                return ResponseEntity.badRequest().body(response);
-            }
 
             if (!rentalService.isCarAvailableForPeriod(carId, rentalDto.getStartDate(), rentalDto.getEndDate())) {
                 logger.warn("Автомобиль с ID {} недоступен в указанный период", carId);
-                Map<String, Object> response = new HashMap<>();
-                response.put("success", false);
-                response.put("error", "Автомобиль недоступен в указанный период");
-                return ResponseEntity.badRequest().body(response);
+                bindingResult.rejectValue("startDate", "unavailable", "Автомобиль недоступен в указанный период");
+                return "rentals/new";
             }
 
             // Создаем аренду
@@ -217,16 +213,11 @@ public class RentalController {
             rentalService.createRental(rental);
             logger.info("Аренда успешно создана с ID: {}", rental.getId());
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("redirectUrl", "/rentals");
-            return ResponseEntity.ok(response);
+            return "redirect:/rentals";
         } catch (Exception e) {
             logger.error("Ошибка при создании аренды", e);
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("error", "Произошла ошибка при создании аренды");
-            return ResponseEntity.badRequest().body(response);
+            model.addAttribute("error", "Произошла ошибка при создании аренды");
+            return "rentals/new";
         }
     }
 
