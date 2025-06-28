@@ -89,65 +89,7 @@ function initCSRF() {
 
 function initNavigation() {
     /**
-     * Управление мобильным меню (гамбургер)
-     */
-    const navbarToggler = document.querySelector('.navbar-toggler');
-    const navbarNav = document.querySelector('.navbar-nav');
-
-    if (navbarToggler && navbarNav) {
-        navbarToggler.addEventListener('click', () => {
-            // Переключаем класс show для отображения/скрытия меню
-            navbarNav.classList.toggle('show');
-            
-            // Добавляем анимацию для плавного появления
-            if (navbarNav.classList.contains('show')) {
-                navbarNav.style.display = 'flex';
-                navbarNav.style.opacity = '0';
-                setTimeout(() => {
-                    navbarNav.style.opacity = '1';
-                }, 10);
-            } else {
-                navbarNav.style.opacity = '0';
-                setTimeout(() => {
-                    navbarNav.style.display = 'none';
-                }, 300);
-            }
-        });
-
-        // Закрываем меню при клике вне его
-        document.addEventListener('click', (event) => {
-            if (!navbarToggler.contains(event.target) && !navbarNav.contains(event.target)) {
-                navbarNav.classList.remove('show');
-                navbarNav.style.display = 'none';
-                navbarNav.style.opacity = '0';
-            }
-        });
-    }
-
-    /**
-     * Управление выпадающим меню в профиле
-     */
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
-
-    if (dropdownToggle && dropdownMenu) {
-        // По клику на иконку профиля
-        dropdownToggle.addEventListener('click', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            dropdownMenu.classList.toggle('show');
-        });
-
-        // Закрываем выпадающее меню при клике вне его
-        document.addEventListener('click', (event) => {
-            if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.classList.remove('show');
-            }
-        });
-    }
-
-    /**
-     * Обработка формы выхода
+     * Обработка формы выхода (оставляем, если нужен AJAX-logout)
      */
     const logoutForm = document.querySelector('form[action*="/auth/logout"]');
     if (logoutForm) {
@@ -165,26 +107,6 @@ function initNavigation() {
             });
         });
     }
-
-    /**
-     * Плавная прокрутка для якорных ссылок
-     */
-    const anchorLinks = document.querySelectorAll('a[href^="#"]');
-    anchorLinks.forEach(link => {
-        link.addEventListener('click', (event) => {
-            const href = link.getAttribute('href');
-            if (href !== '#') {
-                const target = document.querySelector(href);
-                if (target) {
-                    event.preventDefault();
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            }
-        });
-    });
 
     /**
      * Подсветка активного пункта меню
@@ -221,6 +143,27 @@ function initAnimations() {
                     behavior: 'smooth',
                     block: 'start'
                 });
+            }
+        });
+    });
+
+    /**
+     * Плавная прокрутка для якорных ссылок
+     */
+    const anchorLinks = document.querySelectorAll('a[href^="#"]');
+    anchorLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            const href = link.getAttribute('href');
+            // Исправлено: не обрабатываем пустой якорь или просто '#'
+            if (href && href.length > 1 && href.startsWith('#')) {
+                const target = document.querySelector(href);
+                if (target) {
+                    event.preventDefault();
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             }
         });
     });
