@@ -2451,3 +2451,37 @@ function initGlobalErrorHandler() {
 
     console.log('Глобальный обработчик ошибок инициализирован');
 }
+
+// ========================================
+// СТАТИСТИКА ПЛАТЕЖЕЙ (для кнопки 'Статистика' в admin/payments/list.html)
+// ========================================
+function getPaymentStatistics(rentalId) {
+    fetch(`/admin/payments/statistics/${rentalId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.statistics) {
+                const stats = data.statistics;
+                document.getElementById('statisticsContent').innerHTML = `
+                    <ul>
+                        <li>Всего платежей: <b>${stats.totalPayments}</b></li>
+                        <li>Обработано: <b>${stats.processedPayments}</b></li>
+                        <li>Ожидает: <b>${stats.pendingPayments}</b></li>
+                        <li>Ошибки: <b>${stats.failedPayments}</b></li>
+                        <li>Общая сумма: <b>${stats.totalAmount} ₽</b></li>
+                        <li>Обработано на сумму: <b>${stats.processedAmount} ₽</b></li>
+                    </ul>
+                `;
+            } else {
+                document.getElementById('statisticsContent').innerHTML = `<span class="text-danger">Ошибка: ${data.error || 'Не удалось получить статистику'}</span>`;
+            }
+            // Открыть модальное окно (Bootstrap 5)
+            const modal = new bootstrap.Modal(document.getElementById('statisticsModal'));
+            modal.show();
+        })
+        .catch(() => {
+            document.getElementById('statisticsContent').innerHTML = '<span class="text-danger">Ошибка соединения с сервером</span>';
+            const modal = new bootstrap.Modal(document.getElementById('statisticsModal'));
+            modal.show();
+        });
+}
+window.getPaymentStatistics = getPaymentStatistics;
