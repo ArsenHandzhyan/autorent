@@ -1,7 +1,35 @@
 /* ========================================
    AUTO RENT - ЕДИНЫЙ CSS ФАЙЛ (АДАПТИВНЫЙ)
-   Mobile-First подход
+   Mobile-First подход с современными CSS функциями
    ======================================== */
+
+/* ========================================
+   КРИТИЧЕСКИЕ СТИЛИ (для inline в head)
+   ======================================== */
+/* Эти стили должны быть inline в head для быстрой загрузки */
+.critical-styles {
+    /* Основные переменные */
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --bg-white: #fff;
+    --text-color: #333;
+    --shadow-light: 0 2px 4px rgba(0,0,0,0.1);
+    
+    /* Критические стили для above-the-fold контента */
+    .navbar {
+        background-color: var(--bg-white);
+        box-shadow: var(--shadow-light);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+    
+    .hero-section {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 4rem 0;
+    }
+}
 
 /* ========================================
    CSS ПЕРЕМЕННЫЕ И ОСНОВНЫЕ НАСТРОЙКИ
@@ -49,6 +77,138 @@
     --spacing-lg: 1.5rem;
     --spacing-xl: 2rem;
     --spacing-xxl: 3rem;
+    
+    /* Современные CSS функции */
+    --container-padding: clamp(1rem, 5vw, 2rem);
+    --container-max-width: min(1200px, 90vw);
+    
+    /* Логические свойства для RTL поддержки */
+    --margin-block: var(--spacing-md);
+    --padding-inline: var(--spacing-lg);
+    
+    /* Цвета для темной темы (подготовка) */
+    --dark-bg: #1a1a1a;
+    --dark-text: #ffffff;
+    --dark-border: #333333;
+}
+
+/* ========================================
+   СОВРЕМЕННЫЕ CSS ФУНКЦИИ И УТИЛИТЫ
+   ======================================== */
+
+/* Container Queries (экспериментальная поддержка) */
+@supports (container-type: inline-size) {
+    .car-card-container {
+        container-type: inline-size;
+    }
+    
+    @container (min-width: 400px) {
+        .car-card {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+}
+
+/* CSS Nesting (новый стандарт) */
+.car-card {
+    background: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: all var(--transition-normal);
+    
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-medium);
+    }
+    
+    .car-image {
+        overflow: hidden;
+        border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+        
+        img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            transition: transform var(--transition-normal);
+            
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+    }
+    
+    .car-info {
+        padding: var(--spacing-md);
+        
+        h3 {
+            margin: 0 0 var(--spacing-sm) 0;
+            font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+            color: var(--primary-color);
+        }
+        
+        .car-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-block: var(--spacing-sm);
+            
+            .car-year {
+                font-size: 0.9rem;
+                color: var(--text-muted);
+            }
+            
+            .car-price {
+                font-weight: 700;
+                color: var(--success-color);
+                font-size: 1.1rem;
+            }
+        }
+        
+        .car-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+            
+            .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    }
+}
+
+/* Логические свойства */
+.car-details {
+    margin-block: var(--margin-block);
+    padding-inline: var(--padding-inline);
+}
+
+/* Современные селекторы */
+.form-control:focus-visible {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 2px;
+}
+
+/* Поддержка prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Поддержка prefers-color-scheme (подготовка к темной теме) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-white: var(--dark-bg);
+        --text-color: var(--dark-text);
+        --border-color: var(--dark-border);
+    }
 }
 
 /* ========================================
@@ -63,6 +223,7 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px; /* Базовый размер шрифта */
+    text-size-adjust: 100%; /* Предотвращает масштабирование на iOS */
 }
 
 body {
@@ -72,6 +233,7 @@ body {
     background-color: var(--bg-light);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 /* ========================================
@@ -113,8 +275,9 @@ a:hover {
    ======================================== */
 .container {
     width: 100%;
+    max-width: var(--container-max-width);
     margin: 0 auto;
-    padding: 0 var(--spacing-md);
+    padding: 0 var(--container-padding);
 }
 
 /* ========================================
@@ -209,27 +372,214 @@ a:hover {
     padding: var(--spacing-sm) var(--spacing-md);
     color: var(--text-color);
     text-decoration: none;
-    transition: background-color var(--transition-fast);
+    transition: all var(--transition-fast);
 }
 
 .dropdown-item:hover {
     background-color: var(--bg-light);
-    text-decoration: none;
+    color: var(--secondary-color);
 }
 
 .dropdown-item.text-danger {
-    color: var(--danger-color) !important;
+    color: var(--danger-color);
 }
 
 .dropdown-item.text-danger:hover {
     background-color: var(--danger-color);
-    color: var(--text-light) !important;
+    color: var(--text-light);
 }
 
 .dropdown-divider {
     height: 1px;
     background-color: var(--border-color);
-    margin: var(--spacing-xs) 0;
+    margin: var(--spacing-sm) 0;
+    border: none;
+}
+
+/* ========================================
+   МЕДИА-ЗАПРОСЫ ДЛЯ НАВИГАЦИИ
+   ======================================== */
+
+/* Планшеты и большие мобильные (768px и выше) */
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+    
+    .cars-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .features-grid, .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .search-form-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+    
+    /* Навигация остается горизонтальной */
+    .navbar-toggler {
+        display: none;
+    }
+    
+    .navbar-nav {
+        display: flex;
+        flex-direction: row;
+        position: static;
+        background: none;
+        box-shadow: none;
+        opacity: 1;
+        width: auto;
+    }
+}
+
+/* Десктопы (992px и выше) */
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+    
+    .cars-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .features-grid, .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .search-form-content {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-md);
+    }
+}
+
+/* Большие десктопы (1200px и выше) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+/* Мобильные устройства (до 767.98px) */
+@media (max-width: 767.98px) {
+    .navbar-toggler {
+        display: block !important; /* Принудительно показываем кнопку */
+    }
+    
+    .navbar-nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: var(--bg-white);
+        box-shadow: var(--shadow-medium);
+        opacity: 0;
+        transition: opacity var(--transition-normal);
+        z-index: 1000;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .navbar-nav.show {
+        display: flex !important;
+        opacity: 1;
+    }
+
+    .nav-link {
+        padding: var(--spacing-md);
+        border-bottom: 1px solid var(--border-color);
+        width: 100%;
+        text-align: left;
+    }
+
+    .nav-link:last-child {
+        border-bottom: none;
+    }
+
+    /* Выпадающее меню в мобильной версии */
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border: none;
+        background-color: var(--bg-light);
+        margin-top: var(--spacing-sm);
+        border-radius: 0;
+        display: none;
+    }
+
+    .dropdown-menu.show {
+        display: block;
+    }
+
+    .dropdown-item {
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .dropdown-item:last-child {
+        border-bottom: none;
+    }
+}
+
+/* Очень маленькие экраны (до 576px) */
+@media (max-width: 576px) {
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    .navbar {
+        padding: var(--spacing-sm);
+    }
+    
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+    
+    .navbar-toggler {
+        font-size: 1.25rem;
+        padding: var(--spacing-xs);
+    }
+    
+    .nav-link {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 0.95rem;
+    }
+    
+    .dropdown-item {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 0.95rem;
+    }
+}
+
+/* ========================================
+   ОРИЕНТАЦИЯ ЭКРАНА
+   ======================================== */
+
+/* Портретная ориентация на мобильных */
+@media (max-width: 767.98px) and (orientation: portrait) {
+    .navbar-nav {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+}
+
+/* Ландшафтная ориентация на мобильных */
+@media (max-width: 767.98px) and (orientation: landscape) {
+    .navbar-nav {
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+    
+    .nav-link {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .dropdown-item {
+        padding: var(--spacing-xs) var(--spacing-md);
+    }
 }
 
 /* ========================================
@@ -429,126 +779,6 @@ a:hover {
 
 .car-actions {
     margin-top: auto;
-}
-
-/* ========================================
-   МЕДИА-ЗАПРОСЫ (MOBILE-FIRST)
-   ======================================== */
-
-/* Планшеты (768px и больше) */
-@media (min-width: 768px) {
-    .container {
-        max-width: 720px;
-    }
-
-    .cars-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .features-grid, .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .search-form-content {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-md);
-    }
-    
-    .navbar-toggler {
-        display: none;
-    }
-
-    .navbar-nav {
-        display: flex;
-    }
-}
-
-/* Небольшие десктопы (992px и больше) */
-@media (min-width: 992px) {
-    .container {
-        max-width: 960px;
-    }
-
-    .cars-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .features-grid, .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .search-form-content {
-        grid-template-columns: repeat(4, 1fr) auto;
-        align-items: flex-end;
-    }
-}
-
-/* Большие десктопы (1200px и больше) */
-@media (min-width: 1200px) {
-    .container {
-        max-width: 1140px;
-    }
-}
-
-/* Стили для мобильного меню-гамбургера */
-@media (max-width: 767.98px) {
-    .navbar-toggler {
-        display: block;
-    }
-    
-    .navbar-nav {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: var(--bg-white);
-        box-shadow: var(--shadow-medium);
-        opacity: 0;
-        transition: opacity var(--transition-normal);
-        z-index: 1000;
-    }
-
-    .navbar-nav.show {
-        display: flex;
-        opacity: 1;
-    }
-
-    .nav-link {
-        padding: var(--spacing-md);
-        border-bottom: 1px solid var(--border-color);
-        width: 100%;
-        text-align: left;
-    }
-
-    .nav-link:last-child {
-        border-bottom: none;
-    }
-
-    /* Анимация для выпадающего меню */
-    .dropdown-menu {
-        position: static;
-        box-shadow: none;
-        border: none;
-        background-color: var(--bg-light);
-        margin-top: var(--spacing-sm);
-        border-radius: 0;
-    }
-
-    .dropdown-menu.show {
-        display: block;
-    }
-
-    .dropdown-item {
-        padding: var(--spacing-sm) var(--spacing-lg);
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .dropdown-item:last-child {
-        border-bottom: none;
-    }
 }
 
 /* ========================================
@@ -1445,15 +1675,16 @@ footer hr {
     }
     
     .col-md-3, .col-md-4, .col-md-6, .col-md-8, .col-md-9 {
-        flex: 0 0 100%;
+        width: 100%;
     }
     
     .cars-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
     }
     
     .rental-details {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        gap: var(--spacing-md);
     }
 }
 

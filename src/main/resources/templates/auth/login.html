@@ -5,90 +5,227 @@
 </head>
 <body class="bg-light">
 <!-- Добавьте в начало body или в нужное место в шаблоне login.html -->
-<div th:if="${registrationSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
-    <i class="fas fa-check-circle me-2"></i>
+<div th:if="${registrationSuccess}" class="alert alert-success alert-dismissible fade show" role="alert" aria-live="polite">
+    <i class="fas fa-check-circle me-2" aria-hidden="true"></i>
     <span th:text="${welcomeMessage}">Регистрация успешно завершена!</span>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть уведомление"></button>
 </div>
-<div class="container">
+
+<main class="container" role="main">
     <div class="row justify-content-center mt-5">
         <div class="col-md-6">
             <div class="card shadow">
                 <div class="card-body p-5">
-                    <div class="text-center mb-4">
-                        <h2 class="mb-3"><i class="fas fa-car text-primary"></i> АвтоПрокат</h2>
-                        <h4>Вход в систему</h4>
-                    </div>
+                    <header class="text-center mb-4">
+                        <h1 class="mb-3">
+                            <i class="fas fa-car text-primary" aria-hidden="true"></i> 
+                            АвтоПрокат
+                        </h1>
+                        <h2>Вход в систему</h2>
+                    </header>
 
                     <!-- Сообщение о необходимости входа как администратор -->
-                    <div th:if="${adminLoginRequired}" class="alert alert-warning">
-                        <i class="fas fa-user-shield"></i>
+                    <div th:if="${adminLoginRequired}" class="alert alert-warning" role="alert" aria-live="polite">
+                        <i class="fas fa-user-shield" aria-hidden="true"></i>
                         <span th:text="${adminLoginError}">У вас недостаточно прав для доступа к админ-панели. Пожалуйста, войдите как администратор.</span>
                     </div>
 
                     <!-- Сообщение об ошибке -->
-                    <div th:if="${param.error != null && (adminLoginRequired == null || !adminLoginRequired)}" class="alert alert-danger">
-                        <i class="fas fa-exclamation-circle"></i>
+                    <div th:if="${param.error != null && (adminLoginRequired == null || !adminLoginRequired)}" 
+                         class="alert alert-danger" role="alert" aria-live="assertive">
+                        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
                         <span th:text="${loginError != null ? loginError : 'Неверное имя пользователя или пароль'}">Ошибка входа</span>
                     </div>
 
                     <!-- Сообщение о выходе -->
-                    <div th:if="${param.logout}" class="alert alert-success">
-                        <i class="fas fa-check-circle"></i> Вы успешно вышли из системы
+                    <div th:if="${param.logout}" class="alert alert-success" role="alert" aria-live="polite">
+                        <i class="fas fa-check-circle" aria-hidden="true"></i> 
+                        Вы успешно вышли из системы
                     </div>
 
                     <!-- Сообщение об истечении сессии -->
-                    <div th:if="${param.expired}" class="alert alert-warning">
-                        <i class="fas fa-exclamation-triangle"></i> Ваша сессия истекла. Пожалуйста, войдите снова.
+                    <div th:if="${param.expired}" class="alert alert-warning" role="alert" aria-live="polite">
+                        <i class="fas fa-exclamation-triangle" aria-hidden="true"></i> 
+                        Ваша сессия истекла. Пожалуйста, войдите снова.
                     </div>
 
-                    <form th:action="@{/auth/login}" method="post">
+                    <form th:action="@{/auth/login}" method="post" role="form" aria-labelledby="login-form-title">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Email</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                <input type="email" id="username" name="username" class="form-control" required autofocus>
+                        <fieldset>
+                            <legend class="visually-hidden">Данные для входа</legend>
+                            
+                            <div class="mb-3">
+                                <label for="username" class="form-label">
+                                    Email <span class="text-danger" aria-label="обязательное поле">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text" aria-hidden="true">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                    <input type="email" 
+                                           id="username" 
+                                           name="username" 
+                                           class="form-control" 
+                                           required 
+                                           autofocus
+                                           autocomplete="email"
+                                           aria-describedby="username-help"
+                                           aria-invalid="false"
+                                           placeholder="Введите ваш email">
+                                </div>
+                                <div id="username-help" class="form-text">
+                                    Введите email адрес, указанный при регистрации
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Пароль</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                                <input type="password" id="password" name="password" class="form-control" required>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">
+                                    Пароль <span class="text-danger" aria-label="обязательное поле">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text" aria-hidden="true">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <input type="password" 
+                                           id="password" 
+                                           name="password" 
+                                           class="form-control" 
+                                           required
+                                           autocomplete="current-password"
+                                           aria-describedby="password-help"
+                                           aria-invalid="false"
+                                           placeholder="Введите ваш пароль">
+                                    <button type="button" 
+                                            class="btn btn-outline-secondary" 
+                                            id="togglePassword"
+                                            aria-label="Показать пароль"
+                                            aria-pressed="false">
+                                        <i class="fas fa-eye" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div id="password-help" class="form-text">
+                                    Введите пароль от вашего аккаунта
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="remember-me" name="remember-me">
-                            <label class="form-check-label" for="remember-me">Запомнить меня</label>
-                        </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" 
+                                       class="form-check-input" 
+                                       id="remember-me" 
+                                       name="remember-me"
+                                       aria-describedby="remember-help">
+                                <label class="form-check-label" for="remember-me">
+                                    Запомнить меня
+                                </label>
+                                <div id="remember-help" class="form-text">
+                                    Оставаться в системе на этом устройстве
+                                </div>
+                            </div>
+                        </fieldset>
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-sign-in-alt"></i> Войти
+                            <button type="submit" 
+                                    class="btn btn-primary btn-lg"
+                                    aria-describedby="submit-help">
+                                <i class="fas fa-sign-in-alt" aria-hidden="true"></i> 
+                                Войти
                             </button>
+                        </div>
+                        <div id="submit-help" class="form-text text-center mt-2">
+                            Нажимая кнопку "Войти", вы соглашаетесь с 
+                            <a th:href="@{/terms}" target="_blank" rel="noopener">условиями использования</a>
                         </div>
                     </form>
 
-                    <div class="mt-4 text-center">
-                        <p>Нет аккаунта? <a th:href="@{/auth/register}" class="text-decoration-none">Зарегистрироваться</a></p>
-                        <p><a th:href="@{/auth/forgot-password}" class="text-decoration-none">Забыли пароль?</a></p>
-                    </div>
+                    <nav class="mt-4 text-center" aria-label="Дополнительные действия">
+                        <p>Нет аккаунта? 
+                            <a th:href="@{/auth/register}" class="text-decoration-none">
+                                Зарегистрироваться
+                            </a>
+                        </p>
+                        <p>
+                            <a th:href="@{/auth/forgot-password}" class="text-decoration-none">
+                                Забыли пароль?
+                            </a>
+                        </p>
+                    </nav>
                 </div>
             </div>
 
             <div class="text-center mt-3">
                 <a th:href="@{/}" class="text-decoration-none">
-                    <i class="fas fa-arrow-left"></i> Вернуться на главную
+                    <i class="fas fa-arrow-left" aria-hidden="true"></i> 
+                    Вернуться на главную
                 </a>
             </div>
         </div>
     </div>
-</div>
+</main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Скрипт для показа/скрытия пароля -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+    
+    if (togglePassword && password) {
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+            
+            const isPressed = type === 'text';
+            this.setAttribute('aria-pressed', isPressed);
+            this.setAttribute('aria-label', isPressed ? 'Скрыть пароль' : 'Показать пароль');
+        });
+    }
+    
+    // Валидация формы
+    const form = document.querySelector('form');
+    const username = document.getElementById('username');
+    const passwordField = document.getElementById('password');
+    
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Валидация email
+            if (username && !username.value.trim()) {
+                username.setAttribute('aria-invalid', 'true');
+                username.classList.add('is-invalid');
+                isValid = false;
+            } else if (username) {
+                username.setAttribute('aria-invalid', 'false');
+                username.classList.remove('is-invalid');
+            }
+            
+            // Валидация пароля
+            if (passwordField && !passwordField.value.trim()) {
+                passwordField.setAttribute('aria-invalid', 'true');
+                passwordField.classList.add('is-invalid');
+                isValid = false;
+            } else if (passwordField) {
+                passwordField.setAttribute('aria-invalid', 'false');
+                passwordField.classList.remove('is-invalid');
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+                // Фокусируемся на первом невалидном поле
+                const firstInvalid = form.querySelector('[aria-invalid="true"]');
+                if (firstInvalid) {
+                    firstInvalid.focus();
+                }
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

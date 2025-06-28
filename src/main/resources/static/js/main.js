@@ -122,6 +122,98 @@ function initNavigation() {
             link.classList.add('active');
         }
     });
+
+    /**
+     * Улучшенная обработка мобильного меню
+     */
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    const navbarNav = document.querySelector('.navbar-nav');
+    
+    if (navbarToggler && navbarNav) {
+        // Обработка клика по кнопке меню
+        navbarToggler.addEventListener('click', function(e) {
+            e.preventDefault();
+            toggleMobileMenu();
+        });
+
+        // Закрытие меню при клике вне его
+        document.addEventListener('click', function(e) {
+            if (!navbarNav.contains(e.target) && !navbarToggler.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        // Закрытие меню при изменении ориентации экрана
+        window.addEventListener('orientationchange', function() {
+            setTimeout(() => {
+                closeMobileMenu();
+            }, 100);
+        });
+
+        // Закрытие меню при изменении размера окна
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth > 767.98) {
+                    closeMobileMenu();
+                }
+            }, 250);
+        });
+
+        // Обработка выпадающих меню в мобильной версии
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                if (window.innerWidth <= 767.98) {
+                    e.preventDefault();
+                    const dropdownMenu = this.nextElementSibling;
+                    if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+                        dropdownMenu.classList.toggle('show');
+                    }
+                }
+            });
+        });
+    }
+}
+
+/**
+ * Переключение мобильного меню
+ */
+function toggleMobileMenu() {
+    const navbarNav = document.querySelector('.navbar-nav');
+    if (navbarNav) {
+        navbarNav.classList.toggle('show');
+        
+        // Обновляем aria-expanded для доступности
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        if (navbarToggler) {
+            const isExpanded = navbarNav.classList.contains('show');
+            navbarToggler.setAttribute('aria-expanded', isExpanded);
+        }
+    }
+}
+
+/**
+ * Закрытие мобильного меню
+ */
+function closeMobileMenu() {
+    const navbarNav = document.querySelector('.navbar-nav');
+    if (navbarNav) {
+        navbarNav.classList.remove('show');
+        
+        // Закрываем все выпадающие меню
+        const dropdownMenus = document.querySelectorAll('.dropdown-menu.show');
+        dropdownMenus.forEach(menu => {
+            menu.classList.remove('show');
+        });
+        
+        // Обновляем aria-expanded для доступности
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        if (navbarToggler) {
+            navbarToggler.setAttribute('aria-expanded', 'false');
+        }
+    }
 }
 
 // ========================================
