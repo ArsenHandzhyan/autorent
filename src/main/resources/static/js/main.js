@@ -65,6 +65,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Глобальный обработчик ошибок
     initGlobalErrorHandler();
     
+    // Кнопка возврата назад в хедере
+    initBackButton();
+    
     console.log('AutoRent: Приложение инициализировано');
 });
 
@@ -2577,3 +2580,38 @@ function getPaymentStatistics(rentalId) {
         });
 }
 window.getPaymentStatistics = getPaymentStatistics;
+
+// ========================================
+// КНОПКА ВОЗВРАТА НАЗАД В ХЕДЕРЕ
+// ========================================
+function initBackButton() {
+    const backButton = document.getElementById('backButton');
+    if (!backButton) return;
+
+    // Проверка: есть ли куда вернуться
+    const hasHistory = window.history.length > 1;
+    const referrer = document.referrer;
+    const current = window.location.href;
+    let show = false;
+    if (hasHistory && referrer && referrer !== current && !referrer.endsWith('/auth/login')) {
+        show = true;
+    } else if (hasHistory && document.referrer && document.referrer !== current) {
+        show = true;
+    }
+    // Не показывать на главной
+    if (window.location.pathname === '/' || window.location.pathname === '/main') {
+        show = false;
+    }
+    if (show) {
+        backButton.classList.remove('d-none');
+    } else {
+        backButton.classList.add('d-none');
+    }
+    backButton.addEventListener('click', function() {
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = '/';
+        }
+    });
+}
