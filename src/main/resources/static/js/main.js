@@ -130,31 +130,18 @@ function initNavigation() {
 
 function initAnimations() {
     /**
-     * Плавная прокрутка к якорям
-     */
-    const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
-    smoothScrollLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-
-    /**
-     * Плавная прокрутка для якорных ссылок
+     * Плавная прокрутка для якорных ссылок (оставляю только этот блок)
      */
     const anchorLinks = document.querySelectorAll('a[href^="#"]');
     anchorLinks.forEach(link => {
         link.addEventListener('click', (event) => {
             const href = link.getAttribute('href');
-            // Исправлено: не обрабатываем пустой якорь или просто '#'
+            // Если просто "#", предотвращаем действие и выходим
+            if (href === '#') {
+                event.preventDefault();
+                return;
+            }
+            // Только для валидных якорей
             if (href && href.length > 1 && href.startsWith('#')) {
                 const target = document.querySelector(href);
                 if (target) {
