@@ -59,7 +59,7 @@
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></div>
                             </div>
 
-                            <div class="alert alert-info text-center mb-3" id="rentalCost">
+                            <div class="alert alert-info text-center mb-3" id="rentalCost" th:attr="data-price-per-day=${car.pricePerDay}">
                                 <strong>Стоимость аренды: <span id="cost">0</span> ₽</strong>
                             </div>
 
@@ -184,11 +184,10 @@
             const endInput = document.getElementById('endDate');
             const costElement = document.getElementById('cost');
             const durationElement = document.getElementById('durationDays');
+            const rentalCostDiv = document.getElementById('rentalCost');
+            const pricePerDay = rentalCostDiv ? Number(rentalCostDiv.getAttribute('data-price-per-day')) : 0;
             
             if (!startInput || !endInput || !costElement) return;
-            
-            // Получаем цену за день из HTML
-            const pricePerDay = /*[[${car.pricePerDay}]]*/ 0;
             
             function calculateCost() {
                 const start = new Date(startInput.value);
