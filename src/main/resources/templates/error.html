@@ -5,14 +5,43 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <div class="error-container">
-    <h1>Произошла ошибка</h1>
-    <p th:text="${errorMessage}">Произошла ошибка при обработке запроса</p>
-    <p th:text="${errorDetails}">Дополнительная информация об ошибке</p>
-    <a th:href="@{/}" class="btn">Вернуться на главную</a>
+    <div class="error-content">
+        <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h1 class="error-title">Произошла ошибка</h1>
+        <div class="error-message" th:text="${errorMessage}">Произошла ошибка при обработке запроса</div>
+        <div class="error-details" th:if="${errorDetails}" th:text="${errorDetails}">Дополнительная информация об ошибке</div>
+        <div class="error-actions">
+            <a th:href="@{/}" class="btn btn-primary">
+                <i class="fas fa-home"></i> Вернуться на главную
+            </a>
+            <button onclick="history.back()" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Назад
+            </button>
+        </div>
+    </div>
 </div>
-<footer>
-    <p>&copy; 2025 АвтоПрокат. Все права защищены.</p>
-</footer>
+
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<script th:src="@{/js/main.js}"></script>
+<script>
+// Показываем уведомление об ошибке при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    const errorMessage = document.querySelector('.error-message').textContent;
+    const errorDetails = document.querySelector('.error-details')?.textContent;
+    
+    if (errorMessage) {
+        showNotification(errorMessage, 'error');
+    }
+    
+    if (errorDetails && errorDetails !== 'Дополнительная информация об ошибке') {
+        setTimeout(() => {
+            showNotification(errorDetails, 'warning');
+        }, 2000);
+    }
+});
+</script>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package ru.anapa.autorent.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -160,6 +162,17 @@ public class CarController {
             mav.addObject("car", car);
             mav.addObject("nextDate", nextAvailableDate);
             mav.addObject("bookedPeriods", bookedPeriods);
+            
+            // Преобразуем периоды в JSON для JavaScript
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                String bookedPeriodsJson = objectMapper.writeValueAsString(bookedPeriods);
+                mav.addObject("bookedPeriodsJson", bookedPeriodsJson);
+            } catch (JsonProcessingException e) {
+                logger.error("Ошибка при преобразовании периодов в JSON: {}", e.getMessage());
+                mav.addObject("bookedPeriodsJson", "[]");
+            }
+            
             return mav;
         } catch (Exception e) {
             logger.error("Error viewing car ID {}: {}", id, e.getMessage(), e);

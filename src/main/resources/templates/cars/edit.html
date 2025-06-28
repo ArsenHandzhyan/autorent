@@ -97,12 +97,13 @@
                 <div class="image-grid">
                     <div th:each="image : ${car.existingImages}" class="image-item">
                         <div class="image-container">
-                            <img th:src="@{/images/car/{imageId}(imageId=${image.id})}" 
+                            <img th:src="${image.imageUrl}" 
                                  th:alt="${'Фото ' + car.brand + ' ' + car.model}" 
                                  th:data-rotation="${image.rotation}"
                                  th:attr="data-image-id=${image.id}"
-                                 th:class="${'img-thumbnail' + (image.rotation != null && image.rotation != 0 ? ' rotated-' + image.rotation : '')}"
-                                 class="img-thumbnail">
+                                 th:style="'transform: rotate(' + (${image.rotation != null ? image.rotation : 0}) + 'deg);'"
+                                 class="img-thumbnail"
+                                 onerror="this.src='/images/default-car.jpg';">
                             <input type="hidden" th:name="'imageRotation_' + ${image.id}" th:value="${image.rotation}" 
                                    th:attr="data-image-id=${image.id}">
                             <div class="image-rotation-controls">

@@ -39,7 +39,6 @@
                             <div class="mb-3">
                                 <label for="startDate" class="form-label">Дата и время начала аренды:</label>
                                 <input type="datetime-local" id="startDate" name="startDate"
-                                       th:value="${rental.startDate != null ? #dates.format(rental.startDate, 'yyyy-MM-dd\'T\'HH:mm') : ''}"
                                        required
                                        class="form-control" th:classappend="${#fields.hasErrors('startDate')} ? 'is-invalid'">
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
@@ -48,7 +47,6 @@
                             <div class="mb-3">
                                 <label for="endDate" class="form-label">Дата и время окончания аренды:</label>
                                 <input type="datetime-local" id="endDate" name="endDate"
-                                       th:value="${rental.endDate != null ? #dates.format(rental.endDate, 'yyyy-MM-dd\'T\'HH:mm') : ''}"
                                        required
                                        class="form-control" th:classappend="${#fields.hasErrors('endDate')} ? 'is-invalid'">
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
@@ -78,5 +76,189 @@
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script th:src="@{/js/main.js}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация валидации дат аренды
+            initRentalFormValidation();
+            
+            // Инициализация расчета стоимости
+            initRentalCostCalculator();
+            
+            // Установка начальных значений дат
+            initRentalDates();
+        });
+
+        function initRentalFormValidation() {
+            const startInput = document.getElementById('startDate');
+            const endInput = document.getElementById('endDate');
+            const submitBtn = document.querySelector('button[type="submit"]');
+            const warning = document.createElement('div');
+            warning.className = 'alert alert-warning mt-2';
+            warning.style.display = 'none';
+            
+            if (!startInput || !endInput || !submitBtn) return;
+            
+            // Добавляем предупреждение после формы
+            const form = document.getElementById('rentalForm');
+            form.appendChild(warning);
+            
+            // Получаем периоды бронирования из Thymeleaf
+            const bookedPeriods = /*[[${bookedPeriods}]]*/ [];
+            
+            function parsePeriods(periods) {
+                return periods.map(p => ({
+                    start: new Date(p.startDate),
+                    end: new Date(p.endDate)
+                }));
+            }
+            
+            const periods = parsePeriods(bookedPeriods);
+            
+            function isOverlapping(start, end) {
+                return periods.some(p => !(end <= p.start || start >= p.end));
+            }
+            
+            function validateDates() {
+                const start = new Date(startInput.value);
+                const end = new Date(endInput.value);
+                
+                if (start && end && !isNaN(start) && !isNaN(end)) {
+                    // Проверяем, что дата окончания больше даты начала
+                    if (end <= start) {
+                        submitBtn.disabled = true;
+                        warning.textContent = 'Дата окончания должна быть позже даты начала!';
+                        warning.style.display = 'block';
+                        return;
+                    }
+                    
+                    // Проверяем, что дата начала не в прошлом
+                    const now = new Date();
+                    if (start < now) {
+                        submitBtn.disabled = true;
+                        warning.textContent = 'Дата начала не может быть в прошлом!';
+                        warning.style.display = 'block';
+                        return;
+                    }
+                    
+                    // Проверяем пересечение с забронированными периодами
+                    if (isOverlapping(start, end)) {
+                        submitBtn.disabled = true;
+                        warning.textContent = 'Выбранные даты пересекаются с уже забронированными!';
+                        warning.style.display = 'block';
+                    } else {
+                        submitBtn.disabled = false;
+                        warning.style.display = 'none';
+                    }
+                } else {
+                    submitBtn.disabled = false;
+                    warning.style.display = 'none';
+                }
+            }
+            
+            // Добавляем обработчики событий
+            startInput.addEventListener('change', validateDates);
+            endInput.addEventListener('change', validateDates);
+            
+            // Устанавливаем минимальную дату для полей
+            const now = new Date();
+            const nowString = now.toISOString().slice(0, 16);
+            startInput.min = nowString;
+            endInput.min = nowString;
+            
+            // Обновляем минимальную дату окончания при изменении даты начала
+            startInput.addEventListener('change', function() {
+                if (this.value) {
+                    endInput.min = this.value;
+                    // Если дата окончания меньше новой даты начала, очищаем её
+                    if (endInput.value && endInput.value <= this.value) {
+                        endInput.value = '';
+                    }
+                }
+            });
+        }
+
+        function initRentalCostCalculator() {
+            const startInput = document.getElementById('startDate');
+            const endInput = document.getElementById('endDate');
+            const costElement = document.getElementById('cost');
+            const durationElement = document.getElementById('durationDays');
+            
+            if (!startInput || !endInput || !costElement) return;
+            
+            // Получаем цену за день из HTML
+            const pricePerDay = /*[[${car.pricePerDay}]]*/ 0;
+            
+            function calculateCost() {
+                const start = new Date(startInput.value);
+                const end = new Date(endInput.value);
+                
+                if (start && end && !isNaN(start) && !isNaN(end) && end > start) {
+                    const durationMs = end - start;
+                    const durationDays = Math.ceil(durationMs / (1000 * 60 * 60 * 24));
+                    const totalCost = durationDays * pricePerDay;
+                    
+                    costElement.textContent = totalCost.toLocaleString('ru-RU');
+                    if (durationElement) {
+                        durationElement.value = durationDays;
+                    }
+                } else {
+                    costElement.textContent = '0';
+                    if (durationElement) {
+                        durationElement.value = '1';
+                    }
+                }
+            }
+            
+            // Добавляем обработчики событий
+            startInput.addEventListener('change', calculateCost);
+            endInput.addEventListener('change', calculateCost);
+            
+            // Рассчитываем начальную стоимость
+            calculateCost();
+        }
+
+        function initRentalDates() {
+            const startInput = document.getElementById('startDate');
+            const endInput = document.getElementById('endDate');
+            
+            if (!startInput || !endInput) return;
+            
+            // Получаем даты из сервера
+            const startDate = /*[[${rental.startDate}]]*/ null;
+            const endDate = /*[[${rental.endDate}]]*/ null;
+            
+            // Устанавливаем значения, если они есть
+            if (startDate) {
+                const startDateTime = new Date(startDate);
+                const startString = startDateTime.toISOString().slice(0, 16);
+                startInput.value = startString;
+            }
+            
+            if (endDate) {
+                const endDateTime = new Date(endDate);
+                const endString = endDateTime.toISOString().slice(0, 16);
+                endInput.value = endString;
+            }
+            
+            // Если даты не установлены, устанавливаем текущую дату и время
+            if (!startInput.value) {
+                const now = new Date();
+                const nowString = now.toISOString().slice(0, 16);
+                startInput.value = nowString;
+            }
+            
+            if (!endInput.value) {
+                const startValue = startInput.value;
+                if (startValue) {
+                    const start = new Date(startValue);
+                    const end = new Date(start.getTime() + 24 * 60 * 60 * 1000); // +1 день
+                    const endString = end.toISOString().slice(0, 16);
+                    endInput.value = endString;
+                }
+            }
+        }
+    </script>
 </body>
 </html>

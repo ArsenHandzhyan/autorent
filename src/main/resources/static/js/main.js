@@ -62,6 +62,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initCarFormValidation();
     initCarImageManagement();
     
+    // Глобальный обработчик ошибок
+    initGlobalErrorHandler();
+    
     console.log('AutoRent: Приложение инициализировано');
 });
 
@@ -90,26 +93,52 @@ function initNavigation() {
      */
     const navbarToggler = document.querySelector('.navbar-toggler');
     const navbarNav = document.querySelector('.navbar-nav');
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
 
     if (navbarToggler && navbarNav) {
         navbarToggler.addEventListener('click', () => {
+            // Переключаем класс show для отображения/скрытия меню
             navbarNav.classList.toggle('show');
+            
+            // Добавляем анимацию для плавного появления
+            if (navbarNav.classList.contains('show')) {
+                navbarNav.style.display = 'flex';
+                navbarNav.style.opacity = '0';
+                setTimeout(() => {
+                    navbarNav.style.opacity = '1';
+                }, 10);
+            } else {
+                navbarNav.style.opacity = '0';
+                setTimeout(() => {
+                    navbarNav.style.display = 'none';
+                }, 300);
+            }
+        });
+
+        // Закрываем меню при клике вне его
+        document.addEventListener('click', (event) => {
+            if (!navbarToggler.contains(event.target) && !navbarNav.contains(event.target)) {
+                navbarNav.classList.remove('show');
+                navbarNav.style.display = 'none';
+                navbarNav.style.opacity = '0';
+            }
         });
     }
 
     /**
      * Управление выпадающим меню в профиле
      */
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
     if (dropdownToggle && dropdownMenu) {
         // По клику на иконку профиля
         dropdownToggle.addEventListener('click', (event) => {
             event.preventDefault();
+            event.stopPropagation();
             dropdownMenu.classList.toggle('show');
         });
 
-        // Закрыть меню при клике вне его
+        // Закрываем выпадающее меню при клике вне его
         document.addEventListener('click', (event) => {
             if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
                 dropdownMenu.classList.remove('show');
@@ -117,10 +146,57 @@ function initNavigation() {
         });
     }
 
-    // Активные ссылки
+    /**
+     * Обработка формы выхода
+     */
+    const logoutForm = document.querySelector('form[action*="/auth/logout"]');
+    if (logoutForm) {
+        logoutForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            }).then(() => {
+                window.location.href = '/auth/login?logout';
+            });
+        });
+    }
+
+    /**
+     * Плавная прокрутка для якорных ссылок
+     */
+    const anchorLinks = document.querySelectorAll('a[href^="#"]');
+    anchorLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            const href = link.getAttribute('href');
+            if (href !== '#') {
+                const target = document.querySelector(href);
+                if (target) {
+                    event.preventDefault();
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    });
+
+    /**
+     * Подсветка активного пункта меню
+     */
     const currentPath = window.location.pathname;
-    document.querySelectorAll('.nav-link').forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        const linkPath = link.getAttribute('href');
+        if (linkPath && currentPath.startsWith(linkPath) && linkPath !== '/') {
+            link.classList.add('active');
+        } else if (linkPath === '/' && currentPath === '/') {
             link.classList.add('active');
         }
     });
@@ -2235,5 +2311,213 @@ document.addEventListener('DOMContentLoaded', function() {
     initCarFormValidation();
     initCarImageManagement();
     
+    // Глобальный обработчик ошибок
+    initGlobalErrorHandler();
+    
     console.log('AutoRent: Приложение инициализировано');
 }); 
+
+// ========================================
+// ГАЛЕРЕЯ ИЗОБРАЖЕНИЙ АВТОМОБИЛЯ
+// ========================================
+
+function initCarDetailGallery() {
+    const mainImage = document.getElementById('mainCarImage');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    
+    if (!mainImage || thumbnails.length === 0) return;
+    
+    // Обработчик клика по миниатюрам
+    thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('click', function() {
+            const img = this.querySelector('img');
+            if (img && mainImage) {
+                // Обновляем основное изображение
+                mainImage.src = img.src;
+                
+                // Обновляем активную миниатюру
+                thumbnails.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            }
+        });
+    });
+    
+    // Устанавливаем первую миниатюру как активную
+    if (thumbnails.length > 0) {
+        thumbnails[0].classList.add('active');
+    }
+}
+
+// ========================================
+// ВАЛИДАЦИЯ ДАТ АРЕНДЫ
+// ========================================
+
+function initRentalDateValidation() {
+    const startInput = document.getElementById('startDate');
+    const endInput = document.getElementById('endDate');
+    const rentBtn = document.getElementById('rentBtn');
+    const warning = document.getElementById('dateWarning');
+    
+    if (!startInput || !endInput || !rentBtn || !warning) return;
+    
+    // Получаем периоды бронирования из data-атрибута
+    const bookedPeriodsData = document.querySelector('[data-booked-periods]');
+    let bookedPeriods = [];
+    
+    if (bookedPeriodsData) {
+        try {
+            bookedPeriods = JSON.parse(bookedPeriodsData.getAttribute('data-booked-periods'));
+        } catch (e) {
+            console.error('Ошибка парсинга периодов бронирования:', e);
+        }
+    }
+    
+    function parsePeriods(periods) {
+        return periods.map(p => ({
+            start: new Date(p.startDate),
+            end: new Date(p.endDate)
+        }));
+    }
+    
+    const periods = parsePeriods(bookedPeriods);
+    
+    function isOverlapping(start, end) {
+        return periods.some(p => !(end <= p.start || start >= p.end));
+    }
+    
+    function validateDates() {
+        const start = new Date(startInput.value);
+        const end = new Date(endInput.value);
+        
+        if (start && end && !isNaN(start) && !isNaN(end)) {
+            // Проверяем, что дата окончания больше даты начала
+            if (end <= start) {
+                rentBtn.disabled = true;
+                warning.textContent = 'Дата окончания должна быть позже даты начала!';
+                warning.style.display = 'block';
+                return;
+            }
+            
+            // Проверяем, что дата начала не в прошлом
+            const now = new Date();
+            if (start < now) {
+                rentBtn.disabled = true;
+                warning.textContent = 'Дата начала не может быть в прошлом!';
+                warning.style.display = 'block';
+                return;
+            }
+            
+            // Проверяем пересечение с забронированными периодами
+            if (isOverlapping(start, end)) {
+                rentBtn.disabled = true;
+                warning.textContent = 'Выбранные даты пересекаются с уже забронированными!';
+                warning.style.display = 'block';
+            } else {
+                rentBtn.disabled = false;
+                warning.style.display = 'none';
+            }
+        } else {
+            rentBtn.disabled = false;
+            warning.style.display = 'none';
+        }
+    }
+    
+    // Добавляем обработчики событий
+    startInput.addEventListener('change', validateDates);
+    endInput.addEventListener('change', validateDates);
+    
+    // Устанавливаем минимальную дату для полей
+    const now = new Date();
+    const nowString = now.toISOString().slice(0, 16);
+    startInput.min = nowString;
+    endInput.min = nowString;
+    
+    // Обновляем минимальную дату окончания при изменении даты начала
+    startInput.addEventListener('change', function() {
+        if (this.value) {
+            endInput.min = this.value;
+            // Если дата окончания меньше новой даты начала, очищаем её
+            if (endInput.value && endInput.value <= this.value) {
+                endInput.value = '';
+            }
+        }
+    });
+}
+
+// ========================================
+// ДОПОЛНИТЕЛЬНАЯ ИНИЦИАЛИЗАЦИЯ
+// ========================================
+
+// Добавляем новые функции в основную инициализацию
+document.addEventListener('DOMContentLoaded', function() {
+    // ... existing initialization code ...
+    
+    // Инициализация новых компонентов
+    initCarDetailGallery();
+    initRentalDateValidation();
+    
+    console.log('AutoRent: Дополнительные компоненты инициализированы');
+}); 
+
+// ========================================
+// ГЛОБАЛЬНЫЙ ОБРАБОТЧИК ОШИБОК
+// ========================================
+
+function initGlobalErrorHandler() {
+    // Обработчик для AJAX запросов
+    const originalFetch = window.fetch;
+    window.fetch = function(...args) {
+        return originalFetch.apply(this, args).then(response => {
+            if (!response.ok) {
+                // Если это JSON ответ с ошибкой
+                if (response.headers.get('content-type')?.includes('application/json')) {
+                    return response.json().then(errorData => {
+                        // Показываем уведомление с ошибкой
+                        const errorMessage = errorData.message || errorData.details || 'Произошла ошибка';
+                        showNotification(errorMessage, 'error');
+                        throw new Error(errorMessage);
+                    });
+                } else {
+                    // Для не-JSON ответов (например, 404)
+                    let errorMessage = 'Произошла ошибка';
+                    if (response.status === 404) {
+                        errorMessage = 'Страница не найдена. Проверьте правильность URL адреса.';
+                    } else if (response.status === 403) {
+                        errorMessage = 'Доступ запрещен. У вас нет прав для выполнения этой операции.';
+                    } else if (response.status === 401) {
+                        errorMessage = 'Необходима авторизация. Пожалуйста, войдите в систему.';
+                    } else if (response.status >= 500) {
+                        errorMessage = 'Ошибка сервера. Пожалуйста, попробуйте позже.';
+                    }
+                    showNotification(errorMessage, 'error');
+                    throw new Error(errorMessage);
+                }
+            }
+            return response;
+        });
+    };
+
+    // Обработчик для глобальных ошибок JavaScript
+    window.addEventListener('error', function(event) {
+        console.error('Глобальная ошибка JavaScript:', event.error);
+        showNotification('Произошла ошибка в приложении. Пожалуйста, обновите страницу.', 'error');
+    });
+
+    // Обработчик для необработанных промисов
+    window.addEventListener('unhandledrejection', function(event) {
+        console.error('Необработанная ошибка промиса:', event.reason);
+        const errorMessage = event.reason?.message || 'Произошла непредвиденная ошибка';
+        showNotification(errorMessage, 'error');
+        event.preventDefault();
+    });
+
+    // Обработчик для ошибок загрузки ресурсов
+    window.addEventListener('error', function(event) {
+        if (event.target && (event.target.tagName === 'IMG' || event.target.tagName === 'SCRIPT' || event.target.tagName === 'LINK')) {
+            console.warn('Ошибка загрузки ресурса:', event.target.src || event.target.href);
+            // Не показываем уведомление для ошибок загрузки ресурсов, чтобы не спамить
+        }
+    }, true);
+
+    console.log('Глобальный обработчик ошибок инициализирован');
+}

@@ -145,12 +145,23 @@ a:hover {
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
+    color: var(--text-color);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    transition: all var(--transition-normal);
+}
+
+.navbar-toggler:hover {
+    background-color: var(--bg-light);
+    color: var(--secondary-color);
 }
 
 .navbar-nav {
     display: flex;
     list-style: none;
     gap: var(--spacing-sm);
+    margin: 0;
+    padding: 0;
 }
 
 .nav-link {
@@ -495,15 +506,48 @@ a:hover {
         left: 0;
         background-color: var(--bg-white);
         box-shadow: var(--shadow-medium);
+        opacity: 0;
+        transition: opacity var(--transition-normal);
+        z-index: 1000;
     }
 
     .navbar-nav.show {
         display: flex;
+        opacity: 1;
     }
 
     .nav-link {
         padding: var(--spacing-md);
         border-bottom: 1px solid var(--border-color);
+        width: 100%;
+        text-align: left;
+    }
+
+    .nav-link:last-child {
+        border-bottom: none;
+    }
+
+    /* Анимация для выпадающего меню */
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border: none;
+        background-color: var(--bg-light);
+        margin-top: var(--spacing-sm);
+        border-radius: 0;
+    }
+
+    .dropdown-menu.show {
+        display: block;
+    }
+
+    .dropdown-item {
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .dropdown-item:last-child {
+        border-bottom: none;
     }
 }
 
@@ -2887,4 +2931,357 @@ footer hr {
         width: 100%;
         margin-bottom: var(--spacing-sm);
     }
+}
+
+/* ========================================
+   СТИЛИ ДЛЯ ГАЛЕРЕИ ИЗОБРАЖЕНИЙ АВТОМОБИЛЯ
+   ======================================== */
+.car-gallery {
+    position: relative;
+}
+
+.main-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-medium);
+    background-color: var(--bg-light);
+}
+
+.main-image img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    transition: transform var(--transition-normal);
+}
+
+.main-image img:hover {
+    transform: scale(1.02);
+}
+
+.thumbnails {
+    margin-top: var(--spacing-md);
+}
+
+.thumbnail {
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: all var(--transition-fast);
+    opacity: 0.7;
+}
+
+.thumbnail:hover {
+    opacity: 1;
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.thumbnail.active {
+    border-color: var(--primary-color);
+    opacity: 1;
+    box-shadow: var(--shadow-light);
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+}
+
+/* ========================================
+   СТИЛИ ДЛЯ ФОРМЫ АРЕНДЫ
+   ======================================== */
+.rental-form {
+    background-color: var(--bg-white);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-light);
+}
+
+.rental-form .form-label {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.rental-form .form-control {
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+}
+
+.rental-form .form-control:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.date-warning {
+    display: none;
+    color: var(--danger-color);
+    font-weight: 500;
+    padding: var(--spacing-sm);
+    background-color: rgba(231, 76, 60, 0.1);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--danger-color);
+}
+
+/* ========================================
+   СТИЛИ ДЛЯ КНОПКИ ВЫХОДА
+   ======================================== */
+.logout-form {
+    display: inline;
+}
+
+.logout-form .dropdown-item {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--danger-color);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.logout-form .dropdown-item:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--danger-color);
+}
+
+/* ========================================
+   СТИЛИ ДЛЯ БЛОКА ЦЕНЫ
+   ======================================== */
+.price-block {
+    background: linear-gradient(135deg, var(--bg-light) 0%, #e3f2fd 100%);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.price-block .fs-2 {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* ========================================
+   СТИЛИ ДЛЯ СТАТУСА АВТОМОБИЛЯ
+   ======================================== */
+.car-status {
+    margin-bottom: var(--spacing-lg);
+}
+
+.car-status .badge {
+    font-size: 1rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-lg);
+    font-weight: 600;
+}
+
+/* ========================================
+   АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ
+   ======================================== */
+@media (max-width: 768px) {
+    .car-gallery .main-image img {
+        max-height: 300px;
+    }
+    
+    .thumbnail img {
+        height: 60px;
+    }
+    
+    .rental-form {
+        padding: var(--spacing-md);
+    }
+    
+    .price-block {
+        padding: var(--spacing-md);
+    }
+    
+    .price-block .fs-2 {
+        font-size: 1.5rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .car-gallery .main-image img {
+        max-height: 250px;
+    }
+    
+    .thumbnail img {
+        height: 50px;
+    }
+    
+    .rental-form {
+        padding: var(--spacing-sm);
+    }
+    
+    .price-block {
+        padding: var(--spacing-sm);
+    }
+    
+    .price-block .fs-2 {
+        font-size: 1.25rem !important;
+    }
 } 
+
+/* ========================================
+   СТРАНИЦА ОШИБОК
+   ======================================== */
+
+.error-container {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-white) 100%);
+}
+
+.error-content {
+    text-align: center;
+    max-width: 600px;
+    background: var(--bg-white);
+    padding: var(--spacing-xxl);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-heavy);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.error-icon {
+    font-size: 4rem;
+    color: var(--danger-color);
+    margin-bottom: var(--spacing-lg);
+    animation: pulse 2s infinite;
+}
+
+.error-title {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+    font-weight: 700;
+}
+
+.error-message {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.6;
+}
+
+.error-details {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-md);
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--warning-color);
+}
+
+.error-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.error-actions .btn {
+    min-width: 150px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-weight: 600;
+    transition: all var(--transition-normal);
+}
+
+.error-actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Адаптивность для страницы ошибок */
+@media (max-width: 768px) {
+    .error-container {
+        padding: var(--spacing-md);
+        min-height: 50vh;
+    }
+    
+    .error-content {
+        padding: var(--spacing-lg);
+    }
+    
+    .error-icon {
+        font-size: 3rem;
+    }
+    
+    .error-title {
+        font-size: 2rem;
+    }
+    
+    .error-message {
+        font-size: 1.1rem;
+    }
+    
+    .error-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .error-actions .btn {
+        width: 100%;
+        max-width: 250px;
+    }
+}
+
+@media (max-width: 576px) {
+    .error-container {
+        padding: var(--spacing-sm);
+    }
+    
+    .error-content {
+        padding: var(--spacing-md);
+    }
+    
+    .error-icon {
+        font-size: 2.5rem;
+    }
+    
+    .error-title {
+        font-size: 1.75rem;
+    }
+    
+    .error-message {
+        font-size: 1rem;
+    }
+    
+    .error-details {
+        font-size: 0.9rem;
+        padding: var(--spacing-sm);
+    }
+}

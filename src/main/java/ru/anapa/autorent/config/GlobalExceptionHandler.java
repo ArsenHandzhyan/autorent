@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import org.springframework.security.core.AuthenticationException;
 import java.time.LocalDateTime;
@@ -18,12 +19,23 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException ex) {
+        logger.warn("Resource not found: {}", ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(
+                "Страница не найдена",
+                "Запрашиваемая страница не существует. Проверьте правильность URL адреса.",
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         logger.error("Unexpected error occurred", ex);
         ErrorResponse errorResponse = new ErrorResponse(
-                "Unexpected error occurred",
-                ex.getMessage(),
+                "Произошла ошибка",
+                "Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже или обратитесь к администратору.",
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -33,8 +45,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex) {
         logger.error("Authentication error occurred", ex);
         ErrorResponse errorResponse = new ErrorResponse(
-                "Authentication error",
-                ex.getMessage(),
+                "Ошибка аутентификации",
+                "Не удалось выполнить вход в систему. Проверьте правильность логина и пароля.",
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
@@ -53,8 +65,8 @@ public class GlobalExceptionHandler {
                 ));
 
         ErrorResponse errorResponse = new ErrorResponse(
-                "Validation error",
-                errors.toString(),
+                "Ошибка валидации",
+                "Проверьте правильность введенных данных: " + errors.toString(),
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);

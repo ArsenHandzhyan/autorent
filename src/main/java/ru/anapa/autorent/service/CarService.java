@@ -659,4 +659,53 @@ public class CarService {
         carImageRepository.deleteById(imageId);
         logger.info("Изображение с ID {} удалено", imageId);
     }
+
+    /**
+     * Получает отображаемое название категории на русском языке
+     */
+    public String getCategoryDisplayName(String category) {
+        if (category == null) return "Не указана";
+        
+        switch (category.toUpperCase()) {
+            case "ECONOMY":
+                return "Эконом";
+            case "COMFORT":
+                return "Комфорт";
+            case "BUSINESS":
+                return "Бизнес";
+            case "PREMIUM":
+                return "Премиум";
+            case "SUV":
+                return "Внедорожник";
+            case "VAN":
+                return "Минивэн";
+            case "SPORT":
+                return "Спорт";
+            default:
+                return category;
+        }
+    }
+
+    /**
+     * Получает отображаемое название типа топлива на русском языке
+     */
+    public String getFuelTypeDisplayName(String fuelType) {
+        if (fuelType == null) return "Не указан";
+        
+        switch (fuelType.toUpperCase()) {
+            case "GASOLINE":
+            case "PETROL":
+                return "Бензин";
+            case "DIESEL":
+                return "Дизель";
+            case "HYBRID":
+                return "Гибрид";
+            case "ELECTRIC":
+                return "Электро";
+            case "LPG":
+                return "Газ";
+            default:
+                return fuelType;
+        }
+    }
 }

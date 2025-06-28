@@ -46,6 +46,7 @@ public class CarImage {
     private int displayOrder = 0;
 
     @Column(name = "rotation")
+    @Builder.Default
     private Integer rotation = 0;
 
     public Integer getRotation() {
