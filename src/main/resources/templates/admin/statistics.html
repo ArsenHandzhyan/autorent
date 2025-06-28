@@ -38,7 +38,7 @@
                 <div class="col-md-3">
                     <div class="stat-card">
                         <div class="stat-label"><i class="fas fa-coins"></i> Баланс счетов</div>
-                        <div class="stat-number" th:text="${totalAccountsBalance + ' ₽'}">0 ₽</div>
+                        <div class="stat-number" th:text="${#numbers.formatDecimal(totalAccountsBalance, 1, 'WHITESPACE', 2, 'POINT') + ' ₽'}">0 ₽</div>
                     </div>
                 </div>
             </div>
@@ -48,19 +48,19 @@
                 <div class="col-md-4">
                     <div class="stat-card">
                         <div class="stat-label"><i class="fas fa-money-bill-wave"></i> Общий оборот</div>
-                        <div class="stat-number" th:text="${totalRevenue + ' ₽'}">0 ₽</div>
+                        <div class="stat-number" th:text="${#numbers.formatDecimal(totalRevenue, 1, 'WHITESPACE', 2, 'POINT') + ' ₽'}">0 ₽</div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="stat-card">
                         <div class="stat-label"><i class="fas fa-exclamation-triangle"></i> Суммарная задолженность</div>
-                        <div class="stat-number" th:text="${totalDebt + ' ₽'}">0 ₽</div>
+                        <div class="stat-number" th:text="${totalDebt != null ? #numbers.formatDecimal(totalDebt, 1, 'WHITESPACE', 2, 'POINT') + ' ₽' : '0 ₽'}">0 ₽</div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="stat-card">
                         <div class="stat-label"><i class="fas fa-percentage"></i> Конверсия в аренду</div>
-                        <div class="stat-number" th:text="${conversionRate + '%'}">0%</div>
+                        <div class="stat-number" th:text="${#numbers.formatDecimal(conversionRate, 1, 'COMMA', 2, 'POINT') + '%'}">0%</div>
                     </div>
                 </div>
             </div>
@@ -97,11 +97,14 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <tr th:if="${#lists.isEmpty(transactions)}">
+                            <td colspan="6" class="text-center text-muted">Нет данных о движениях по счетам</td>
+                        </tr>
                         <tr th:each="tx : ${transactions}">
                             <td th:text="${tx.id}"></td>
                             <td th:text="${tx.userFullName}"></td>
                             <td th:text="${tx.type}"></td>
-                            <td th:text="${tx.amount + ' ₽'}"></td>
+                            <td th:text="${#numbers.formatDecimal(tx.amount, 1, 'WHITESPACE', 2, 'POINT') + ' ₽'}"></td>
                             <td th:text="${#temporals.format(tx.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
                             <td th:text="${tx.description}"></td>
                         </tr>
@@ -128,6 +131,9 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <tr th:if="${#lists.isEmpty(allPayments)}">
+                            <td colspan="8" class="text-center text-muted">Нет данных о платежах</td>
+                        </tr>
                         <tr th:each="payment : ${allPayments}">
                             <td th:text="${payment.id}"></td>
                             <td th:text="${payment.userFullName}"></td>
@@ -170,11 +176,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <tr th:if="${#lists.isEmpty(popularCars)}">
+                                    <td colspan="4" class="text-center text-muted">Нет данных о популярных автомобилях</td>
+                                </tr>
                                 <tr th:each="car : ${popularCars}">
                                     <td th:text="${car.brand + ' ' + car.model}"></td>
                                     <td th:text="${car.rentalCount}"></td>
-                                    <td th:text="${car.revenue + ' ₽'}"></td>
-                                    <td th:text="${car.averageRating + '/5'}"></td>
+                                    <td th:text="${#numbers.formatDecimal(car.revenue, 1, 'WHITESPACE', 2, 'POINT') + ' ₽'}"></td>
+                                    <td th:text="${#numbers.formatDecimal(car.averageRating, 1, 'COMMA', 1, 'POINT') + '/5'}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -195,10 +204,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <tr th:if="${#lists.isEmpty(activeUsers)}">
+                                    <td colspan="4" class="text-center text-muted">Нет данных об активных пользователях</td>
+                                </tr>
                                 <tr th:each="user : ${activeUsers}">
                                     <td th:text="${user.firstName + ' ' + user.lastName}"></td>
                                     <td th:text="${user.rentalCount}"></td>
-                                    <td th:text="${user.totalSpent + ' ₽'}"></td>
+                                    <td th:text="${#numbers.formatDecimal(user.totalSpent, 1, 'WHITESPACE', 2, 'POINT') + ' ₽'}"></td>
                                     <td th:text="${#temporals.format(user.lastActivity, 'dd.MM.yyyy')}"></td>
                                 </tr>
                                 </tbody>
