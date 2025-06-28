@@ -126,7 +126,6 @@
                                                                        (payment.status == 'PENDING' ? 'status-pending' :
                                                                        (payment.status == 'FAILED' ? 'status-failed' :
                                                                        (payment.status == 'CANCELLED' ? 'status-cancelled' : '')))}">
-                                                    Статус
                                                 </span>
                                             </td>
                                             <td th:text="${payment.createdAt != null ? #temporals.format(payment.createdAt, 'dd.MM.yyyy HH:mm') : '-'}">01.01.2023 12:00</td>
