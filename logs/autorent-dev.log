@@ -4714,3 +4714,28 @@ Caused by: java.sql.SQLException: Access denied for user 'root'@'172.18.0.1' (us
             on r1_1.id=r1_0.role_id 
     where
         u1_0.id=?
+17:38:35.577 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/rentals
+17:38:35.579 [http-nio-8080-exec-3] DEBUG r.a.autorent.config.JwtRequestFilter - JWT Token does not begin with Bearer String or is missing
+17:38:35.581 [http-nio-8080-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+17:38:35.624 [http-nio-8080-exec-3] DEBUG o.s.s.w.s.HttpSessionRequestCache - Saved request http://localhost:8080/api/rentals?continue to session
+17:38:42.044 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /rentals
+17:38:42.045 [http-nio-8080-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+17:38:42.046 [http-nio-8080-exec-4] DEBUG o.s.s.w.s.HttpSessionRequestCache - Saved request http://localhost:8080/rentals?continue to session
+17:38:42.056 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /auth/login
+17:38:42.058 [http-nio-8080-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+17:38:42.059 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /auth/login
+17:38:42.073 [http-nio-8080-exec-5] INFO  r.a.a.controller.AuthController - Login page requested
+17:39:39.870 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /admin/rentals
+17:39:39.872 [http-nio-8080-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+17:39:39.875 [http-nio-8080-exec-6] DEBUG o.s.s.w.s.HttpSessionRequestCache - Saved request http://localhost:8080/admin/rentals?continue to session
+17:39:39.878 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /auth/login
+17:39:39.879 [http-nio-8080-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+17:39:39.879 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /auth/login
+17:39:39.881 [http-nio-8080-exec-7] INFO  r.a.a.controller.AuthController - Login page requested
+17:40:55.302 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /stats/rentals
+17:40:55.305 [http-nio-8080-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+17:40:55.308 [http-nio-8080-exec-9] DEBUG o.s.s.w.s.HttpSessionRequestCache - Saved request http://localhost:8080/stats/rentals?continue to session
+17:40:55.315 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /auth/login
+17:40:55.319 [http-nio-8080-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+17:40:55.321 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /auth/login
+17:40:55.323 [http-nio-8080-exec-10] INFO  r.a.a.controller.AuthController - Login page requested

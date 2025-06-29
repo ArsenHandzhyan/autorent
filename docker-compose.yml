@@ -8,8 +8,29 @@ services:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
     volumes:
       - ./logs:/var/log/autorent
+    depends_on:
+      - db
+    networks:
+      - autorent-network
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_DATABASE=${CLOUD_MYSQL_DB}
+      - MYSQL_USER=${CLOUD_MYSQL_USER}
+      - MYSQL_PASSWORD=${CLOUD_MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=root_password
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./database/migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "${CLOUD_MYSQL_PORT}:3306"
     networks:
       - autorent-network
 
