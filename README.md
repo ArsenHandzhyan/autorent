@@ -1,129 +1,156 @@
 # 🚗 AutoRent - Система аренды автомобилей
 
-Современная система аренды автомобилей с Spring Boot backend и React frontend, включающая визуальное тестирование компонентов через Storybook.
+**Единая система аренды автомобилей** с полным стеком технологий: Spring Boot backend, React frontend, облачная база данных AWS RDS и современные инструменты разработки.
 
 ## 📋 Содержание
 
-- [Обзор проекта](#обзор-проекта)
-- [Архитектура](#архитектура)
-- [Технологический стек](#технологический-стек)
-- [Быстрый старт](#быстрый-старт)
-- [Структура проекта](#структура-проекта)
-- [API документация](#api-документация)
-- [Разработка](#разработка)
-- [Тестирование](#тестирование)
-- [Развертывание](#развертывание)
+- [🎯 Обзор проекта](#обзор-проекта)
+- [🏗️ Архитектура](#архитектура)
+- [🛠️ Технологический стек](#технологический-стек)
+- [🚀 Быстрый старт](#быстрый-старт)
+- [🗄️ База данных](#база-данных)
+- [📁 Структура проекта](#структура-проекта)
+- [🔧 Разработка](#разработка)
+- [🧪 Тестирование](#тестирование)
+- [📱 Мобильная адаптивность](#мобильная-адаптивность)
+- [🚀 Развертывание](#развертывание)
+- [📚 Документация](#документация)
 
 ## 🎯 Обзор проекта
 
-AutoRent - это полнофункциональная система аренды автомобилей, состоящая из:
+AutoRent - это **полнофункциональная система аренды автомобилей**, объединяющая:
 
-- **Backend**: Spring Boot приложение с REST API
-- **Frontend**: React приложение с современным UI
-- **Визуальное тестирование**: Storybook для разработки компонентов
-- **База данных**: MySQL для хранения данных
-- **Документация**: Подробные гайды по разработке
+- **🎯 Backend**: Spring Boot приложение с REST API
+- **🎨 Frontend**: React приложение с современным UI
+- **📱 Мобильная адаптивность**: Mobile-First дизайн
+- **☁️ Облачная БД**: AWS RDS MySQL с реальными данными
+- **📖 Документация**: Подробные гайды и API документация
+- **🧪 Тестирование**: Unit, Integration и Visual тесты
 
-### Основные функции
+### ✨ Основные функции
 
-#### Для пользователей:
-- 📱 Регистрация и авторизация
+#### 👤 Для пользователей:
+- 🔐 Регистрация и авторизация с верификацией
 - 🔍 Поиск и фильтрация автомобилей
 - 📅 Бронирование с выбором дат
-- 💳 Онлайн оплата
-- 📊 Личный кабинет с историей
+- 💳 Онлайн оплата и управление счетами
+- 📊 Личный кабинет с историей аренд
 - ⭐ Система отзывов и рейтингов
+- 📱 **Полная мобильная поддержка**
 
-#### Для администраторов:
-- 🎛️ Панель управления
-- 🚗 Управление автопарком
-- 👥 Управление пользователями
-- 📈 Аналитика и отчеты
+#### 👨‍💼 Для администраторов:
+- 🎛️ Адаптивная панель управления
+- 🚗 Управление автопарком (CRUD)
+- 👥 Управление пользователями и правами
+- ✅ Подтверждение/отмена аренд
+- 📈 Финансовая аналитика и отчеты
 - 🔔 Система уведомлений
+- 📱 **Оптимизация для планшетов**
 
 ## 🏗️ Архитектура
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   React App     │    │  Spring Boot    │    │     MySQL       │
+│   React App     │    │  Spring Boot    │    │   AWS RDS       │
 │   (Frontend)    │◄──►│   (Backend)     │◄──►│   (Database)    │
 │                 │    │                 │    │                 │
 │ • Components    │    │ • Controllers   │    │ • Users         │
 │ • Pages         │    │ • Services      │    │ • Cars          │
 │ • Storybook     │    │ • Repositories  │    │ • Bookings      │
-│ • API Client    │    │ • Security      │    │ • Payments      │
+│ • Mobile UI     │    │ • Security      │    │ • Payments      │
+│ • Responsive    │    │ • Validation    │    │ • Analytics     │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
 ## 🛠️ Технологический стек
 
-### Backend (Spring Boot)
+### 🎯 Backend (Spring Boot)
 - **Framework**: Spring Boot 3.x
 - **Security**: Spring Security + JWT
-- **Database**: Spring Data JPA + MySQL
+- **Database**: Spring Data JPA + MySQL (AWS RDS)
 - **Validation**: Bean Validation
 - **Documentation**: Swagger/OpenAPI
 - **Build Tool**: Maven
+- **Template Engine**: Thymeleaf
 
-### Frontend (React)
+### 🎨 Frontend (React)
 - **Framework**: React 18
 - **Build Tool**: Create React App
 - **Styling**: CSS Modules + BEM
 - **Testing**: Jest + React Testing Library
 - **Visual Testing**: Storybook
 - **Package Manager**: npm
+- **Mobile**: Responsive Design
 
-### Инструменты разработки
-- **IDE**: IntelliJ IDEA / VS Code
-- **Version Control**: Git
-- **API Testing**: Postman / Insomnia
-- **Database**: MySQL Workbench
-- **Containerization**: Docker
+### 🗄️ База данных
+- **Primary**: AWS RDS MySQL 8.0
+- **Backup**: Local MySQL (для разработки)
+- **Migration**: Flyway
+- **Connection Pool**: HikariCP
+
+### 🧪 Тестирование
+- **Unit Tests**: JUnit 5 + Mockito
+- **Integration Tests**: TestContainers
+- **Frontend Tests**: Jest + React Testing Library
+- **Visual Tests**: Storybook
+- **API Tests**: Postman Collections
+
+### 🚀 DevOps
+- **Containerization**: Docker + Docker Compose
+- **CI/CD**: GitHub Actions
+- **Monitoring**: Spring Boot Actuator
+- **Logging**: Logback
 
 ## 🚀 Быстрый старт
 
-### Предварительные требования
+### 📋 Предварительные требования
 
-- Java 17+
-- Node.js 18+
-- MySQL 8.0+
-- Maven 3.6+
-- Git
+- **Java**: 17+
+- **Node.js**: 18+
+- **Maven**: 3.6+
+- **Git**: Последняя версия
+- **Docker**: (опционально)
 
-### 1. Клонирование репозитория
+### 🎯 1. Клонирование репозитория
 
 ```bash
 git clone <repository-url>
 cd autorent
 ```
 
-### 2. Настройка базы данных
-
-```bash
-# Создайте базу данных
-mysql -u root -p
-CREATE DATABASE autorent;
-CREATE USER 'autorent'@'localhost' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON autorent.* TO 'autorent'@'localhost';
-FLUSH PRIVILEGES;
-```
-
-### 3. Настройка Backend
+### 🎯 2. Запуск Backend (с облачной базой данных)
 
 ```bash
 # Перейдите в корневую папку проекта
 cd autorent
 
-# Настройте application.properties
-cp src/main/resources/application-dev.properties.example src/main/resources/application-dev.properties
+# Запустите Spring Boot приложение с профилем dev (облачная БД)
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
 
-# Запустите Spring Boot приложение
-mvn spring-boot:run
+# Или запустите через JAR файл
+java -jar target/autorent-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
 ```
 
-Backend будет доступен на http://localhost:8080
+**✅ Backend будет доступен на http://localhost:8080**
 
-### 4. Настройка Frontend
+### 🔐 Данные для входа в систему:
+
+| Роль | Email | Пароль |
+|------|-------|--------|
+| **👨‍💼 Администратор** | `admin@autorent.com` | `admin123` |
+| **👤 Пользователь** | `user@autorent.com` | `user123` |
+
+### 🐳 3. Запуск через Docker (опционально)
+
+```bash
+# Запуск с облачной базой данных (профиль dev)
+docker-compose up --build
+
+# Остановка
+docker-compose down
+```
+
+### 🎨 4. Запуск Frontend
 
 ```bash
 # Перейдите в папку React приложения
@@ -136,307 +163,236 @@ npm install
 npm start
 ```
 
-Frontend будет доступен на http://localhost:3000
+**✅ Frontend будет доступен на http://localhost:3000**
 
-### 5. Запуск Storybook
+### 📖 5. Запуск Storybook
 
 ```bash
 # В папке autorent-react
 npm run storybook
 ```
 
-Storybook будет доступен на http://localhost:6006
+**✅ Storybook будет доступен на http://localhost:6006**
+
+## 🗄️ База данных
+
+### ☁️ Облачная база данных (основная)
+
+**AWS RDS MySQL:**
+- **🌐 Хост**: `uf63wl4z2daq9dbb.chr7pe7iynqr.eu-west-1.rds.amazonaws.com`
+- **🔌 Порт**: 3306
+- **🗃️ База данных**: `cmwz7gjxubq6sk64`
+- **👤 Пользователь**: `wm02va8ppexvexe1`
+- **🔒 SSL**: Включен
+- **🌍 Регион**: eu-west-1
+
+### 📊 Статистика данных
+
+- **💰 Платежи**: 17 записей (13 PENDING, 4 PROCESSED)
+- **🚗 Автомобили**: Полный автопарк
+- **👥 Пользователи**: Зарегистрированные пользователи
+- **📅 Аренды**: Активные и завершенные
+- **💳 Счета**: Финансовые операции
+
+### 🔧 Доступные профили
+
+| Профиль | Сервер | База данных | Порт | Назначение | Статус |
+|---------|--------|-------------|------|------------|--------|
+| **dev** | AWS RDS MySQL | `cmwz7gjxubq6sk64` | 8080 | **🎯 Разработка (основной)** | ✅ Активен |
+| **local** | `localhost:3306` | `autorent` | 8080 | Локальная разработка | 🔧 Резервный |
+| **test** | `test-mysql-server:3306` | `autorent_test` | 8081 | Тестирование | 🔧 Резервный |
+| **staging** | `staging-mysql-server:3306` | `autorent_staging` | 8080 | Предпродакшн | 🔧 Резервный |
+| **prod** | AWS RDS MySQL | `cmwz7gjxubq6sk64` | 8080 | Продакшн | 🔧 Резервный |
 
 ## 📁 Структура проекта
 
 ```
 autorent/
-├── src/                          # Spring Boot backend
-│   ├── main/
-│   │   ├── java/ru/anapa/autorent/
-│   │   │   ├── config/           # Конфигурации
-│   │   │   ├── controller/       # REST контроллеры
-│   │   │   ├── dto/             # Data Transfer Objects
-│   │   │   ├── entity/          # JPA сущности
-│   │   │   ├── repository/      # Репозитории
-│   │   │   ├── service/         # Бизнес-логика
-│   │   │   └── util/            # Утилиты
-│   │   └── resources/
-│   │       ├── static/          # Статические файлы
-│   │       ├── templates/       # Thymeleaf шаблоны
-│   │       └── application.properties
-│   └── test/                    # Тесты backend
-├── autorent-react/              # React frontend
-│   ├── src/
-│   │   ├── components/          # React компоненты
-│   │   ├── pages/              # Страницы
-│   │   ├── hooks/              # Кастомные хуки
-│   │   ├── services/           # API сервисы
-│   │   ├── stories/            # Storybook сторисы
-│   │   └── styles/             # CSS файлы
-│   ├── .storybook/             # Конфигурация Storybook
-│   └── tests/                  # Тесты frontend
-├── database/                   # SQL скрипты
-├── docs/                       # Документация
-├── uploads/                    # Загруженные файлы
-└── logs/                       # Логи приложения
+├── 📁 src/main/java/ru/anapa/autorent/
+│   ├── 📁 config/          # Конфигурации Spring
+│   ├── 📁 controller/      # REST контроллеры
+│   ├── 📁 dto/            # Data Transfer Objects
+│   ├── 📁 entity/         # JPA сущности
+│   ├── 📁 repository/     # Репозитории данных
+│   ├── 📁 service/        # Бизнес-логика
+│   └── 📁 util/           # Утилиты
+├── 📁 src/main/resources/
+│   ├── 📁 static/
+│   │   ├── 📁 css/
+│   │   │   └── main.css        # 🎨 ЕДИНСТВЕННЫЙ CSS файл
+│   │   ├── 📁 js/
+│   │   │   └── main.js         # 📜 ЕДИНСТВЕННЫЙ JS файл
+│   │   └── 📁 images/
+│   ├── 📁 templates/      # Thymeleaf шаблоны
+│   └── application-*.properties
+├── 📁 autorent-react/     # React frontend
+├── 📁 autorent-nextjs/    # Next.js frontend
+├── 📁 onlook/            # Дополнительные инструменты
+├── 📁 database/          # Миграции и скрипты БД
+├── 📁 scripts/           # Скрипты запуска
+├── 📁 docs/              # Документация
+├── 📁 logs/              # Логи приложения
+├── 📁 uploads/           # Загруженные файлы
+├── 📄 README.md          # 📚 ЕДИНСТВЕННАЯ документация
+├── 📄 PRODUCTIVE_PROMPT.md # 🎯 ЕДИНСТВЕННЫЙ промт
+├── 📄 pom.xml            # Maven конфигурация
+├── 📄 docker-compose.yml # Docker конфигурация
+└── 📄 Dockerfile         # Docker образ
 ```
 
-## 📚 API документация
+## 🔧 Разработка
 
-### Основные endpoints
+### 🎯 Основные принципы
 
-#### Автомобили
-```
-GET    /api/cars              # Список автомобилей
-GET    /api/cars/{id}         # Детали автомобиля
-POST   /api/cars              # Создание автомобиля (admin)
-PUT    /api/cars/{id}         # Обновление автомобиля (admin)
-DELETE /api/cars/{id}         # Удаление автомобиля (admin)
-```
+1. **📝 Обновление README.md** - ПРИ КАЖДОМ изменении
+2. **🎨 Единый CSS файл** - `src/main/resources/static/css/main.css`
+3. **📜 Единый JS файл** - `src/main/resources/static/js/main.js`
+4. **🗄️ Все операции через БД** - Полная история и логирование
+5. **📱 Mobile-First дизайн** - Адаптивность для всех устройств
 
-#### Бронирования
-```
-GET    /api/bookings          # Список бронирований
-GET    /api/bookings/{id}     # Детали бронирования
-POST   /api/bookings          # Создание бронирования
-PUT    /api/bookings/{id}     # Обновление бронирования
-DELETE /api/bookings/{id}     # Отмена бронирования
-```
+### 🏗️ Архитектурные принципы
 
-#### Пользователи
-```
-GET    /api/users/profile     # Профиль пользователя
-PUT    /api/users/profile     # Обновление профиля
-POST   /api/auth/register     # Регистрация
-POST   /api/auth/login        # Авторизация
-POST   /api/auth/logout       # Выход
-```
+#### Backend (Spring Boot):
+- **Слоистая архитектура**: Controller → Service → Repository → Entity
+- **DTO паттерн** для передачи данных между слоями
+- **Валидация** на всех уровнях (Entity, DTO, Controller)
+- **Обработка исключений** с кастомными error responses
+- **Логирование** всех бизнес-операций
+- **Транзакционность** для критических операций
 
-### Swagger UI
+#### Frontend (Thymeleaf + Bootstrap):
+- **Семантическая разметка** HTML5
+- **Bootstrap 5** для responsive дизайна
+- **Thymeleaf фрагменты** для переиспользования компонентов
+- **Формы с валидацией** на клиенте и сервере
+- **AJAX запросы** для динамического обновления
+- **Mobile-First подход** в дизайне
 
-API документация доступна по адресу: http://localhost:8080/swagger-ui.html
+### 📝 Правила именования
 
-## 👨‍💻 Разработка
+#### Java:
+- **Классы**: PascalCase (UserService, CarController)
+- **Методы**: camelCase (findUserById, saveCar)
+- **Переменные**: camelCase (userName, carBrand)
+- **Константы**: UPPER_SNAKE_CASE (MAX_RENTAL_DAYS)
 
-### Backend разработка
+#### CSS:
+- **Классы**: kebab-case (user-profile, car-card)
+- **ID**: camelCase (userProfile, carCard)
+- **Переменные**: kebab-case (--primary-color, --font-size)
 
-#### Создание нового контроллера
-
-```java
-@RestController
-@RequestMapping("/api/example")
-@Validated
-public class ExampleController {
-    
-    private final ExampleService exampleService;
-    
-    public ExampleController(ExampleService exampleService) {
-        this.exampleService = exampleService;
-    }
-    
-    @GetMapping
-    public ResponseEntity<List<ExampleDto>> getAll() {
-        return ResponseEntity.ok(exampleService.findAll());
-    }
-    
-    @PostMapping
-    public ResponseEntity<ExampleDto> create(@Valid @RequestBody ExampleDto dto) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                           .body(exampleService.create(dto));
-    }
-}
-```
-
-#### Создание сервиса
-
-```java
-@Service
-@Transactional
-public class ExampleService {
-    
-    private final ExampleRepository repository;
-    
-    public ExampleService(ExampleRepository repository) {
-        this.repository = repository;
-    }
-    
-    public List<ExampleDto> findAll() {
-        return repository.findAll()
-                        .stream()
-                        .map(this::toDto)
-                        .collect(Collectors.toList());
-    }
-    
-    public ExampleDto create(ExampleDto dto) {
-        Example entity = toEntity(dto);
-        Example saved = repository.save(entity);
-        return toDto(saved);
-    }
-}
-```
-
-### Frontend разработка
-
-#### Создание компонента
-
-```jsx
-// src/components/features/ExampleComponent.jsx
-import React from 'react';
-import PropTypes from 'prop-types';
-import './ExampleComponent.css';
-
-export default function ExampleComponent({ title, onAction }) {
-  return (
-    <div className="example-component">
-      <h2 className="example-component__title">{title}</h2>
-      <button 
-        className="example-component__button"
-        onClick={onAction}
-      >
-        Действие
-      </button>
-    </div>
-  );
-}
-
-ExampleComponent.propTypes = {
-  title: PropTypes.string.isRequired,
-  onAction: PropTypes.func
-};
-```
-
-#### Создание сториса
-
-```jsx
-// src/stories/features/ExampleComponent.stories.jsx
-import ExampleComponent from '../components/features/ExampleComponent';
-
-export default {
-  title: 'AutoRent/Features/ExampleComponent',
-  component: ExampleComponent
-};
-
-export const Default = {
-  args: {
-    title: 'Пример компонента',
-    onAction: () => console.log('Действие выполнено')
-  }
-};
-```
-
-### Рабочий процесс
-
-1. **Создайте ветку** для новой функции
-2. **Разработайте backend** (контроллер, сервис, репозиторий)
-3. **Создайте frontend компоненты** с сторисами
-4. **Напишите тесты** для backend и frontend
-5. **Протестируйте в Storybook** визуально
-6. **Создайте Pull Request**
+#### JavaScript:
+- **Функции**: camelCase (updateCarStatus, validateForm)
+- **Переменные**: camelCase (carData, userInfo)
+- **Константы**: UPPER_SNAKE_CASE (API_BASE_URL)
 
 ## 🧪 Тестирование
 
-### Backend тестирование
+### 🎯 Типы тестов
+
+1. **Unit Tests** (JUnit 5 + Mockito)
+2. **Integration Tests** (TestContainers)
+3. **Frontend Tests** (Jest + React Testing Library)
+4. **Visual Tests** (Storybook)
+5. **API Tests** (Postman Collections)
+
+### 🚀 Запуск тестов
 
 ```bash
-# Запуск всех тестов
+# Backend тесты
 mvn test
 
-# Запуск тестов с покрытием
-mvn test jacoco:report
-
-# Интеграционные тесты
-mvn verify
-```
-
-### Frontend тестирование
-
-```bash
-# Unit тесты
+# Frontend тесты
+cd autorent-react
 npm test
 
-# Визуальные тесты (Storybook)
+# Storybook
 npm run storybook
-
-# E2E тесты
-npm run test:e2e
 ```
 
-### API тестирование
+## 📱 Мобильная адаптивность
+
+### 🎯 Mobile-First принципы
+
+- **📱 Mobile-First дизайн** - сначала для мобильных устройств
+- **📐 Адаптивная сетка** - Bootstrap Grid System
+- **👆 Оптимизация для сенсорного управления**:
+  - Минимальный размер кнопок: 44x44px
+  - Достаточные отступы между элементами
+  - Увеличенные области нажатия
+- **🖼️ Оптимизация изображений**:
+  - Responsive images с `srcset` и `sizes`
+  - Ленивая загрузка изображений
+  - Оптимизация размера файлов
+- **📝 Типографика**:
+  - Минимальный размер шрифта: 16px
+  - Адаптивные размеры заголовков
+  - Достаточный контраст текста
+
+### 📱 Поддерживаемые устройства
+
+- **📱 Мобильные телефоны** (320px - 768px)
+- **📱 Планшеты** (768px - 1024px)
+- **💻 Десктопы** (1024px+)
+
+## 🚀 Развертывание
+
+### 🐳 Docker развертывание
 
 ```bash
-# Запуск Postman коллекции
-newman run AutoRent.postman_collection.json
+# Сборка и запуск
+docker-compose up --build
 
-# Тестирование через curl
-curl -X GET http://localhost:8080/api/cars
-```
-
-## 📦 Развертывание
-
-### Локальная сборка
-
-```bash
-# Backend
-mvn clean package
-java -jar target/autorent-0.0.1-SNAPSHOT.jar
-
-# Frontend
-npm run build
-npx serve -s build
-```
-
-### Docker развертывание
-
-```bash
-# Сборка образов
+# Только backend
 docker build -t autorent-backend .
-docker build -t autorent-frontend ./autorent-react
-
-# Запуск с docker-compose
-docker-compose up -d
+docker run -p 8080:8080 autorent-backend
 ```
 
-### Продакшен развертывание
+### ☁️ Облачное развертывание
 
-```bash
-# Настройка переменных окружения
-export SPRING_PROFILES_ACTIVE=prod
-export DB_URL=jdbc:mysql://prod-db:3306/autorent
-export DB_USERNAME=autorent
-export DB_PASSWORD=secure_password
+- **AWS**: EC2 + RDS + S3
+- **Heroku**: Container deployment
+- **Google Cloud**: Cloud Run + Cloud SQL
+- **Azure**: App Service + Azure SQL
 
-# Запуск приложения
-mvn spring-boot:run
-```
+### 📊 Мониторинг
 
-## 📖 Документация
+- **Spring Boot Actuator** для метрик
+- **Logback** для логирования
+- **Health checks** для проверки состояния
+- **Performance monitoring** для производительности
 
-- [Руководство по разработке React](./autorent-react/DEVELOPMENT_GUIDE.md)
-- [API документация](./docs/api.md)
-- [Руководство по развертыванию](./docs/deployment.md)
-- [Руководство по тестированию](./docs/testing.md)
+## 📚 Документация
 
-## 🤝 Вклад в проект
+### 📖 Основные документы
 
-1. Форкните репозиторий
-2. Создайте ветку для новой функции (`git checkout -b feature/amazing-feature`)
-3. Закоммитьте изменения (`git commit -m 'Add amazing feature'`)
-4. Запушьте в ветку (`git push origin feature/amazing-feature`)
-5. Откройте Pull Request
+- **📄 README.md** - Единая документация проекта
+- **🎯 PRODUCTIVE_PROMPT.md** - Единый промт для разработки
+- **📋 API Documentation** - Swagger/OpenAPI
+- **📱 Mobile Guidelines** - Руководство по мобильной адаптивности
 
-## 📞 Поддержка
+### 🔗 Полезные ссылки
 
-- **Issues**: Создавайте issues для багов и предложений
-- **Discussions**: Обсуждайте идеи в Discussions
-- **Wiki**: Дополнительная документация в Wiki
+- **🌐 Backend API**: http://localhost:8080
+- **🎨 Frontend**: http://localhost:3000
+- **📖 Storybook**: http://localhost:6006
+- **📋 Swagger**: http://localhost:8080/swagger-ui.html
 
-## 📄 Лицензия
+### 📞 Поддержка
 
-Этот проект лицензирован под MIT License - см. файл [LICENSE](LICENSE) для деталей.
+- **🐛 Issues**: GitHub Issues
+- **📧 Email**: support@autorent.com
+- **💬 Chat**: Discord/Slack
 
 ---
 
-**AutoRent - Современная система аренды автомобилей** 🚗✨
+## 🎯 Статус проекта
 
-*Разработано с ❤️ для удобства аренды автомобилей*
+**✅ Активно разрабатывается**
+**✅ Облачная база данных подключена**
+**✅ Мобильная адаптивность реализована**
+**✅ Полный функционал системы**
+
+---
+
+**🚀 AutoRent - Современная система аренды автомобилей с полной мобильной поддержкой!**
