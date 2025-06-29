@@ -61,7 +61,7 @@ public class SecurityConfig {
                         .requestMatchers("/about", "/contact", "/terms").permitAll() // Разрешаем доступ к статическим страницам
                         .requestMatchers("/test-payments", "/test-diagnose", "/test-status", "/test-startup-payments", 
                                        "/test-period-payments", "/test-date-payments/**", "/test-full-process", 
-                                       "/test-process-payment/**").permitAll() // Тестовые эндпоинты
+                                       "/test-process-payment/**", "/test-user-payments-encoding", "/test-rental-54-payments").permitAll() // Тестовые эндпоинты
                         .requestMatchers("/admin/payments/diagnose-get", "/admin/payments/process-all-get", "/admin/payments/test-process-all").permitAll() // Тестовые эндпоинты
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Доступ только для администраторов
                         .anyRequest().authenticated()

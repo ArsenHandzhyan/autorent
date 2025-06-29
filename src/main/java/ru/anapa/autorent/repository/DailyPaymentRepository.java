@@ -17,6 +17,9 @@ public interface DailyPaymentRepository extends JpaRepository<DailyPayment, Long
 
     List<DailyPayment> findByRentalOrderByPaymentDateDesc(Rental rental);
 
+    @Query("SELECT dp FROM DailyPayment dp WHERE dp.rental.id = :rentalId ORDER BY dp.paymentDate DESC")
+    List<DailyPayment> findByRentalId(@Param("rentalId") Long rentalId);
+
     List<DailyPayment> findByRentalAndPaymentDateBetween(Rental rental, LocalDate startDate, LocalDate endDate);
 
     @Query("SELECT dp FROM DailyPayment dp WHERE dp.rental = :rental AND dp.paymentDate = :paymentDate")

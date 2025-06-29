@@ -65,6 +65,9 @@ AutoRent - это полнофункциональная система арен
 - **Validation**: Bean Validation
 - **Documentation**: Swagger/OpenAPI
 - **Build Tool**: Maven
+- **Retry**: Spring Retry для защиты от превышения лимитов БД
+- **Connection Pool**: HikariCP с оптимизированными настройками
+- **Aspects**: Spring AOP для автоматических повторных попыток
 
 ### Frontend (React)
 - **Framework**: React 18
@@ -162,6 +165,46 @@ Storybook будет доступен на http://localhost:6006
 | **staging** | `staging-mysql-server:3306` | `autorent_staging` | 8080 | Предпродакшн |
 | **prod** | AWS RDS MySQL | `cmwz7gjxubq6sk64` | 8080 | Продакшн |
 | **backup** | `backup-mysql-server:3306` | `autorent_backup` | 8082 | Резервный сервер |
+
+### ⚠️ Важные настройки для облачной базы данных
+
+#### Проблемы с кодировкой
+При работе с облачной базой данных AWS RDS могут возникать проблемы с кодировкой русских символов. Для их решения:
+
+1. **Настройки подключения в application-dev.properties:**
+```properties
+# Обязательные параметры для корректной работы с русскими символами
+spring.datasource.url=jdbc:mysql://your-aws-rds-endpoint:3306/cmwz7gjxubq6sk64?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8mb4&allowPublicKeyRetrieval=true
+spring.datasource.hikari.connection-init-sql=SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci
+spring.thymeleaf.encoding=UTF-8
+server.servlet.encoding.charset=UTF-8
+server.servlet.encoding.force=true
+spring.messages.encoding=UTF-8
+```
+
+2. **Лимиты запросов к облачной БД:**
+```properties
+# Настройки для защиты от превышения лимитов (3600 запросов/час)
+spring.datasource.hikari.maximum-pool-size=5
+spring.datasource.hikari.minimum-idle=2
+spring.datasource.hikari.idle-timeout=300000
+spring.datasource.hikari.max-lifetime=1800000
+```
+
+3. **Исправление поврежденных данных:**
+Если в базе обнаружены платежи с кракозябрами в примечаниях:
+- Откройте http://localhost:8080/admin/fix-data
+- Нажмите "Исправить примечания платежей"
+- Или используйте SQL-скрипт `fix_payment_notes.sql`
+
+#### Мониторинг состояния базы
+```bash
+# Проверка статуса через API
+curl http://localhost:8080/api/data-fix/status
+
+# Проверка лимитов запросов
+curl http://localhost:8080/api/data-fix/check-limits
+```
 
 ### Быстрый запуск с профилями
 
@@ -399,36 +442,58 @@ autorent/
 
 ### Основные endpoints
 
+#### Аутентификация
+- `POST /api/auth/login` - Вход в систему
+- `POST /api/auth/register` - Регистрация
+- `POST /api/auth/refresh` - Обновление токена
+
 #### Автомобили
-```
-GET    /api/cars              # Список автомобилей
-GET    /api/cars/{id}         # Детали автомобиля
-POST   /api/cars              # Создание автомобиля (admin)
-PUT    /api/cars/{id}         # Обновление автомобиля (admin)
-DELETE /api/cars/{id}         # Удаление автомобиля (admin)
+- `GET /api/cars` - Список автомобилей
+- `GET /api/cars/{id}` - Детали автомобиля
+- `POST /api/cars` - Добавление автомобиля (ADMIN)
+- `PUT /api/cars/{id}` - Обновление автомобиля (ADMIN)
+- `DELETE /api/cars/{id}` - Удаление автомобиля (ADMIN)
+
+#### Аренды
+- `GET /api/rentals` - Список аренд
+- `POST /api/rentals` - Создание аренды
+- `GET /api/rentals/{id}` - Детали аренды
+- `PUT /api/rentals/{id}/status` - Изменение статуса (ADMIN)
+
+#### Платежи
+- `GET /api/payments` - Список платежей
+- `POST /api/payments` - Создание платежа
+- `GET /api/payments/{id}` - Детали платежа
+
+### 🔧 API для исправления данных
+
+#### Исправление поврежденных данных
+- `GET /admin/fix-data` - Страница исправления данных
+- `POST /api/data-fix/fix-payment-notes` - Исправление примечаний платежей
+- `GET /api/data-fix/status` - Статистика базы данных
+- `GET /api/data-fix/check-limits` - Проверка лимитов запросов
+
+#### Примеры использования
+
+**Исправление примечаний платежей:**
+```bash
+curl -X POST http://localhost:8080/api/data-fix/fix-payment-notes
 ```
 
-#### Бронирования
-```
-GET    /api/bookings          # Список бронирований
-GET    /api/bookings/{id}     # Детали бронирования
-POST   /api/bookings          # Создание бронирования
-PUT    /api/bookings/{id}     # Обновление бронирования
-DELETE /api/bookings/{id}     # Отмена бронирования
+**Проверка статуса:**
+```bash
+curl http://localhost:8080/api/data-fix/status
 ```
 
-#### Пользователи
+**Ответ API:**
+```json
+{
+  "success": true,
+  "message": "Исправлено 5 поврежденных примечаний",
+  "fixedCount": 5,
+  "timestamp": "2025-06-29T20:05:00"
+}
 ```
-GET    /api/users/profile     # Профиль пользователя
-PUT    /api/users/profile     # Обновление профиля
-POST   /api/auth/register     # Регистрация
-POST   /api/auth/login        # Авторизация
-POST   /api/auth/logout       # Выход
-```
-
-### Swagger UI
-
-API документация доступна по адресу: http://localhost:8080/swagger-ui.html
 
 ## 👨‍💻 Разработка
 
@@ -728,177 +793,94 @@ docker run --rm mysql:8.0 mysql -h uf63wl4z2daq9dbb.chr7pe7iynqr.eu-west-1.rds.a
 
 ---
 
-## 🔤 Работа с кодировкой (UTF-8/UTF-8MB4)
+## 🔧 Решение проблем с кодировкой
 
-### Проблема с отображением русских символов
+### Проблема:
+Примечания платежей отображаются как кракозябры: `ÐŸÐ»Ð°Ñ‚ÐµÐ¶ Ð·Ð° Ð´ÐµÐ½ÑŒ Ð°Ñ€ÐµÐ½Ð´Ñ‹`
 
-В системе AutoRent была выявлена проблема с некорректным отображением русских символов в примечаниях платежей (например, "ÐŸÐ»Ð°Ñ‚ÐµÐ¶..." вместо "Платеж..."). Это классическая ошибка кодировки, когда данные в базе сохранены в UTF-8, а приложение или клиент читает их как Latin1.
+### Причина:
+Неправильная кодировка при чтении данных из базы данных или кэширование браузером.
 
-### Настройки Spring Boot
+### Решение:
 
-#### 1. Параметры JDBC подключения
+#### 1. Проверка данных в базе:
+```sql
+-- Проверка кодировки в базе данных
+SELECT id, notes, HEX(notes) FROM daily_payments WHERE rental_id = 53 LIMIT 3;
+```
 
-Во всех профилях (`application-*.properties`) настроены правильные параметры кодировки:
-
+#### 2. Настройки кодировки в application.properties:
 ```properties
-# Правильные настройки для поддержки русских символов и эмодзи
-spring.datasource.url=jdbc:mysql://localhost:3306/autorent?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8mb4
+# Обязательные настройки кодировки
+spring.datasource.url=jdbc:mysql://...?useUnicode=true&characterEncoding=utf8mb4
+spring.datasource.hikari.connection-init-sql=SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci
 spring.thymeleaf.encoding=UTF-8
+server.servlet.encoding.charset=UTF-8
+server.servlet.encoding.force=true
+spring.messages.encoding=UTF-8
 ```
 
-**Ключевые параметры:**
-- `useUnicode=true` - включение поддержки Unicode
-- `characterEncoding=utf8mb4` - использование utf8mb4 для поддержки всех символов
-- `spring.thymeleaf.encoding=UTF-8` - кодировка для Thymeleaf шаблонов
-
-#### 2. Проверка настроек MySQL
-
-##### Проверка кодировки базы данных
+#### 3. Исправление поврежденных данных:
 ```sql
--- Проверить кодировку базы
-SELECT DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME
-FROM information_schema.SCHEMATA
-WHERE SCHEMA_NAME = 'cmwz7gjxubq6sk64';
+-- Обновление примечаний с правильной кодировкой
+UPDATE daily_payments 
+SET notes = CONVERT(notes USING utf8mb4) 
+WHERE notes LIKE '%ÐŸÐ»Ð°Ñ‚ÐµÐ¶%';
+
+-- Или полная замена
+UPDATE daily_payments 
+SET notes = 'Платеж за день аренды. Средства списаны.' 
+WHERE notes LIKE '%ÐŸÐ»Ð°Ñ‚ÐµÐ¶%';
 ```
 
-##### Проверка кодировки таблиц
-```sql
--- Проверить кодировку таблицы daily_payments
-SHOW CREATE TABLE daily_payments;
+#### 4. Очистка кэша браузера:
+- **Chrome/Edge:** Ctrl+Shift+R или Ctrl+F5
+- **Firefox:** Ctrl+Shift+R
+- **Safari:** Cmd+Shift+R
 
--- Проверить кодировку поля notes
-SHOW FULL COLUMNS FROM daily_payments WHERE Field = 'notes';
-```
-
-#### 3. Исправление кодировки базы данных
-
-Если база или таблицы используют неправильную кодировку:
-
-```sql
--- Изменить кодировку базы данных
-ALTER DATABASE cmwz7gjxubq6sk64 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
--- Изменить кодировку таблицы
-ALTER TABLE daily_payments CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- Изменить кодировку конкретного поля
-ALTER TABLE daily_payments MODIFY notes VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-### Исправление повреждённых данных
-
-#### 1. Перекодировка данных
-
-Если данные уже были записаны с неправильной кодировкой:
-
-```sql
--- Для одной записи
-UPDATE daily_payments
-SET notes = CONVERT(CAST(CONVERT(notes USING latin1) AS BINARY) USING utf8mb4)
-WHERE id = 123;
-
--- Для массового исправления
-UPDATE daily_payments
-SET notes = CONVERT(CAST(CONVERT(notes USING latin1) AS BINARY) USING utf8mb4)
-WHERE notes LIKE '%Ð%';
-```
-
-#### 2. Проверка результатов
-
-```sql
--- Проверить исправленные записи
-SELECT id, notes FROM daily_payments WHERE id IN (1, 2, 3);
-
--- Проверить HEX представление
-SELECT id, HEX(notes) FROM daily_payments WHERE id IN (1, 2, 3);
-```
-
-### Настройки Thymeleaf
-
-#### 1. Meta-теги в шаблонах
-
-Все HTML шаблоны содержат правильный meta-тег:
-
+#### 5. Принудительное обновление в шаблоне:
 ```html
-<meta charset="UTF-8">
+<!-- Добавить в head секцию -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 ```
 
-#### 2. Проверка кодировки файлов
-
-Убедитесь, что все шаблоны сохранены в UTF-8:
-
+#### 6. Перезапуск приложения:
 ```bash
-# Проверка кодировки файла (Linux/Mac)
-file -i src/main/resources/templates/admin/rental-details.html
-
-# Проверка через hexdump
-hexdump -C src/main/resources/templates/admin/rental-details.html | head -20
+docker-compose down
+docker-compose up -d
 ```
 
-### Команды для диагностики
+### Проверка решения:
+1. Войти в систему как администратор
+2. Перейти на страницу платежей
+3. Убедиться, что примечания отображаются корректно на русском языке
 
-#### 1. Проверка кодировки через Docker
-
-```bash
-# Проверка кодировки базы
-docker run --rm mysql:8.0 mysql -h uf63wl4z2daq9dbb.chr7pe7iynqr.eu-west-1.rds.amazonaws.com -P 3306 -u wm02va8ppexvexe1 -psrj7xmugajaa2ww3 -D cmwz7gjxubq6sk64 -e "SELECT DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = 'cmwz7gjxubq6sk64';"
-
-# Проверка кодировки таблицы
-docker run --rm mysql:8.0 mysql -h uf63wl4z2daq9dbb.chr7pe7iynqr.eu-west-1.rds.amazonaws.com -P 3306 -u wm02va8ppexvexe1 -psrj7xmugajaa2ww3 -D cmwz7gjxubq6sk64 -e "SHOW CREATE TABLE daily_payments;"
-
-# Проверка примечаний
-docker run --rm mysql:8.0 mysql -h uf63wl4z2daq9dbb.chr7pe7iynqr.eu-west-1.rds.amazonaws.com -P 3306 -u wm02va8ppexvexe1 -psrj7xmugajaa2ww3 -D cmwz7gjxubq6sk64 -e "SELECT id, notes FROM daily_payments WHERE notes LIKE '%Ð%' LIMIT 5;"
-```
-
-#### 2. Автоматическое исправление
-
-```bash
-# Скрипт для исправления кодировки
-docker run --rm mysql:8.0 mysql -h uf63wl4z2daq9dbb.chr7pe7iynqr.eu-west-1.rds.amazonaws.com -P 3306 -u wm02va8ppexvexe1 -psrj7xmugajaa2ww3 -D cmwz7gjxubq6sk64 -e "UPDATE daily_payments SET notes = CONVERT(CAST(CONVERT(notes USING latin1) AS BINARY) USING utf8mb4) WHERE notes LIKE '%Ð%';"
-```
-
-### Рекомендации по предотвращению
-
-#### 1. Настройки IDE
-
-- **IntelliJ IDEA**: File → Settings → Editor → File Encodings → Global Encoding: UTF-8
-- **VS Code**: Settings → Files: Encoding → utf8
-- **Eclipse**: Window → Preferences → General → Workspace → Text file encoding: UTF-8
-
-#### 2. Настройки Git
-
-```bash
-# Настройка кодировки для Git
-git config --global core.quotepath false
-git config --global gui.encoding utf-8
-git config --global i18n.commitencoding utf-8
-git config --global i18n.logoutputencoding utf-8
-```
-
-#### 3. Настройки Maven
-
-В `pom.xml` добавьте:
-
-```xml
-<properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-</properties>
-```
-
-### Чек-лист проверки кодировки
-
-- [ ] База данных использует utf8mb4
-- [ ] Таблицы используют utf8mb4_unicode_ci
-- [ ] Поля VARCHAR/TEXT используют utf8mb4
-- [ ] Spring Boot использует useUnicode=true и characterEncoding=utf8mb4
-- [ ] Thymeleaf использует UTF-8
-- [ ] HTML шаблоны содержат `<meta charset="UTF-8">`
-- [ ] Все файлы сохранены в UTF-8
-- [ ] IDE настроена на UTF-8
-- [ ] Git настроен на UTF-8
+### Профилактика:
+- Всегда использовать UTF-8 кодировку в настройках
+- Регулярно проверять целостность данных
+- Использовать правильные настройки подключения к БД
 
 ---
+
+## 🔧 Новые функции
+
+### Исправление поврежденных данных
+- **Автоматическое исправление** примечаний платежей с кракозябрами
+- **API endpoints** для администраторов: `/api/data-fix/fix-payment-notes`
+- **Статистика платежей**: `/api/data-fix/payment-statistics`
+- **Проверка состояния БД**: `/api/data-fix/health-check`
+
+### Защита от превышения лимитов запросов
+- **Spring Retry** с экспоненциальной задержкой
+- **Оптимизированный пул соединений** (максимум 3 соединения)
+- **Автоматические повторные попытки** при ошибках БД
+- **Мониторинг состояния** подключений
+
+### SQL-скрипты для исправления данных
+- `fix_payment_notes.sql` - исправление примечаний платежей
+- `fix_payments.bat` - автоматический запуск исправлений
 
 **AutoRent - Современная система аренды автомобилей** 🚗✨
 

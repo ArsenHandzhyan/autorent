@@ -1,0 +1,371 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoRent - Аренда автомобилей</title>
+
+    <!-- Критические заголовки безопасности -->
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; 
+                   style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; 
+                   img-src 'self' data: https:; 
+                   font-src 'self' https://cdnjs.cloudflare.com;
+                   connect-src 'self';
+                   frame-ancestors 'none';">
+    
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+    
+    <!-- HTTPS принудительно для продакшена -->
+    <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload">
+    
+    <!-- PWA мета-теги -->
+    <meta name="theme-color" content="#2c3e50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="AutoRent">
+    
+    <!-- SEO и социальные сети -->
+    <meta name="description" content="Удобная аренда автомобилей в вашем городе. Большой выбор, доступные цены, круглосуточная поддержка.">
+    <meta name="keywords" content="аренда автомобилей, прокат авто, аренда машин">
+    <meta name="author" content="AutoRent">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="AutoRent - Аренда автомобилей">
+    <meta property="og:description" content="Удобная аренда автомобилей в вашем городе">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://autorent.com">
+    <meta property="og:image" content="/images/og-image.jpg">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AutoRent - Аренда автомобилей">
+    <meta name="twitter:description" content="Удобная аренда автомобилей в вашем городе">
+    <meta name="twitter:image" content="/images/twitter-image.jpg">
+
+    <!-- CSRF токен для JS -->
+    <meta name="_csrf" content="sAt6AHwIuQdDBB2N4eybp0qN1E1QE-b26OPs4L0U7xiGWjHTgTxDNB5ujzRuZiXo18Gvnijo-SwzJdTb29Hf1opw2CmwblLi" />
+    <meta name="_csrf_header" content="X-XSRF-TOKEN" />
+
+    <!-- Предзагрузка критических ресурсов -->
+    <link rel="preload" href="/css/main.css" as="style">
+    <link rel="preload" href="/js/main.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    
+    <!-- DNS prefetch для внешних ресурсов -->
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous">
+
+    <!-- FontAwesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Единый файл стилей -->
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+            crossorigin="anonymous"></script>
+
+    <!-- Единый файл скриптов (загрузка в head с defer) -->
+    <script src="/js/main.js" defer></script>
+    
+    <!-- Service Worker регистрация -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed');
+                    });
+            });
+        }
+    </script>
+</head>
+<body class="bg-light">
+<!-- Добавьте в начало body или в нужное место в шаблоне login.html -->
+
+
+<main class="container" role="main">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <header class="text-center mb-4">
+                        <h1 class="mb-3">
+                            <i class="fas fa-car text-primary" aria-hidden="true"></i> 
+                            АвтоПрокат
+                        </h1>
+                        <h2>Вход в систему</h2>
+                    </header>
+
+                    <!-- Сообщение о необходимости входа как администратор -->
+                    
+
+                    <!-- Сообщение об ошибке -->
+                    
+
+                    <!-- Сообщение о выходе -->
+                    
+
+                    <!-- Сообщение об истечении сессии -->
+                    
+
+                    <form action="/auth/login" method="post" role="form" aria-labelledby="login-form-title"><input type="hidden" name="_csrf" value="sAt6AHwIuQdDBB2N4eybp0qN1E1QE-b26OPs4L0U7xiGWjHTgTxDNB5ujzRuZiXo18Gvnijo-SwzJdTb29Hf1opw2CmwblLi"/>
+                        <input type="hidden" name="_csrf" value="sAt6AHwIuQdDBB2N4eybp0qN1E1QE-b26OPs4L0U7xiGWjHTgTxDNB5ujzRuZiXo18Gvnijo-SwzJdTb29Hf1opw2CmwblLi" />
+                        
+                        <fieldset>
+                            <legend class="visually-hidden">Данные для входа</legend>
+                            
+                            <div class="mb-3">
+                                <label for="username" class="form-label">
+                                    Email <span class="text-danger" aria-label="обязательное поле">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text" aria-hidden="true">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                    <input type="email" 
+                                           id="username" 
+                                           name="username" 
+                                           class="form-control" 
+                                           required 
+                                           autofocus
+                                           autocomplete="email"
+                                           aria-describedby="username-help"
+                                           aria-invalid="false"
+                                           placeholder="Введите ваш email">
+                                </div>
+                                <div id="username-help" class="form-text">
+                                    Введите email адрес, указанный при регистрации
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">
+                                    Пароль <span class="text-danger" aria-label="обязательное поле">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text" aria-hidden="true">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <input type="password" 
+                                           id="password" 
+                                           name="password" 
+                                           class="form-control" 
+                                           required
+                                           autocomplete="current-password"
+                                           aria-describedby="password-help"
+                                           aria-invalid="false"
+                                           placeholder="Введите ваш пароль">
+                                    <button type="button" 
+                                            class="btn btn-outline-secondary" 
+                                            id="togglePassword"
+                                            aria-label="Показать пароль"
+                                            aria-pressed="false">
+                                        <i class="fas fa-eye" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div id="password-help" class="form-text">
+                                    Введите пароль от вашего аккаунта
+                                </div>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" 
+                                       class="form-check-input" 
+                                       id="remember-me" 
+                                       name="remember-me"
+                                       aria-describedby="remember-help">
+                                <label class="form-check-label" for="remember-me">
+                                    Запомнить меня
+                                </label>
+                                <div id="remember-help" class="form-text">
+                                    Оставаться в системе на этом устройстве
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" 
+                                    class="btn btn-primary btn-lg"
+                                    aria-describedby="submit-help">
+                                <i class="fas fa-sign-in-alt" aria-hidden="true"></i> 
+                                Войти
+                            </button>
+                        </div>
+                        <div id="submit-help" class="form-text text-center mt-2">
+                            Нажимая кнопку "Войти", вы соглашаетесь с 
+                            <a href="/terms" target="_blank" rel="noopener">условиями использования</a>
+                        </div>
+                    </form>
+
+                    <nav class="mt-4 text-center" aria-label="Дополнительные действия">
+                        <p>Нет аккаунта? 
+                            <a href="/auth/register" class="text-decoration-none">
+                                Зарегистрироваться
+                            </a>
+                        </p>
+                        <p>
+                            <a href="/auth/forgot-password" class="text-decoration-none">
+                                Забыли пароль?
+                            </a>
+                        </p>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="/" class="text-decoration-none">
+                    <i class="fas fa-arrow-left" aria-hidden="true"></i> 
+                    Вернуться на главную
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="bg-dark text-white py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <h5 class="mb-3">О компании</h5>
+        <p>АвтоПрокат - надежный сервис аренды автомобилей в Анапе. Мы предлагаем широкий выбор автомобилей различных классов по доступным ценам.</p>
+        <div class="social-icons mt-3">
+          <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white me-2"><i class="fab fa-vk"></i></a>
+          <a href="#" class="text-white me-2"><i class="fab fa-telegram"></i></a>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <h5 class="mb-3">Навигация</h5>
+        <ul class="list-unstyled">
+          <li><a href="/" class="text-white text-decoration-none">Главная</a></li>
+          <li><a href="/cars" class="text-white text-decoration-none">Автомобили</a></li>
+          <li><a href="/terms" class="text-white text-decoration-none">Условия</a></li>
+          <li><a href="/about" class="text-white text-decoration-none">О нас</a></li>
+          <li><a href="/contact" class="text-white text-decoration-none">Контакты</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h5 class="mb-3">Категории</h5>
+        <ul class="list-unstyled">
+          <li><a href="/cars?category=Эконом" class="text-white text-decoration-none">Эконом класс</a></li>
+          <li><a href="/cars?category=Комфорт" class="text-white text-decoration-none">Комфорт класс</a></li>
+          <li><a href="/cars?category=Бизнес" class="text-white text-decoration-none">Бизнес класс</a></li>
+          <li><a href="/cars?category=Премиум" class="text-white text-decoration-none">Премиум класс</a></li>
+          <li><a href="/cars?category=Внедорожник" class="text-white text-decoration-none">Внедорожники</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h5 class="mb-3">Подписка на новости</h5>
+        <p>Подпишитесь на нашу рассылку, чтобы получать информацию о специальных предложениях и акциях</p>
+        <form action="/subscribe" method="post"><input type="hidden" name="_csrf" value="sAt6AHwIuQdDBB2N4eybp0qN1E1QE-b26OPs4L0U7xiGWjHTgTxDNB5ujzRuZiXo18Gvnijo-SwzJdTb29Hf1opw2CmwblLi"/>
+          <div class="input-group mb-3">
+            <input type="email" name="email" class="form-control" placeholder="Ваш email" required>
+            <button class="btn btn-primary" type="submit">Подписаться</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <hr class="my-4">
+    <div class="row">
+      <div class="col-md-6">
+        <p class="mb-0">&copy; 2025 АвтоПрокат. Все права защищены.</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <a href="/privacy" class="text-white text-decoration-none me-3">Политика конфиденциальности</a>
+        <a href="/terms" class="text-white text-decoration-none">Пользовательское соглашение</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Скрипт для показа/скрытия пароля -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+    
+    if (togglePassword && password) {
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+            
+            const isPressed = type === 'text';
+            this.setAttribute('aria-pressed', isPressed);
+            this.setAttribute('aria-label', isPressed ? 'Скрыть пароль' : 'Показать пароль');
+        });
+    }
+    
+    // Валидация формы
+    const form = document.querySelector('form');
+    const username = document.getElementById('username');
+    const passwordField = document.getElementById('password');
+    
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Валидация email
+            if (username && !username.value.trim()) {
+                username.setAttribute('aria-invalid', 'true');
+                username.classList.add('is-invalid');
+                isValid = false;
+            } else if (username) {
+                username.setAttribute('aria-invalid', 'false');
+                username.classList.remove('is-invalid');
+            }
+            
+            // Валидация пароля
+            if (passwordField && !passwordField.value.trim()) {
+                passwordField.setAttribute('aria-invalid', 'true');
+                passwordField.classList.add('is-invalid');
+                isValid = false;
+            } else if (passwordField) {
+                passwordField.setAttribute('aria-invalid', 'false');
+                passwordField.classList.remove('is-invalid');
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+                // Фокусируемся на первом невалидном поле
+                const firstInvalid = form.querySelector('[aria-invalid="true"]');
+                if (firstInvalid) {
+                    firstInvalid.focus();
+                }
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
