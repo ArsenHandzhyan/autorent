@@ -961,11 +961,6 @@ app.get('/', async (req, res) => {
     }
 });
 
-// Маршрут для тестового файла стилей
-app.get('/test-styles', (req, res) => {
-    res.sendFile(path.join(__dirname, 'test-styles.html'));
-});
-
 // Запуск сервера
 app.listen(port, () => {
     console.log(`🚀 Сервер предварительного просмотра запущен на http://localhost:${port}`);
