@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoRent - Демо</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white">
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-primary-600 to-primary-800 text-white">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                    Аренда автомобилей
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 text-primary-100">
+                    Найдите идеальный автомобиль для вашего путешествия
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-white text-primary-600 px-8 py-3 rounded-lg font-semibold hover:bg-primary-50 transition-colors">
+                        Начать поиск
+                    </button>
+                    <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-600 transition-colors">
+                        Узнать больше
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="bg-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-xl p-8 -mt-16 relative z-10">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
+                    Найдите автомобиль
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Место получения
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Введите адрес"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Дата получения
+                        </label>
+                        <input
+                            type="date"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Дата возврата
+                        </label>
+                        <input
+                            type="date"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        />
+                    </div>
+                    <div class="flex items-end">
+                        <button class="w-full bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors">
+                            Найти
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Car Catalog -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                    Доступные автомобили
+                </h2>
+                <p class="text-lg text-gray-600">
+                    Выберите автомобиль для вашего путешествия
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Car 1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500">Toyota Camry</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                            Toyota Camry
+                        </h3>
+                        <p class="text-gray-600 mb-2">Седан</p>
+                        <p class="text-2xl font-bold text-primary-600 mb-4">
+                            2500 ₽/день
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                Автомат
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                Кондиционер
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                5 мест
+                            </div>
+                        </div>
+                        <button class="w-full bg-primary-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-primary-700 transition-colors">
+                            Забронировать
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Car 2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500">Honda CR-V</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                            Honda CR-V
+                        </h3>
+                        <p class="text-gray-600 mb-2">SUV</p>
+                        <p class="text-2xl font-bold text-primary-600 mb-4">
+                            3500 ₽/день
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                Полный привод
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                7 мест
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                Круиз-контроль
+                            </div>
+                        </div>
+                        <button class="w-full bg-primary-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-primary-700 transition-colors">
+                            Забронировать
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Car 3 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500">BMW 3 Series</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                            BMW 3 Series
+                        </h3>
+                        <p class="text-gray-600 mb-2">Седан</p>
+                        <p class="text-2xl font-bold text-primary-600 mb-4">
+                            4500 ₽/день
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                Премиум
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                Спорт
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                Навигация
+                            </div>
+                        </div>
+                        <button class="w-full bg-primary-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-primary-700 transition-colors">
+                            Забронировать
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Car 4 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500">Mercedes-Benz GLC</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                            Mercedes-Benz GLC
+                        </h3>
+                        <p class="text-gray-600 mb-2">SUV</p>
+                        <p class="text-2xl font-bold text-primary-600 mb-4">
+                            5500 ₽/день
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                Люкс
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                Полный привод
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                Панорамная крыша
+                            </div>
+                        </div>
+                        <button class="w-full bg-primary-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-primary-700 transition-colors">
+                            Забронировать
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">AutoRent</h3>
+                    <p class="text-gray-400">
+                        Ваш надежный партнер в аренде автомобилей
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Услуги</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Аренда автомобилей</li>
+                        <li>Доставка</li>
+                        <li>Страхование</li>
+                        <li>Техподдержка</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Поддержка</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Помощь</li>
+                        <li>FAQ</li>
+                        <li>Контакты</li>
+                        <li>Обратная связь</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Контакты</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p>+7 (999) 123-45-67</p>
+                        <p>info@autorent.ru</p>
+                        <p>Москва, ул. Примерная, 1</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 AutoRent. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Простая интерактивность
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.textContent.includes('Забронировать')) {
+                    alert('Функция бронирования будет доступна после интеграции с backend!');
+                } else if (this.textContent.includes('Найти')) {
+                    alert('Функция поиска будет доступна после интеграции с backend!');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
