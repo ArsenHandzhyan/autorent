@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АвтоПрокат - Вход в систему (Предварительный просмотр)</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        /* Основные CSS переменные */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --info-color: #3498db;
+            --text-color: #333;
+            --text-muted: #6c757d;
+            --text-light: #fff;
+            --bg-light: #f8f9fa;
+            --bg-white: #fff;
+            --bg-dark: #343a40;
+            --border-color: #dee2e6;
+            --shadow-light: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-medium: 0 4px 8px rgba(0,0,0,0.15);
+            --shadow-heavy: 0 8px 16px rgba(0,0,0,0.2);
+            --transition-normal: 0.3s ease;
+            --border-radius: 4px;
+            --border-radius-lg: 8px;
+            --border-radius-xl: 12px;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        /* Навигация */
+        .navbar {
+            background-color: var(--bg-white);
+            box-shadow: var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-color) !important;
+            font-weight: 500;
+            transition: color var(--transition-normal);
+        }
+
+        .nav-link:hover {
+            color: var(--secondary-color) !important;
+        }
+
+        .nav-link i {
+            margin-right: 0.5rem;
+        }
+
+        /* Контейнер авторизации */
+        .auth-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .auth-container h2 {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Форма */
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: all var(--transition-normal);
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        .input-group-text {
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        /* Кнопки */
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: var(--text-light);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all var(--transition-normal);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-outline-secondary {
+            border-color: var(--border-color);
+            color: var(--text-muted);
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: var(--bg-light);
+            border-color: var(--text-muted);
+            color: var(--text-color);
+        }
+
+        /* Алерты */
+        .alert {
+            border-radius: var(--border-radius);
+            border: none;
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        /* Ссылки */
+        .auth-links {
+            text-align: center;
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .auth-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color var(--transition-normal);
+        }
+
+        .auth-links a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        /* Чекбокс */
+        .form-check-input:checked {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .form-check-label {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 576px) {
+            .auth-container {
+                margin: 20px auto;
+                padding: var(--spacing-lg);
+            }
+            
+            .card-body {
+                padding: var(--spacing-md);
+            }
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Демо-режим */
+        .demo-mode {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #f39c12;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+    <!-- Демо-режим индикатор -->
+    <div class="demo-mode">
+        <i class="fas fa-eye"></i> Демо-режим
+    </div>
+
+    <!-- Навигация -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-car text-primary"></i> АвтоПрокат
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-home"></i> Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-car"></i> Автомобили</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-info-circle"></i> О нас</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-envelope"></i> Контакты</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-sign-in-alt"></i> Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white ms-2" href="#">
+                            <i class="fas fa-user-plus"></i> Регистрация
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="container" role="main">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="card shadow fade-in">
+                    <div class="card-body p-5">
+                        <header class="text-center mb-4">
+                            <h1 class="mb-3">
+                                <i class="fas fa-car text-primary" aria-hidden="true"></i> 
+                                АвтоПрокат
+                            </h1>
+                            <h2>Вход в систему</h2>
+                        </header>
+
+                        <!-- Демо-алерты (можно переключать) -->
+                        <div id="demoAlerts">
+                            <!-- Успешная регистрация -->
+                            <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert" style="display: none;">
+                                <i class="fas fa-check-circle me-2" aria-hidden="true"></i>
+                                <span>Добро пожаловать, Иван! Регистрация успешно завершена. Пожалуйста, войдите в систему.</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть уведомление"></button>
+                            </div>
+
+                            <!-- Ошибка входа -->
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorAlert" style="display: none;">
+                                <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                                <span>Неверное имя пользователя или пароль</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть уведомление"></button>
+                            </div>
+
+                            <!-- Предупреждение админа -->
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert" id="adminAlert" style="display: none;">
+                                <i class="fas fa-user-shield" aria-hidden="true"></i>
+                                <span>У вас недостаточно прав для доступа к админ-панели. Пожалуйста, войдите как администратор.</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть уведомление"></button>
+                            </div>
+                        </div>
+
+                        <!-- Форма входа -->
+                        <form role="form" aria-labelledby="login-form-title">
+                            <fieldset>
+                                <legend class="visually-hidden">Данные для входа</legend>
+                                
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">
+                                        Email <span class="text-danger" aria-label="обязательное поле">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" aria-hidden="true">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                        <input type="email" 
+                                               id="username" 
+                                               name="username" 
+                                               class="form-control" 
+                                               required 
+                                               autofocus
+                                               autocomplete="email"
+                                               aria-describedby="username-help"
+                                               aria-invalid="false"
+                                               placeholder="Введите ваш email">
+                                    </div>
+                                    <div id="username-help" class="form-text">
+                                        Введите email адрес, указанный при регистрации
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">
+                                        Пароль <span class="text-danger" aria-label="обязательное поле">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" aria-hidden="true">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                        <input type="password" 
+                                               id="password" 
+                                               name="password" 
+                                               class="form-control" 
+                                               required
+                                               autocomplete="current-password"
+                                               aria-describedby="password-help"
+                                               aria-invalid="false"
+                                               placeholder="Введите ваш пароль">
+                                        <button type="button" 
+                                                class="btn btn-outline-secondary" 
+                                                id="togglePassword"
+                                                aria-label="Показать пароль"
+                                                aria-pressed="false">
+                                            <i class="fas fa-eye" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div id="password-help" class="form-text">
+                                        Введите пароль от вашего аккаунта
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" 
+                                           class="form-check-input" 
+                                           id="remember-me" 
+                                           name="remember-me"
+                                           aria-describedby="remember-help">
+                                    <label class="form-check-label" for="remember-me">
+                                        Запомнить меня
+                                    </label>
+                                    <div id="remember-help" class="form-text">
+                                        Оставаться в системе на этом устройстве
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" 
+                                        class="btn btn-primary btn-lg"
+                                        aria-describedby="submit-help">
+                                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i> 
+                                    Войти
+                                </button>
+                            </div>
+                            <div id="submit-help" class="form-text text-center mt-2">
+                                Нажимая кнопку "Войти", вы соглашаетесь с 
+                                <a href="#" target="_blank" rel="noopener">условиями использования</a>
+                            </div>
+                        </form>
+
+                        <nav class="mt-4 text-center" aria-label="Дополнительные действия">
+                            <p>Нет аккаунта? 
+                                <a href="#" class="text-decoration-none">Зарегистрироваться</a>
+                            </p>
+                            <p>
+                                <a href="#" class="text-decoration-none">Забыли пароль?</a>
+                            </p>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a href="#" class="text-decoration-none">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i> 
+                        Вернуться на главную
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Демо-контролы -->
+    <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 1000;">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="fas fa-cog"></i> Демо-режим</h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-2">
+                    <button class="btn btn-sm btn-outline-success" onclick="showAlert('success')">
+                        Показать успех
+                    </button>
+                </div>
+                <div class="mb-2">
+                    <button class="btn btn-sm btn-outline-danger" onclick="showAlert('error')">
+                        Показать ошибку
+                    </button>
+                </div>
+                <div class="mb-2">
+                    <button class="btn btn-sm btn-outline-warning" onclick="showAlert('admin')">
+                        Показать админ-предупреждение
+                    </button>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="hideAllAlerts()">
+                        Скрыть все
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Функции для демо-режима
+        function showAlert(type) {
+            hideAllAlerts();
+            const alert = document.getElementById(type + 'Alert');
+            if (alert) {
+                alert.style.display = 'block';
+            }
+        }
+
+        function hideAllAlerts() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.display = 'none';
+            });
+        }
+
+        // Показать/скрыть пароль
+        document.addEventListener('DOMContentLoaded', function() {
+            const togglePassword = document.getElementById('togglePassword');
+            const password = document.getElementById('password');
+            
+            if (togglePassword && password) {
+                togglePassword.addEventListener('click', function() {
+                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                    password.setAttribute('type', type);
+                    
+                    const icon = this.querySelector('i');
+                    icon.classList.toggle('fa-eye');
+                    icon.classList.toggle('fa-eye-slash');
+                    
+                    const isPressed = type === 'text';
+                    this.setAttribute('aria-pressed', isPressed);
+                    this.setAttribute('aria-label', isPressed ? 'Скрыть пароль' : 'Показать пароль');
+                });
+            }
+            
+            // Валидация формы
+            const form = document.querySelector('form');
+            const username = document.getElementById('username');
+            const passwordField = document.getElementById('password');
+            
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    let isValid = true;
+                    
+                    // Валидация email
+                    if (username && !username.value.trim()) {
+                        username.setAttribute('aria-invalid', 'true');
+                        username.classList.add('is-invalid');
+                        isValid = false;
+                    } else if (username) {
+                        username.setAttribute('aria-invalid', 'false');
+                        username.classList.remove('is-invalid');
+                    }
+                    
+                    // Валидация пароля
+                    if (passwordField && !passwordField.value.trim()) {
+                        passwordField.setAttribute('aria-invalid', 'true');
+                        passwordField.classList.add('is-invalid');
+                        isValid = false;
+                    } else if (passwordField) {
+                        passwordField.setAttribute('aria-invalid', 'false');
+                        passwordField.classList.remove('is-invalid');
+                    }
+                    
+                    if (!isValid) {
+                        showAlert('error');
+                        // Фокусируемся на первом невалидном поле
+                        const firstInvalid = form.querySelector('[aria-invalid="true"]');
+                        if (firstInvalid) {
+                            firstInvalid.focus();
+                        }
+                    } else {
+                        alert('Демо-режим: Форма отправлена успешно!');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

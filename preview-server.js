@@ -120,7 +120,9 @@ const mockData = {
 
 // Функция обработки Thymeleaf выражений
 function processThymeleafExpressions(html, data) {
-    // Удаляем Thymeleaf атрибуты
+    // Удаляем Thymeleaf атрибуты, но сохраняем содержимое
+    html = html.replace(/th:href="@\{([^}]+)\}"/g, 'href="$1"');
+    html = html.replace(/th:src="@\{([^}]+)\}"/g, 'src="$1"');
     html = html.replace(/th:[^=]*="[^"]*"/g, '');
     html = html.replace(/xmlns:th="[^"]*"/g, '');
     
@@ -140,8 +142,8 @@ function processThymeleafExpressions(html, data) {
         return value || match;
     });
     
-    // Заменяем @{...} на #
-    html = html.replace(/@\{([^}]+)\}/g, '#');
+    // Заменяем @{...} на правильные пути (кроме уже обработанных href и src)
+    html = html.replace(/@\{([^}]+)\}/g, '$1');
     
     // Удаляем оставшиеся Thymeleaf выражения
     html = html.replace(/\[\[([^\]]+)\]\]/g, '');
@@ -380,6 +382,9 @@ app.get('/', async (req, res) => {
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Единый файл стилей -->
+    <link rel="stylesheet" href="/css/main.css">
+    
     <style>
         .template-card {
             transition: transform 0.2s;
@@ -395,54 +400,52 @@ app.get('/', async (req, res) => {
             border-radius: 5px;
             margin-bottom: 20px;
         }
+        
+        .test-link {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container mt-4">
         <div class="row">
             <div class="col-12">
-                <h1 class="mb-4">
-                    <i class="fas fa-eye"></i> 
-                    Предварительный просмотр шаблонов AutoRent
-                </h1>
-                
                 <div class="server-info">
-                    <h5>Информация о сервере предварительного просмотра:</h5>
-                    <ul class="mb-0">
-                        <li><strong>Порт:</strong> ${port}</li>
-                        <li><strong>Время запуска:</strong> ${new Date().toLocaleString('ru-RU')}</li>
-                        <li><strong>Всего шаблонов:</strong> ${templates.length}</li>
-                    </ul>
+                    <h2><i class="fas fa-server"></i> Сервер предварительного просмотра AutoRent</h2>
+                    <p class="mb-0">
+                        <strong>Порт:</strong> 3001 | 
+                        <strong>Статус:</strong> <span class="text-success">Работает</span> | 
+                        <strong>Время запуска:</strong> ${new Date().toLocaleString('ru-RU')}
+                    </p>
                 </div>
                 
+                <div class="test-link">
+                    <h5><i class="fas fa-vial"></i> Тест подключения стилей и скриптов</h5>
+                    <p class="mb-2">Проверьте, что общие CSS и JS файлы корректно загружаются:</p>
+                    <a href="/test-styles" class="btn btn-warning">
+                        <i class="fas fa-palette"></i> Тест стилей и скриптов
+                    </a>
+                </div>
+                
+                <h3><i class="fas fa-file-code"></i> Доступные шаблоны (${templates.length})</h3>
                 <div class="row">
                     ${templates.map(template => `
-                        <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="col-md-4 mb-3">
                             <div class="card template-card h-100">
                                 <div class="card-body">
-                                    <h5 class="card-title">
-                                        <i class="fas fa-file-code"></i> 
-                                        ${template.name}
-                                    </h5>
-                                    <p class="card-text text-muted">
-                                        <small>${template.path}</small>
-                                    </p>
+                                    <h5 class="card-title">${template.name}</h5>
+                                    <p class="card-text text-muted">${template.path}</p>
                                     <a href="${template.url}" class="btn btn-primary">
-                                        <i class="fas fa-eye"></i> Просмотреть
+                                        <i class="fas fa-eye"></i> Просмотр
                                     </a>
                                 </div>
                             </div>
                         </div>
                     `).join('')}
-                </div>
-                
-                <div class="mt-4">
-                    <h5>Доступные мок-данные:</h5>
-                    <ul>
-                        ${Object.keys(mockData).map(key => `
-                            <li><code>${key}</code> - ${Object.keys(mockData[key]).join(', ')}</li>
-                        `).join('')}
-                    </ul>
                 </div>
             </div>
         </div>
@@ -450,6 +453,9 @@ app.get('/', async (req, res) => {
     
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Единый файл скриптов -->
+    <script src="/js/main.js"></script>
 </body>
 </html>`;
         
@@ -466,6 +472,11 @@ app.get('/', async (req, res) => {
             </html>
         `);
     }
+});
+
+// Маршрут для тестового файла стилей
+app.get('/test-styles', (req, res) => {
+    res.sendFile(path.join(__dirname, 'test-styles.html'));
 });
 
 // Запуск сервера

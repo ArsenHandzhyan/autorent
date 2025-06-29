@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест стилей и скриптов</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Единый файл стилей -->
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Тест подключения стилей и скриптов</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>Проверка стилей:</h4>
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i> Bootstrap стили загружены
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> FontAwesome иконки работают
+                        </div>
+                        
+                        <h4>Проверка кастомных стилей:</h4>
+                        <div class="btn btn-primary">Кнопка с кастомными стилями</div>
+                        <div class="btn btn-secondary ms-2">Вторая кнопка</div>
+                        
+                        <h4 class="mt-4">Проверка JavaScript:</h4>
+                        <div id="js-test" class="alert alert-warning">
+                            JavaScript загружается...
+                        </div>
+                        
+                        <div class="mt-4">
+                            <a href="http://localhost:3001" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-left"></i> Вернуться к серверу предварительного просмотра
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Единый файл скриптов -->
+    <script src="/js/main.js"></script>
+    
+    <script>
+        // Тест загрузки JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const jsTest = document.getElementById('js-test');
+            if (jsTest) {
+                jsTest.innerHTML = '<i class="fas fa-check-circle"></i> JavaScript успешно загружен!';
+                jsTest.className = 'alert alert-success';
+            }
+        });
+    </script>
+</body>
+</html> 

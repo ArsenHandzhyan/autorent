@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoRent - Предварительный просмотр шаблонов</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Единый файл стилей -->
+    <link rel="stylesheet" href="src/main/resources/static/css/main.css">
+    
+    <style>
+        .preview-container {
+            margin: 20px;
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .template-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .template-selector select {
+            margin-bottom: 10px;
+        }
+        
+        .mock-data-toggle {
+            margin-top: 10px;
+        }
+        
+        .mock-data-panel {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .mock-data-panel h4 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        
+        .mock-data-panel pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Панель выбора шаблона -->
+    <div class="template-selector">
+        <h5>Выбор шаблона</h5>
+        <select id="templateSelect" class="form-select">
+            <option value="">Выберите шаблон...</option>
+            <option value="main">Личный кабинет (main.html)</option>
+            <option value="home">Главная страница (home.html)</option>
+            <option value="cars">Каталог автомобилей</option>
+            <option value="auth">Авторизация</option>
+            <option value="admin">Админ панель</option>
+        </select>
+        
+        <div class="mock-data-toggle">
+            <button class="btn btn-sm btn-outline-info" onclick="toggleMockData()">
+                Показать/Скрыть мок-данные
+            </button>
+        </div>
+    </div>
+
+    <!-- Панель мок-данных -->
+    <div id="mockDataPanel" class="mock-data-panel" style="display: none;">
+        <h4>Мок-данные для шаблона</h4>
+        <pre id="mockDataContent"></pre>
+    </div>
+
+    <!-- Контейнер для предварительного просмотра -->
+    <div id="previewContainer" class="preview-container">
+        <h3>Выберите шаблон для предварительного просмотра</h3>
+        <p>Используйте панель справа для выбора шаблона и просмотра мок-данных.</p>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Единый файл скриптов -->
+    <script src="src/main/resources/static/js/main.js"></script>
+    
+    <script>
+        // Мок-данные для разных шаблонов
+        const mockData = {
+            main: {
+                user: {
+                    firstName: "Иван",
+                    lastName: "Петров",
+                    email: "ivan.petrov@example.com",
+                    phone: "+7 (999) 123-45-67",
+                    registrationDate: "15.01.2025"
+                },
+                rentals: [
+                    { id: 1, car: "Toyota Camry", startDate: "20.01.2025", endDate: "25.01.2025", status: "Активна" },
+                    { id: 2, car: "Honda Civic", startDate: "10.01.2025", endDate: "12.01.2025", status: "Завершена" }
+                ]
+            },
+            home: {
+                featuredCars: [
+                    { id: 1, brand: "Toyota", model: "Camry", year: 2023, price: 2500, image: "/images/car1.jpg" },
+                    { id: 2, brand: "Honda", model: "Civic", year: 2022, price: 2200, image: "/images/car2.jpg" },
+                    { id: 3, brand: "BMW", model: "X5", year: 2024, price: 4500, image: "/images/car3.jpg" }
+                ],
+                stats: {
+                    totalCars: 150,
+                    happyCustomers: 2500,
+                    cities: 12
+                }
+            },
+            cars: {
+                cars: [
+                    { id: 1, brand: "Toyota", model: "Camry", year: 2023, price: 2500, available: true, image: "/images/car1.jpg" },
+                    { id: 2, brand: "Honda", model: "Civic", year: 2022, price: 2200, available: true, image: "/images/car2.jpg" },
+                    { id: 3, brand: "BMW", model: "X5", year: 2024, price: 4500, available: false, image: "/images/car3.jpg" }
+                ],
+                filters: {
+                    brands: ["Toyota", "Honda", "BMW", "Mercedes", "Audi"],
+                    priceRange: { min: 1000, max: 10000 }
+                }
+            },
+            auth: {
+                error: null,
+                success: null
+            },
+            admin: {
+                stats: {
+                    totalUsers: 1250,
+                    totalCars: 150,
+                    activeRentals: 45,
+                    monthlyRevenue: 1250000
+                },
+                recentRentals: [
+                    { id: 1, user: "Иван Петров", car: "Toyota Camry", startDate: "20.01.2025", status: "Активна" },
+                    { id: 2, user: "Мария Сидорова", car: "Honda Civic", startDate: "19.01.2025", status: "Активна" }
+                ]
+            }
+        };
+
+        // Функция переключения панели мок-данных
+        function toggleMockData() {
+            const panel = document.getElementById('mockDataPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Функция загрузки шаблона
+        async function loadTemplate(templateName) {
+            try {
+                const response = await fetch(`src/main/resources/templates/${templateName}.html`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                
+                // Заменяем Thymeleaf выражения на мок-данные
+                const processedHtml = processThymeleafExpressions(html, mockData[templateName] || {});
+                
+                document.getElementById('previewContainer').innerHTML = processedHtml;
+                
+                // Обновляем мок-данные
+                document.getElementById('mockDataContent').textContent = 
+                    JSON.stringify(mockData[templateName] || {}, null, 2);
+                
+            } catch (error) {
+                console.error('Ошибка загрузки шаблона:', error);
+                document.getElementById('previewContainer').innerHTML = 
+                    `<div class="alert alert-danger">Ошибка загрузки шаблона: ${error.message}</div>`;
+            }
+        }
+
+        // Функция обработки Thymeleaf выражений
+        function processThymeleafExpressions(html, data) {
+            // Удаляем Thymeleaf атрибуты
+            html = html.replace(/th:[^=]*="[^"]*"/g, '');
+            html = html.replace(/xmlns:th="[^"]*"/g, '');
+            
+            // Заменяем выражения ${...} на мок-данные
+            html = html.replace(/\$\{([^}]+)\}/g, (match, expression) => {
+                const parts = expression.split('.');
+                let value = data;
+                
+                for (const part of parts) {
+                    if (value && typeof value === 'object' && part in value) {
+                        value = value[part];
+                    } else {
+                        return match; // Возвращаем оригинальное выражение если не найдено
+                    }
+                }
+                
+                return value || match;
+            });
+            
+            // Заменяем @{...} на #
+            html = html.replace(/@\{([^}]+)\}/g, '#');
+            
+            // Удаляем оставшиеся Thymeleaf выражения
+            html = html.replace(/\[\[([^\]]+)\]\]/g, '');
+            html = html.replace(/\(\(([^)]+)\)\)/g, '');
+            
+            return html;
+        }
+
+        // Обработчик изменения выбора шаблона
+        document.getElementById('templateSelect').addEventListener('change', function() {
+            const selectedTemplate = this.value;
+            if (selectedTemplate) {
+                loadTemplate(selectedTemplate);
+            } else {
+                document.getElementById('previewContainer').innerHTML = 
+                    '<h3>Выберите шаблон для предварительного просмотра</h3>';
+            }
+        });
+
+        // Инициализация
+        console.log('Система предварительного просмотра шаблонов загружена');
+        console.log('Доступные мок-данные:', Object.keys(mockData));
+    </script>
+</body>
+</html> 

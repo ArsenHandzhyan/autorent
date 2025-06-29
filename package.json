@@ -1,0 +1,29 @@
+{
+  "name": "autorent-template-preview",
+  "version": "1.0.0",
+  "description": "Сервер предварительного просмотра Thymeleaf шаблонов для AutoRent",
+  "main": "preview-server.js",
+  "scripts": {
+    "preview": "node preview-server.js",
+    "preview:dev": "nodemon preview-server.js",
+    "start": "node preview-server.js"
+  },
+  "keywords": [
+    "thymeleaf",
+    "preview",
+    "templates",
+    "spring-boot",
+    "autorent"
+  ],
+  "author": "AutoRent Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+} 
