@@ -12,10 +12,6 @@ import ru.anapa.autorent.repository.DailyPaymentRepository;
 import ru.anapa.autorent.repository.RentalRepository;
 import org.springframework.context.event.EventListener;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;
-import java.sql.SQLException;
 
 @Service
 public class DailyPaymentService {
@@ -35,21 +30,18 @@ public class DailyPaymentService {
     private final AccountService accountService;
     private final PaymentNotificationService notificationService;
     private final ApplicationEventPublisher eventPublisher;
-    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public DailyPaymentService(DailyPaymentRepository dailyPaymentRepository,
                               RentalRepository rentalRepository,
                               AccountService accountService,
                               @Lazy PaymentNotificationService notificationService,
-                              ApplicationEventPublisher eventPublisher,
-                              JdbcTemplate jdbcTemplate) {
+                              ApplicationEventPublisher eventPublisher) {
         this.dailyPaymentRepository = dailyPaymentRepository;
         this.rentalRepository = rentalRepository;
         this.accountService = accountService;
         this.notificationService = notificationService;
         this.eventPublisher = eventPublisher;
-        this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
@@ -789,35 +781,5 @@ public class DailyPaymentService {
     public void scheduledUnprocessedPayments() {
         logger.info("[Scheduler] Актуализация всех не обработанных платежей (PENDING/FAILED)");
         processAllUnprocessedPayments();
-    }
-
-    /**
-     * Исправление поврежденных примечаний платежей
-     * Заменяет кракозябры на корректные русские тексты
-     */
-    @Transactional
-    @Retryable(
-        value = {SQLException.class, DataAccessException.class},
-        maxAttempts = 3,
-        backoff = @Backoff(delay = 2000, multiplier = 2)
-    )
-    public int fixCorruptedNotes() {
-        logger.info("Начинаю исправление поврежденных примечаний платежей");
-        
-        String updateQuery = """
-            UPDATE daily_payments 
-            SET notes = 'Платеж за день аренды. Средства списаны.'
-            WHERE notes LIKE '%ÐŸÐ»Ð°Ñ‚ÐµÐ¶%' 
-               OR notes LIKE '%Ð·Ð°%' 
-               OR notes LIKE '%Ð°Ñ€ÐµÐ½Ð´Ñ‹%'
-               OR notes LIKE '%Ð¡Ñ€ÐµÐ´ÑÑ‚Ð²Ð°%'
-               OR notes LIKE '%ÑÐ¿Ð¸ÑÐ°Ð½Ñ‹%'
-            """;
-        
-        int updatedRows = jdbcTemplate.update(updateQuery);
-        
-        logger.info("Исправлено {} поврежденных примечаний платежей", updatedRows);
-        
-        return updatedRows;
     }
 } 

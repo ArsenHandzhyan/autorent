@@ -22,5 +22,5 @@ COPY --from=build /workspace/app/target/*.jar app.jar
 # Открываем порт 8080
 EXPOSE 8080
 
-# Запускаем приложение с профилем dev (облачная база)
-ENTRYPOINT ["java","-Dspring.profiles.active=dev","-jar","/app.jar"]
+# Запускаем приложение
+ENTRYPOINT ["java","-jar","/app.jar"]

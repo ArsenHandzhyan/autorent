@@ -1,34 +1,24 @@
 package ru.anapa.autorent.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.anapa.autorent.service.DailyPaymentService;
 import ru.anapa.autorent.model.DailyPayment;
-import ru.anapa.autorent.model.Rental;
-import ru.anapa.autorent.service.RentalService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 public class TestController {
 
     private final DailyPaymentService dailyPaymentService;
-    private final RentalService rentalService;
 
     @Autowired
-    public TestController(DailyPaymentService dailyPaymentService, RentalService rentalService) {
+    public TestController(DailyPaymentService dailyPaymentService) {
         this.dailyPaymentService = dailyPaymentService;
-        this.rentalService = rentalService;
     }
 
     /**
@@ -195,95 +185,5 @@ public class TestController {
         } catch (Exception e) {
             return "ERROR: " + e.getMessage() + "\nStacktrace: " + e.getStackTrace()[0];
         }
-    }
-
-    /**
-     * Тест кодировки платежей пользователя
-     */
-    @GetMapping("/test-user-payments-encoding")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> testUserPaymentsEncoding() {
-        Map<String, Object> response = new HashMap<>();
-        
-        try {
-            // Получаем платежи для пользователя с ID 1 (admin61@example.com)
-            List<DailyPayment> payments = dailyPaymentService.findPaymentsByUserWithCarData(1L);
-            
-            List<Map<String, Object>> paymentData = new ArrayList<>();
-            for (DailyPayment payment : payments) {
-                Map<String, Object> paymentInfo = new HashMap<>();
-                paymentInfo.put("id", payment.getId());
-                paymentInfo.put("notes", payment.getNotes());
-                paymentInfo.put("notesHex", payment.getNotes() != null ? 
-                    java.util.Arrays.toString(payment.getNotes().getBytes("UTF-8")) : "null");
-                paymentInfo.put("paymentDate", payment.getPaymentDate());
-                paymentInfo.put("amount", payment.getAmount());
-                paymentInfo.put("status", payment.getStatus());
-                paymentData.add(paymentInfo);
-            }
-            
-            response.put("success", true);
-            response.put("payments", paymentData);
-            response.put("totalPayments", payments.size());
-            
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("error", "Ошибка при получении платежей: " + e.getMessage());
-            e.printStackTrace();
-        }
-        
-        return ResponseEntity.ok(response);
-    }
-
-    /**
-     * Тест проверки платежей аренды 54
-     */
-    @GetMapping("/test-rental-54-payments")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> testRental54Payments() {
-        Map<String, Object> response = new HashMap<>();
-        
-        try {
-            // Получаем аренду 54
-            Rental rental = rentalService.findById(54L);
-            if (rental == null) {
-                response.put("success", false);
-                response.put("error", "Аренда с ID 54 не найдена");
-                return ResponseEntity.ok(response);
-            }
-            
-            // Получаем платежи для аренды 54
-            List<DailyPayment> payments = dailyPaymentService.getPaymentsByRental(rental);
-            
-            List<Map<String, Object>> paymentData = new ArrayList<>();
-            for (DailyPayment payment : payments) {
-                Map<String, Object> paymentInfo = new HashMap<>();
-                paymentInfo.put("id", payment.getId());
-                paymentInfo.put("paymentDate", payment.getPaymentDate());
-                paymentInfo.put("amount", payment.getAmount());
-                paymentInfo.put("status", payment.getStatus());
-                paymentInfo.put("notes", payment.getNotes());
-                paymentInfo.put("notesHex", payment.getNotes() != null ? 
-                    java.util.Arrays.toString(payment.getNotes().getBytes("UTF-8")) : "null");
-                paymentData.add(paymentInfo);
-            }
-            
-            response.put("success", true);
-            response.put("rental", Map.of(
-                "id", rental.getId(),
-                "startDate", rental.getStartDate(),
-                "endDate", rental.getEndDate(),
-                "totalCost", rental.getTotalCost()
-            ));
-            response.put("payments", paymentData);
-            response.put("totalPayments", payments.size());
-            
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("error", "Ошибка при получении платежей: " + e.getMessage());
-            e.printStackTrace();
-        }
-        
-        return ResponseEntity.ok(response);
     }
 } 

@@ -214,12 +214,4 @@ public class AdminController {
                     .body(Map.of("message", "Ошибка при удалении автомобиля: " + e.getMessage()));
         }
     }
-
-    /**
-     * Страница исправления поврежденных данных
-     */
-    @GetMapping("/fix-data")
-    public String fixDataPage() {
-        return "fix-data";
-    }
 }
